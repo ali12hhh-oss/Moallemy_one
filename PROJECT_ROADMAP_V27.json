@@ -1,0 +1,19 @@
+{
+  "current_version": "27.0.0+27",
+  "versions": {
+    "17": "English Phonics",
+    "18": "Offline phoneme audio",
+    "19": "Real game engines",
+    "20": "Stories",
+    "21": "Exams",
+    "22": "Parents",
+    "23": "Rewards store",
+    "24": "Adaptive learning",
+    "25": "Theme/UI",
+    "26": "Offline content",
+    "27": "CI/build validation"
+  },
+  "rtl": true,
+  "arabic_digits": true,
+  "offline_first": true
+}
