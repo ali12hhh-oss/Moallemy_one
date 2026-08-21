@@ -1,0 +1,73 @@
+class CurriculumUnitV8 {
+  final String id, title, description, icon;
+  final int minutes, stars;
+  final List<String> skills;
+  const CurriculumUnitV8(this.id, this.title, this.description, this.icon, this.minutes, this.stars, this.skills);
+}
+
+class CurriculumStageV8 {
+  final String id, title, age, numberRange;
+  final List<CurriculumUnitV8> units;
+  const CurriculumStageV8(this.id, this.title, this.age, this.numberRange, this.units);
+}
+
+const curriculumV8 = <CurriculumStageV8>[
+  CurriculumStageV8('kg1','الروضة الأولى','٣–٤ سنوات','١–١٠',[
+    CurriculumUnitV8('v8_kg1_colors','الألوان','تعرف الألوان الأساسية من خلال الصور والمطابقة','🎨',8,5,['الألوان']),
+    CurriculumUnitV8('v8_kg1_shapes','الأشكال','دائرة ومربع ومثلث ومستطيل','🔺',8,5,['الأشكال']),
+    CurriculumUnitV8('v8_kg1_listen','استمع وميّز','استمع للصوت واختر الصورة المناسبة','👂',7,5,['الاستماع']),
+    CurriculumUnitV8('v8_kg1_numbers','الأعداد الأولى','الأعداد من ١ إلى ١٠ والعد العملي','🔢',10,6,['الأعداد','العد']),
+    CurriculumUnitV8('v8_kg1_match','طابق وتعلم','مطابقة الصورة مع الشيء المشابه','🧩',8,5,['المطابقة']),
+    CurriculumUnitV8('v8_kg1_story','قصة اليوم','قصة قصيرة مع صور وأسئلة بسيطة','📖',10,6,['الاستماع','الفهم']),
+  ]),
+  CurriculumStageV8('kg2','الروضة الثانية','٤–٥ سنوات','١–٢٠',[
+    CurriculumUnitV8('v8_kg2_letters','الحروف الأولى','شكل الحرف وصوته واسم الحرف','🔤',12,7,['الحروف','الأصوات']),
+    CurriculumUnitV8('v8_kg2_words','كلمة وصورة','ربط الحرف بالكلمة والصورة والإيموجي','🖼️',12,7,['المفردات']),
+    CurriculumUnitV8('v8_kg2_write','ارسم الحرف','تتبع مسار الحرف ثم رسمه','✏️',12,8,['الكتابة']),
+    CurriculumUnitV8('v8_kg2_count','عد الأشياء','العد من ١ إلى ٢٠ ومطابقة العدد بالكمية','🔢',10,7,['العد']),
+    CurriculumUnitV8('v8_kg2_game','لعبة صائد الحروف','التقاط الحرف المطلوب من بين الخيارات','🎮',10,8,['اللعب','الأصوات']),
+    CurriculumUnitV8('v8_kg2_story','قصة الحروف','قصة أطول مع كلمات مستهدفة','📚',12,8,['القراءة المبكرة','الفهم']),
+  ]),
+  CurriculumStageV8('prep','التمهيدي','٥–٦ سنوات','١–١٠٠',[
+    CurriculumUnitV8('v8_prep_vowels','الحركات','الفتحة والكسرة والضمة والسكون','َ',14,9,['الحركات']),
+    CurriculumUnitV8('v8_prep_long','المدود','الألف والواو والياء مع أمثلة','🎵',14,10,['المدود']),
+    CurriculumUnitV8('v8_prep_spelling','التهجي','بناء كلمات قصيرة بالمقاطع','🧩',14,10,['التهجي']),
+    CurriculumUnitV8('v8_prep_read','قراءة أولى','قراءة كلمات وجمل قصيرة','📖',14,10,['القراءة']),
+    CurriculumUnitV8('v8_prep_dict','إملاء بسيط','استمع واكتب كلمة قصيرة','📝',12,9,['الإملاء']),
+    CurriculumUnitV8('v8_prep_math','الأعداد والحساب','حتى ١٠٠: قراءة وعد ومقارنة','🔢',14,10,['الأعداد','المقارنة']),
+    CurriculumUnitV8('v8_prep_english','English First Sounds','تمهيد أصوات الحروف الإنجليزية والكلمات المصورة','🇬🇧',12,8,['phonics']),
+  ]),
+  CurriculumStageV8('g1','الصف الأول','٦–٧ سنوات','١–١٬٠٠٠',[
+    CurriculumUnitV8('v8_g1_arabic','العربية الأساسية','الأصوات والحركات والمقاطع والكلمات','🇮🇶',18,12,['العربية','phonics']),
+    CurriculumUnitV8('v8_g1_read','القراءة','كلمات ثم جمل وفهم مباشر','📚',18,12,['القراءة']),
+    CurriculumUnitV8('v8_g1_write','الكتابة','كتابة الحروف والكلمات وتتبعها','✍️',18,12,['الكتابة']),
+    CurriculumUnitV8('v8_g1_spell','التهجي والإملاء','تركيب المقاطع وكتابة كلمات مألوفة','📝',16,11,['التهجي','الإملاء']),
+    CurriculumUnitV8('v8_g1_math','الرياضيات','الأعداد حتى ١٬٠٠٠ والجمع والطرح البسيط','➕',18,12,['الأعداد','الجمع','الطرح']),
+    CurriculumUnitV8('v8_g1_eng_phonics','English Phonics','صوت الحرف أولاً ثم اسم الحرف','🔤',16,10,['phonics']),
+    CurriculumUnitV8('v8_g1_eng_words','English Words','كلمات وصور وألوان وأرقام وحيوانات','🇬🇧',16,10,['words','colors','numbers']),
+    CurriculumUnitV8('v8_g1_game','ألعاب الحروف والكلمات','صائد الحروف والمطابقة وترتيب الكلمات','🎮',14,10,['الألعاب']),
+  ]),
+  CurriculumStageV8('g2','الصف الثاني','٧–٨ سنوات','١–١٠٬٠٠٠',[
+    CurriculumUnitV8('v8_g2_read','فهم المقروء','نصوص قصيرة وأسئلة فهم','📖',20,15,['الفهم']),
+    CurriculumUnitV8('v8_g2_spelling','الإملاء','كلمات وجمل متدرجة','📝',18,14,['الإملاء']),
+    CurriculumUnitV8('v8_g2_grammar','لغة عربية','مفرد وجمع وتذكير وتأنيث بشكل مبسط','🧠',18,14,['اللغة']),
+    CurriculumUnitV8('v8_g2_math','الرياضيات','الأعداد حتى ١٠٬٠٠٠ والعمليات الأساسية','🔢',20,15,['الأعداد','الحساب']),
+    CurriculumUnitV8('v8_g2_story','قصص ومفردات','قصص أطول واستخراج كلمات جديدة','📚',18,13,['القصص','المفردات']),
+    CurriculumUnitV8('v8_g2_eng_words','English Vocabulary','مفردات موسعة حسب الموضوع','🇬🇧',18,13,['vocabulary']),
+    CurriculumUnitV8('v8_g2_eng_sentences','English Sentences','جمل إنجليزية قصيرة واستماع وفهم','💬',18,13,['sentences','listening']),
+    CurriculumUnitV8('v8_g2_games','ألعاب القراءة والحساب','ألعاب سرعة وذاكرة وترتيب واختيار','🎮',16,12,['الألعاب']),
+  ]),
+  CurriculumStageV8('g3','الصف الثالث','٨–٩ سنوات','١–١٬٠٠٠٬٠٠٠',[
+    CurriculumUnitV8('v8_g3_read','قراءة متقدمة','فقرات قصيرة واستخراج الفكرة والكلمات الجديدة','📘',22,18,['القراءة','الفهم']),
+    CurriculumUnitV8('v8_g3_expression','التعبير','كوّن جملة وفق صورة ثم فقرة قصيرة','💡',20,18,['التعبير']),
+    CurriculumUnitV8('v8_g3_dict','إملاء متقدم','استماع وكتابة ومراجعة الأخطاء','📝',20,17,['الإملاء']),
+    CurriculumUnitV8('v8_g3_math','الأعداد الكبيرة','قراءة وكتابة وترتيب الأعداد حتى ١٬٠٠٠٬٠٠٠','🔢',24,20,['الأعداد','القيمة المكانية']),
+    CurriculumUnitV8('v8_g3_operations','الحساب والمسائل','جمع وطرح وضرب وقسمة ومسائل لفظية مناسبة للعمر','🧮',24,20,['الحساب','حل المشكلات']),
+    CurriculumUnitV8('v8_g3_stories','قصص متقدمة','قصص أطول مع أسئلة ومفردات واستنتاج','📖',22,18,['القصص','الاستنتاج']),
+    CurriculumUnitV8('v8_g3_eng_read','English Reading','قراءة نصوص بسيطة وفهمها','🇬🇧',22,16,['reading']),
+    CurriculumUnitV8('v8_g3_eng_vocab','English Vocabulary','كلمات وعبارات وموضوعات يومية','🗣️',20,16,['vocabulary','speaking']),
+    CurriculumUnitV8('v8_g3_games','ألعاب التحدي','ألعاب حقيقية متعددة المستويات مرتبطة بالمنهج','🎮',18,15,['الألعاب']),
+  ]),
+];
+
+int stageTotalStars(CurriculumStageV8 stage) => stage.units.fold(0, (sum, u) => sum + u.stars);

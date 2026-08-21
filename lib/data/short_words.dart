@@ -1,0 +1,159 @@
+/// كلمات مختارة لتعليم القراءة والهجاء للصف الأول: كلمات من حرفين وكلمات
+/// من ثلاثة أحرف، كل كلمة مقسّمة إلى حروفها ليتدرّب الطفل على الدمج والهجاء.
+class ShortWord {
+  final String word;
+  final String emoji;
+  final List<String> letters;
+  const ShortWord(this.word, this.emoji, this.letters);
+}
+
+const twoLetterWords = <ShortWord>[
+  ShortWord('يد', '✋', ['ي', 'د']),
+  ShortWord('أم', '👩', ['أ', 'م']),
+  ShortWord('أب', '👨', ['أ', 'ب']),
+  ShortWord('في', '📍', ['ف', 'ي']),
+  ShortWord('هي', '👧', ['ه', 'ي']),
+  ShortWord('لك', '🎁', ['ل', 'ك']),
+  ShortWord('ما', '❓', ['م', 'ا']),
+  ShortWord('من', '👤', ['م', 'ن']),
+  ShortWord('لا', '🚫', ['ل', 'ا']),
+  ShortWord('به', 'ℹ️', ['ب', 'ه']),
+  ShortWord('يا', '📢', ['ي', 'ا']),
+  ShortWord('لو', '🤔', ['ل', 'و']),
+  ShortWord('هل', '❔', ['ه', 'ل']),
+  ShortWord('لي', '🙋', ['ل', 'ي']),
+  ShortWord('إن', '☝️', ['إ', 'ن']),
+  ShortWord('أو', '🔀', ['أ', 'و']),
+];
+
+const threeLetterWords = <ShortWord>[
+  ShortWord('قمر', '🌙', ['ق', 'م', 'ر']),
+  ShortWord('شمس', '☀️', ['ش', 'م', 'س']),
+  ShortWord('بيت', '🏠', ['ب', 'ي', 'ت']),
+  ShortWord('قلم', '✏️', ['ق', 'ل', 'م']),
+  ShortWord('باب', '🚪', ['ب', 'ا', 'ب']),
+  ShortWord('ولد', '👦', ['و', 'ل', 'د']),
+  ShortWord('بنت', '👧', ['ب', 'ن', 'ت']),
+  ShortWord('سمك', '🐟', ['س', 'م', 'ك']),
+  ShortWord('عين', '👁️', ['ع', 'ي', 'ن']),
+  ShortWord('جمل', '🐪', ['ج', 'م', 'ل']),
+  ShortWord('كرة', '⚽', ['ك', 'ر', 'ة']),
+  ShortWord('ورد', '🌹', ['و', 'ر', 'د']),
+  ShortWord('نور', '💡', ['ن', 'و', 'ر']),
+  ShortWord('فيل', '🐘', ['ف', 'ي', 'ل']),
+  ShortWord('نمر', '🐅', ['ن', 'م', 'ر']),
+  ShortWord('بحر', '🌊', ['ب', 'ح', 'ر']),
+];
+
+/// كلمات من أربعة أحرف — للصف الثاني.
+const fourLetterWords = <ShortWord>[
+  ShortWord('كتاب', '📚', ['ك', 'ت', 'ا', 'ب']),
+  ShortWord('تفاح', '🍎', ['ت', 'ف', 'ا', 'ح']),
+  ShortWord('أرنب', '🐰', ['أ', 'ر', 'ن', 'ب']),
+  ShortWord('شجرة', '🌳', ['ش', 'ج', 'ر', 'ة']),
+  ShortWord('قطار', '🚂', ['ق', 'ط', 'ا', 'ر']),
+  ShortWord('نجمة', '⭐', ['ن', 'ج', 'م', 'ة']),
+  ShortWord('وردة', '🌹', ['و', 'ر', 'د', 'ة']),
+  ShortWord('مظلة', '☂️', ['م', 'ظ', 'ل', 'ة']),
+  ShortWord('ثعلب', '🦊', ['ث', 'ع', 'ل', 'ب']),
+  ShortWord('جمال', '🐫', ['ج', 'م', 'ا', 'ل']),
+  ShortWord('دفتر', '📓', ['د', 'ف', 'ت', 'ر']),
+  ShortWord('حصان', '🐴', ['ح', 'ص', 'ا', 'ن']),
+];
+
+/// جمل قصيرة من مقطعين (كلمتين) لتعليم القراءة المتصلة — للصف الثاني.
+class ShortSentence {
+  final String sentence;
+  final List<String> parts;
+  final String emoji;
+  const ShortSentence(this.sentence, this.parts, this.emoji);
+}
+
+const twoPartSentences = <ShortSentence>[
+  ShortSentence('هذا قلم', ['هذا', 'قلم'], '✏️'),
+  ShortSentence('هذا بيت', ['هذا', 'بيت'], '🏠'),
+  ShortSentence('أنا ولد', ['أنا', 'ولد'], '👦'),
+  ShortSentence('أنا بنت', ['أنا', 'بنت'], '👧'),
+  ShortSentence('القمر جميل', ['القمر', 'جميل'], '🌙'),
+  ShortSentence('الشمس حارة', ['الشمس', 'حارة'], '☀️'),
+  ShortSentence('عندي قطة', ['عندي', 'قطة'], '🐱'),
+  ShortSentence('الكلب لطيف', ['الكلب', 'لطيف'], '🐶'),
+  ShortSentence('أحب أمي', ['أحب', 'أمي'], '❤️'),
+  ShortSentence('الماء بارد', ['الماء', 'بارد'], '💧'),
+];
+
+/// كلمات من خمسة أحرف — للصف الثالث.
+const fiveLetterWords = <ShortWord>[
+  ShortWord('مدرسة', '🏫', ['م', 'د', 'ر', 'س', 'ة']),
+  ShortWord('حديقة', '🌳', ['ح', 'د', 'ي', 'ق', 'ة']),
+  ShortWord('سيارة', '🚗', ['س', 'ي', 'ا', 'ر', 'ة']),
+  ShortWord('طائرة', '✈️', ['ط', 'ا', 'ئ', 'ر', 'ة']),
+  ShortWord('دراجة', '🚲', ['د', 'ر', 'ا', 'ج', 'ة']),
+  ShortWord('فراشة', '🦋', ['ف', 'ر', 'ا', 'ش', 'ة']),
+  ShortWord('نافذة', '🪟', ['ن', 'ا', 'ف', 'ذ', 'ة']),
+  ShortWord('مفتاح', '🔑', ['م', 'ف', 'ت', 'ا', 'ح']),
+  ShortWord('جزيرة', '🏝️', ['ج', 'ز', 'ي', 'ر', 'ة']),
+  ShortWord('مكتبة', '📚', ['م', 'ك', 'ت', 'ب', 'ة']),
+  ShortWord('قصيدة', '📜', ['ق', 'ص', 'ي', 'د', 'ة']),
+  ShortWord('فاكهة', '🍇', ['ف', 'ا', 'ك', 'ه', 'ة']),
+  ShortWord('شاحنة', '🚚', ['ش', 'ا', 'ح', 'ن', 'ة']),
+  ShortWord('سفينة', '🚢', ['س', 'ف', 'ي', 'ن', 'ة']),
+  ShortWord('عصفور', '🐦', ['ع', 'ص', 'ف', 'و', 'ر']),
+];
+
+/// جمل من ثلاثة أجزاء (فاعل + فعل + مفعول به) — للصف الثالث.
+const threePartSentences = <ShortSentence>[
+  ShortSentence('الولد يلعب الكرة', ['الولد', 'يلعب', 'الكرة'], '⚽'),
+  ShortSentence('البنت تقرأ الكتاب', ['البنت', 'تقرأ', 'الكتاب'], '📖'),
+  ShortSentence('القط ينام على السرير', ['القط', 'ينام', 'على السرير'], '🐱'),
+  ShortSentence('الطائر يطير في السماء', ['الطائر', 'يطير', 'في السماء'], '🐦'),
+  ShortSentence('أمي تطبخ الطعام', ['أمي', 'تطبخ', 'الطعام'], '🍲'),
+  ShortSentence('أبي يقرأ الجريدة', ['أبي', 'يقرأ', 'الجريدة'], '📰'),
+  ShortSentence('نحن نلعب في الحديقة', ['نحن', 'نلعب', 'في الحديقة'], '🌳'),
+  ShortSentence('السمكة تسبح في الماء', ['السمكة', 'تسبح', 'في الماء'], '🐟'),
+  ShortSentence('المعلمة تشرح الدرس', ['المعلمة', 'تشرح', 'الدرس'], '👩‍🏫'),
+  ShortSentence('الفلاح يزرع الأرض', ['الفلاح', 'يزرع', 'الأرض'], '🌾'),
+  ShortSentence('الطفل يرسم الشمس', ['الطفل', 'يرسم', 'الشمس'], '🎨'),
+  ShortSentence('النحلة تجمع الرحيق', ['النحلة', 'تجمع', 'الرحيق'], '🐝'),
+];
+
+/// فقرات قراءة قصيرة مع أسئلة فهم — للصف الثالث.
+class ComprehensionQuestion {
+  final String question;
+  final List<String> options;
+  final int correctIndex;
+  const ComprehensionQuestion(this.question, this.options, this.correctIndex);
+}
+
+class ReadingPassage {
+  final String title;
+  final String text;
+  final String emoji;
+  final List<ComprehensionQuestion> questions;
+  const ReadingPassage(this.title, this.text, this.emoji, this.questions);
+}
+
+const readingPassages = <ReadingPassage>[
+  ReadingPassage(
+    'يوم في المزرعة',
+    'استيقظ سعيد باكرًا لمساعدة جده في المزرعة. أطعم الدجاج، وسقى الأشجار، وجمع البيض من العش. '
+        'في الظهيرة، جلس تحت شجرة كبيرة وأكل تفاحة طازجة قطفها بنفسه. شعر سعيد بالفخر لأنه ساعد جده طوال اليوم.',
+    '🚜',
+    [
+      ComprehensionQuestion('من ساعد سعيد؟', ['أباه', 'جده', 'صديقه'], 1),
+      ComprehensionQuestion('ماذا فعل سعيد بالدجاج؟', ['أطعمه', 'باعه', 'لعب معه'], 0),
+      ComprehensionQuestion('ماذا أكل سعيد في الظهيرة؟', ['خبزًا', 'تفاحة', 'حليبًا'], 1),
+    ],
+  ),
+  ReadingPassage(
+    'رحلة إلى البحر',
+    'ذهبت عائلة نور في رحلة إلى شاطئ البحر يوم الجمعة. بنت نور قلعة رملية كبيرة مع أخيها، وسبحوا في الماء الدافئ. '
+        'قبل المغيب، جمعوا الأصداف الملوّنة من الرمل، وعادوا إلى البيت سعداء ومتعبين من يوم جميل.',
+    '🏖️',
+    [
+      ComprehensionQuestion('متى ذهبت العائلة إلى البحر؟', ['السبت', 'الجمعة', 'الأحد'], 1),
+      ComprehensionQuestion('ماذا بنت نور؟', ['بيتًا من الخشب', 'قلعة رملية', 'برجًا من الحجارة'], 1),
+      ComprehensionQuestion('ماذا جمعوا قبل المغيب؟', ['الأصداف', 'الأسماك', 'الحصى'], 0),
+    ],
+  ),
+];

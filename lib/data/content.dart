@@ -1,0 +1,141 @@
+class ArabicLetter{final String letter,sound,word,emoji,audio;const ArabicLetter(this.letter,this.sound,this.word,this.emoji,this.audio);}
+const arabicLetters=[
+ArabicLetter('أ','أَ','أسد','🦁','alif'),ArabicLetter('ب','بَ','بطة','🦆','baa'),ArabicLetter('ت','تَ','تفاح','🍎','taa'),ArabicLetter('ث','ثَ','ثعلب','🦊','thaa'),
+ArabicLetter('ج','جَ','جمل','🐪','jeem'),ArabicLetter('ح','حَ','حصان','🐴','haa'),ArabicLetter('خ','خَ','خبز','🍞','khaa'),ArabicLetter('د','دَ','دب','🐻','dal'),
+ArabicLetter('ذ','ذَ','ذهب','🪙','thal'),ArabicLetter('ر','رَ','رمان','🍎','raa'),ArabicLetter('ز','زَ','زهرة','🌸','zay'),ArabicLetter('س','سَ','سمكة','🐟','seen'),
+ArabicLetter('ش','شَ','شمس','☀️','sheen'),ArabicLetter('ص','صَ','صقر','🦅','sad'),ArabicLetter('ض','ضَ','ضفدع','🐸','dad'),ArabicLetter('ط','طَ','طائرة','✈️','taa_emph'),
+ArabicLetter('ظ','ظَ','ظرف','✉️','zaa_emph'),ArabicLetter('ع','عَ','عنب','🍇','ain'),ArabicLetter('غ','غَ','غزال','🦌','ghain'),ArabicLetter('ف','فَ','فراشة','🦋','faa'),
+ArabicLetter('ق','قَ','قمر','🌙','qaf'),ArabicLetter('ك','كَ','كتاب','📚','kaf'),ArabicLetter('ل','لَ','ليمون','🍋','lam'),ArabicLetter('م','مَ','موز','🍌','meem'),
+ArabicLetter('ن','نَ','نحلة','🐝','noon'),ArabicLetter('ه','هَ','هلال','🌙','haa2'),ArabicLetter('و','وَ','وردة','🌹','waw'),ArabicLetter('ي','يَ','يد','✋','yaa')];
+
+class EnglishLetter{final String letter,sound,word,emoji;const EnglishLetter(this.letter,this.sound,this.word,this.emoji);}
+const englishLetters=[
+EnglishLetter('A','a','Apple','🍎'),EnglishLetter('B','buh','Ball','⚽'),EnglishLetter('C','kuh','Cat','🐱'),EnglishLetter('D','duh','Dog','🐶'),
+EnglishLetter('E','eh','Egg','🥚'),EnglishLetter('F','fff','Fish','🐟'),EnglishLetter('G','guh','Goat','🐐'),EnglishLetter('H','huh','Hat','🧢'),
+EnglishLetter('I','ih','Ice','🧊'),EnglishLetter('J','juh','Juice','🧃'),EnglishLetter('K','kuh','Key','🔑'),EnglishLetter('L','lll','Lion','🦁'),
+EnglishLetter('M','mmm','Moon','🌙'),EnglishLetter('N','nnn','Nose','👃'),EnglishLetter('O','oh','Orange','🍊'),EnglishLetter('P','puh','Pen','🖊️'),
+EnglishLetter('Q','kwuh','Queen','👑'),EnglishLetter('R','ruh','Rabbit','🐰'),EnglishLetter('S','sss','Sun','☀️'),EnglishLetter('T','tuh','Tree','🌳'),
+EnglishLetter('U','uh','Umbrella','☂️'),EnglishLetter('V','vvv','Van','🚐'),EnglishLetter('W','wuh','Water','💧'),EnglishLetter('X','ks','X-ray','🩻'),
+EnglishLetter('Y','yuh','Yellow','🟡'),EnglishLetter('Z','zzz','Zoo','🦓')];
+const englishWords=['Apple','Ball','Cat','Dog','Sun','Moon','Book','Banana','Bee','Rose'];
+const englishColors=[{'name':'Red','ar':'أحمر','emoji':'🔴'},{'name':'Blue','ar':'أزرق','emoji':'🔵'},{'name':'Green','ar':'أخضر','emoji':'🟢'},{'name':'Yellow','ar':'أصفر','emoji':'🟡'},{'name':'Orange','ar':'برتقالي','emoji':'🟠'},{'name':'Purple','ar':'بنفسجي','emoji':'🟣'}];
+const englishNumbers=['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'];
+
+class Lesson{final String title,stage,description,icon;final int level;const Lesson(this.title,this.stage,this.description,this.icon,this.level);}
+const lessons=[
+Lesson('أتعرف على الحروف','الروضة الأولى','شكل الحرف وصوته','🔤',1),Lesson('الحروف والصور','الروضة الثانية','الحرف مع الكلمة والصورة','🖼️',2),
+Lesson('الحركات والمدود','التمهيدي','فتحة وكسرة وضمة وسكون ومد','🎵',3),Lesson('التهجئة وبناء الكلمات','الصف الأول','المقاطع والكلمات','🧩',4),
+Lesson('القراءة والفهم','الصف الثاني','قراءة وفهم النصوص','📖',5),Lesson('الإملاء والتعبير','الصف الثالث','الكتابة والتعبير','✍️',6)];
+const stories=[
+{'title':'الأرنب المجتهد','emoji':'🐰','text':'كان أرنب صغير يحب التعلم. كل يوم يتعلم حرفاً وكلمة جديدة. وعندما أخطأ لم يحزن، بل حاول مرة أخرى حتى نجح.'},
+{'title':'رحلة الحروف','emoji':'🌈','text':'اجتمعت الحروف في مدينة جميلة، وقرر كل حرف أن يصنع كلمة مفيدة. تعلم الأطفال أن الحروف عندما تجتمع تصنع كلمات وقصصاً.'},
+{'title':'النحلة النشيطة','emoji':'🐝','text':'كانت نحلة صغيرة تعمل بنشاط وتساعد أصدقاءها. تعلمت أن التعاون يجعل العمل أسهل وأن الاجتهاد طريق النجاح.'},
+{'title':'القلم السحري','emoji':'🪄','text':'وجد طفل قلماً جميلاً. كلما كتب كلمة جديدة ظهرت صورة تساعده على فهمها. عرف أن العلم كنز لا ينتهي.'}];
+
+
+const arabicWordBank=[
+ {'word':'أسد','emoji':'🦁','letter':'أ','category':'حيوانات','syllables':'أَسَد'},
+ {'word':'أرنب','emoji':'🐰','letter':'أ','category':'حيوانات','syllables':'أَرْنَب'},
+ {'word':'بطة','emoji':'🦆','letter':'ب','category':'حيوانات','syllables':'بَطَّة'},
+ {'word':'باب','emoji':'🚪','letter':'ب','category':'أشياء','syllables':'بَاب'},
+ {'word':'تفاح','emoji':'🍎','letter':'ت','category':'طعام','syllables':'تُفَّاح'},
+ {'word':'تمر','emoji':'🌴','letter':'ت','category':'طعام','syllables':'تَمْر'},
+ {'word':'ثعلب','emoji':'🦊','letter':'ث','category':'حيوانات','syllables':'ثَعْلَب'},
+ {'word':'ثلج','emoji':'❄️','letter':'ث','category':'طبيعة','syllables':'ثَلْج'},
+ {'word':'جمل','emoji':'🐪','letter':'ج','category':'حيوانات','syllables':'جَمَل'},
+ {'word':'جزر','emoji':'🥕','letter':'ج','category':'طعام','syllables':'جَزَر'},
+ {'word':'حصان','emoji':'🐴','letter':'ح','category':'حيوانات','syllables':'حِصَان'},
+ {'word':'حليب','emoji':'🥛','letter':'ح','category':'طعام','syllables':'حَلِيب'},
+ {'word':'خبز','emoji':'🍞','letter':'خ','category':'طعام','syllables':'خُبْز'},
+ {'word':'خروف','emoji':'🐑','letter':'خ','category':'حيوانات','syllables':'خَرُوف'},
+ {'word':'دب','emoji':'🐻','letter':'د','category':'حيوانات','syllables':'دُبّ'},
+ {'word':'دجاجة','emoji':'🐔','letter':'د','category':'حيوانات','syllables':'دَجَاجَة'},
+ {'word':'ذهب','emoji':'🪙','letter':'ذ','category':'أشياء','syllables':'ذَهَب'},
+ {'word':'ذرة','emoji':'🌽','letter':'ذ','category':'طعام','syllables':'ذُرَة'},
+ {'word':'رمان','emoji':'🍎','letter':'ر','category':'طعام','syllables':'رُمَّان'},
+ {'word':'رجل','emoji':'🧍','letter':'ر','category':'أشخاص','syllables':'رَجُل'},
+ {'word':'زهرة','emoji':'🌸','letter':'ز','category':'طبيعة','syllables':'زَهْرَة'},
+ {'word':'زرافة','emoji':'🦒','letter':'ز','category':'حيوانات','syllables':'زَرَافَة'},
+ {'word':'سمكة','emoji':'🐟','letter':'س','category':'حيوانات','syllables':'سَمَكَة'},
+ {'word':'سيارة','emoji':'🚗','letter':'س','category':'مواصلات','syllables':'سَيَّارَة'},
+ {'word':'شمس','emoji':'☀️','letter':'ش','category':'طبيعة','syllables':'شَمْس'},
+ {'word':'شجرة','emoji':'🌳','letter':'ش','category':'طبيعة','syllables':'شَجَرَة'},
+ {'word':'صقر','emoji':'🦅','letter':'ص','category':'حيوانات','syllables':'صَقْر'},
+ {'word':'صابون','emoji':'🧼','letter':'ص','category':'أشياء','syllables':'صَابُون'},
+ {'word':'ضفدع','emoji':'🐸','letter':'ض','category':'حيوانات','syllables':'ضِفْدَع'},
+ {'word':'ضرس','emoji':'🦷','letter':'ض','category':'جسم','syllables':'ضِرْس'},
+ {'word':'طائرة','emoji':'✈️','letter':'ط','category':'مواصلات','syllables':'طَائِرَة'},
+ {'word':'طماطم','emoji':'🍅','letter':'ط','category':'طعام','syllables':'طَمَاطِم'},
+ {'word':'ظرف','emoji':'✉️','letter':'ظ','category':'أشياء','syllables':'ظَرْف'},
+ {'word':'ظل','emoji':'⛱️','letter':'ظ','category':'طبيعة','syllables':'ظِلّ'},
+ {'word':'عنب','emoji':'🍇','letter':'ع','category':'طعام','syllables':'عِنَب'},
+ {'word':'عين','emoji':'👁️','letter':'ع','category':'جسم','syllables':'عَيْن'},
+ {'word':'غزال','emoji':'🦌','letter':'غ','category':'حيوانات','syllables':'غَزَال'},
+ {'word':'غيمة','emoji':'☁️','letter':'غ','category':'طبيعة','syllables':'غَيْمَة'},
+ {'word':'فراشة','emoji':'🦋','letter':'ف','category':'حيوانات','syllables':'فَرَاشَة'},
+ {'word':'فيل','emoji':'🐘','letter':'ف','category':'حيوانات','syllables':'فِيل'},
+ {'word':'قمر','emoji':'🌙','letter':'ق','category':'طبيعة','syllables':'قَمَر'},
+ {'word':'قلم','emoji':'🖊️','letter':'ق','category':'أشياء','syllables':'قَلَم'},
+ {'word':'كتاب','emoji':'📚','letter':'ك','category':'أشياء','syllables':'كِتَاب'},
+ {'word':'كرسي','emoji':'🪑','letter':'ك','category':'أشياء','syllables':'كُرْسِيّ'},
+ {'word':'ليمون','emoji':'🍋','letter':'ل','category':'طعام','syllables':'لَيْمُون'},
+ {'word':'لعبة','emoji':'🧸','letter':'ل','category':'أشياء','syllables':'لُعْبَة'},
+ {'word':'موز','emoji':'🍌','letter':'م','category':'طعام','syllables':'مَوْز'},
+ {'word':'مفتاح','emoji':'🔑','letter':'م','category':'أشياء','syllables':'مِفْتَاح'},
+ {'word':'نحلة','emoji':'🐝','letter':'ن','category':'حيوانات','syllables':'نَحْلَة'},
+ {'word':'نجمة','emoji':'⭐','letter':'ن','category':'طبيعة','syllables':'نَجْمَة'},
+ {'word':'هلال','emoji':'🌙','letter':'ه','category':'طبيعة','syllables':'هِلال'},
+ {'word':'هدية','emoji':'🎁','letter':'ه','category':'أشياء','syllables':'هَدِيَّة'},
+ {'word':'وردة','emoji':'🌹','letter':'و','category':'طبيعة','syllables':'وَرْدَة'},
+ {'word':'ولد','emoji':'👦','letter':'و','category':'أشخاص','syllables':'وَلَد'},
+ {'word':'يد','emoji':'✋','letter':'ي','category':'جسم','syllables':'يَد'},
+ {'word':'يمامة','emoji':'🕊️','letter':'ي','category':'حيوانات','syllables':'يَمَامَة'},
+];
+const arabicSentences=[
+'هذا ولدٌ صغيرٌ يحب القراءة.',
+'هذه بنتٌ تحب الرسم.',
+'أنا أقرأ كتاباً جميلاً.',
+'الشمس مشرقة والسماء صافية.',
+'النحلة تطير فوق الزهرة.',
+'الطفل المجتهد يتعلم كل يوم.',
+'أحب أمي وأبي وأساعدهما.',
+'القمر يظهر في الليل.',
+'ذهبت إلى المدرسة مع أصدقائي.',
+'الكتاب صديق مفيد.'
+];
+const englishWordBank=[
+ {'word':'apple','emoji':'🍎','ar':'تفاحة','sound':'apple'},
+ {'word':'ball','emoji':'⚽','ar':'كرة','sound':'ball'},
+ {'word':'cat','emoji':'🐱','ar':'قطة','sound':'cat'},
+ {'word':'dog','emoji':'🐶','ar':'كلب','sound':'dog'},
+ {'word':'fish','emoji':'🐟','ar':'سمكة','sound':'fish'},
+ {'word':'goat','emoji':'🐐','ar':'ماعز','sound':'goat'},
+ {'word':'hat','emoji':'🧢','ar':'قبعة','sound':'hat'},
+ {'word':'juice','emoji':'🧃','ar':'عصير','sound':'juice'},
+ {'word':'key','emoji':'🔑','ar':'مفتاح','sound':'key'},
+ {'word':'lion','emoji':'🦁','ar':'أسد','sound':'lion'},
+ {'word':'moon','emoji':'🌙','ar':'قمر','sound':'moon'},
+ {'word':'nose','emoji':'👃','ar':'أنف','sound':'nose'},
+ {'word':'orange','emoji':'🍊','ar':'برتقال','sound':'orange'},
+ {'word':'pen','emoji':'🖊️','ar':'قلم','sound':'pen'},
+ {'word':'rabbit','emoji':'🐰','ar':'أرنب','sound':'rabbit'},
+ {'word':'sun','emoji':'☀️','ar':'شمس','sound':'sun'},
+ {'word':'tree','emoji':'🌳','ar':'شجرة','sound':'tree'},
+ {'word':'umbrella','emoji':'☂️','ar':'مظلة','sound':'umbrella'},
+ {'word':'van','emoji':'🚐','ar':'شاحنة صغيرة','sound':'van'},
+ {'word':'water','emoji':'💧','ar':'ماء','sound':'water'},
+];
+const englishSentences=[
+'This is a cat.',
+'I see a red ball.',
+'The sun is hot.',
+'I like my book.',
+'The dog can run.',
+'The fish can swim.',
+'I drink water.',
+'The apple is red.'
+];
+const kindergartenSkills=['تمييز الألوان','تمييز الأشكال','الاستماع','مطابقة الصورة','تمييز الحروف','الأعداد ١–١٠'];
+const gradeOneSkills=['الحروف والأصوات','الحركات','قراءة كلمات قصيرة','إملاء كلمات','English phonics','English words'];
+const gradeTwoSkills=['جمل قصيرة','فهم المقروء','ترتيب الكلمات','الإملاء','English sentences','مفردات'];
+const gradeThreeSkills=['قراءة فقرة','استخراج الفكرة','التعبير','الإملاء المتقدم','English reading','English vocabulary'];
