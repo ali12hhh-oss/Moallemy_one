@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" rx="48" fill="#F7F8FC"/>
+  <circle cx="100" cy="100" r="54" fill="#E8ECFF"/>
+  <circle cx="700" cy="500" r="70" fill="#FFF0D9"/>
+  <rect x="70" y="150" width="660" height="320" rx="36" fill="#FFFFFF" stroke="#D9DDEB" stroke-width="5"/>
+  <text x="400" y="300" text-anchor="middle" dominant-baseline="middle"
+        font-family="Noto Sans, DejaVu Sans" font-size="150" font-weight="700" fill="#20263A">F</text>
+  <text x="400" y="420" text-anchor="middle" font-family="Noto Sans, DejaVu Sans"
+        font-size="48" font-weight="700" fill="#20263A">fish</text>
+  <text x="400" y="465" text-anchor="middle" font-family="Noto Sans, DejaVu Sans"
+        font-size="25" fill="#626A80">phonics sound</text>
+</svg>

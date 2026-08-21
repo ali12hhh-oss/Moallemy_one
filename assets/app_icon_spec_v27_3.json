@@ -1,0 +1,7 @@
+{
+  "style": "2D cartoon educational",
+  "name": "دليل الطفل",
+  "source": "assets/images/app_icon_2d.png",
+  "android_density_icons": true,
+  "transparent_placeholder": false
+}

@@ -1,0 +1,17 @@
+{
+  "version": 27,
+  "offline": true,
+  "images": {
+    "arabic_letters": 28,
+    "english_letters": 26,
+    "story_cards": 4,
+    "game_cards": 6,
+    "store_cards": 5
+  },
+  "audio": {
+    "arabic_letter_tones": 28,
+    "english_letter_tones": 26,
+    "english_phonics_tones": 8,
+    "type": "synthetic educational phoneme-like tones; not human speech"
+  }
+}
