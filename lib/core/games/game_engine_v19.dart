@@ -8,8 +8,34 @@ class GameEngineV19 {
 
   static GameRoundV19 letterHunter() {
     const letters = [
-      'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص',
-      'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي',
+      'أ',
+      'ب',
+      'ت',
+      'ث',
+      'ج',
+      'ح',
+      'خ',
+      'د',
+      'ذ',
+      'ر',
+      'ز',
+      'س',
+      'ش',
+      'ص',
+      'ض',
+      'ط',
+      'ظ',
+      'ع',
+      'غ',
+      'ف',
+      'ق',
+      'ك',
+      'ل',
+      'م',
+      'ن',
+      'ه',
+      'و',
+      'ي',
     ];
     final a = letters[_r.nextInt(letters.length)];
     final opts = <String>{a};
@@ -28,7 +54,8 @@ class GameEngineV19 {
       opts.add(ans + d);
     }
     final result = opts.toList()..shuffle(_r);
-    return GameRoundV19('احسب: $a + $b', '$ans', result.map((e) => '$e').toList());
+    return GameRoundV19(
+        'احسب: $a + $b', '$ans', result.map((e) => '$e').toList());
   }
 
   static GameRoundV19 multiplication(int maxTable) {
@@ -42,7 +69,8 @@ class GameEngineV19 {
       opts.add(ans + d);
     }
     final result = opts.toList()..shuffle(_r);
-    return GameRoundV19('احسب: $a × $b', '$ans', result.map((e) => '$e').toList());
+    return GameRoundV19(
+        'احسب: $a × $b', '$ans', result.map((e) => '$e').toList());
   }
 
   static Future<void> finish(String gameId, int score) async {
@@ -50,5 +78,6 @@ class GameEngineV19 {
     await ChildProgressRepository.recordGame(gameId, score);
   }
 
-  static Future<int> best(String gameId) => ChildProgressRepository.gameBest(gameId);
+  static Future<int> best(String gameId) =>
+      ChildProgressRepository.gameBest(gameId);
 }

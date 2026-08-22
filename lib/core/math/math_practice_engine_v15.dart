@@ -61,18 +61,30 @@ class MathPracticeEngineV15 {
       b = _random.nextInt(limit + 1);
     }
     final answer = a + b;
-    return MathQuestionV15(skillId: skillId, prompt: _operationPrompt(a, b, '+'), answer: answer, options: _options(answer), explanation: '${ar(a)} + ${ar(b)} = ${ar(answer)}');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt: _operationPrompt(a, b, '+'),
+        answer: answer,
+        options: _options(answer),
+        explanation: '${ar(a)} + ${ar(b)} = ${ar(answer)}');
   }
 
-  static MathQuestionV15 subtraction({required String skillId, required int max}) {
+  static MathQuestionV15 subtraction(
+      {required String skillId, required int max}) {
     final limit = math.max(0, max);
     final a = _random.nextInt(limit + 1);
     final b = _random.nextInt(a + 1);
     final answer = a - b;
-    return MathQuestionV15(skillId: skillId, prompt: _operationPrompt(a, b, '−'), answer: answer, options: _options(answer), explanation: '${ar(a)} − ${ar(b)} = ${ar(answer)}');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt: _operationPrompt(a, b, '−'),
+        answer: answer,
+        options: _options(answer),
+        explanation: '${ar(a)} − ${ar(b)} = ${ar(answer)}');
   }
 
-  static MathQuestionV15 comparison({required String skillId, required int max}) {
+  static MathQuestionV15 comparison(
+      {required String skillId, required int max}) {
     final limit = math.max(0, max);
     final a = _random.nextInt(limit + 1);
     final b = _random.nextInt(limit + 1);
@@ -85,19 +97,27 @@ class MathPracticeEngineV15 {
       answer: answer,
       options: options,
       optionLabels: labels,
-      explanation: '${ar(a)} ${answer == 1 ? 'أكبر من' : answer == -1 ? 'أصغر من' : 'يساوي'} ${ar(b)}',
+      explanation:
+          '${ar(a)} ${answer == 1 ? 'أكبر من' : answer == -1 ? 'أصغر من' : 'يساوي'} ${ar(b)}',
     );
   }
 
-  static MathQuestionV15 missingNumber({required String skillId, required int max}) {
+  static MathQuestionV15 missingNumber(
+      {required String skillId, required int max}) {
     final limit = math.max(0, max);
     final a = _random.nextInt(limit + 1);
     final b = _random.nextInt(math.min(20, limit) + 1);
     final answer = a + b;
-    return MathQuestionV15(skillId: skillId, prompt: '${ar(a)} + ؟ = ${ar(answer)}', answer: b, options: _options(b, spread: 3), explanation: '${ar(a)} + ${ar(b)} = ${ar(answer)}');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt: '${ar(a)} + ؟ = ${ar(answer)}',
+        answer: b,
+        options: _options(b, spread: 3),
+        explanation: '${ar(a)} + ${ar(b)} = ${ar(answer)}');
   }
 
-  static MathQuestionV15 placeValue({required String skillId, required int max}) {
+  static MathQuestionV15 placeValue(
+      {required String skillId, required int max}) {
     final value = max >= 1000
         ? _random.nextInt(9000) + 1000
         : math.max(10, _random.nextInt(math.max(1, max - 9)) + 10);
@@ -113,7 +133,13 @@ class MathPracticeEngineV15 {
       3 => 'الآلاف',
       _ => 'القيمة المكانية',
     };
-    return MathQuestionV15(skillId: skillId, prompt: 'ما قيمة الرقم ${ar(digit)} في العدد ${ar(value)}؟', answer: answer, options: _options(answer, spread: math.max(10, answer ~/ 2 + 1)), explanation: 'الرقم ${ar(digit)} في منزلة $placeName، وقيمته ${ar(answer)}');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt: 'ما قيمة الرقم ${ar(digit)} في العدد ${ar(value)}؟',
+        answer: answer,
+        options: _options(answer, spread: math.max(10, answer ~/ 2 + 1)),
+        explanation:
+            'الرقم ${ar(digit)} في منزلة $placeName، وقيمته ${ar(answer)}');
   }
 
   static MathQuestionV15 pattern({required String skillId, required int max}) {
@@ -122,12 +148,21 @@ class MathPracticeEngineV15 {
     final maxStart = math.max(0, limit - step * 3);
     final start = _random.nextInt(maxStart + 1);
     final answer = start + step * 3;
-    return MathQuestionV15(skillId: skillId, prompt: '${ar(start)} ، ${ar(start + step)} ، ${ar(start + step * 2)} ، ؟', answer: answer, options: _options(answer, spread: step + 2), explanation: 'النمط يزيد بمقدار ${ar(step)} كل مرة.');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt:
+            '${ar(start)} ، ${ar(start + step)} ، ${ar(start + step * 2)} ، ؟',
+        answer: answer,
+        options: _options(answer, spread: step + 2),
+        explanation: 'النمط يزيد بمقدار ${ar(step)} كل مرة.');
   }
 
-  static bool _sameList(List<int> a, List<int> b) => a.length == b.length && List.generate(a.length, (i) => a[i] == b[i]).every((x) => x);
+  static bool _sameList(List<int> a, List<int> b) =>
+      a.length == b.length &&
+      List.generate(a.length, (i) => a[i] == b[i]).every((x) => x);
 
-  static MathQuestionV15 ordering({required String skillId, required int max, required bool ascending}) {
+  static MathQuestionV15 ordering(
+      {required String skillId, required int max, required bool ascending}) {
     final upper = math.max(4, math.min(math.max(4, max), 999999));
     final values = <int>{};
     while (values.length < 4) values.add(_random.nextInt(upper) + 1);
@@ -138,6 +173,7 @@ class MathPracticeEngineV15 {
     void addCandidate(List<int> value) {
       if (!candidates.any((x) => _sameList(x, value))) candidates.add(value);
     }
+
     addCandidate(sorted);
     for (var i = 0; candidates.length < 4 && i < 4; i++) {
       final rotated = [...sorted]..insert(0, sorted[(i + 1) % 4]);
@@ -149,23 +185,39 @@ class MathPracticeEngineV15 {
       addCandidate(candidate);
     }
     final correctIndex = candidates.indexWhere((x) => _sameList(x, sorted));
-    return MathQuestionV15(skillId: skillId, prompt: 'رتّب الأعداد ${values.map(ar).join(' ، ')} ${ascending ? 'تصاعدياً' : 'تنازلياً'}', answer: correctIndex, options: List<int>.generate(4, (i) => i), optionLabels: candidates.map((x) => x.map(ar).join(' ، ')).toList(), explanation: 'الترتيب الصحيح: $correctText');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt:
+            'رتّب الأعداد ${values.map(ar).join(' ، ')} ${ascending ? 'تصاعدياً' : 'تنازلياً'}',
+        answer: correctIndex,
+        options: List<int>.generate(4, (i) => i),
+        optionLabels: candidates.map((x) => x.map(ar).join(' ، ')).toList(),
+        explanation: 'الترتيب الصحيح: $correctText');
   }
 
-  static MathQuestionV15 multiplication({required String skillId, required int table}) {
+  static MathQuestionV15 multiplication(
+      {required String skillId, required int table}) {
     final b = _random.nextInt(10) + 1;
     final answer = table * b;
-    return MathQuestionV15(skillId: skillId, prompt: '${ar(table)} × ${ar(b)} = ؟', answer: answer, options: _options(answer, spread: 4), explanation: '${ar(table)} × ${ar(b)} = ${ar(answer)}');
+    return MathQuestionV15(
+        skillId: skillId,
+        prompt: '${ar(table)} × ${ar(b)} = ؟',
+        answer: answer,
+        options: _options(answer, spread: 4),
+        explanation: '${ar(table)} × ${ar(b)} = ${ar(answer)}');
   }
 
-  static Future<void> recordAnswer({required String skillId, required bool correct}) async {
+  static Future<void> recordAnswer(
+      {required String skillId, required bool correct}) async {
     await ChildProgressRepository.recordSkill(skillId, correct);
     await AdaptiveLearningEngineV24.record(skillId, correct);
   }
 
-  static Future<int> mastery(String skillId) => ChildProgressRepository.skillMastery(skillId);
+  static Future<int> mastery(String skillId) =>
+      ChildProgressRepository.skillMastery(skillId);
 
-  static Future<void> addRewards({required int stars, required int xp}) => ChildProgressRepository.addRewards(stars: stars, xp: xp);
+  static Future<void> addRewards({required int stars, required int xp}) =>
+      ChildProgressRepository.addRewards(stars: stars, xp: xp);
 
   static Future<int> stars() => ChildProgressRepository.stars();
   static Future<int> xp() => ChildProgressRepository.xp();

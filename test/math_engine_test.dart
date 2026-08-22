@@ -6,8 +6,10 @@ void main() {
   test('math generators always provide four distinct options', () {
     for (var i = 0; i < 100; i++) {
       final addition = MathPracticeEngineV15.addition(skillId: 'test', max: 10);
-      final subtraction = MathPracticeEngineV15.subtraction(skillId: 'test', max: 10);
-      final multiplication = MathPracticeEngineV15.multiplication(skillId: 'test', table: 1);
+      final subtraction =
+          MathPracticeEngineV15.subtraction(skillId: 'test', max: 10);
+      final multiplication =
+          MathPracticeEngineV15.multiplication(skillId: 'test', table: 1);
       expect(addition.options.length, 4);
       expect(addition.options.toSet().length, 4);
       expect(subtraction.options.length, 4);

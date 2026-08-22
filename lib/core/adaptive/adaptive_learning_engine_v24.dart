@@ -45,7 +45,8 @@ class AdaptiveLearningEngineV24 {
       // more evidence. Unseen skills are recommended only when nothing has
       // enough evidence yet.
       final score = attempts < 5 ? 1.01 + attempts * .001 : rate;
-      if (score < bestScore || (score == bestScore && attempts > bestAttempts)) {
+      if (score < bestScore ||
+          (score == bestScore && attempts > bestAttempts)) {
         bestScore = score;
         bestAttempts = attempts;
         weakest = skill;

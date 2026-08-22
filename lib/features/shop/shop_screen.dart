@@ -58,7 +58,8 @@ class _ShopScreenState extends State<ShopScreen> {
     final owned = await StoreServiceV23.owned(item.id);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(owned ? 'تم شراء هذا العنصر مسبقاً' : 'تحتاج إلى نجوم أكثر'),
+        content:
+            Text(owned ? 'تم شراء هذا العنصر مسبقاً' : 'تحتاج إلى نجوم أكثر'),
       ),
     );
   }
@@ -87,8 +88,11 @@ class _ShopScreenState extends State<ShopScreen> {
                 child: Column(
                   children: [
                     Text(item.emoji, style: const TextStyle(fontSize: 55)),
-                    Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                    Expanded(child: Text(item.desc, textAlign: TextAlign.center)),
+                    Text(item.name,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                    Expanded(
+                        child: Text(item.desc, textAlign: TextAlign.center)),
                     Text('⭐ ${item.price}'),
                     const SizedBox(height: 6),
                     FilledButton(
