@@ -5,18 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app_storage.dart';
 
 /// Single source of truth for per-child learning state.
-///
-/// Every educational feature uses the currently active child. State is kept
-/// in a separate namespace for each child so siblings never share progress,
-/// rewards, purchases, badges, or exam results.
 class ChildProgressRepository {
   static const _prefix = 'child_progress_v1.';
   static const _legacyKey = 'daleel_v5_state';
 
-  static Future<String?> _childId() => AppStorage.activeId();
-
   static Future<String?> _key() async {
-    final id = await _childId();
+    final id = await AppStorage.activeId();
     if (id == null || id.isEmpty) return null;
     return '$_prefix$id';
   }
@@ -30,13 +24,9 @@ class ChildProgressRepository {
       try {
         final decoded = jsonDecode(raw);
         if (decoded is Map) return Map<String, dynamic>.from(decoded);
-      } catch (_) {
-        // Recover below with an empty state rather than crashing the app.
-      }
+      } catch (_) {}
     }
 
-    // One-time migration of the old global V5 state to the currently active
-    // child. Existing data is preserved for the first active child.
     final legacyRaw = p.getString(_legacyKey);
     if (legacyRaw != null && legacyRaw.isNotEmpty) {
       try {
@@ -59,7 +49,6 @@ class ChildProgressRepository {
   }
 
   static Future<int> stars() async => _int((await load())['stars']);
-
   static Future<int> xp() async => _int((await load())['xp']);
 
   static Future<void> addRewards({required int stars, int xp = 0}) async {
@@ -67,6 +56,24 @@ class ChildProgressRepository {
     final state = await load();
     state['stars'] = _int(state['stars']) + stars;
     state['xp'] = _int(state['xp']) + xp;
+    await save(state);
+  }
+
+  static Future<int> skillMastery(String skillId) async {
+    final state = await load();
+    final skills = Map<String, dynamic>.from(state['skillMastery'] ?? const {});
+    return _int(skills[skillId]);
+  }
+
+  static Future<void> recordSkill(String skillId, bool correct) async {
+    final state = await load();
+    final skills = Map<String, dynamic>.from(state['skillMastery'] ?? const {});
+    skills[skillId] = (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(0, 100);
+    state['skillMastery'] = skills;
+    if (correct) {
+      state['stars'] = _int(state['stars']) + 1;
+      state['xp'] = _int(state['xp']) + 5;
+    }
     await save(state);
   }
 
@@ -88,12 +95,7 @@ class ChildProgressRepository {
     await save(state);
   }
 
-  static Future<void> recordFinalExam(
-    String stageId,
-    int score,
-    int total,
-    bool passed,
-  ) async {
+  static Future<void> recordFinalExam(String stageId, int score, int total, bool passed) async {
     final state = await load();
     final exams = Map<String, dynamic>.from(state['finalExams'] ?? const {});
     final previous = exams[stageId];
@@ -112,7 +114,6 @@ class ChildProgressRepository {
     if (passed) {
       final badge = 'ختم $stageId';
       if (!badges.contains(badge)) badges.add(badge);
-      // The completion reward is granted only on the first successful pass.
       if (!alreadyPassed) {
         state['stars'] = _int(state['stars']) + 50;
         state['xp'] = _int(state['xp']) + 500;
