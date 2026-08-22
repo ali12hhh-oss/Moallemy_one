@@ -19,7 +19,6 @@ class _ExamQ {
   _ExamQ({required this.category, required this.skillKey, required this.visual, required this.options, required this.correct, this.speak});
 }
 
-Widget _bigText(String s, {double size = 70, Color? color}) => Text(s, style: TextStyle(fontSize: size, fontWeight: FontWeight.w900, color: color));
 
 const _examColors = <(String, Color)>[
   ('أحمر', Color(0xFFE53935)), ('أزرق', Color(0xFF1E88E5)), ('أصفر', Color(0xFFFDD835)),
