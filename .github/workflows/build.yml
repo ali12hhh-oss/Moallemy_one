@@ -56,16 +56,39 @@ jobs:
         run: flutter pub get
       - name: Build release APKs
         run: |
-          cd android
-          ./gradlew :app:assembleRelease -Psplit-per-abi=true
-          cd ..
-          test -n "$(find build/app/outputs/flutter-apk -maxdepth 1 -type f -name '*.apk' -print -quit)"
+          set +e
+          flutter build apk --release --split-per-abi
+          build_status=$?
+          set -e
+
+          # Flutter 3.44.7 may successfully produce APKs under
+          # build/app/outputs/apk/release while returning an error because
+          # it does not find them in its expected flutter-apk directory.
+          apk_source="build/app/outputs/apk/release"
+          apk_target="build/app/outputs/flutter-apk"
+          mkdir -p "$apk_target"
+          find "$apk_source" -maxdepth 1 -type f -name '*.apk' -exec cp -f {} "$apk_target/" \; 2>/dev/null || true
+
+          apk_count=$(find "$apk_target" -maxdepth 1 -type f -name '*.apk' | wc -l)
+          if [ "$apk_count" -eq 0 ]; then
+            echo "No release APK was produced. Flutter build exit code: $build_status"
+            exit "$build_status"
+          fi
+          echo "Found $apk_count release APK(s)."
       - name: Build release AAB
         run: |
-          cd android
-          ./gradlew :app:bundleRelease
-          cd ..
-          test -n "$(find build/app/outputs/bundle/release -maxdepth 1 -type f -name '*.aab' -print -quit)"
+          set +e
+          flutter build appbundle --release
+          build_status=$?
+          set -e
+
+          aab_source="build/app/outputs/bundle/release"
+          aab_count=$(find "$aab_source" -maxdepth 1 -type f -name '*.aab' 2>/dev/null | wc -l)
+          if [ "$aab_count" -eq 0 ]; then
+            echo "No release AAB was produced. Flutter build exit code: $build_status"
+            exit "$build_status"
+          fi
+          echo "Found $aab_count release AAB(s)."
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
