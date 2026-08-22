@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 env:
-  FLUTTER_VERSION: "3.29.0"
+  FLUTTER_VERSION: "3.44.7"
 jobs:
   analyze_and_test:
     name: Analyze & Test
