@@ -6,14 +6,16 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+
 env:
   FLUTTER_VERSION: "3.44.7"
+
 jobs:
   analyze_and_test:
     name: Analyze & Test
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,18 +27,13 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Auto-format code
-        run: dart format .
-      - name: Commit formatted code (if changed)
-        if: github.event_name == 'push'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "style: auto-format code via CI"
-          file_pattern: "*.dart"
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
       - name: Analyze project source
         run: flutter analyze
       - name: Run tests
         run: flutter test
+
   build_android:
     name: Build Android (APK & AAB)
     needs: analyze_and_test
@@ -57,22 +54,9 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Show available resources
-        run: |
-          echo "== Memory =="
-          free -h
-          echo "== Disk =="
-          df -h
-      - name: Build release APK (unsigned)
-        run: flutter build apk --release --split-per-abi --verbose
-      - name: Show resources after build
-        if: always()
-        run: |
-          echo "== Memory =="
-          free -h
-          echo "== Disk =="
-          df -h
-      - name: Build release AAB (unsigned)
+      - name: Build release APK
+        run: flutter build apk --release --split-per-abi
+      - name: Build release AAB
         run: flutter build appbundle --release
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
