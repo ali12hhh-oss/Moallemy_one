@@ -1,59 +1,56 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import '../storage/child_progress_repository.dart';
 
+/// Adaptive learning state scoped to the active child.
 class AdaptiveLearningEngineV24 {
-  static Future<void> record(String skill, bool correct) async {
-    final p = await SharedPreferences.getInstance();
-    final attempts = p.getInt('adaptive.$skill.attempts') ?? 0;
-    final successes = p.getInt('adaptive.$skill.successes') ?? 0;
-    await p.setInt('adaptive.$skill.attempts', attempts + 1);
-    if (correct) await p.setInt('adaptive.$skill.successes', successes + 1);
-  }
+  static Future<void> record(String skill, bool correct) =>
+      ChildProgressRepository.recordAdaptive(skill, correct);
 
   static Future<Map<String, int>> summary() async {
-    final p = await SharedPreferences.getInstance();
+    final data = await ChildProgressRepository.adaptiveData();
     var attempts = 0;
     var successes = 0;
-    for (final key in p.getKeys()) {
-      if (!key.startsWith('adaptive.') || !key.endsWith('.attempts')) continue;
-      final skill = key.substring(
-        'adaptive.'.length,
-        key.length - '.attempts'.length,
-      );
-      attempts += p.getInt(key) ?? 0;
-      successes += p.getInt('adaptive.$skill.successes') ?? 0;
+    for (final item in data.values) {
+      attempts += item['attempts'] ?? 0;
+      successes += item['successes'] ?? 0;
     }
     return {'attempts': attempts, 'successes': successes};
   }
 
   static Future<List<String>> weakSkills() async {
-    final p = await SharedPreferences.getInstance();
+    final data = await ChildProgressRepository.adaptiveData();
     final weak = <String>[];
-    for (final key in p.getKeys()) {
-      if (!key.startsWith('adaptive.') || !key.endsWith('.attempts')) continue;
-      final skill = key.substring(
-        'adaptive.'.length,
-        key.length - '.attempts'.length,
-      );
-      final attempts = p.getInt(key) ?? 0;
-      final successes = p.getInt('adaptive.$skill.successes') ?? 0;
-      if (attempts > 0 && successes / attempts < .8) weak.add(skill);
+    for (final entry in data.entries) {
+      final attempts = entry.value['attempts'] ?? 0;
+      final successes = entry.value['successes'] ?? 0;
+      // Do not classify a skill from a single answer. Five attempts provide
+      // a minimally useful signal for this local adaptive engine.
+      if (attempts >= 5 && successes / attempts < .8) weak.add(entry.key);
     }
     return weak;
   }
 
   static Future<String> recommendation(List<String> skills) async {
-    final p = await SharedPreferences.getInstance();
+    if (skills.isEmpty) return '';
+    final data = await ChildProgressRepository.adaptiveData();
     String? weakest;
-    double best = 2;
-    for (final s in skills) {
-      final a = p.getInt('adaptive.$s.attempts') ?? 0;
-      final c = p.getInt('adaptive.$s.successes') ?? 0;
-      final rate = a == 0 ? 0.0 : c / a;
-      if (a == 0 || rate < best) {
-        best = rate;
-        weakest = s;
+    double bestScore = double.infinity;
+    var bestAttempts = -1;
+
+    for (final skill in skills) {
+      final item = data[skill];
+      final attempts = item?['attempts'] ?? 0;
+      final successes = item?['successes'] ?? 0;
+      final rate = attempts == 0 ? 0.0 : successes / attempts;
+      // Prefer genuinely measured weak skills; if tied, prefer the one with
+      // more evidence. Unseen skills are recommended only when nothing has
+      // enough evidence yet.
+      final score = attempts < 5 ? 1.01 + attempts * .001 : rate;
+      if (score < bestScore || (score == bestScore && attempts > bestAttempts)) {
+        bestScore = score;
+        bestAttempts = attempts;
+        weakest = skill;
       }
     }
-    return weakest ?? (skills.isEmpty ? '' : skills.first);
+    return weakest ?? skills.first;
   }
 }
