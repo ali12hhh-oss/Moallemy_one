@@ -68,19 +68,21 @@ flutter {
     source = "../.."
 }
 
-// Flutter 3.44.7 can build the APK successfully with the modern AGP plugin DSL
-// but fail to copy the result into build/app/outputs/flutter-apk. Keep the
-// generated APKs discoverable by the Flutter CLI and CI artifact step.
-tasks.named("assembleRelease") {
-    doLast {
-        val sourceDir = layout.buildDirectory.dir("outputs/apk/release").get().asFile
-        val flutterOutputDir = rootProject.projectDir.parentFile.resolve("build/app/outputs/flutter-apk")
-        if (sourceDir.exists()) {
-            flutterOutputDir.mkdirs()
-            sourceDir.listFiles { file -> file.extension == "apk" }?.forEach { apk ->
-                apk.copyTo(flutterOutputDir.resolve(apk.name), overwrite = true)
+// Flutter 3.44.7 may complete the Android assembleRelease task but fail to
+// copy the generated APKs into build/app/outputs/flutter-apk. Configure the
+// task lazily so the task exists before we attach the sync action.
+tasks.configureEach {
+    if (name == "assembleRelease") {
+        doLast {
+            val sourceDir = layout.buildDirectory.dir("outputs/apk/release").get().asFile
+            val flutterOutputDir = rootProject.projectDir.parentFile.resolve("build/app/outputs/flutter-apk")
+            if (sourceDir.exists()) {
+                flutterOutputDir.mkdirs()
+                sourceDir.listFiles { file -> file.extension == "apk" }?.forEach { apk ->
+                    apk.copyTo(flutterOutputDir.resolve(apk.name), overwrite = true)
+                }
+                println("[flutter-ci] Synced release APKs to ${flutterOutputDir.absolutePath}")
             }
-            println("[flutter-ci] Synced release APKs to ${flutterOutputDir.absolutePath}")
         }
     }
 }
