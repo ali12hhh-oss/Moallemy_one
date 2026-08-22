@@ -1,10 +1,10 @@
 name: Build
 on:
   push:
-    branches: [ "main" ]
-    tags: [ "v*" ]
+    branches: [main]
+    tags: ["v*"]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
 
 env:
@@ -15,7 +15,7 @@ jobs:
     name: Analyze & Test
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,19 +27,6 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Format Dart sources
-        run: dart format .
-      - name: Commit formatting changes
-        run: |
-          if git diff --quiet; then
-            echo "No formatting changes needed."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "chore: format Dart sources"
-          git push
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
       - name: Analyze project source
@@ -51,11 +38,6 @@ jobs:
     name: Build Android (APK & AAB)
     needs: analyze_and_test
     runs-on: ubuntu-latest
-    env:
-      CI_RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/moallemy-ci-release.jks
-      CI_RELEASE_STORE_PASSWORD: "ci-build-store-password"
-      CI_RELEASE_KEY_PASSWORD: "ci-build-key-password"
-      CI_RELEASE_KEY_ALIAS: "ci-release"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -72,20 +54,6 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Create temporary CI release keystore
-        run: |
-          keytool -genkeypair -v \
-            -keystore "$CI_RELEASE_KEYSTORE_PATH" \
-            -storetype JKS \
-            -storepass "$CI_RELEASE_STORE_PASSWORD" \
-            -keypass "$CI_RELEASE_KEY_PASSWORD" \
-            -alias "$CI_RELEASE_KEY_ALIAS" \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 1 \
-            -dname "CN=Moallemy CI, OU=CI, O=Moallemy, L=CI, S=CI, C=US"
-      - name: Clean Android build outputs
-        run: flutter clean
       - name: Build release APK
         run: flutter build apk --release --split-per-abi
       - name: Build release AAB
