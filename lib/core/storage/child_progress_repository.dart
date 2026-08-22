@@ -103,6 +103,51 @@ class ChildProgressRepository {
     return result;
   }
 
+  static Future<void> recordGame(String gameId, int score) async {
+    final state = await load();
+    final bests = Map<String, dynamic>.from(state['gameBests'] ?? const {});
+    final oldBest = _int(bests[gameId]);
+    if (score > oldBest) bests[gameId] = score;
+    state['gameBests'] = bests;
+    state['stars'] = _int(state['stars']) + score ~/ 10;
+    state['xp'] = _int(state['xp']) + score;
+    await save(state);
+  }
+
+  static Future<int> gameBest(String gameId) async {
+    final state = await load();
+    final bests = Map<String, dynamic>.from(state['gameBests'] ?? const {});
+    return _int(bests[gameId]);
+  }
+
+  static Future<void> completeStory(String id, int questionsCorrect) async {
+    final state = await load();
+    final stories = Map<String, dynamic>.from(state['stories'] ?? const {});
+    final previous = stories[id];
+    final oldBest = previous is Map ? _int(previous['bestScore']) : 0;
+    final alreadyCompleted = previous is Map && previous['completed'] == true;
+    stories[id] = {
+      'completed': true,
+      'score': questionsCorrect,
+      'bestScore': mathMax(oldBest, questionsCorrect),
+      'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
+      'completedAt': DateTime.now().toIso8601String(),
+    };
+    state['stories'] = stories;
+    if (!alreadyCompleted) {
+      state['stars'] = _int(state['stars']) + questionsCorrect;
+      state['xp'] = _int(state['xp']) + questionsCorrect * 5;
+    }
+    await save(state);
+  }
+
+  static Future<bool> storyCompleted(String id) async {
+    final state = await load();
+    final stories = Map<String, dynamic>.from(state['stories'] ?? const {});
+    final raw = stories[id];
+    return raw is Map && raw['completed'] == true;
+  }
+
   static Future<bool> lessonDone(String id) async {
     final state = await load();
     final done = List<String>.from(state['done'] ?? const <String>[]);
@@ -132,7 +177,7 @@ class ChildProgressRepository {
       'passed': passed,
       'date': DateTime.now().toIso8601String(),
       'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
-      'bestScore': _bestScore(previous, score),
+      'bestScore': mathMax(_int(previous is Map ? previous['bestScore'] : null), score),
     };
     state['finalExams'] = exams;
     final badges = List<String>.from(state['badges'] ?? const <String>[]);
@@ -173,9 +218,5 @@ class ChildProgressRepository {
   }
 
   static int _int(dynamic value) => value is num ? value.toInt() : 0;
-
-  static int _bestScore(dynamic previous, int score) {
-    final old = previous is Map ? _int(previous['bestScore']) : 0;
-    return score > old ? score : old;
-  }
+  static int mathMax(int a, int b) => a > b ? a : b;
 }
