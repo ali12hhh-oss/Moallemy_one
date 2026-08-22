@@ -8,7 +8,6 @@ import '../../data/curriculum_v8.dart';
 
 class ParentDashboardV8 extends StatefulWidget {
   const ParentDashboardV8({super.key});
-
   @override
   State<ParentDashboardV8> createState() => _ParentDashboardV8State();
 }
@@ -26,19 +25,21 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
   }
 
   Future<void> _reload() async {
-    final results = await Future.wait([
-      ProgressV8.load(),
-      AdaptiveLearningEngineV24.weakSkills(),
-      AppStorage.getChildren(),
-      AppStorage.activeId(),
-    ]);
+    final progress = await ProgressV8.load();
+    final weak = await AdaptiveLearningEngineV24.weakSkills();
+    final children = await AppStorage.getChildren();
+    final activeId = await AppStorage.activeId();
+    dynamic child;
+    for (final item in children) {
+      if (item.id == activeId) {
+        child = item;
+        break;
+      }
+    }
     if (!mounted) return;
-    final children = results[2] as List;
-    final activeId = results[3] as String?;
-    final child = children.where((c) => c.id == activeId).cast<dynamic>().firstOrNull;
     setState(() {
-      state = results[0] as Map<String, dynamic>;
-      weakSkills = results[1] as List<String>;
+      state = progress;
+      weakSkills = weak;
       childName = child?.name?.toString() ?? 'الطفل';
       learningMinutes = child?.minutes is int ? child.minutes as int : 0;
     });
@@ -130,9 +131,7 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: badges.isEmpty
-                    ? [const Chip(label: Text('لا توجد إنجازات بعد'))]
-                    : badges.map((b) => Chip(label: Text(b))).toList(),
+                children: badges.isEmpty ? [const Chip(label: Text('لا توجد إنجازات بعد'))] : badges.map((b) => Chip(label: Text(b))).toList(),
               ),
               const SizedBox(height: 12),
               const Text('🛍️ مشتريات المتجر', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
