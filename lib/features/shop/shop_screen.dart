@@ -57,6 +57,7 @@ class _ShopScreenState extends State<ShopScreen> {
     if (!mounted) return;
     final owned = await StoreServiceV23.owned(item.id);
     if (!mounted) return;
+    if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content:
