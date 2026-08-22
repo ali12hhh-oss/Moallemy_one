@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/shop/store_service_v23.dart';
-
-class ShopItem {
-  final String id;
-  final String name;
-  final int price;
-
-  const ShopItem({
-    required this.id,
-    required this.name,
-    required this.price,
-  });
-}
+import 'package:daleel_child/core/storage/child_progress_repository.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
@@ -22,53 +10,47 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  List<ShopItem> _items = const <ShopItem>[];
+  int _stars = 0;
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadStars();
   }
 
-  Future<void> _load() async {
-    final items = await StoreServiceV23.items();
+  Future<void> _loadStars() async {
+    final stars = await ChildProgressRepository.stars();
     if (!mounted) return;
-    setState(() => _items = items);
-  }
-
-  Future<void> _buy(BuildContext context, ShopItem item) async {
-    final ok = await StoreServiceV23.buy(item.id, item.price);
-    if (ok) {
-      await _load();
-      return;
-    }
-    if (!context.mounted) return;
-    final owned = await StoreServiceV23.owned(item.id);
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            Text(owned ? 'تم شراء هذا العنصر مسبقاً' : 'تحتاج إلى نجوم أكثر'),
-      ),
-    );
+    setState(() => _stars = stars);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('المتجر')),
-      body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (context, index) {
-          final item = _items[index];
-          return ListTile(
-            title: Text(item.name),
-            trailing: FilledButton(
-              onPressed: () => _buy(context, item),
-              child: Text('${item.price} ⭐'),
-            ),
-          );
-        },
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.storefront_outlined, size: 64),
+              const SizedBox(height: 16),
+              const Text(
+                'المتجر غير مفعّل بعد',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'لا توجد عناصر قابلة للشراء حالياً. تم إخفاء أزرار الشراء حتى لا تظهر وظيفة غير مكتملة للطفل.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Chip(label: Text('الرصيد: $_stars ⭐')),
+            ],
+          ),
+        ),
       ),
     );
   }
