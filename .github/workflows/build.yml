@@ -1,5 +1,4 @@
 name: Build
-
 on:
   push:
     branches: [ "main" ]
@@ -7,10 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-
 env:
   FLUTTER_VERSION: "3.29.0"
-
 jobs:
   analyze_and_test:
     name: Analyze & Test
@@ -18,27 +15,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
         continue-on-error: true
-
       - name: Analyze project source
         run: flutter analyze
-
       - name: Run tests
         run: flutter test
-
   build_android:
     name: Build Android (APK & AAB)
     needs: analyze_and_test
@@ -46,36 +37,42 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
+      - name: Show available resources
+        run: |
+          echo "== Memory =="
+          free -h
+          echo "== Disk =="
+          df -h
       - name: Build release APK (unsigned)
-        run: flutter build apk --release --split-per-abi
-
+        run: flutter build apk --release --split-per-abi --verbose
+      - name: Show resources after build
+        if: always()
+        run: |
+          echo "== Memory =="
+          free -h
+          echo "== Disk =="
+          df -h
       - name: Build release AAB (unsigned)
         run: flutter build appbundle --release
-
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
           name: daleel-child-apk
           path: build/app/outputs/flutter-apk/*.apk
           if-no-files-found: error
-
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
