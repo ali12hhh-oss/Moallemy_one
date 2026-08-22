@@ -21,9 +21,7 @@ class ArabicQuestionV16 {
 class ArabicPracticeEngineV16 {
   static final Random _random = Random();
 
-  static String arabicNumber(int n) =>
-      n.toString().split('').map((d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)]).join();
-
+  static String arabicNumber(int n) => n.toString().split('').map((d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)]).join();
   static List<String> _shuffle(List<String> values) => [...values]..shuffle(_random);
 
   static ArabicQuestionV16 harakat(String id) {
@@ -37,13 +35,7 @@ class ArabicPracticeEngineV16 {
     ];
     final x = data[_random.nextInt(data.length)];
     final answer = x['sound']!;
-    return ArabicQuestionV16(
-      skillId: id,
-      prompt: 'ما قراءة هذا المقطع؟\n${x['letter']}${x['mark']}',
-      answer: answer,
-      options: _shuffle([answer, 'بَ', 'بِ', 'بُ']),
-      explanation: 'الحركة تغيّر صوت الحرف: ${x['letter']}${x['mark']} تُقرأ $answer.',
-    );
+    return ArabicQuestionV16(skillId: id, prompt: 'ما قراءة هذا المقطع؟\n${x['letter']}${x['mark']}', answer: answer, options: _shuffle([answer, 'بَ', 'بِ', 'بُ']), explanation: 'الحركة تغيّر صوت الحرف: ${x['letter']}${x['mark']} تُقرأ $answer.');
   }
 
   static ArabicQuestionV16 sukun(String id) {
@@ -71,7 +63,7 @@ class ArabicPracticeEngineV16 {
   }
 
   static ArabicQuestionV16 syllables(String id) {
-    const items = [['كَ + تِ + بَ', 'كَتِبَ'], ['ذَ + هَ + بَ', 'ذَهَبَ'], ['لَ + عِ + بَ', 'لَعِبَ'], ['رَ + سَ + مَ', 'رَسَمَ']];
+    const items = [['كَ + تَ + بَ', 'كَتَبَ'], ['ذَ + هَ + بَ', 'ذَهَبَ'], ['لَ + عِ + بَ', 'لَعِبَ'], ['رَ + سَ + مَ', 'رَسَمَ']];
     final x = items[_random.nextInt(items.length)];
     return ArabicQuestionV16(skillId: id, prompt: 'اجمع المقاطع لتكوين الكلمة:\n${x[0]}', answer: x[1], options: _shuffle([x[1], 'ذَهَبَ', 'لَعِبَ', 'رَسَمَ']), explanation: 'عند دمج المقاطع نحصل على: ${x[1]}.');
   }
@@ -125,9 +117,14 @@ class ArabicPracticeEngineV16 {
   }
 
   static ArabicQuestionV16 wordAnalysis(String id) {
-    const items = [['كَتَبَ', '٣'], ['مَدْرَسَة', '٦'], ['قَلَم', '٤'], ['سَيَّارَة', '٧']];
+    const items = [
+      ['كَتَبَ', '٣'],
+      ['مَدْرَسَة', '٥'],
+      ['قَلَم', '٤'],
+      ['سَيَّارَة', '٥'],
+    ];
     final x = items[_random.nextInt(items.length)];
-    return ArabicQuestionV16(skillId: id, prompt: 'كم حرفًا في كلمة «${x[0]}»؟', answer: x[1], options: _shuffle([x[1], '٢', '٤', '٥', '٦', '٧']), explanation: 'عدد الحروف هو ${x[1]}.');
+    return ArabicQuestionV16(skillId: id, prompt: 'كم حرفًا في كلمة «${x[0]}»؟', answer: x[1], options: _shuffle([x[1], '٢', '٣', '٤', '٥', '٦']), explanation: 'عدد الحروف المكتوبة هو ${x[1]} دون احتساب الحركات والشدة كحروف مستقلة.');
   }
 
   static ArabicQuestionV16 sentenceType(String id) {
