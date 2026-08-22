@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
+import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart' as mlkit;
 import '../../core/audio/voice_service.dart';
 import '../../widgets/celebration_overlay.dart';
 
@@ -17,13 +17,13 @@ class G2WriteRecognizeScreen extends StatefulWidget {
 }
 
 class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
-  final modelManager = DigitalInkRecognizerModelManager();
-  DigitalInkRecognizer? recognizer;
+  final modelManager = mlkit.DigitalInkRecognizerModelManager();
+  mlkit.DigitalInkRecognizer? recognizer;
 
   final List<List<Offset>> strokesForPaint = [];
-  final List<Stroke> strokesForRecognition = [];
+  final List<mlkit.Stroke> strokesForRecognition = [];
   List<Offset>? _currentPaintStroke;
-  Stroke? _currentRecoStroke;
+  mlkit.Stroke? _currentRecoStroke;
 
   Color penColor = const Color(0xFF3949AB);
   static const penColors = [
@@ -41,7 +41,7 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
   @override
   void initState() {
     super.initState();
-    recognizer = DigitalInkRecognizer(languageCode: 'ar');
+    recognizer = mlkit.DigitalInkRecognizer(languageCode: 'ar');
     _ensureModel();
   }
 
@@ -82,14 +82,14 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
 
   void _onPanStart(Offset p) {
     _currentPaintStroke = [p];
-    _currentRecoStroke = Stroke();
-    _currentRecoStroke!.points.add(StrokePoint(x: p.dx, y: p.dy, t: DateTime.now().millisecondsSinceEpoch));
+    _currentRecoStroke = mlkit.Stroke();
+    _currentRecoStroke!.points.add(mlkit.StrokePoint(x: p.dx, y: p.dy, t: DateTime.now().millisecondsSinceEpoch));
     setState(() {});
   }
 
   void _onPanUpdate(Offset p) {
     _currentPaintStroke?.add(p);
-    _currentRecoStroke?.points.add(StrokePoint(x: p.dx, y: p.dy, t: DateTime.now().millisecondsSinceEpoch));
+    _currentRecoStroke?.points.add(mlkit.StrokePoint(x: p.dx, y: p.dy, t: DateTime.now().millisecondsSinceEpoch));
     setState(() {});
   }
 
@@ -109,7 +109,7 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
       error = null;
     });
     try {
-      final ink = Ink()..strokes = strokesForRecognition;
+      final ink = mlkit.Ink()..strokes = strokesForRecognition;
       final candidates = await recognizer!.recognize(ink);
       if (!mounted) return;
       if (candidates.isNotEmpty && candidates.first.text.trim().isNotEmpty) {
