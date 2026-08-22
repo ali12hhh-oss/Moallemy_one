@@ -75,7 +75,6 @@ class ChildProgressRepository {
   static Future<int> xp() async => _int((await load())['xp']);
 
   static Future<void> addRewards({required int stars, int xp = 0}) async {
-    // Reward APIs must never silently subtract currency.
     final safeStars = stars < 0 ? 0 : stars;
     final safeXp = xp < 0 ? 0 : xp;
     if (safeStars == 0 && safeXp == 0) return;
@@ -135,12 +134,11 @@ class ChildProgressRepository {
     final state = await load();
     final bests = Map<String, dynamic>.from(state['gameBests'] ?? const {});
     final oldBest = _int(bests[gameId]);
-
-    // Games reward only genuine improvement. Replaying the same or a lower
-    // score cannot farm Stars/XP indefinitely.
     final improvement = safeScore - oldBest;
     if (improvement <= 0) return;
 
+    // Reward only genuine improvement. Replaying the same or a lower score
+    // cannot farm Stars/XP indefinitely.
     bests[gameId] = safeScore;
     state['gameBests'] = bests;
     state['stars'] = _int(state['stars']) + improvement ~/ 10;
@@ -206,8 +204,8 @@ class ChildProgressRepository {
     final exams = Map<String, dynamic>.from(state['finalExams'] ?? const {});
     final previous = exams[stageId];
     final alreadyPassed = previous is Map && previous['passed'] == true;
-    final safeScore = score.clamp(0, total < 0 ? 0 : total);
     final safeTotal = total < 0 ? 0 : total;
+    final safeScore = score.clamp(0, safeTotal).toInt();
     exams[stageId] = {
       'score': safeScore,
       'total': safeTotal,
