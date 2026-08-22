@@ -4,16 +4,11 @@ import 'package:audioplayers/audioplayers.dart';
 
 import '../offline/asset_catalog_v27.dart';
 
-/// Speech/audio service.
+/// Central audio service.
 ///
-/// [arabic]/[english]/[stop] behave exactly as before (device TTS for
-/// arbitrary text) so every existing call site keeps working unchanged.
-///
-/// [arabicLetterSound]/[englishLetterSound] are additive: they play the
-/// real recorded offline WAV asset for a single letter/pattern when one
-/// exists in the bundle (via [AssetCatalogV27]), and only fall back to
-/// TTS when no matching asset is shipped. This makes the previously
-/// unused offline audio assets actually audible in the app.
+/// Letter sounds are intentionally different from letter-name/TTS speech:
+/// Arabic letter buttons play the bundled recorded sound only. If an asset is
+/// missing, nothing is spoken rather than risking teaching the letter name.
 class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
@@ -39,7 +34,6 @@ class VoiceService {
     await _player.stop();
   }
 
-  /// Returns true if [assetPath] actually exists in the app bundle.
   static Future<bool> _assetExists(String assetPath) async {
     try {
       await rootBundle.load(assetPath);
@@ -49,13 +43,10 @@ class VoiceService {
     }
   }
 
-  /// Plays a bundled offline WAV for [assetPath] and reports success.
   static Future<bool> _playAsset(String assetPath) async {
     if (!await _assetExists(assetPath)) return false;
     try {
       await _player.stop();
-      // AssetSource paths are relative to the `assets/` folder declared
-      // in pubspec.yaml, so strip the leading "assets/".
       final relative = assetPath.startsWith('assets/')
           ? assetPath.substring('assets/'.length)
           : assetPath;
@@ -66,19 +57,18 @@ class VoiceService {
     }
   }
 
-  /// Plays the real recorded sound for an Arabic letter offline when the
-  /// asset is available; otherwise falls back to TTS speaking [fallbackText].
-  static Future<void> arabicLetterSound(
-    String letter, {
-    required String fallbackText,
-  }) async {
-    final played = await _playAsset(AssetCatalogV27.arabicAudio(letter));
-    if (!played) await arabic(fallbackText);
-  }
+  /// Plays the real recorded phoneme for an Arabic letter.
+  ///
+  /// No TTS fallback is used here because TTS can pronounce the *name* of the
+  /// letter (باء، تاء...) instead of its reading sound. The repository ships
+  /// the 28 Arabic letter recordings, so a missing asset is treated as an
+  /// asset-integrity error rather than silently teaching the wrong sound.
+  static Future<bool> arabicLetterSound(String letter, {
+    String? fallbackText,
+  }) => _playAsset(AssetCatalogV27.arabicAudio(letter));
 
-  /// Plays the real recorded sound for an English letter/phonics pattern
-  /// offline when the asset is available; otherwise falls back to TTS
-  /// speaking [fallbackText].
+  /// English phonics may use the bundled sound and can still use TTS as a
+  /// fallback for legacy callers.
   static Future<void> englishLetterSound(
     String letter, {
     required String fallbackText,
