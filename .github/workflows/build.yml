@@ -51,6 +51,11 @@ jobs:
     name: Build Android (APK & AAB)
     needs: analyze_and_test
     runs-on: ubuntu-latest
+    env:
+      CI_RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/moallemy-ci-release.jks
+      CI_RELEASE_STORE_PASSWORD: "ci-build-store-password"
+      CI_RELEASE_KEY_PASSWORD: "ci-build-key-password"
+      CI_RELEASE_KEY_ALIAS: "ci-release"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -67,6 +72,20 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
+      - name: Create temporary CI release keystore
+        run: |
+          keytool -genkeypair -v \
+            -keystore "$CI_RELEASE_KEYSTORE_PATH" \
+            -storetype JKS \
+            -storepass "$CI_RELEASE_STORE_PASSWORD" \
+            -keypass "$CI_RELEASE_KEY_PASSWORD" \
+            -alias "$CI_RELEASE_KEY_ALIAS" \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 1 \
+            -dname "CN=Moallemy CI, OU=CI, O=Moallemy, L=CI, S=CI, C=US"
+      - name: Clean Android build outputs
+        run: flutter clean
       - name: Build release APK
         run: flutter build apk --release --split-per-abi
       - name: Build release AAB
