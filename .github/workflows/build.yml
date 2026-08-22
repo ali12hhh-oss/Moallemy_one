@@ -35,7 +35,7 @@ jobs:
         run: flutter test
 
   build_android:
-    name: Build Android (APK & AAB)
+    name: Build Android APK
     needs: analyze_and_test
     runs-on: ubuntu-latest
     steps:
@@ -54,50 +54,35 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Build release APKs
+      - name: Build universal release APK
         run: |
           set +e
-          flutter build apk --release --split-per-abi
+          flutter build apk --release
           build_status=$?
           set -e
 
-          # Flutter 3.44.7 may successfully produce APKs under
-          # build/app/outputs/apk/release while returning an error because
-          # it does not find them in its expected flutter-apk directory.
-          apk_source="build/app/outputs/apk/release"
           apk_target="build/app/outputs/flutter-apk"
           mkdir -p "$apk_target"
-          find "$apk_source" -maxdepth 1 -type f -name '*.apk' -exec cp -f {} "$apk_target/" \; 2>/dev/null || true
 
-          apk_count=$(find "$apk_target" -maxdepth 1 -type f -name '*.apk' | wc -l)
-          if [ "$apk_count" -eq 0 ]; then
+          # Flutter 3.44.7 may place the generated APK in the Gradle output
+          # directory even when its artifact-discovery step reports an error.
+          find build/app/outputs/apk -type f -name '*.apk' -exec cp -f {} "$apk_target/daleel-child-release.apk" \; 2>/dev/null || true
+
+          if [ ! -f "$apk_target/daleel-child-release.apk" ]; then
             echo "No release APK was produced. Flutter build exit code: $build_status"
             exit "$build_status"
           fi
-          echo "Found $apk_count release APK(s)."
-      - name: Build release AAB
-        run: |
-          set +e
-          flutter build appbundle --release
-          build_status=$?
-          set -e
 
-          aab_source="build/app/outputs/bundle/release"
-          aab_count=$(find "$aab_source" -maxdepth 1 -type f -name '*.aab' 2>/dev/null | wc -l)
-          if [ "$aab_count" -eq 0 ]; then
-            echo "No release AAB was produced. Flutter build exit code: $build_status"
-            exit "$build_status"
-          fi
-          echo "Found $aab_count release AAB(s)."
-      - name: Upload APK artifacts
+          echo "Universal signed release APK created:"
+          ls -lh "$apk_target/daleel-child-release.apk"
+      - name: Verify APK signature
+        run: |
+          APK="build/app/outputs/flutter-apk/daleel-child-release.apk"
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --verbose "$APK"
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: daleel-child-apk
-          path: build/app/outputs/flutter-apk/*.apk
-          if-no-files-found: error
-      - name: Upload AAB artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: daleel-child-aab
-          path: build/app/outputs/bundle/release/*.aab
+          path: build/app/outputs/flutter-apk/daleel-child-release.apk
           if-no-files-found: error
