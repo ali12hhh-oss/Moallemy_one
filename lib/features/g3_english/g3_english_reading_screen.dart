@@ -69,9 +69,9 @@ class _G3EnglishReadingScreenState extends State<G3EnglishReadingScreen> {
                 ? Column(children: [
                     const Text(_emoji, style: TextStyle(fontSize: 50)),
                     IconButton(icon: const Icon(Icons.volume_up_rounded), iconSize: 34, onPressed: () => VoiceService.english(_text)),
-                    Expanded(
+                    const Expanded(
                       child: SingleChildScrollView(
-                        child: Text(_text, style: const TextStyle(fontSize: 19, height: 1.9), textDirection: TextDirection.ltr, textAlign: TextAlign.left),
+                        child: Text(_text, style: TextStyle(fontSize: 19, height: 1.9), textDirection: TextDirection.ltr, textAlign: TextAlign.left),
                       ),
                     ),
                     FilledButton.icon(onPressed: () => setState(() => showQuestions = true), icon: const Icon(Icons.quiz_rounded), label: const Text('Questions')),
