@@ -19,13 +19,15 @@ class ParentServiceV22 {
     final progress = await ChildProgressRepository.load();
     return {
       'grade': grade,
-      'stars': ChildProgressRepository._reportInt(progress['stars']),
-      'xp': ChildProgressRepository._reportInt(progress['xp']),
+      'stars': _int(progress['stars']),
+      'xp': _int(progress['xp']),
       'arabicExam': exam == null ? 0 : _percent(exam['score'], exam['total']),
       'examPassed': exam?['passed'] == true,
       'examAttempts': exam?['attempts'] ?? 0,
     };
   }
+
+  static int _int(dynamic value) => value is num ? value.toInt() : 0;
 
   static int _percent(dynamic score, dynamic total) {
     final s = score is num ? score.toDouble() : 0;
