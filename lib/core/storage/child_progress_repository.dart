@@ -8,6 +8,7 @@ import 'app_storage.dart';
 class ChildProgressRepository {
   static const _prefix = 'child_progress_v1.';
   static const _legacyKey = 'daleel_v5_state';
+  static const _legacyMigratedKey = 'child_progress_v1.legacy_migrated';
 
   static Future<String?> _key() async {
     final id = await AppStorage.activeId();
@@ -26,16 +27,26 @@ class ChildProgressRepository {
         if (decoded is Map) return Map<String, dynamic>.from(decoded);
       } catch (_) {}
     }
-    final legacyRaw = p.getString(_legacyKey);
-    if (legacyRaw != null && legacyRaw.isNotEmpty) {
-      try {
-        final decoded = jsonDecode(legacyRaw);
-        if (decoded is Map) {
-          final state = Map<String, dynamic>.from(decoded);
-          await save(state);
-          return state;
+
+    // Migrate the old global state only once, to the first active child.
+    // Never copy it again to newly-created siblings.
+    if (p.getBool(_legacyMigratedKey) != true) {
+      final legacyRaw = p.getString(_legacyKey);
+      if (legacyRaw != null && legacyRaw.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(legacyRaw);
+          if (decoded is Map) {
+            final state = Map<String, dynamic>.from(decoded);
+            await save(state);
+            await p.setBool(_legacyMigratedKey, true);
+            return state;
+          }
+        } catch (_) {
+          await p.setBool(_legacyMigratedKey, true);
         }
-      } catch (_) {}
+      } else {
+        await p.setBool(_legacyMigratedKey, true);
+      }
     }
     return {};
   }
@@ -129,7 +140,7 @@ class ChildProgressRepository {
     stories[id] = {
       'completed': true,
       'score': questionsCorrect,
-      'bestScore': mathMax(oldBest, questionsCorrect),
+      'bestScore': _max(oldBest, questionsCorrect),
       'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
       'completedAt': DateTime.now().toIso8601String(),
     };
@@ -177,7 +188,7 @@ class ChildProgressRepository {
       'passed': passed,
       'date': DateTime.now().toIso8601String(),
       'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
-      'bestScore': mathMax(_int(previous is Map ? previous['bestScore'] : null), score),
+      'bestScore': _max(_int(previous is Map ? previous['bestScore'] : null), score),
     };
     state['finalExams'] = exams;
     final badges = List<String>.from(state['badges'] ?? const <String>[]);
@@ -218,5 +229,5 @@ class ChildProgressRepository {
   }
 
   static int _int(dynamic value) => value is num ? value.toInt() : 0;
-  static int mathMax(int a, int b) => a > b ? a : b;
+  static int _max(int a, int b) => a > b ? a : b;
 }
