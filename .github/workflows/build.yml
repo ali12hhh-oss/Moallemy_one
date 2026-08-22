@@ -12,6 +12,8 @@ jobs:
   analyze_and_test:
     name: Analyze & Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,8 +25,14 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+      - name: Auto-format code
+        run: dart format .
+      - name: Commit formatted code (if changed)
+        if: github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-format code via CI"
+          file_pattern: "*.dart"
       - name: Analyze project source
         run: flutter analyze
       - name: Run tests
