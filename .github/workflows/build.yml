@@ -42,7 +42,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -55,31 +55,30 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Build universal release APK
+        working-directory: android
         run: |
-          set +e
-          flutter build apk --release
-          build_status=$?
           set -e
-
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease --no-daemon --stacktrace
+      - name: Collect and verify universal APK
+        run: |
+          set -e
           apk_target="build/app/outputs/flutter-apk"
           mkdir -p "$apk_target"
 
-          # Flutter 3.44.7 may place the generated APK in the Gradle output
-          # directory even when its artifact-discovery step reports an error.
-          find build/app/outputs/apk -type f -name '*.apk' -exec cp -f {} "$apk_target/daleel-child-release.apk" \; 2>/dev/null || true
-
-          if [ ! -f "$apk_target/daleel-child-release.apk" ]; then
-            echo "No release APK was produced. Flutter build exit code: $build_status"
-            exit "$build_status"
+          APK=$(find android/app/build/outputs/apk/release -type f -name '*.apk' -print -quit)
+          if [ -z "$APK" ]; then
+            echo "No release APK was produced. Searching all build outputs:"
+            find android/app/build/outputs build/app/outputs -type f -name '*.apk' -print 2>/dev/null || true
+            exit 1
           fi
 
-          echo "Universal signed release APK created:"
+          cp -f "$APK" "$apk_target/daleel-child-release.apk"
+          echo "Universal release APK:"
           ls -lh "$apk_target/daleel-child-release.apk"
-      - name: Verify APK signature
-        run: |
-          APK="build/app/outputs/flutter-apk/daleel-child-release.apk"
+
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
-          "$APKSIGNER" verify --verbose "$APK"
+          "$APKSIGNER" verify --verbose "$apk_target/daleel-child-release.apk"
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
