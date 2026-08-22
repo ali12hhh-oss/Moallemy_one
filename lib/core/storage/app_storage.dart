@@ -7,6 +7,7 @@ import '../../models/child.dart';
 class AppStorage {
   static const childrenKey = 'daleel_children_v3';
   static const activeKey = 'daleel_active_v3';
+  static const childProgressPrefix = 'child_progress_v1.';
 
   static Future<List<Child>> getChildren() async {
     final p = await SharedPreferences.getInstance();
@@ -38,13 +39,24 @@ class AppStorage {
       (await SharedPreferences.getInstance()).getString(activeKey);
 
   static Future<void> setActive(String id) async {
-    if (id.trim().isEmpty) return;
-    await (await SharedPreferences.getInstance()).setString(activeKey, id);
+    final trimmed = id.trim();
+    if (trimmed.isEmpty) return;
+    await (await SharedPreferences.getInstance()).setString(activeKey, trimmed);
   }
 
+  /// Completely resets local child data, including every per-child progress
+  /// record created by ChildProgressRepository.
   static Future<void> clearAll() async {
     final p = await SharedPreferences.getInstance();
+    final keysToRemove = p
+        .getKeys()
+        .where((key) => key.startsWith(childProgressPrefix))
+        .toList(growable: false);
+
     await p.remove(childrenKey);
     await p.remove(activeKey);
+    for (final key in keysToRemove) {
+      await p.remove(key);
+    }
   }
 }
