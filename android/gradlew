@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+set -eu
+
+APP_HOME=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+WRAPPER_JAR="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+WRAPPER_URL="https://raw.githubusercontent.com/gradle/gradle/v8.14/gradle/wrapper/gradle-wrapper.jar"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  mkdir -p "$(dirname "$WRAPPER_JAR")"
+  echo "Downloading Gradle wrapper jar..."
+  curl -fL --retry 3 --connect-timeout 20 -o "$WRAPPER_JAR" "$WRAPPER_URL"
+fi
+
+if [ ! -s "$WRAPPER_JAR" ]; then
+  echo "ERROR: Gradle wrapper jar could not be downloaded." >&2
+  exit 1
+fi
+
+if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+  JAVACMD="$JAVA_HOME/bin/java"
+else
+  JAVACMD="java"
+fi
+
+exec "$JAVACMD" ${JAVA_OPTS:-} ${GRADLE_OPTS:-} -classpath "$WRAPPER_JAR" org.gradle.wrapper.GradleWrapperMain "$@"
