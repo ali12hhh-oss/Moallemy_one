@@ -1,4 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:moallemy_one/core/localization/letter_forms.dart';
-import 'package:moallemy_one/data/content.dart';
+import 'package:daleel_child/core/localization/letter_forms.dart';
+import 'package:daleel_child/data/content.dart';
