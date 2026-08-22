@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../storage/child_progress_repository.dart';
+
 class ParentServiceV22 {
   static Future<void> saveChild({
     required String id,
@@ -11,14 +13,24 @@ class ParentServiceV22 {
     await p.setInt('child.$id.grade', grade);
   }
 
+  /// Returns the report for the currently active child.
   static Future<Map<String, dynamic>> report(int grade) async {
-    final p = await SharedPreferences.getInstance();
+    final exam = await ChildProgressRepository.finalExam(grade.toString());
+    final progress = await ChildProgressRepository.load();
     return {
       'grade': grade,
-      'stars': p.getInt('child_stars_v15') ?? 0,
-      'xp': p.getInt('child_xp_v15') ?? 0,
-      'arabicExam': p.getInt('exam.$grade.percent') ?? 0,
-      'examPassed': p.getBool('exam.$grade.passed') ?? false,
+      'stars': ChildProgressRepository._reportInt(progress['stars']),
+      'xp': ChildProgressRepository._reportInt(progress['xp']),
+      'arabicExam': exam == null ? 0 : _percent(exam['score'], exam['total']),
+      'examPassed': exam?['passed'] == true,
+      'examAttempts': exam?['attempts'] ?? 0,
     };
+  }
+
+  static int _percent(dynamic score, dynamic total) {
+    final s = score is num ? score.toDouble() : 0;
+    final t = total is num ? total.toDouble() : 0;
+    if (t <= 0) return 0;
+    return (s / t * 100).round().clamp(0, 100);
   }
 }
