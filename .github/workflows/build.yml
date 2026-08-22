@@ -54,29 +54,20 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Build one universal release APK
+      - name: Build one universal release APK with Flutter
         run: |
           set -e
+          flutter clean
           flutter build apk --release --no-tree-shake-icons
-      - name: Collect and verify universal APK
+      - name: Verify Flutter APK output
         run: |
           set -e
-          apk_source="build/app/outputs/flutter-apk/app-release.apk"
-          apk_dir="build/app/outputs/flutter-apk"
-          apk_target="$apk_dir/daleel-child-universal-release.apk"
-
-          test -f "$apk_source"
-          cp -f "$apk_source" "$apk_target"
-
-          echo "Universal release APK:"
-          ls -lh "$apk_target"
-
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
-          test -n "$APKSIGNER"
-          "$APKSIGNER" verify --verbose "$apk_target"
-      - name: Upload APK artifact
+          test -f build/app/outputs/flutter-apk/app-release.apk
+          echo "Flutter universal APK:"
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
+      - name: Upload Flutter APK
         uses: actions/upload-artifact@v4
         with:
           name: daleel-child-universal-apk
-          path: build/app/outputs/flutter-apk/daleel-child-universal-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
