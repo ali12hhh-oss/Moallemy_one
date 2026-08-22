@@ -58,29 +58,29 @@ jobs:
         run: |
           set -e
           test -f android/gradlew
-          chmod +x android/gradlew
           test -f android/gradle/wrapper/gradle-wrapper.properties
+          chmod +x android/gradlew
       - name: Build one universal release APK
         run: |
           set -e
-          flutter build apk --release
+          cd android
+          ./gradlew :app:assembleRelease --no-daemon --stacktrace
       - name: Collect and verify universal APK
         run: |
           set -e
+          source_dir="android/app/build/outputs/apk/release"
           apk_dir="build/app/outputs/flutter-apk"
           apk_target="$apk_dir/daleel-child-release.apk"
           mkdir -p "$apk_dir"
 
-          mapfile -t APKS < <(find "$apk_dir" -maxdepth 1 -type f -name '*.apk' -print | sort)
+          mapfile -t APKS < <(find "$source_dir" -maxdepth 1 -type f -name '*.apk' -print | sort)
           if [ "${#APKS[@]}" -ne 1 ]; then
             echo "Expected exactly one universal release APK, found ${#APKS[@]}."
-            find "$apk_dir" -maxdepth 1 -type f -name '*.apk' -print -exec ls -lh {} \; || true
+            find "$source_dir" -maxdepth 2 -type f -name '*.apk' -print -exec ls -lh {} \; || true
             exit 1
           fi
 
-          if [ "${APKS[0]}" != "$apk_target" ]; then
-            mv -f "${APKS[0]}" "$apk_target"
-          fi
+          cp -f "${APKS[0]}" "$apk_target"
 
           echo "Universal release APK:"
           ls -lh "$apk_target"
