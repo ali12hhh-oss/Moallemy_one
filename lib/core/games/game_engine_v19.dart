@@ -1,74 +1,54 @@
 import 'dart:math';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../data/games_v19.dart';
+import '../storage/child_progress_repository.dart';
 
 class GameEngineV19 {
   static final _r = Random();
 
   static GameRoundV19 letterHunter() {
     const letters = [
-      'ب',
-      'ت',
-      'ث',
-      'ج',
-      'ح',
-      'د',
-      'ر',
-      'س',
-      'ش',
-      'ص',
-      'ك',
-      'ل',
-      'م',
-      'ن',
+      'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص',
+      'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي',
     ];
     final a = letters[_r.nextInt(letters.length)];
-    final opts = {...letters..shuffle(_r)}.take(4).toList();
-    if (!opts.contains(a)) opts[0] = a;
-    opts.shuffle(_r);
-    return GameRoundV19('اعثر على الحرف: $a', a, opts);
+    final opts = <String>{a};
+    while (opts.length < 4) opts.add(letters[_r.nextInt(letters.length)]);
+    final result = opts.toList()..shuffle(_r);
+    return GameRoundV19('اعثر على الحرف: $a', a, result);
   }
 
   static GameRoundV19 math() {
-    final a = _r.nextInt(9) + 1, b = _r.nextInt(9) + 1;
+    final a = _r.nextInt(9) + 1;
+    final b = _r.nextInt(9) + 1;
     final ans = a + b;
-    final opts = <int>{ans, ans + 1, ans - 1, ans + 2}
-        .where((x) => x >= 0)
-        .toList()
-      ..shuffle(_r);
-    return GameRoundV19(
-      'احسب: $a + $b',
-      '$ans',
-      opts.map((e) => '$e').toList(),
-    );
+    final opts = <int>{ans};
+    for (var d = 1; opts.length < 4; d++) {
+      if (ans - d >= 0) opts.add(ans - d);
+      opts.add(ans + d);
+    }
+    final result = opts.toList()..shuffle(_r);
+    return GameRoundV19('احسب: $a + $b', '$ans', result.map((e) => '$e').toList());
   }
 
   static GameRoundV19 multiplication(int maxTable) {
-    final a = _r.nextInt(maxTable) + 1, b = _r.nextInt(10) + 1;
+    final table = max(1, maxTable);
+    final a = _r.nextInt(table) + 1;
+    final b = _r.nextInt(10) + 1;
     final ans = a * b;
-    final opts = <int>{ans, ans + a, ans - a, ans + 1}
-        .where((x) => x >= 0)
-        .toList()
-      ..shuffle(_r);
-    return GameRoundV19(
-      'احسب: $a × $b',
-      '$ans',
-      opts.map((e) => '$e').toList(),
-    );
+    final opts = <int>{ans};
+    for (var d = 1; opts.length < 4; d++) {
+      if (ans - d >= 0) opts.add(ans - d);
+      opts.add(ans + d);
+    }
+    final result = opts.toList()..shuffle(_r);
+    return GameRoundV19('احسب: $a × $b', '$ans', result.map((e) => '$e').toList());
   }
 
   static Future<void> finish(String gameId, int score) async {
-    final p = await SharedPreferences.getInstance();
-    await p.setInt(
-      'game.$gameId.best',
-      max(score, p.getInt('game.$gameId.best') ?? 0),
-    );
-    await p.setInt('child_xp_v15', (p.getInt('child_xp_v15') ?? 0) + score);
-    await p.setInt(
-      'child_stars_v15',
-      (p.getInt('child_stars_v15') ?? 0) + (score ~/ 10),
-    );
+    if (score <= 0) return;
+    await ChildProgressRepository.recordGame(gameId, score);
   }
+
+  static Future<int> best(String gameId) => ChildProgressRepository.gameBest(gameId);
 }
