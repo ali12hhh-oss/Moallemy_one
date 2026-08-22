@@ -54,31 +54,40 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Build universal release APK
-        working-directory: android
+      - name: Verify Gradle wrapper
         run: |
           set -e
-          chmod +x gradlew
-          ./gradlew :app:assembleRelease --no-daemon --stacktrace
+          test -f android/gradlew
+          chmod +x android/gradlew
+          test -f android/gradle/wrapper/gradle-wrapper.properties
+      - name: Build one universal release APK
+        run: |
+          set -e
+          flutter build apk --release
       - name: Collect and verify universal APK
         run: |
           set -e
-          apk_target="build/app/outputs/flutter-apk"
-          mkdir -p "$apk_target"
+          apk_dir="build/app/outputs/flutter-apk"
+          apk_target="$apk_dir/daleel-child-release.apk"
+          mkdir -p "$apk_dir"
 
-          APK=$(find android/app/build/outputs/apk/release -type f -name '*.apk' -print -quit)
-          if [ -z "$APK" ]; then
-            echo "No release APK was produced. Searching all build outputs:"
-            find android/app/build/outputs build/app/outputs -type f -name '*.apk' -print 2>/dev/null || true
+          mapfile -t APKS < <(find "$apk_dir" -maxdepth 1 -type f -name '*.apk' -print | sort)
+          if [ "${#APKS[@]}" -ne 1 ]; then
+            echo "Expected exactly one universal release APK, found ${#APKS[@]}."
+            find "$apk_dir" -maxdepth 1 -type f -name '*.apk' -print -exec ls -lh {} \; || true
             exit 1
           fi
 
-          cp -f "$APK" "$apk_target/daleel-child-release.apk"
+          if [ "${APKS[0]}" != "$apk_target" ]; then
+            mv -f "${APKS[0]}" "$apk_target"
+          fi
+
           echo "Universal release APK:"
-          ls -lh "$apk_target/daleel-child-release.apk"
+          ls -lh "$apk_target"
 
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)
-          "$APKSIGNER" verify --verbose "$apk_target/daleel-child-release.apk"
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --verbose "$apk_target"
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
