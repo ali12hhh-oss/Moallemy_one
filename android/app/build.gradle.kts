@@ -5,11 +5,11 @@ plugins {
 }
 android {
     namespace = "com.daleel.child"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 36
+    ndkVersion = "27.0.12077973"
     defaultConfig {
         applicationId = "com.daleel.child"
-        minSdk = 21
+        minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
