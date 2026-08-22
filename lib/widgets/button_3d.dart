@@ -37,7 +37,9 @@ class _Button3DState extends State<Button3D> {
 
   static Color _darken(Color c, double amount) {
     final hsl = HSLColor.fromColor(c);
-    return hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0)).toColor();
+    return hsl
+        .withLightness((hsl.lightness - amount).clamp(0.0, 1.0))
+        .toColor();
   }
 
   void _setPressed(bool v) => setState(() => pressed = v);
@@ -53,25 +55,33 @@ class _Button3DState extends State<Button3D> {
         HapticFeedback.mediumImpact();
         widget.onTap();
       },
-      child: Stack(children: [
-        // The darker "slab" underneath — always full-size, never moves.
-        Container(
-          decoration: BoxDecoration(color: _slab, borderRadius: widget.borderRadius),
-        ),
-        // The bright face on top — drops down onto the slab when pressed.
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 90),
-          curve: Curves.easeOut,
-          margin: EdgeInsets.only(bottom: pressed ? 0 : widget.depth),
-          padding: widget.padding,
-          decoration: BoxDecoration(
-            color: widget.color,
-            borderRadius: widget.borderRadius,
-            border: Border.all(color: Colors.white.withValues(alpha: .22), width: 1.4),
+      child: Stack(
+        children: [
+          // The darker "slab" underneath — always full-size, never moves.
+          Container(
+            decoration: BoxDecoration(
+              color: _slab,
+              borderRadius: widget.borderRadius,
+            ),
           ),
-          child: widget.child,
-        ),
-      ]),
+          // The bright face on top — drops down onto the slab when pressed.
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 90),
+            curve: Curves.easeOut,
+            margin: EdgeInsets.only(bottom: pressed ? 0 : widget.depth),
+            padding: widget.padding,
+            decoration: BoxDecoration(
+              color: widget.color,
+              borderRadius: widget.borderRadius,
+              border: Border.all(
+                color: Colors.white.withValues(alpha: .22),
+                width: 1.4,
+              ),
+            ),
+            child: widget.child,
+          ),
+        ],
+      ),
     );
   }
 }

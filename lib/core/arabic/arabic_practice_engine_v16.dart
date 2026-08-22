@@ -1,6 +1,7 @@
-
 import 'dart:math';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../storage/progress_v8.dart';
 import '../adaptive/adaptive_learning_engine_v24.dart';
 
@@ -25,7 +26,8 @@ class ArabicPracticeEngineV16 {
   static const _xpKey = 'child_xp_v15';
   static final Random _random = Random();
 
-  static String arabicNumber(int n) => n.toString().split('').map((d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)]).join();
+  static String arabicNumber(int n) =>
+      n.toString().split('').map((d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)]).join();
 
   static List<String> _shuffle(List<String> values) {
     final copy = [...values]..shuffle(_random);
@@ -33,13 +35,13 @@ class ArabicPracticeEngineV16 {
   }
 
   static ArabicQuestionV16 harakat(String id) {
-    const data = <Map<String,String>>[
-      {'letter':'ب','mark':'َ','sound':'بَ'},
-      {'letter':'ب','mark':'ِ','sound':'بِ'},
-      {'letter':'ب','mark':'ُ','sound':'بُ'},
-      {'letter':'م','mark':'َ','sound':'مَ'},
-      {'letter':'م','mark':'ِ','sound':'مِ'},
-      {'letter':'م','mark':'ُ','sound':'مُ'},
+    const data = <Map<String, String>>[
+      {'letter': 'ب', 'mark': 'َ', 'sound': 'بَ'},
+      {'letter': 'ب', 'mark': 'ِ', 'sound': 'بِ'},
+      {'letter': 'ب', 'mark': 'ُ', 'sound': 'بُ'},
+      {'letter': 'م', 'mark': 'َ', 'sound': 'مَ'},
+      {'letter': 'م', 'mark': 'ِ', 'sound': 'مِ'},
+      {'letter': 'م', 'mark': 'ُ', 'sound': 'مُ'},
     ];
     final x = data[_random.nextInt(data.length)];
     final answer = x['sound']!;
@@ -49,7 +51,8 @@ class ArabicPracticeEngineV16 {
       prompt: 'ما قراءة هذا المقطع؟\n${x['letter']}${x['mark']}',
       answer: answer,
       options: options,
-      explanation: 'الحركة تغيّر صوت الحرف: ${x['letter']}${x['mark']} تُقرأ $answer.',
+      explanation:
+          'الحركة تغيّر صوت الحرف: ${x['letter']}${x['mark']} تُقرأ $answer.',
     );
   }
 

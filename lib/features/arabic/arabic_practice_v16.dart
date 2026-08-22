@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../../core/arabic/arabic_practice_engine_v16.dart';
 
 class ArabicPracticeV16 extends StatefulWidget {
@@ -10,7 +10,8 @@ class ArabicPracticeV16 extends StatefulWidget {
     required this.skillId,
     required this.title,
   });
-  @override State<ArabicPracticeV16> createState() => _ArabicPracticeV16State();
+  @override
+  State<ArabicPracticeV16> createState() => _ArabicPracticeV16State();
 }
 
 class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
@@ -20,7 +21,8 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
   int correct = 0;
   int total = 0;
 
-  @override void initState() {
+  @override
+  void initState() {
     super.initState();
     _newQuestion();
   }
@@ -38,9 +40,12 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
     if (id == 'sun_moon_lam') return ArabicPracticeEngineV16.sunMoon(id);
     if (id == 'prepositions') return ArabicPracticeEngineV16.preposition(id);
     if (id == 'al_definition') return ArabicPracticeEngineV16.alDefinition(id);
-    if (id == 'singular_plural') return ArabicPracticeEngineV16.singularPlural(id);
-    if (id == 'masculine_feminine') return ArabicPracticeEngineV16.masculineFeminine(id);
-    if (id == 'sentence_building') return ArabicPracticeEngineV16.sentenceBuilding(id);
+    if (id == 'singular_plural')
+      return ArabicPracticeEngineV16.singularPlural(id);
+    if (id == 'masculine_feminine')
+      return ArabicPracticeEngineV16.masculineFeminine(id);
+    if (id == 'sentence_building')
+      return ArabicPracticeEngineV16.sentenceBuilding(id);
     if (id == 'spelling') return ArabicPracticeEngineV16.spelling(id);
     if (id == 'word_analysis') return ArabicPracticeEngineV16.wordAnalysis(id);
     return ArabicPracticeEngineV16.sentenceType(id);
@@ -57,10 +62,7 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
   Future<void> _answer(String value) async {
     if (locked || q == null) return;
     final ok = value == q!.answer;
-    await ArabicPracticeEngineV16.record(
-      skillId: widget.skillId,
-      correct: ok,
-    );
+    await ArabicPracticeEngineV16.record(skillId: widget.skillId, correct: ok);
     if (!mounted) return;
     setState(() {
       selected = value;
@@ -82,7 +84,8 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
     }
   }
 
-  @override Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final question = q;
     if (question == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -134,7 +137,9 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: selected == question.answer ? Colors.green : Colors.orange,
+                          color: selected == question.answer
+                              ? Colors.green
+                              : Colors.orange,
                         ),
                       ),
                       const SizedBox(height: 5),

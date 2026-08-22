@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../data/content_v11.dart';
 
 class MatchingGameV11 extends StatefulWidget {
@@ -33,7 +35,8 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
   }
 
   Future<void> _tap(int index) async {
-    if (matched.contains(index) || open.contains(index) || open.length >= 2) return;
+    if (matched.contains(index) || open.contains(index) || open.length >= 2)
+      return;
     setState(() => open.add(index));
     if (open.length != 2) return;
     moves++;
@@ -49,7 +52,9 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
       open.clear();
     });
     if (matched.length == cards.length && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('أحسنت! أكملت لعبة المطابقة ⭐')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('أحسنت! أكملت لعبة المطابقة ⭐')),
+      );
     }
   }
 
@@ -66,9 +71,18 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('الحركات: $moves', style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text('النجوم: $stars ⭐', style: const TextStyle(fontWeight: FontWeight.bold)),
-                  IconButton(onPressed: () => setState(_newGame), icon: const Icon(Icons.refresh)),
+                  Text(
+                    'الحركات: $moves',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'النجوم: $stars ⭐',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    onPressed: () => setState(_newGame),
+                    icon: const Icon(Icons.refresh),
+                  ),
                 ],
               ),
             ),
@@ -76,9 +90,14 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
               child: GridView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: cards.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
                 itemBuilder: (_, index) {
-                  final visible = open.contains(index) || matched.contains(index);
+                  final visible =
+                      open.contains(index) || matched.contains(index);
                   return InkWell(
                     onTap: () => _tap(index),
                     borderRadius: BorderRadius.circular(18),
@@ -88,9 +107,18 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(cards[index].emoji, style: const TextStyle(fontSize: 34)),
+                                  Text(
+                                    cards[index].emoji,
+                                    style: const TextStyle(fontSize: 34),
+                                  ),
                                   const SizedBox(height: 5),
-                                  Text(cards[index].word, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  Text(
+                                    cards[index].word,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               )
                             : const Text('؟', style: TextStyle(fontSize: 40)),

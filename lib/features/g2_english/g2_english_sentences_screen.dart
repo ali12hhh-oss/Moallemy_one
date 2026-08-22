@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../data/content.dart';
 import '../../widgets/button_3d.dart';
@@ -22,12 +23,26 @@ class G2EnglishSentencesScreen extends StatelessWidget {
               child: Button3D(
                 onTap: () => VoiceService.english(s),
                 color: const Color(0xFF00C853),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-                child: Row(children: [
-                  const Icon(Icons.volume_up_rounded, color: Colors.white),
-                  const SizedBox(width: 12),
-                  Expanded(child: Text(s, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 18,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.volume_up_rounded, color: Colors.white),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        s,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

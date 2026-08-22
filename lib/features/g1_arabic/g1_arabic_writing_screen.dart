@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../data/content.dart';
 import '../../data/short_words.dart';
@@ -45,28 +46,61 @@ class _G1ArabicWritingScreenState extends State<G1ArabicWritingScreen> {
         appBar: AppBar(
           title: Text('الكتابة • ${index + 1} من ${targets.length}'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'استمع',
+              icon: const Icon(Icons.volume_up_rounded),
+            ),
+            IconButton(
+              onPressed: () => canvasKey.currentState?.clear(),
+              tooltip: 'مسح',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
-        body: Stack(children: [
-          Column(children: [
-            const SizedBox(height: 6),
-            const Text('اكتب على السبورة', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text(target.$1, style: const TextStyle(fontSize: 60, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 6),
-            Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-              child: Row(children: [
-                Expanded(child: OutlinedButton(onPressed: () => _next(-1), child: const Text('السابق'))),
-                const SizedBox(width: 10),
-                Expanded(child: FilledButton(onPressed: () => _next(1), child: const Text('التالي'))),
-              ]),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                const SizedBox(height: 6),
+                const Text(
+                  'اكتب على السبورة',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  target.$1,
+                  style: const TextStyle(
+                    fontSize: 60,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => _next(-1),
+                          child: const Text('السابق'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: FilledButton(
+                          onPressed: () => _next(1),
+                          child: const Text('التالي'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ]),
-          CelebrationOverlay(message: cheer),
-        ]),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreServiceV23 {
@@ -11,7 +10,7 @@ class StoreServiceV23 {
     final p = await SharedPreferences.getInstance();
     final stars = p.getInt('child_stars_v15') ?? 0;
     if (stars < price || p.getBool('store.$id') == true) return false;
-    await p.setInt('child_stars_v15', stars-price);
+    await p.setInt('child_stars_v15', stars - price);
     await p.setBool('store.$id', true);
     return true;
   }

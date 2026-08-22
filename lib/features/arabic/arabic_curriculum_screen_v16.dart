@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../../data/arabic_curriculum_v16.dart';
 import '../../core/arabic/arabic_practice_engine_v16.dart';
 import 'arabic_practice_v16.dart';
@@ -8,12 +8,17 @@ class ArabicCurriculumScreenV16 extends StatelessWidget {
   final int grade;
   const ArabicCurriculumScreenV16({super.key, required this.grade});
 
-  @override Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final skills = arabicSkillsForGradeV16(grade);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: Text('اللغة العربية — الصف ${ArabicPracticeEngineV16.arabicNumber(grade)}')),
+        appBar: AppBar(
+          title: Text(
+            'اللغة العربية — الصف ${ArabicPracticeEngineV16.arabicNumber(grade)}',
+          ),
+        ),
         body: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -35,7 +40,9 @@ class ArabicCurriculumScreenV16 extends StatelessWidget {
                     child: ListTile(
                       leading: const Icon(Icons.menu_book_rounded),
                       title: Text(skill.title),
-                      subtitle: Text('${skill.category} — الإتقان ${ArabicPracticeEngineV16.arabicNumber(mastery)}٪'),
+                      subtitle: Text(
+                        '${skill.category} — الإتقان ${ArabicPracticeEngineV16.arabicNumber(mastery)}٪',
+                      ),
                       trailing: const Icon(Icons.arrow_back_ios_new),
                       onTap: () => Navigator.push(
                         context,

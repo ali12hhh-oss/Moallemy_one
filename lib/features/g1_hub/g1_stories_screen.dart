@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../stories/stories_screen.dart';
 
 class G1StoriesScreen extends StatelessWidget {
@@ -50,9 +51,22 @@ class G1StoriesScreen extends StatelessWidget {
             return Card(
               child: ListTile(
                 leading: Text(s.emoji, style: const TextStyle(fontSize: 38)),
-                title: Text(s.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(s.text, maxLines: 2, overflow: TextOverflow.ellipsis),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoryPage(s: s.title, text: s.text, emoji: s.emoji))),
+                title: Text(
+                  s.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  s.text,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        StoryPage(s: s.title, text: s.text, emoji: s.emoji),
+                  ),
+                ),
               ),
             );
           }).toList(),

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../../data/math_curriculum_v15.dart';
 import '../../core/math/math_practice_engine_v15.dart';
 import 'math_practice_v15.dart';
@@ -50,8 +50,13 @@ class MathCurriculumScreenV15 extends StatelessWidget {
                 builder: (context, snapshot) {
                   final mastery = snapshot.data ?? 0;
                   final playable = {
-                    'الجمع', 'الطرح', 'المقارنة', 'العدد الناقص',
-                    'القيمة المكانية', 'الأنماط', 'الترتيب'
+                    'الجمع',
+                    'الطرح',
+                    'المقارنة',
+                    'العدد الناقص',
+                    'القيمة المكانية',
+                    'الأنماط',
+                    'الترتيب',
                   }.contains(skill.category);
                   return Card(
                     child: ListTile(
@@ -61,16 +66,16 @@ class MathCurriculumScreenV15 extends StatelessWidget {
                       trailing: const Icon(Icons.arrow_back_ios_new),
                       onTap: playable
                           ? () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => MathPracticeV15(
-                                    skillId: skill.id,
-                                    title: skill.title,
-                                    category: skill.category,
-                                    maxNumber: skill.maxNumber,
-                                  ),
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MathPracticeV15(
+                                  skillId: skill.id,
+                                  title: skill.title,
+                                  category: skill.category,
+                                  maxNumber: skill.maxNumber,
                                 ),
-                              )
+                              ),
+                            )
                           : null,
                     ),
                   );

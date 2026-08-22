@@ -1,6 +1,7 @@
-
 import 'dart:math' as math;
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../storage/progress_v8.dart';
 import '../adaptive/adaptive_learning_engine_v24.dart';
 
@@ -30,9 +31,8 @@ class MathPracticeEngineV15 {
   static int mathMax(int a, int b) => math.max(a, b);
   static int mathMin(int a, int b) => math.min(a, b);
 
-  static String ar(int n) => n.toString().split('').map(
-    (d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)],
-  ).join();
+  static String ar(int n) =>
+      n.toString().split('').map((d) => '٠١٢٣٤٥٦٧٨٩'[int.parse(d)]).join();
 
   static String _operationPrompt(int a, int b, String op) {
     final vertical = _random.nextBool();
@@ -50,10 +50,7 @@ class MathPracticeEngineV15 {
     return result;
   }
 
-  static MathQuestionV15 addition({
-    required String skillId,
-    required int max,
-  }) {
+  static MathQuestionV15 addition({required String skillId, required int max}) {
     var a = _random.nextInt(max + 1);
     var b = _random.nextInt(max + 1);
     while (a + b > max) {
@@ -99,7 +96,12 @@ class MathPracticeEngineV15 {
       prompt: '${ar(a)}  ؟  ${ar(b)}',
       answer: answer,
       options: options,
-      explanation: '${ar(a)} ${answer == 1 ? 'أكبر من' : answer == -1 ? 'أصغر من' : 'يساوي'} ${ar(b)}',
+      explanation:
+          '${ar(a)} ${answer == 1
+              ? 'أكبر من'
+              : answer == -1
+              ? 'أصغر من'
+              : 'يساوي'} ${ar(b)}',
     );
   }
 
@@ -143,27 +145,28 @@ class MathPracticeEngineV15 {
       prompt: 'ما قيمة الرقم ${ar(digit)} في العدد ${ar(value)}؟',
       answer: answer,
       options: _options(answer, spread: math.max(10, answer ~/ 2 + 1)),
-      explanation: 'الرقم ${ar(digit)} في منزلة $placeName، وقيمته ${ar(answer)}',
+      explanation:
+          'الرقم ${ar(digit)} في منزلة $placeName، وقيمته ${ar(answer)}',
     );
   }
 
-  static MathQuestionV15 pattern({
-    required String skillId,
-    required int max,
-  }) {
+  static MathQuestionV15 pattern({required String skillId, required int max}) {
     final step = _random.nextInt(9) + 1;
     final start = _random.nextInt(max ~/ 2 + 1);
     final answer = start + step * 3;
     return MathQuestionV15(
       skillId: skillId,
-      prompt: '${ar(start)} ، ${ar(start + step)} ، ${ar(start + step * 2)} ، ؟',
+      prompt:
+          '${ar(start)} ، ${ar(start + step)} ، ${ar(start + step * 2)} ، ؟',
       answer: answer,
       options: _options(answer, spread: step + 2),
       explanation: 'النمط يزيد بمقدار ${ar(step)} كل مرة.',
     );
   }
 
-  static bool _sameList(List<int> a, List<int> b) => a.length == b.length && List.generate(a.length, (i) => a[i] == b[i]).every((x) => x);
+  static bool _sameList(List<int> a, List<int> b) =>
+      a.length == b.length &&
+      List.generate(a.length, (i) => a[i] == b[i]).every((x) => x);
 
   static MathQuestionV15 ordering({
     required String skillId,
@@ -177,8 +180,8 @@ class MathPracticeEngineV15 {
     }
     var sorted = values.toList()..sort();
     if (!ascending) {
-  sorted = sorted.reversed.toList();
-}
+      sorted = sorted.reversed.toList();
+    }
     final correctText = sorted.map(ar).join(' ، ');
     final permutations = <List<int>>[
       sorted,
@@ -189,7 +192,8 @@ class MathPracticeEngineV15 {
     final correctIndex = permutations.indexWhere((x) => _sameList(x, sorted));
     return MathQuestionV15(
       skillId: skillId,
-      prompt: 'رتّب الأعداد ${values.map(ar).join(' ، ')} ${ascending ? 'تصاعدياً' : 'تنازلياً'}',
+      prompt:
+          'رتّب الأعداد ${values.map(ar).join(' ، ')} ${ascending ? 'تصاعدياً' : 'تنازلياً'}',
       answer: correctIndex,
       options: const [0, 1, 2, 3],
       optionLabels: permutations.map((x) => x.map(ar).join(' ، ')).toList(),

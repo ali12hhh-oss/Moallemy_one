@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../core/storage/progress_v8.dart';
@@ -16,41 +18,80 @@ class Kg1GamesScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: const Text('الألعاب 🎮')),
-        body: ListView(padding: const EdgeInsets.all(18), children: [
-          Button3D(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const _LetterGame())),
-            color: const Color(0xFF7C4DFF),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-            child: const Row(children: [
-              Text('🔤', style: TextStyle(fontSize: 40)),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('لعبة الحروف', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
-                  SizedBox(height: 4),
-                  Text('استمع للحرف واختر الشكل الصحيح', style: TextStyle(color: Colors.white70)),
-                ]),
+        body: ListView(
+          padding: const EdgeInsets.all(18),
+          children: [
+            Button3D(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const _LetterGame()),
               ),
-            ]),
-          ),
-          const SizedBox(height: 16),
-          Button3D(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const _NumberGame())),
-            color: const Color(0xFF2979FF),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-            child: const Row(children: [
-              Text('🔢', style: TextStyle(fontSize: 40)),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('لعبة الأرقام', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
-                  SizedBox(height: 4),
-                  Text('عدّ الصور واختر الرقم الصحيح', style: TextStyle(color: Colors.white70)),
-                ]),
+              color: const Color(0xFF7C4DFF),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+              child: const Row(
+                children: [
+                  Text('🔤', style: TextStyle(fontSize: 40)),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'لعبة الحروف',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'استمع للحرف واختر الشكل الصحيح',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ]),
-          ),
-        ]),
+            ),
+            const SizedBox(height: 16),
+            Button3D(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const _NumberGame()),
+              ),
+              color: const Color(0xFF2979FF),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+              child: const Row(
+                children: [
+                  Text('🔢', style: TextStyle(fontSize: 40)),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'لعبة الأرقام',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'عدّ الصور واختر الرقم الصحيح',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -86,7 +127,12 @@ class _LetterGameState extends State<_LetterGame> {
     options = [target, ...others.take(3)]..shuffle(rnd);
     feedback = null;
     locked = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) => VoiceService.arabicLetterSound(target.letter, fallbackText: target.sound));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => VoiceService.arabicLetterSound(
+        target.letter,
+        fallbackText: target.sound,
+      ),
+    );
   }
 
   void _answer(ArabicLetter chosen) {
@@ -116,36 +162,60 @@ class _LetterGameState extends State<_LetterGame> {
         appBar: AppBar(title: Text('لعبة الحروف • النجوم: ${arNum(score)} ⭐')),
         body: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(children: [
-            IconButton(
-              iconSize: 42,
-              icon: const Icon(Icons.volume_up_rounded),
-              onPressed: () => VoiceService.arabicLetterSound(target.letter, fallbackText: target.sound),
-            ),
-            const Text('أي حرف سمعت؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: feedback == null
-                  ? const SizedBox(height: 30)
-                  : Text(feedback!, key: ValueKey(feedback), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
-            ),
-            const SizedBox(height: 18),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 14,
-                crossAxisSpacing: 14,
-                children: options.map((o) {
-                  return Button3D(
-                    onTap: () => _answer(o),
-                    color: const Color(0xFF00BFA6),
-                    child: Center(child: Text(o.letter, style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white))),
-                  );
-                }).toList(),
+          child: Column(
+            children: [
+              IconButton(
+                iconSize: 42,
+                icon: const Icon(Icons.volume_up_rounded),
+                onPressed: () => VoiceService.arabicLetterSound(
+                  target.letter,
+                  fallbackText: target.sound,
+                ),
               ),
-            ),
-          ]),
+              const Text(
+                'أي حرف سمعت؟',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: feedback == null
+                    ? const SizedBox(height: 30)
+                    : Text(
+                        feedback!,
+                        key: ValueKey(feedback),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+              ),
+              const SizedBox(height: 18),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 14,
+                  children: options.map((o) {
+                    return Button3D(
+                      onTap: () => _answer(o),
+                      color: const Color(0xFF00BFA6),
+                      child: Center(
+                        child: Text(
+                          o.letter,
+                          style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -183,7 +253,9 @@ class _NumberGameState extends State<_NumberGame> {
     options = [target, ...list.take(3)]..shuffle(rnd);
     feedback = null;
     locked = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) => VoiceService.arabic('كم العدد؟'));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => VoiceService.arabic('كم العدد؟'),
+    );
   }
 
   void _answer(int chosen) {
@@ -204,10 +276,20 @@ class _NumberGameState extends State<_NumberGame> {
     }
   }
 
-  static String _numberWord(int n) => const {
-    1: 'واحد', 2: 'اثنان', 3: 'ثلاثة', 4: 'أربعة', 5: 'خمسة',
-    6: 'ستة', 7: 'سبعة', 8: 'ثمانية', 9: 'تسعة', 10: 'عشرة',
-  }[n] ?? '$n';
+  static String _numberWord(int n) =>
+      const {
+        1: 'واحد',
+        2: 'اثنان',
+        3: 'ثلاثة',
+        4: 'أربعة',
+        5: 'خمسة',
+        6: 'ستة',
+        7: 'سبعة',
+        8: 'ثمانية',
+        9: 'تسعة',
+        10: 'عشرة',
+      }[n] ??
+      '$n';
 
   @override
   Widget build(BuildContext context) {
@@ -217,38 +299,62 @@ class _NumberGameState extends State<_NumberGame> {
         appBar: AppBar(title: Text('لعبة الأرقام • النجوم: ${arNum(score)} ⭐')),
         body: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(children: [
-            const Text('كم عدد الصور؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 14),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 10,
-              runSpacing: 10,
-              children: List.generate(target, (_) => Text(icon, style: const TextStyle(fontSize: 34))),
-            ),
-            const SizedBox(height: 14),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: feedback == null
-                  ? const SizedBox(height: 30)
-                  : Text(feedback!, key: ValueKey(feedback), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 14,
-                crossAxisSpacing: 14,
-                children: options.map((o) {
-                  return Button3D(
-                    onTap: () => _answer(o),
-                    color: const Color(0xFFFF6B35),
-                    child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white))),
-                  );
-                }).toList(),
+          child: Column(
+            children: [
+              const Text(
+                'كم عدد الصور؟',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-          ]),
+              const SizedBox(height: 14),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 10,
+                runSpacing: 10,
+                children: List.generate(
+                  target,
+                  (_) => Text(icon, style: const TextStyle(fontSize: 34)),
+                ),
+              ),
+              const SizedBox(height: 14),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: feedback == null
+                    ? const SizedBox(height: 30)
+                    : Text(
+                        feedback!,
+                        key: ValueKey(feedback),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 14,
+                  children: options.map((o) {
+                    return Button3D(
+                      onTap: () => _answer(o),
+                      color: const Color(0xFFFF6B35),
+                      child: Center(
+                        child: Text(
+                          arNum(o),
+                          style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

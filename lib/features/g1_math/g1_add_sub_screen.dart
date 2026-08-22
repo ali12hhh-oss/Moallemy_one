@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../core/storage/progress_v8.dart';
@@ -78,54 +80,107 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: Text('${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐')),
-        body: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(children: [
-              // المجموعة الأولى: a من الفاكهة.
-              Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(a, (i) {
-                final crossed = !widget.isAddition && i < b;
-                return Stack(alignment: Alignment.center, children: [
-                  Text(fruit, style: TextStyle(fontSize: 34, color: crossed ? Colors.grey.withValues(alpha: .4) : null)),
-                  if (crossed) const Icon(Icons.close_rounded, color: Colors.red, size: 30),
-                ]);
-              })),
-              const SizedBox(height: 10),
-              if (widget.isAddition) ...[
-                const Text('+', style: TextStyle(fontSize: 26)),
-                const SizedBox(height: 6),
-                Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(b, (_) => Text(fruit, style: const TextStyle(fontSize: 34)))),
-              ],
-              const SizedBox(height: 16),
-              Text('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
-              const SizedBox(height: 8),
-              IconButton(
-                icon: const Icon(Icons.volume_up_rounded),
-                onPressed: () {
-                  final opWord = widget.isAddition ? 'زائد' : 'ناقص';
-                  VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}');
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  children: options.map((o) {
-                    return Button3D(
-                      onTap: () => _answer(o),
-                      color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
-                      child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white))),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ]),
+        appBar: AppBar(
+          title: Text(
+            '${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐',
           ),
-          CelebrationOverlay(message: cheer),
-        ]),
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                children: [
+                  // المجموعة الأولى: a من الفاكهة.
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 6,
+                    children: List.generate(a, (i) {
+                      final crossed = !widget.isAddition && i < b;
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Text(
+                            fruit,
+                            style: TextStyle(
+                              fontSize: 34,
+                              color: crossed
+                                  ? Colors.grey.withValues(alpha: .4)
+                                  : null,
+                            ),
+                          ),
+                          if (crossed)
+                            const Icon(
+                              Icons.close_rounded,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                        ],
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 10),
+                  if (widget.isAddition) ...[
+                    const Text('+', style: TextStyle(fontSize: 26)),
+                    const SizedBox(height: 6),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 6,
+                      children: List.generate(
+                        b,
+                        (_) =>
+                            Text(fruit, style: const TextStyle(fontSize: 34)),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  Text(
+                    '${arNum(a)} $op ${arNum(b)} = ؟',
+                    style: const TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  IconButton(
+                    icon: const Icon(Icons.volume_up_rounded),
+                    onPressed: () {
+                      final opWord = widget.isAddition ? 'زائد' : 'ناقص';
+                      VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}');
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 14,
+                      children: options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: widget.isAddition
+                              ? const Color(0xFF00C853)
+                              : const Color(0xFFFF6B35),
+                          child: Center(
+                            child: Text(
+                              arNum(o),
+                              style: const TextStyle(
+                                fontSize: 34,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

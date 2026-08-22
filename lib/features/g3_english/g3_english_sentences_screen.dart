@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../widgets/button_3d.dart';
 
@@ -47,18 +48,39 @@ class G3EnglishSentencesScreen extends StatelessWidget {
               child: Button3D(
                 onTap: () => VoiceService.english(s.text),
                 color: const Color(0xFF00C853),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                child: Row(children: [
-                  Text(s.emoji, style: const TextStyle(fontSize: 26)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(s.text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
-                      Text(s.arabic, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
-                    ]),
-                  ),
-                  const Icon(Icons.volume_up_rounded, color: Colors.white70),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    Text(s.emoji, style: const TextStyle(fontSize: 26)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            s.text,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            s.arabic,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.volume_up_rounded, color: Colors.white70),
+                  ],
+                ),
               ),
             );
           },

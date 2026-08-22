@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../data/content.dart';
 import '../../core/localization/arabic_numbers.dart';
 
@@ -71,7 +73,10 @@ class _S extends State<QuizScreen> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Text('السؤال ${arNum(q)} من ${arNum(10)}', style: const TextStyle(fontSize: 20)),
+              Text(
+                'السؤال ${arNum(q)} من ${arNum(10)}',
+                style: const TextStyle(fontSize: 20),
+              ),
               const SizedBox(height: 24),
               Text(target.emoji, style: const TextStyle(fontSize: 70)),
               Text(
@@ -87,7 +92,10 @@ class _S extends State<QuizScreen> {
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: () => answer(x),
-                      child: Text(x.letter, style: const TextStyle(fontSize: 28)),
+                      child: Text(
+                        x.letter,
+                        style: const TextStyle(fontSize: 28),
+                      ),
                     ),
                   ),
                 ),

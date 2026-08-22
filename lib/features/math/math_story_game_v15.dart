@@ -1,12 +1,14 @@
-
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/math/math_practice_engine_v15.dart';
 
 class MathStoryGameV15 extends StatefulWidget {
   final int grade;
   const MathStoryGameV15({super.key, required this.grade});
-  @override State<MathStoryGameV15> createState() => _MathStoryGameV15State();
+  @override
+  State<MathStoryGameV15> createState() => _MathStoryGameV15State();
 }
 
 class _MathStoryGameV15State extends State<MathStoryGameV15> {
@@ -105,7 +107,10 @@ class _MathStoryGameV15State extends State<MathStoryGameV15> {
                           width: double.infinity,
                           child: FilledButton.tonal(
                             onPressed: locked ? null : () => _answer(n),
-                            child: Text(ar(n), style: const TextStyle(fontSize: 22)),
+                            child: Text(
+                              ar(n),
+                              style: const TextStyle(fontSize: 22),
+                            ),
                           ),
                         ),
                       ),

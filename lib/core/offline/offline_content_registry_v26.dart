@@ -1,4 +1,3 @@
-
 class OfflineContentRegistryV26 {
   static const requiredAssetRoots = <String>[
     'assets/images/',

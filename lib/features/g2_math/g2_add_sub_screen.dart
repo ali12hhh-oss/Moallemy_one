@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../core/storage/progress_v8.dart';
@@ -39,7 +41,8 @@ class _G2AddSubScreenState extends State<G2AddSubScreen> {
       b = 1 + rnd.nextInt(a - 1 > 20 ? 20 : max(1, a - 1));
       answer = a - b;
     }
-    final others = {for (var i = max(0, answer - 5); i <= answer + 5; i++) i}..remove(answer);
+    final others = {for (var i = max(0, answer - 5); i <= answer + 5; i++) i}
+      ..remove(answer);
     final list = others.toList()..shuffle(rnd);
     options = [answer, ...list.take(3)]..shuffle(rnd);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -73,78 +76,162 @@ class _G2AddSubScreenState extends State<G2AddSubScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: Text('${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐')),
-        body: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(children: [
-              Row(children: [
-                Expanded(
-                  child: Button3D(
-                    onTap: () => setState(() => vertical = false),
-                    color: !vertical ? const Color(0xFF2979FF) : const Color(0xFF90CAF9),
-                    depth: !vertical ? 2 : 7,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: const Center(child: Text('أفقي', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white))),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Button3D(
-                    onTap: () => setState(() => vertical = true),
-                    color: vertical ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
-                    depth: vertical ? 2 : 7,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: const Center(child: Text('عمودي', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white))),
-                  ),
-                ),
-              ]),
-              const SizedBox(height: 20),
-              if (!vertical)
-                Text('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900))
-              else
-                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  SizedBox(
-                    width: 140,
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                      Text(arNum(a), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Text(op, style: const TextStyle(fontSize: 28)),
-                        const SizedBox(width: 8),
-                        Text(arNum(b), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
-                      ]),
-                      Container(height: 3, color: Colors.black87, margin: const EdgeInsets.symmetric(vertical: 4)),
-                      const Text('؟', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.grey)),
-                    ]),
-                  ),
-                ]),
-              const SizedBox(height: 10),
-              IconButton(
-                icon: const Icon(Icons.volume_up_rounded),
-                onPressed: () {
-                  final opWord = widget.isAddition ? 'زائد' : 'ناقص';
-                  VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}');
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  children: options.map((o) {
-                    return Button3D(
-                      onTap: () => _answer(o),
-                      color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
-                      child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white))),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ]),
+        appBar: AppBar(
+          title: Text(
+            '${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐',
           ),
-          CelebrationOverlay(message: cheer),
-        ]),
+        ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Button3D(
+                          onTap: () => setState(() => vertical = false),
+                          color: !vertical
+                              ? const Color(0xFF2979FF)
+                              : const Color(0xFF90CAF9),
+                          depth: !vertical ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Center(
+                            child: Text(
+                              'أفقي',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Button3D(
+                          onTap: () => setState(() => vertical = true),
+                          color: vertical
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
+                          depth: vertical ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Center(
+                            child: Text(
+                              'عمودي',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  if (!vertical)
+                    Text(
+                      '${arNum(a)} $op ${arNum(b)} = ؟',
+                      style: const TextStyle(
+                        fontSize: 34,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    )
+                  else
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 140,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                arNum(a),
+                                style: const TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    op,
+                                    style: const TextStyle(fontSize: 28),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    arNum(b),
+                                    style: const TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 3,
+                                color: Colors.black87,
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                              ),
+                              const Text(
+                                '؟',
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 10),
+                  IconButton(
+                    icon: const Icon(Icons.volume_up_rounded),
+                    onPressed: () {
+                      final opWord = widget.isAddition ? 'زائد' : 'ناقص';
+                      VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}');
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 14,
+                      children: options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: widget.isAddition
+                              ? const Color(0xFF00C853)
+                              : const Color(0xFFFF6B35),
+                          child: Center(
+                            child: Text(
+                              arNum(o),
+                              style: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

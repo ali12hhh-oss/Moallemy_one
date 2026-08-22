@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../core/storage/progress_v8.dart';
@@ -22,8 +24,32 @@ class G3WordProblemsScreen extends StatefulWidget {
 
 class _G3WordProblemsScreenState extends State<G3WordProblemsScreen> {
   final rnd = Random();
-  static const names = ['أحمد', 'سارة', 'علي', 'ليلى', 'يوسف', 'نور', 'مريم', 'خالد', 'زينب', 'حسن', 'هدى', 'كريم'];
-  static const items = ['تفاحات 🍎', 'كرات ⚽', 'أقلام ✏️', 'نجوم ⭐', 'حلويات 🍬', 'كتب 📚', 'ورودًا 🌹', 'بيضًا 🥚', 'أقراصًا 🍪', 'بالونات 🎈'];
+  static const names = [
+    'أحمد',
+    'سارة',
+    'علي',
+    'ليلى',
+    'يوسف',
+    'نور',
+    'مريم',
+    'خالد',
+    'زينب',
+    'حسن',
+    'هدى',
+    'كريم',
+  ];
+  static const items = [
+    'تفاحات 🍎',
+    'كرات ⚽',
+    'أقلام ✏️',
+    'نجوم ⭐',
+    'حلويات 🍬',
+    'كتب 📚',
+    'ورودًا 🌹',
+    'بيضًا 🥚',
+    'أقراصًا 🍪',
+    'بالونات 🎈',
+  ];
   static const boxItems = ['علب', 'أكياس', 'سلال', 'صناديق'];
 
   late _WordProblem problem;
@@ -67,7 +93,9 @@ class _G3WordProblemsScreenState extends State<G3WordProblemsScreen> {
   }
 
   _WordProblem _multiplicationProblem() {
-    final name = _name(), item = _item(), box = boxItems[rnd.nextInt(boxItems.length)];
+    final name = _name(),
+        item = _item(),
+        box = boxItems[rnd.nextInt(boxItems.length)];
     final groups = 2 + rnd.nextInt(8); // 2..9
     final perGroup = 2 + rnd.nextInt(9); // 2..10
     final templates = [
@@ -75,11 +103,16 @@ class _G3WordProblemsScreenState extends State<G3WordProblemsScreen> {
       'اشترى $name ${arNum(groups)} صناديق، في كل صندوق ${arNum(perGroup)} $item. كم عدد $item عنده؟',
       'في الحفلة ${arNum(groups)} طاولات، على كل طاولة ${arNum(perGroup)} كراسٍ. كم عدد الكراسي؟',
     ];
-    return _WordProblem(templates[rnd.nextInt(templates.length)], groups * perGroup);
+    return _WordProblem(
+      templates[rnd.nextInt(templates.length)],
+      groups * perGroup,
+    );
   }
 
   _WordProblem _divisionProblem() {
-    final name = _name(), item = _item(), box = boxItems[rnd.nextInt(boxItems.length)];
+    final name = _name(),
+        item = _item(),
+        box = boxItems[rnd.nextInt(boxItems.length)];
     final divisor = 2 + rnd.nextInt(5); // 2..6
     final quotient = 2 + rnd.nextInt(8); // 2..9
     final total = divisor * quotient;
@@ -103,10 +136,14 @@ class _G3WordProblemsScreenState extends State<G3WordProblemsScreen> {
 
   void _next() {
     problem = _generate();
-    final others = {for (var i = max(0, problem.answer - 6); i <= problem.answer + 6; i++) i}..remove(problem.answer);
+    final others = {
+      for (var i = max(0, problem.answer - 6); i <= problem.answer + 6; i++) i,
+    }..remove(problem.answer);
     final list = others.toList()..shuffle(rnd);
     options = [problem.answer, ...list.take(3)]..shuffle(rnd);
-    WidgetsBinding.instance.addPostFrameCallback((_) => VoiceService.arabic(problem.text));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => VoiceService.arabic(problem.text),
+    );
   }
 
   void _answer(int chosen) {
@@ -135,34 +172,61 @@ class _G3WordProblemsScreenState extends State<G3WordProblemsScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: Text('مسائل كلامية • ${arNum(score)} ⭐')),
-        body: Stack(children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(children: [
-              const SizedBox(height: 10),
-              Row(children: [
-                IconButton(icon: const Icon(Icons.volume_up_rounded), onPressed: () => VoiceService.arabic(problem.text)),
-                Expanded(child: Text(problem.text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900), textAlign: TextAlign.center)),
-              ]),
-              const SizedBox(height: 24),
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  children: options.map((o) {
-                    return Button3D(
-                      onTap: () => _answer(o),
-                      color: const Color(0xFF7C4DFF),
-                      child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white))),
-                    );
-                  }).toList(),
-                ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.volume_up_rounded),
+                        onPressed: () => VoiceService.arabic(problem.text),
+                      ),
+                      Expanded(
+                        child: Text(
+                          problem.text,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 14,
+                      children: options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: const Color(0xFF7C4DFF),
+                          child: Center(
+                            child: Text(
+                              arNum(o),
+                              style: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
-            ]),
-          ),
-          CelebrationOverlay(message: cheer),
-        ]),
+            ),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

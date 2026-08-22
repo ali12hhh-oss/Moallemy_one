@@ -17,11 +17,24 @@ class HelpScreen extends StatelessWidget {
           Card(
             child: Padding(
               padding: EdgeInsets.all(18),
-              child: Row(children: [
-                CircleAvatar(radius: 27, child: Text('📖', style: TextStyle(fontSize: 24))),
-                SizedBox(width: 14),
-                Expanded(child: Text('دليل سريع لاستخدام التطبيق مع طفلك', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
-              ]),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 27,
+                    child: Text('📖', style: TextStyle(fontSize: 24)),
+                  ),
+                  SizedBox(width: 14),
+                  Expanded(
+                    child: Text(
+                      'دليل سريع لاستخدام التطبيق مع طفلك',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           _Step(
@@ -100,7 +113,12 @@ class _Step extends StatelessWidget {
   final IconData icon;
   final String title;
   final String body;
-  const _Step({required this.number, required this.icon, required this.title, required this.body});
+  const _Step({
+    required this.number,
+    required this.icon,
+    required this.title,
+    required this.body,
+  });
 
   @override
   Widget build(BuildContext context) => Card(
@@ -112,18 +130,35 @@ class _Step extends StatelessWidget {
           CircleAvatar(
             radius: 18,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            child: Text(number, style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              number,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(children: [
-                  Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
-                  const SizedBox(width: 6),
-                  Expanded(child: Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold))),
-                ]),
+                Row(
+                  children: [
+                    Icon(
+                      icon,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 6),
                 Text(body, style: const TextStyle(fontSize: 14.5, height: 1.6)),
               ],

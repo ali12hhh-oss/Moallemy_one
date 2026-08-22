@@ -1,9 +1,21 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../widgets/button_3d.dart';
 
-enum _ShapeKind { square, triangle, circle, rectangle, trapezoid, oblique, pentagon, hexagon, rhombus }
+enum _ShapeKind {
+  square,
+  triangle,
+  circle,
+  rectangle,
+  trapezoid,
+  oblique,
+  pentagon,
+  hexagon,
+  rhombus,
+}
 
 class _ShapeEntry {
   final String name;
@@ -37,7 +49,12 @@ class Kg2ShapesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text('الأشكال 🔷')),
         body: GridView.builder(
           padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 14, mainAxisSpacing: 14, childAspectRatio: .95),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+            childAspectRatio: .95,
+          ),
           itemCount: shapes.length,
           itemBuilder: (_, i) {
             final s = shapes[i];
@@ -45,11 +62,25 @@ class Kg2ShapesScreen extends StatelessWidget {
               onTap: () => VoiceService.arabic(s.name),
               color: s.color,
               padding: const EdgeInsets.all(14),
-              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SizedBox(width: 74, height: 74, child: CustomPaint(painter: _ShapePainter(s.kind))),
-                const SizedBox(height: 10),
-                Text(s.name, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white)),
-              ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 74,
+                    height: 74,
+                    child: CustomPaint(painter: _ShapePainter(s.kind)),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    s.name,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -64,14 +95,28 @@ class _ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.white..style = PaintingStyle.fill;
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
     final w = size.width, h = size.height;
     final path = Path();
     switch (kind) {
       case _ShapeKind.square:
-        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(4, 4, w - 8, h - 8), const Radius.circular(8)), paint);
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(4, 4, w - 8, h - 8),
+            const Radius.circular(8),
+          ),
+          paint,
+        );
       case _ShapeKind.rectangle:
-        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 14, w, h - 28), const Radius.circular(8)), paint);
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(0, 14, w, h - 28),
+            const Radius.circular(8),
+          ),
+          paint,
+        );
       case _ShapeKind.circle:
         canvas.drawCircle(Offset(w / 2, h / 2), w / 2 - 2, paint);
       case _ShapeKind.triangle:
@@ -126,5 +171,6 @@ class _ShapePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _ShapePainter oldDelegate) => oldDelegate.kind != kind;
+  bool shouldRepaint(covariant _ShapePainter oldDelegate) =>
+      oldDelegate.kind != kind;
 }

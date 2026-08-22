@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/storage/progress_v5.dart';
 
 class ShopItem {
@@ -67,7 +68,13 @@ class _S extends State<ShopScreen> {
                 child: Column(
                   children: [
                     Text(x.emoji, style: const TextStyle(fontSize: 55)),
-                    Text(x.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(
+                      x.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
                     Expanded(child: Text(x.desc, textAlign: TextAlign.center)),
                     Text('⭐ ${x.price}'),
                     const SizedBox(height: 6),
@@ -80,7 +87,9 @@ class _S extends State<ShopScreen> {
                                 await load();
                               } else if (c.mounted) {
                                 ScaffoldMessenger.of(c).showSnackBar(
-                                  const SnackBar(content: Text('تحتاج إلى نجوم أكثر')),
+                                  const SnackBar(
+                                    content: Text('تحتاج إلى نجوم أكثر'),
+                                  ),
                                 );
                               }
                             },

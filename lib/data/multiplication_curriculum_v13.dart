@@ -1,4 +1,3 @@
-
 class MultiplicationTableV13 {
   final int table;
   final int grade;

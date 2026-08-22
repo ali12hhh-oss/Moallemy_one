@@ -1,6 +1,7 @@
-
 import 'dart:math';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../adaptive/adaptive_learning_engine_v24.dart';
 
 class MultiplicationSkillV13 {
@@ -8,7 +9,12 @@ class MultiplicationSkillV13 {
   final int multiplier;
   final int attempts;
   final int correct;
-  const MultiplicationSkillV13(this.table, this.multiplier, this.attempts, this.correct);
+  const MultiplicationSkillV13(
+    this.table,
+    this.multiplier,
+    this.attempts,
+    this.correct,
+  );
   double get mastery => attempts == 0 ? 0 : correct / attempts;
   String get id => 'mul_${table}_$multiplier';
 }
@@ -56,7 +62,8 @@ class MultiplicationEngineV13 {
     return min(100, (total / 100).round());
   }
 
-  static Future<bool> isMastered(int table) async => (await mastery(table)) >= 80;
+  static Future<bool> isMastered(int table) async =>
+      (await mastery(table)) >= 80;
 
   static Future<List<int>> weakMultipliers(int table) async {
     final data = await _load();

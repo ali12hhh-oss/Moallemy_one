@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/learning/adaptive_learning_engine_v9.dart';
 import '../../core/localization/arabic_numbers.dart';
 
@@ -56,7 +57,10 @@ class _SkillPracticeScreenV9State extends State<SkillPracticeScreenV9> {
               Text(
                 widget.question,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 20),
               ...widget.options.map(
@@ -76,7 +80,10 @@ class _SkillPracticeScreenV9State extends State<SkillPracticeScreenV9> {
                   padding: const EdgeInsets.all(14),
                   child: Text(
                     result! ? '🎉 إجابة صحيحة' : '🔄 نراجعها مرة أخرى',
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               if (attempts > 0)

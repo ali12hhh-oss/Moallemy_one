@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/storage/app_storage.dart';
 import '../../core/theme/stage_colors.dart';
 import '../../models/child.dart';
@@ -7,7 +8,8 @@ import '../../widgets/button_3d.dart';
 class ChildRegistrationScreen extends StatefulWidget {
   const ChildRegistrationScreen({super.key});
   @override
-  State<ChildRegistrationScreen> createState() => _ChildRegistrationScreenState();
+  State<ChildRegistrationScreen> createState() =>
+      _ChildRegistrationScreenState();
 }
 
 class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
@@ -36,7 +38,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     Child? c;
     if (active != null) {
       for (final k in kids) {
-        if (k.id == active) { c = k; break; }
+        if (k.id == active) {
+          c = k;
+          break;
+        }
       }
     }
     c ??= kids.isEmpty ? null : kids.first;
@@ -44,7 +49,9 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     if (loaded != null && mounted) {
       setState(() {
         name.text = loaded.name;
-        stageId = stages.firstWhere((s) => s.$2 == loaded.stage, orElse: () => stages.first).$1;
+        stageId = stages
+            .firstWhere((s) => s.$2 == loaded.stage, orElse: () => stages.first)
+            .$1;
       });
     }
   }
@@ -52,7 +59,9 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   Future<void> _save() async {
     final n = name.text.trim();
     if (n.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('اكتب اسم الطفل أولاً 🌟')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('اكتب اسم الطفل أولاً 🌟')));
       return;
     }
     setState(() => saving = true);
@@ -63,10 +72,18 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     if (index >= 0) {
       final old = kids[index];
       kids[index] = Child(
-        id: old.id, name: n, age: _age(stageId), stage: selected,
-        stars: old.stars, lessons: old.lessons, quizzes: old.quizzes,
-        correct: old.correct, total: old.total, minutes: old.minutes,
-        streak: old.streak, weakItems: old.weakItems,
+        id: old.id,
+        name: n,
+        age: _age(stageId),
+        stage: selected,
+        stars: old.stars,
+        lessons: old.lessons,
+        quizzes: old.quizzes,
+        correct: old.correct,
+        total: old.total,
+        minutes: old.minutes,
+        streak: old.streak,
+        weakItems: old.weakItems,
       );
       await AppStorage.setActive(old.id);
     } else {
@@ -85,7 +102,14 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     if (mounted) Navigator.pop(context);
   }
 
-  int _age(String id) => switch (id) { 'kg1' => 4, 'kg2' => 5, 'prep' => 6, 'g1' => 7, 'g2' => 8, _ => 9 };
+  int _age(String id) => switch (id) {
+    'kg1' => 4,
+    'kg2' => 5,
+    'prep' => 6,
+    'g1' => 7,
+    'g2' => 8,
+    _ => 9,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -96,17 +120,27 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
         body: ListView(
           padding: const EdgeInsets.all(18),
           children: [
-            const Text('اكتب اسمك يا بطل ⭐', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
+            const Text(
+              'اكتب اسمك يا بطل ⭐',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+            ),
             const SizedBox(height: 8),
             const Text('سيظهر اسمك ومرحلتك في الصفحة الرئيسية.'),
             const SizedBox(height: 22),
             TextField(
               controller: name,
               textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(labelText: 'اسم الطفل', prefixIcon: Icon(Icons.person_rounded), hintText: 'مثال: أحمد'),
+              decoration: const InputDecoration(
+                labelText: 'اسم الطفل',
+                prefixIcon: Icon(Icons.person_rounded),
+                hintText: 'مثال: أحمد',
+              ),
             ),
             const SizedBox(height: 22),
-            const Text('اختر مرحلتك', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'اختر مرحلتك',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
             ...stages.map((s) {
               final selected = stageId == s.$1;
@@ -117,13 +151,32 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                   onTap: () => setState(() => stageId = s.$1),
                   color: color,
                   depth: selected ? 2 : 8,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  child: Row(children: [
-                    Text(s.$3, style: const TextStyle(fontSize: 26)),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text(s.$2, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))),
-                    if (selected) const Icon(Icons.check_circle_rounded, color: Colors.white, size: 26),
-                  ]),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(s.$3, style: const TextStyle(fontSize: 26)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          s.$2,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      if (selected)
+                        const Icon(
+                          Icons.check_circle_rounded,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                    ],
+                  ),
                 ),
               );
             }),
@@ -137,7 +190,14 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 children: [
                   const Icon(Icons.save_rounded, color: Colors.white),
                   const SizedBox(width: 10),
-                  Text(saving ? 'جارٍ الحفظ...' : 'حفظ والبدء 🚀', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
+                  Text(
+                    saving ? 'جارٍ الحفظ...' : 'حفظ والبدء 🚀',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -165,16 +225,25 @@ class _CelebrationDialog extends StatefulWidget {
   State<_CelebrationDialog> createState() => _CelebrationDialogState();
 }
 
-class _CelebrationDialogState extends State<_CelebrationDialog> with SingleTickerProviderStateMixin {
+class _CelebrationDialogState extends State<_CelebrationDialog>
+    with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   late final Animation<double> bounce;
 
-  static const cheers = ['أحسنت يا بطل! 🎉', 'رائع جدًا! 🌟', 'ما شاء الله عليك! 🏆', 'يلا نبدأ المغامرة! 🚀'];
+  static const cheers = [
+    'أحسنت يا بطل! 🎉',
+    'رائع جدًا! 🌟',
+    'ما شاء الله عليك! 🏆',
+    'يلا نبدأ المغامرة! 🚀',
+  ];
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    )..forward();
     bounce = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
   }
 
@@ -192,30 +261,54 @@ class _CelebrationDialogState extends State<_CelebrationDialog> with SingleTicke
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFF7043)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFFD54F), Color(0xFFFF7043)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(28),
         ),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          ScaleTransition(
-            scale: bounce,
-            child: const Text('🎉⭐🎊', style: TextStyle(fontSize: 46)),
-          ),
-          const SizedBox(height: 14),
-          Text(cheer, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white), textAlign: TextAlign.center),
-          const SizedBox(height: 10),
-          Text(
-            'تم حفظ اسم ${widget.name} في ${widget.stage} 🌟\nسنحفظ تقدمك مع كل نشاط.',
-            style: const TextStyle(color: Colors.white, fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 22),
-          Button3D(
-            onTap: () => Navigator.pop(context),
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: const Center(child: Text('هيا نبدأ!', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Color(0xFFFF7043)))),
-          ),
-        ]),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ScaleTransition(
+              scale: bounce,
+              child: const Text('🎉⭐🎊', style: TextStyle(fontSize: 46)),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              cheer,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'تم حفظ اسم ${widget.name} في ${widget.stage} 🌟\nسنحفظ تقدمك مع كل نشاط.',
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 22),
+            Button3D(
+              onTap: () => Navigator.pop(context),
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              child: const Center(
+                child: Text(
+                  'هيا نبدأ!',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w900,
+                    color: Color(0xFFFF7043),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

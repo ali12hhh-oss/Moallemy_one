@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../widgets/button_3d.dart';
 
@@ -45,33 +46,53 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: const Text('الألوان 🎨')),
-        body: Column(children: [
-          if (s != null) _preview(s),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(14),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10, childAspectRatio: .85),
-              itemCount: colors.length,
-              itemBuilder: (_, i) {
-                final c = colors[i];
-                final isDark = c.color.computeLuminance() < .5;
-                return Button3D(
-                  onTap: () {
-                    setState(() => selected = i);
-                    VoiceService.arabic(c.name);
-                  },
-                  color: c.color,
-                  padding: const EdgeInsets.all(8),
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text(c.animalEmoji, style: const TextStyle(fontSize: 30)),
-                    const SizedBox(height: 4),
-                    Text(c.name, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: isDark ? Colors.white : Colors.black87)),
-                  ]),
-                );
-              },
+        body: Column(
+          children: [
+            if (s != null) _preview(s),
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(14),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: .85,
+                ),
+                itemCount: colors.length,
+                itemBuilder: (_, i) {
+                  final c = colors[i];
+                  final isDark = c.color.computeLuminance() < .5;
+                  return Button3D(
+                    onTap: () {
+                      setState(() => selected = i);
+                      VoiceService.arabic(c.name);
+                    },
+                    color: c.color,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          c.animalEmoji,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          c.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -82,13 +103,31 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(14, 14, 14, 4),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(color: s.color, borderRadius: BorderRadius.circular(24)),
-      child: Column(children: [
-        Text(s.animalEmoji, style: const TextStyle(fontSize: 64)),
-        const SizedBox(height: 8),
-        Text('اللون ${s.name}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: isDark ? Colors.white : Colors.black87)),
-        Text('مثل ${s.animal}', style: TextStyle(fontSize: 16, color: isDark ? Colors.white70 : Colors.black54)),
-      ]),
+      decoration: BoxDecoration(
+        color: s.color,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: [
+          Text(s.animalEmoji, style: const TextStyle(fontSize: 64)),
+          const SizedBox(height: 8),
+          Text(
+            'اللون ${s.name}',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+          ),
+          Text(
+            'مثل ${s.animal}',
+            style: TextStyle(
+              fontSize: 16,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

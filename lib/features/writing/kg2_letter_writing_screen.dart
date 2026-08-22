@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/letter_forms.dart';
 import '../../data/content.dart';
@@ -8,11 +10,26 @@ import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
 const _pairs = <(String, String)>[
-  ('د', 'ا'), ('ن', 'ا'), ('د', 'و'), ('د', 'ي'),
-  ('ب', 'ا'), ('ب', 'و'), ('ت', 'ا'), ('س', 'ا'),
-  ('م', 'ا'), ('ر', 'ا'), ('ل', 'ا'), ('ك', 'ا'),
-  ('ف', 'ي'), ('ه', 'ي'), ('ن', 'ي'), ('م', 'ن'),
-  ('ل', 'ك'), ('ب', 'ه'), ('ي', 'د'), ('و', 'ل'),
+  ('د', 'ا'),
+  ('ن', 'ا'),
+  ('د', 'و'),
+  ('د', 'ي'),
+  ('ب', 'ا'),
+  ('ب', 'و'),
+  ('ت', 'ا'),
+  ('س', 'ا'),
+  ('م', 'ا'),
+  ('ر', 'ا'),
+  ('ل', 'ا'),
+  ('ك', 'ا'),
+  ('ف', 'ي'),
+  ('ه', 'ي'),
+  ('ن', 'ي'),
+  ('م', 'ن'),
+  ('ل', 'ك'),
+  ('ب', 'ه'),
+  ('ي', 'د'),
+  ('و', 'ل'),
 ];
 
 class Kg2LetterWritingScreen extends StatefulWidget {
@@ -61,7 +78,8 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
       if (singleMode) {
         // كل مرة يظهر الحرف بشكل مختلف (بداية / وسط / نهاية) لتعليم الأشكال الثلاثة.
         formIndex = (formIndex + 1) % 3;
-        if (formIndex == 0) letterIndex = (letterIndex + 1) % arabicLetters.length;
+        if (formIndex == 0)
+          letterIndex = (letterIndex + 1) % arabicLetters.length;
       } else {
         pairIndex = (pairIndex + 1) % _pairs.length;
       }
@@ -83,59 +101,136 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
         appBar: AppBar(
           title: const Text('كتابة الحروف'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'استمع',
+              icon: const Icon(Icons.volume_up_rounded),
+            ),
+            IconButton(
+              onPressed: () => canvasKey.currentState?.clear(),
+              tooltip: 'مسح',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
-        body: Stack(children: [
-          Column(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-              child: Row(children: [
-                Expanded(
-                  child: Button3D(
-                    onTap: () => _switch(true),
-                    color: singleMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
-                    depth: singleMode ? 2 : 7,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: const Center(child: Text('حروف منفردة', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Button3D(
+                          onTap: () => _switch(true),
+                          color: singleMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
+                          depth: singleMode ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: const Center(
+                            child: Text(
+                              'حروف منفردة',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Button3D(
+                          onTap: () => _switch(false),
+                          color: !singleMode
+                              ? const Color(0xFFFF1E7E)
+                              : const Color(0xFFF48FB1),
+                          depth: !singleMode ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: const Center(
+                            child: Text(
+                              'دمج حرفين',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Button3D(
-                    onTap: () => _switch(false),
-                    color: !singleMode ? const Color(0xFFFF1E7E) : const Color(0xFFF48FB1),
-                    depth: !singleMode ? 2 : 7,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: const Center(child: Text('دمج حرفين', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
+                const SizedBox(height: 6),
+                if (singleMode) ...[
+                  Text(
+                    'اكتب الحرف (${formLabel.$1})',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    formLabel.$2,
+                    style: const TextStyle(
+                      fontSize: 66,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ] else ...[
+                  const Text(
+                    'ادمج الحرفين معًا',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        pair.$1,
+                        style: const TextStyle(
+                          fontSize: 46,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const Text(' + ', style: TextStyle(fontSize: 30)),
+                      Text(
+                        pair.$2,
+                        style: const TextStyle(
+                          fontSize: 46,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const Text(' = ', style: TextStyle(fontSize: 30)),
+                      Text(
+                        combined,
+                        style: const TextStyle(
+                          fontSize: 46,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFFFF1E7E),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                const SizedBox(height: 6),
+                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: FilledButton.icon(
+                    onPressed: _next,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: const Text('التالي'),
                   ),
                 ),
-              ]),
+              ],
             ),
-            const SizedBox(height: 6),
-            if (singleMode) ...[
-              Text('اكتب الحرف (${formLabel.$1})', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Text(formLabel.$2, style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900)),
-            ] else ...[
-              const Text('ادمج الحرفين معًا', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text(pair.$1, style: const TextStyle(fontSize: 46, fontWeight: FontWeight.w900)),
-                const Text(' + ', style: TextStyle(fontSize: 30)),
-                Text(pair.$2, style: const TextStyle(fontSize: 46, fontWeight: FontWeight.w900)),
-                const Text(' = ', style: TextStyle(fontSize: 30)),
-                Text(combined, style: const TextStyle(fontSize: 46, fontWeight: FontWeight.w900, color: Color(0xFFFF1E7E))),
-              ]),
-            ],
-            const SizedBox(height: 6),
-            Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-              child: FilledButton.icon(onPressed: _next, icon: const Icon(Icons.arrow_forward_rounded), label: const Text('التالي')),
-            ),
-          ]),
-          CelebrationOverlay(message: cheer),
-        ]),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

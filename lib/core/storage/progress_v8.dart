@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressV8 {
@@ -47,10 +48,20 @@ class ProgressV8 {
     await save(s);
   }
 
-  static Future<void> recordFinalExam(String stageId, int score, int total, bool passed) async {
+  static Future<void> recordFinalExam(
+    String stageId,
+    int score,
+    int total,
+    bool passed,
+  ) async {
     final s = await load();
     final exams = Map<String, dynamic>.from(s['finalExams'] ?? const {});
-    exams[stageId] = {'score': score, 'total': total, 'passed': passed, 'date': DateTime.now().toIso8601String()};
+    exams[stageId] = {
+      'score': score,
+      'total': total,
+      'passed': passed,
+      'date': DateTime.now().toIso8601String(),
+    };
     s['finalExams'] = exams;
     if (passed) {
       final badges = List<String>.from(s['badges'] ?? const <String>[]);

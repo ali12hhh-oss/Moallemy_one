@@ -14,7 +14,9 @@ class AppThemeV25 {
       brightness: brightness,
       colorScheme: scheme,
       fontFamily: 'Tajawal',
-      scaffoldBackgroundColor: dark ? const Color(0xFF14162A) : const Color(0xFFF3F1FF),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF14162A)
+          : const Color(0xFFF3F1FF),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
@@ -31,11 +33,28 @@ class AppThemeV25 {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: dark ? scheme.surfaceContainerHighest : Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(18), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(18), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(18), borderSide: BorderSide(color: scheme.primary, width: 2)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide(color: scheme.primary, width: 2),
+        ),
       ),
-      filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), textStyle: const TextStyle(fontWeight: FontWeight.bold))),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size.fromHeight(50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }

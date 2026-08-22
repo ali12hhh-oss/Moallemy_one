@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
+
 import '../offline/asset_catalog_v27.dart';
 
 /// Speech/audio service.
@@ -67,7 +68,10 @@ class VoiceService {
 
   /// Plays the real recorded sound for an Arabic letter offline when the
   /// asset is available; otherwise falls back to TTS speaking [fallbackText].
-  static Future<void> arabicLetterSound(String letter, {required String fallbackText}) async {
+  static Future<void> arabicLetterSound(
+    String letter, {
+    required String fallbackText,
+  }) async {
     final played = await _playAsset(AssetCatalogV27.arabicAudio(letter));
     if (!played) await arabic(fallbackText);
   }
@@ -75,7 +79,10 @@ class VoiceService {
   /// Plays the real recorded sound for an English letter/phonics pattern
   /// offline when the asset is available; otherwise falls back to TTS
   /// speaking [fallbackText].
-  static Future<void> englishLetterSound(String letter, {required String fallbackText}) async {
+  static Future<void> englishLetterSound(
+    String letter, {
+    required String fallbackText,
+  }) async {
     final played = await _playAsset(AssetCatalogV27.englishAudio(letter));
     if (!played) await english(fallbackText);
   }

@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../data/content.dart';
 import '../../data/content_v11.dart';
 import '../../core/localization/arabic_numbers.dart';
@@ -86,8 +88,8 @@ class _S extends State<GamesScreen> {
               child: mode == 0
                   ? _hunter(c)
                   : mode == 1
-                      ? _match(c)
-                      : _numbers(c),
+                  ? _match(c)
+                  : _numbers(c),
             ),
           ],
         ),
@@ -100,7 +102,10 @@ class _S extends State<GamesScreen> {
       padding: const EdgeInsets.all(18),
       child: Column(
         children: [
-          Text('النجوم: ${arNum(score)} ⭐', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          Text(
+            'النجوم: ${arNum(score)} ⭐',
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 22),
           Text(target.emoji, style: const TextStyle(fontSize: 80)),
           Text(
@@ -125,7 +130,9 @@ class _S extends State<GamesScreen> {
                     final ok = x.letter == target.letter;
                     if (ok) score++;
                     ScaffoldMessenger.of(c).showSnackBar(
-                      SnackBar(content: Text(ok ? 'أحسنت! 🎉' : 'حاول مرة أخرى 💪')),
+                      SnackBar(
+                        content: Text(ok ? 'أحسنت! 🎉' : 'حاول مرة أخرى 💪'),
+                      ),
                     );
                     setState(nextHunter);
                   },
@@ -164,7 +171,13 @@ class _S extends State<GamesScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(x.emoji, style: const TextStyle(fontSize: 52)),
-                Text(x.word, style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold)),
+                Text(
+                  x.word,
+                  style: const TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Text('يبدأ بالحرف ${x.letter}'),
               ],
             ),
@@ -178,9 +191,15 @@ class _S extends State<GamesScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('اختر العدد المطلوب', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        const Text(
+          'اختر العدد المطلوب',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 12),
-        Text(arNum(numberTarget), style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w900)),
+        Text(
+          arNum(numberTarget),
+          style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w900),
+        ),
         const SizedBox(height: 18),
         for (final n in numberOptions)
           Padding(
@@ -192,7 +211,9 @@ class _S extends State<GamesScreen> {
                   final ok = n == numberTarget;
                   if (ok) score++;
                   ScaffoldMessenger.of(c).showSnackBar(
-                    SnackBar(content: Text(ok ? 'إجابة صحيحة ⭐' : 'حاول مرة أخرى')),
+                    SnackBar(
+                      content: Text(ok ? 'إجابة صحيحة ⭐' : 'حاول مرة أخرى'),
+                    ),
                   );
                   setState(nextNumber);
                 },

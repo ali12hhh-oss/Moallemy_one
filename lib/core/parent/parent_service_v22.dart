@@ -1,14 +1,17 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentServiceV22 {
-  static Future<void> saveChild({required String id,required String name,required int grade}) async {
+  static Future<void> saveChild({
+    required String id,
+    required String name,
+    required int grade,
+  }) async {
     final p = await SharedPreferences.getInstance();
     await p.setString('child.$id.name', name);
     await p.setInt('child.$id.grade', grade);
   }
 
-  static Future<Map<String,dynamic>> report(int grade) async {
+  static Future<Map<String, dynamic>> report(int grade) async {
     final p = await SharedPreferences.getInstance();
     return {
       'grade': grade,

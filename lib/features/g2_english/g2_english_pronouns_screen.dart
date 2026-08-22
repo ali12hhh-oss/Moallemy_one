@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../data/pronouns.dart';
 import '../../widgets/button_3d.dart';
@@ -22,14 +23,29 @@ class G2EnglishPronounsScreen extends StatelessWidget {
               child: Button3D(
                 onTap: () => VoiceService.english(p.word),
                 color: const Color(0xFFFF1E7E),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-                child: Row(children: [
-                  Text(p.emoji, style: const TextStyle(fontSize: 30)),
-                  const SizedBox(width: 14),
-                  Text(p.word, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white)),
-                  const Spacer(),
-                  Text(p.arabic, style: const TextStyle(color: Colors.white70)),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 18,
+                ),
+                child: Row(
+                  children: [
+                    Text(p.emoji, style: const TextStyle(fontSize: 30)),
+                    const SizedBox(width: 14),
+                    Text(
+                      p.word,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      p.arabic,
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
             );
           },

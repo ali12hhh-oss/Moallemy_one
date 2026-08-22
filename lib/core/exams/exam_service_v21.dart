@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExamServiceV21 {
@@ -14,7 +13,8 @@ class ExamServiceV21 {
     await p.setInt('exam.$grade.percent', percent);
     await p.setBool('exam.$grade.passed', percent >= 70);
   }
-  static Future<Map<String,dynamic>> result(int grade) async {
+
+  static Future<Map<String, dynamic>> result(int grade) async {
     final p = await SharedPreferences.getInstance();
     return {
       'score': p.getInt('exam.$grade.score') ?? 0,

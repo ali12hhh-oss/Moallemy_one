@@ -18,5 +18,6 @@ class StageColors {
   static const Color family = Color(0xFF3D5AFE); // أزرق نيلي العائلة
   static const Color store = Color(0xFFFFC107); // ذهبي المتجر
 
-  static Color of(String stageId) => _colors[stageId] ?? const Color(0xFF6C4CF1);
+  static Color of(String stageId) =>
+      _colors[stageId] ?? const Color(0xFF6C4CF1);
 }

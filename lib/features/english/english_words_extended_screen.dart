@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../data/content.dart';
 import '../../core/audio/voice_service.dart';
 
@@ -12,7 +13,10 @@ class EnglishWordsExtendedScreen extends StatelessWidget {
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, childAspectRatio: 1.25, crossAxisSpacing: 10, mainAxisSpacing: 10,
+          crossAxisCount: 2,
+          childAspectRatio: 1.25,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
         ),
         itemCount: englishWordBank.length,
         itemBuilder: (_, index) {
@@ -24,7 +28,13 @@ class EnglishWordsExtendedScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(word['emoji']!, style: const TextStyle(fontSize: 45)),
-                  Text(word['word']!, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  Text(
+                    word['word']!,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Text(word['ar']!, style: const TextStyle(fontSize: 16)),
                 ],
               ),

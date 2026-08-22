@@ -5,13 +5,18 @@ import 'package:flutter/material.dart';
 class CelebrationOverlay extends StatefulWidget {
   final String? message;
   final Duration duration;
-  const CelebrationOverlay({super.key, required this.message, this.duration = const Duration(seconds: 2)});
+  const CelebrationOverlay({
+    super.key,
+    required this.message,
+    this.duration = const Duration(seconds: 2),
+  });
 
   @override
   State<CelebrationOverlay> createState() => _CelebrationOverlayState();
 }
 
-class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTickerProviderStateMixin {
+class _CelebrationOverlayState extends State<CelebrationOverlay>
+    with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   late final Animation<double> scale;
 
@@ -25,7 +30,10 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 450));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450),
+    );
     scale = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
     if (widget.message != null) controller.forward(from: 0);
   }
@@ -33,7 +41,8 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   @override
   void didUpdateWidget(covariant CelebrationOverlay old) {
     super.didUpdateWidget(old);
-    if (widget.message != null && widget.message != old.message) controller.forward(from: 0);
+    if (widget.message != null && widget.message != old.message)
+      controller.forward(from: 0);
   }
 
   @override
@@ -52,16 +61,36 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
           child: msg == null
               ? const SizedBox.shrink()
               : ScaleTransition(
-                  key: ValueKey(msg + DateTime.now().millisecondsSinceEpoch.toString()),
+                  key: ValueKey(
+                    msg + DateTime.now().millisecondsSinceEpoch.toString(),
+                  ),
                   scale: scale,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: gradients[msg.length % gradients.length]),
-                      borderRadius: BorderRadius.circular(26),
-                      boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 16, offset: Offset(0, 6))],
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28,
+                      vertical: 18,
                     ),
-                    child: Text(msg, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: gradients[msg.length % gradients.length],
+                      ),
+                      borderRadius: BorderRadius.circular(26),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 16,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      msg,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
         ),
@@ -70,4 +99,11 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   }
 }
 
-const kCheers = ['أحسنت! 🎉', 'رائع يا بطل! 🌟', 'ممتاز! 🏆', 'صح! 👏', 'شاطر! 💎', 'عاش! ✨'];
+const kCheers = [
+  'أحسنت! 🎉',
+  'رائع يا بطل! 🌟',
+  'ممتاز! 🏆',
+  'صح! 👏',
+  'شاطر! 💎',
+  'عاش! ✨',
+];

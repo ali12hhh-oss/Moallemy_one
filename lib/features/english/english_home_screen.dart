@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../data/content.dart';
 import '../../data/content_v11.dart';
 import '../../core/audio/voice_service.dart';
@@ -18,54 +19,72 @@ class EnglishHomeScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-      appBar: AppBar(title: const Text('اللغة الإنجليزية')), 
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(early ? 'بداية الإنجليزية 🌟' : 'الإنجليزية 📚', style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-                  Text(early ? 'الحروف الصغيرة والأرقام والأصوات مع شرح عربي.' : 'قراءة كلمات وجمل بسيطة مع دعم عربي.'),
-                ],
+        appBar: AppBar(title: const Text('اللغة الإنجليزية')),
+        body: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      early ? 'بداية الإنجليزية 🌟' : 'الإنجليزية 📚',
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      early
+                          ? 'الحروف الصغيرة والأرقام والأصوات مع شرح عربي.'
+                          : 'قراءة كلمات وجمل بسيطة مع دعم عربي.',
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (early)
+            if (early)
+              ListTile(
+                leading: const Text('🔤', style: TextStyle(fontSize: 35)),
+                title: const Text('الحروف الإنجليزية الصغيرة'),
+                subtitle: const Text(
+                  'الحروف a–z بصورتها الصغيرة مع الصوت والقراءة والترجمة العربية',
+                ),
+                onTap: () => open(
+                  context,
+                  const EnglishLettersScreen(lowercaseOnly: true),
+                ),
+              ),
+            ListTile(
+              leading: const Text('🧩', style: TextStyle(fontSize: 35)),
+              title: Text(
+                early ? 'كلمات قصيرة مع صور' : 'قراءة الكلمات والجمل',
+              ),
+              subtitle: const Text('كلمات قصيرة مع ترجمة عربية'),
+              onTap: () => open(context, const EnglishWordsScreen()),
+            ),
             ListTile(
               leading: const Text('🔤', style: TextStyle(fontSize: 35)),
-              title: const Text('الحروف الإنجليزية الصغيرة'),
-              subtitle: const Text('الحروف a–z بصورتها الصغيرة مع الصوت والقراءة والترجمة العربية'),
-              onTap: () => open(context, const EnglishLettersScreen(lowercaseOnly: true)),
+              title: const Text('قواعد وأصوات القراءة'),
+              subtitle: const Text('sh و ch و th و ph وغيرها'),
+              onTap: () => open(context, const EnglishPhonicsRulesScreenV12()),
             ),
-          ListTile(
-            leading: const Text('🧩', style: TextStyle(fontSize: 35)),
-            title: Text(early ? 'كلمات قصيرة مع صور' : 'قراءة الكلمات والجمل'),
-            subtitle: const Text('كلمات قصيرة مع ترجمة عربية'),
-            onTap: () => open(context, const EnglishWordsScreen()),
-          ),
-          ListTile(
-            leading: const Text('🔤', style: TextStyle(fontSize: 35)),
-            title: const Text('قواعد وأصوات القراءة'),
-            subtitle: const Text('sh و ch و th و ph وغيرها'),
-            onTap: () => open(context, const EnglishPhonicsRulesScreenV12()),
-          ),
-          ListTile(
-            leading: const Text('🎨', style: TextStyle(fontSize: 35)),
-            title: const Text('الألوان'),
-            onTap: () => open(context, const EnglishColorsScreen()),
-          ),
-          ListTile(
-            leading: const Text('🔢', style: TextStyle(fontSize: 35)),
-            title: const Text('الأرقام'),
-            onTap: () => open(context, const EnglishNumbersScreen()),
-          ),
-        ],
+            ListTile(
+              leading: const Text('🎨', style: TextStyle(fontSize: 35)),
+              title: const Text('الألوان'),
+              onTap: () => open(context, const EnglishColorsScreen()),
+            ),
+            ListTile(
+              leading: const Text('🔢', style: TextStyle(fontSize: 35)),
+              title: const Text('الأرقام'),
+              onTap: () => open(context, const EnglishNumbersScreen()),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -83,7 +102,9 @@ class _ELS extends State<EnglishLettersScreen> {
   @override
   Widget build(BuildContext context) {
     final x = englishLetters[i];
-    final displayLetter = widget.lowercaseOnly ? x.letter.toLowerCase() : x.letter;
+    final displayLetter = widget.lowercaseOnly
+        ? x.letter.toLowerCase()
+        : x.letter;
     return Scaffold(
       appBar: AppBar(title: const Text('الحروف الإنجليزية')),
       body: Padding(
@@ -92,13 +113,25 @@ class _ELS extends State<EnglishLettersScreen> {
           children: [
             LinearProgressIndicator(value: (i + 1) / englishLetters.length),
             const SizedBox(height: 18),
-            Text(displayLetter, style: const TextStyle(fontSize: 110, fontWeight: FontWeight.bold)),
+            Text(
+              displayLetter,
+              style: const TextStyle(
+                fontSize: 110,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Text('صوت الحرف: ${x.sound}', style: const TextStyle(fontSize: 25)),
             Text('${x.emoji}  ${x.word}', style: const TextStyle(fontSize: 30)),
-            const Text('الصوت والقراءة أهم من حفظ اسم الحرف', style: TextStyle(fontSize: 16)),
+            const Text(
+              'الصوت والقراءة أهم من حفظ اسم الحرف',
+              style: TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 14),
             FilledButton.icon(
-              onPressed: () => VoiceService.englishLetterSound(x.letter, fallbackText: x.sound),
+              onPressed: () => VoiceService.englishLetterSound(
+                x.letter,
+                fallbackText: x.sound,
+              ),
               icon: const Icon(Icons.volume_up),
               label: const Text('استمع إلى صوت الحرف'),
             ),
@@ -119,7 +152,9 @@ class _ELS extends State<EnglishLettersScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
-                    onPressed: i == englishLetters.length - 1 ? null : () => setState(() => i++),
+                    onPressed: i == englishLetters.length - 1
+                        ? null
+                        : () => setState(() => i++),
                     child: const Text('التالي'),
                   ),
                 ),
@@ -162,7 +197,13 @@ class EnglishWordsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(w.emoji, style: const TextStyle(fontSize: 36)),
-                      Text(w.word.toLowerCase(), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text(
+                        w.word.toLowerCase(),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 4),
                       Text(w.arabic, style: const TextStyle(fontSize: 17)),
                       const SizedBox(height: 5),
@@ -191,7 +232,10 @@ class EnglishColorsScreen extends StatelessWidget {
           for (final x in englishColors)
             ListTile(
               leading: Text(x['emoji']!, style: const TextStyle(fontSize: 30)),
-              title: Text(x['name']!.toLowerCase(), style: const TextStyle(fontSize: 22)),
+              title: Text(
+                x['name']!.toLowerCase(),
+                style: const TextStyle(fontSize: 22),
+              ),
               subtitle: Text(x['ar']!),
               trailing: IconButton(
                 onPressed: () => VoiceService.english(x['name']!),
@@ -220,7 +264,13 @@ class EnglishNumbersScreen extends StatelessWidget {
               child: InkWell(
                 onTap: () => VoiceService.english(n),
                 child: Center(
-                  child: Text(n, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    n,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),

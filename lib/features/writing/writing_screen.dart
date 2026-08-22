@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 
 class WritingScreen extends StatefulWidget {
@@ -17,16 +18,70 @@ class _WritingScreenState extends State<WritingScreen> {
     final advanced = widget.stageId == 'g2' || widget.stageId == 'g3';
     if (advanced) {
       return [
-        'باب', 'كتاب', 'مدرسة', 'قلم', 'شجرة', 'جميل',
-        'cat', 'book', 'school', 'friend', 'apple',
+        'باب',
+        'كتاب',
+        'مدرسة',
+        'قلم',
+        'شجرة',
+        'جميل',
+        'cat',
+        'book',
+        'school',
+        'friend',
+        'apple',
       ];
     }
     return [
-      'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'د', 'ر', 'س', 'ش', 'م', 'ن', 'ي',
-      '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠',
+      'ا',
+      'ب',
+      'ت',
+      'ث',
+      'ج',
+      'ح',
+      'د',
+      'ر',
+      'س',
+      'ش',
+      'م',
+      'ن',
+      'ي',
+      '١',
+      '٢',
+      '٣',
+      '٤',
+      '٥',
+      '٦',
+      '٧',
+      '٨',
+      '٩',
+      '١٠',
       if (widget.stageId == 'prep' || widget.stageId == 'g1') ...[
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z',
       ],
     ];
   }
@@ -52,24 +107,46 @@ class _WritingScreenState extends State<WritingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final label = isNumber ? 'اكتب الرقم' : isEnglish ? 'اكتب الحرف' : (target.length > 1 ? 'اكتب الكلمة' : 'اكتب الحرف');
+    final label = isNumber
+        ? 'اكتب الرقم'
+        : isEnglish
+        ? 'اكتب الحرف'
+        : (target.length > 1 ? 'اكتب الكلمة' : 'اكتب الحرف');
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('الكتابة على الشاشة'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => setState(points.clear), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'استمع',
+              icon: const Icon(Icons.volume_up_rounded),
+            ),
+            IconButton(
+              onPressed: () => setState(points.clear),
+              tooltip: 'مسح',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
         body: Column(
           children: [
             const SizedBox(height: 8),
-            Text(label, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 4),
-            Text(target, textDirection: isEnglish ? TextDirection.ltr : TextDirection.rtl, style: const TextStyle(fontSize: 76, fontWeight: FontWeight.w900)),
-            const Text('اتبع النموذج ثم حاول الكتابة بإصبعك ✨', style: TextStyle(fontSize: 16)),
+            Text(
+              target,
+              textDirection: isEnglish ? TextDirection.ltr : TextDirection.rtl,
+              style: const TextStyle(fontSize: 76, fontWeight: FontWeight.w900),
+            ),
+            const Text(
+              'اتبع النموذج ثم حاول الكتابة بإصبعك ✨',
+              style: TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 8),
             Expanded(
               child: Padding(
@@ -78,14 +155,21 @@ class _WritingScreenState extends State<WritingScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: GestureDetector(
-                      onPanStart: (d) => setState(() => points.add(d.localPosition)),
-                      onPanUpdate: (d) => setState(() => points.add(d.localPosition)),
-                      child: CustomPaint(painter: DrawingPainter(points), child: const SizedBox.expand()),
+                      onPanStart: (d) =>
+                          setState(() => points.add(d.localPosition)),
+                      onPanUpdate: (d) =>
+                          setState(() => points.add(d.localPosition)),
+                      child: CustomPaint(
+                        painter: DrawingPainter(points),
+                        child: const SizedBox.expand(),
+                      ),
                     ),
                   ),
                 ),
@@ -95,9 +179,19 @@ class _WritingScreenState extends State<WritingScreen> {
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
               child: Row(
                 children: [
-                  Expanded(child: OutlinedButton(onPressed: () => _next(-1), child: const Text('السابق'))),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => _next(-1),
+                      child: const Text('السابق'),
+                    ),
+                  ),
                   const SizedBox(width: 10),
-                  Expanded(child: FilledButton(onPressed: () => _next(1), child: const Text('التالي'))),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () => _next(1),
+                      child: const Text('التالي'),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -124,5 +218,6 @@ class DrawingPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant DrawingPainter oldDelegate) => oldDelegate.points != points;
+  bool shouldRepaint(covariant DrawingPainter oldDelegate) =>
+      oldDelegate.points != points;
 }

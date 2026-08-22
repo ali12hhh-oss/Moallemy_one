@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/audio/voice_service.dart';
 import '../../data/content_v11.dart';
 import '../../widgets/bold_drawing_canvas.dart';
@@ -37,25 +38,52 @@ class _G2EnglishWritingScreenState extends State<G2EnglishWritingScreen> {
         appBar: AppBar(
           title: Text('Writing • ${index + 1}/${englishWordsV11.length}'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'Listen', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'Clear', icon: const Icon(Icons.delete_outline_rounded)),
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'Listen',
+              icon: const Icon(Icons.volume_up_rounded),
+            ),
+            IconButton(
+              onPressed: () => canvasKey.currentState?.clear(),
+              tooltip: 'Clear',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
-        body: Stack(children: [
-          Column(children: [
-            const SizedBox(height: 6),
-            Text(w.emoji, style: const TextStyle(fontSize: 40)),
-            Text(w.word, style: const TextStyle(fontSize: 46, fontWeight: FontWeight.w900)),
-            Text(w.arabic, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-            const SizedBox(height: 6),
-            Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-              child: FilledButton.icon(onPressed: () => _next(1), icon: const Icon(Icons.arrow_forward_rounded), label: const Text('Next')),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                const SizedBox(height: 6),
+                Text(w.emoji, style: const TextStyle(fontSize: 40)),
+                Text(
+                  w.word,
+                  style: const TextStyle(
+                    fontSize: 46,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                Text(
+                  w.arabic,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                  child: FilledButton.icon(
+                    onPressed: () => _next(1),
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: const Text('Next'),
+                  ),
+                ),
+              ],
             ),
-          ]),
-          CelebrationOverlay(message: cheer),
-        ]),
+            CelebrationOverlay(message: cheer),
+          ],
+        ),
       ),
     );
   }

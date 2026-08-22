@@ -94,11 +94,21 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Icon(icon, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(width: 10),
-            Expanded(child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
-          ]),
+          Row(
+            children: [
+              Icon(icon, color: Theme.of(context).colorScheme.primary),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
           Text(body, style: const TextStyle(fontSize: 15, height: 1.6)),
         ],
