@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/storage/progress_v5.dart';
+import '../../core/store/store_service_v23.dart';
 
 class ShopItem {
   final String id, name, desc, emoji;
@@ -22,30 +22,49 @@ const items = [
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
   @override
-  State<ShopScreen> createState() => _S();
+  State<ShopScreen> createState() => _ShopScreenState();
 }
 
-class _S extends State<ShopScreen> {
+class _ShopScreenState extends State<ShopScreen> {
   int stars = 0;
-  Set<String> bought = {};
+  Set<String> bought = <String>{};
 
   @override
   void initState() {
     super.initState();
-    load();
+    _load();
   }
 
-  Future<void> load() async {
-    final s = await ProgressV5.load();
+  Future<void> _load() async {
+    final currentStars = await StoreServiceV23.stars();
+    final owned = <String>{};
+    for (final item in items) {
+      if (await StoreServiceV23.owned(item.id)) owned.add(item.id);
+    }
     if (!mounted) return;
     setState(() {
-      stars = s['stars'] ?? 0;
-      bought = Set<String>.from(s['bought'] ?? []);
+      stars = currentStars;
+      bought = owned;
     });
   }
 
+  Future<void> _buy(BuildContext context, ShopItem item) async {
+    final ok = await StoreServiceV23.buy(item.id, item.price);
+    if (ok) {
+      await _load();
+      return;
+    }
+    if (!context.mounted) return;
+    final owned = await StoreServiceV23.owned(item.id);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(owned ? 'تم شراء هذا العنصر مسبقاً' : 'تحتاج إلى نجوم أكثر'),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext c) {
+  Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -60,39 +79,20 @@ class _S extends State<ShopScreen> {
           ),
           itemCount: items.length,
           itemBuilder: (_, i) {
-            final x = items[i];
-            final owned = bought.contains(x.id);
+            final item = items[i];
+            final owned = bought.contains(item.id);
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text(x.emoji, style: const TextStyle(fontSize: 55)),
-                    Text(
-                      x.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Expanded(child: Text(x.desc, textAlign: TextAlign.center)),
-                    Text('⭐ ${x.price}'),
+                    Text(item.emoji, style: const TextStyle(fontSize: 55)),
+                    Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    Expanded(child: Text(item.desc, textAlign: TextAlign.center)),
+                    Text('⭐ ${item.price}'),
                     const SizedBox(height: 6),
                     FilledButton(
-                      onPressed: owned
-                          ? null
-                          : () async {
-                              final ok = await ProgressV5.buy(x.id, x.price);
-                              if (ok) {
-                                await load();
-                              } else if (c.mounted) {
-                                ScaffoldMessenger.of(c).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('تحتاج إلى نجوم أكثر'),
-                                  ),
-                                );
-                              }
-                            },
+                      onPressed: owned ? null : () => _buy(context, item),
                       child: Text(owned ? 'تم الشراء' : 'شراء'),
                     ),
                   ],
