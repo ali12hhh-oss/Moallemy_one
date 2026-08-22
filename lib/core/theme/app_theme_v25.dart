@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppThemeV25 {
   static ThemeData light() => _theme(Brightness.light);
   static ThemeData dark() => _theme(Brightness.dark);
+
   static ThemeData _theme(Brightness brightness) {
     final dark = brightness == Brightness.dark;
     final scheme = ColorScheme.fromSeed(
@@ -13,7 +14,8 @@ class AppThemeV25 {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: scheme,
-      fontFamily: 'Tajawal',
+      // No custom font is declared in pubspec, so do not reference a missing
+      // font family. Flutter's platform fallback gives reliable Arabic glyphs.
       scaffoldBackgroundColor:
           dark ? const Color(0xFF14162A) : const Color(0xFFF3F1FF),
       appBarTheme: AppBarTheme(
