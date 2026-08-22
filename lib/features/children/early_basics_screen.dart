@@ -90,26 +90,25 @@ class EarlyBasicsScreen extends StatelessWidget {
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
-          itemBuilder:
-              (_, i) => Card(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () => VoiceService.arabic(items[i].name),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        items[i].emoji,
-                        style: const TextStyle(fontSize: 34),
-                      ),
-                      Text(
-                        items[i].name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
+          itemBuilder: (_, i) => Card(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () => VoiceService.arabic(items[i].name),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    items[i].emoji,
+                    style: const TextStyle(fontSize: 34),
                   ),
-                ),
+                  Text(
+                    items[i].name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
+            ),
+          ),
         ),
       ],
     );

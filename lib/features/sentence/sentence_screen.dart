@@ -56,10 +56,9 @@ class _S extends State<SentenceScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: FilledButton(
-                      onPressed:
-                          i == arabicSentences.length - 1
-                              ? null
-                              : () => setState(() => i++),
+                      onPressed: i == arabicSentences.length - 1
+                          ? null
+                          : () => setState(() => i++),
                       child: const Text('التالي'),
                     ),
                   ),

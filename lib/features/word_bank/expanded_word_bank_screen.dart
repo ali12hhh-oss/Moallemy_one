@@ -58,14 +58,13 @@ class _ExpandedWordBankScreenState extends State<ExpandedWordBankScreen> {
       'ملابس',
       'أشياء',
     ];
-    final list =
-        arabicWordsV11
-            .where(
-              (x) =>
-                  (letter == 'الكل' || x.letter == letter) &&
-                  (category == 'الكل' || x.category == category),
-            )
-            .toList();
+    final list = arabicWordsV11
+        .where(
+          (x) =>
+              (letter == 'الكل' || x.letter == letter) &&
+              (category == 'الكل' || x.category == category),
+        )
+        .toList();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -137,19 +136,18 @@ class _ExpandedWordBankScreenState extends State<ExpandedWordBankScreen> {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
-          children:
-              items
-                  .map(
-                    (x) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      child: ChoiceChip(
-                        label: Text(x),
-                        selected: (x == letter || x == category),
-                        onSelected: (_) => onTap(x),
-                      ),
-                    ),
-                  )
-                  .toList(),
+          children: items
+              .map(
+                (x) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: ChoiceChip(
+                    label: Text(x),
+                    selected: (x == letter || x == category),
+                    onSelected: (_) => onTap(x),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       );
 }

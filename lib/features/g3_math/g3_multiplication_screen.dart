@@ -81,10 +81,9 @@ class _G3MultiplicationScreenState extends State<G3MultiplicationScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Button3D(
-                      onTap:
-                          () => VoiceService.arabic(
-                            '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
-                          ),
+                      onTap: () => VoiceService.arabic(
+                        '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
+                      ),
                       color: color,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,

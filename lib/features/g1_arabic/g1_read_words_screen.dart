@@ -96,25 +96,24 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 12,
-                      children:
-                          w.letters.map((l) {
-                            return Button3D(
-                              onTap: () => VoiceService.arabic(l),
-                              color: color,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 22,
-                                vertical: 18,
-                              ),
-                              child: Text(
-                                l,
-                                style: const TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                      children: w.letters.map((l) {
+                        return Button3D(
+                          onTap: () => VoiceService.arabic(l),
+                          color: color,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 22,
+                            vertical: 18,
+                          ),
+                          child: Text(
+                            l,
+                            style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   const SizedBox(height: 22),
                   OutlinedButton.icon(

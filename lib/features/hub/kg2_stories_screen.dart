@@ -33,38 +33,35 @@ class Kg2StoriesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text('القصص 📖')),
         body: ListView(
           padding: const EdgeInsets.all(14),
-          children:
-              _kg2Stories.map((s) {
-                return Card(
-                  child: ListTile(
-                    leading: Text(
-                      s.emoji,
-                      style: const TextStyle(fontSize: 38),
+          children: _kg2Stories.map((s) {
+            return Card(
+              child: ListTile(
+                leading: Text(
+                  s.emoji,
+                  style: const TextStyle(fontSize: 38),
+                ),
+                title: Text(
+                  s.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  s.text,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => StoryPage(
+                      s: s.title,
+                      text: s.text,
+                      emoji: s.emoji,
                     ),
-                    title: Text(
-                      s.title,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      s.text,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => StoryPage(
-                                  s: s.title,
-                                  text: s.text,
-                                  emoji: s.emoji,
-                                ),
-                          ),
-                        ),
                   ),
-                );
-              }).toList(),
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

@@ -82,10 +82,9 @@ class _G3DivisionScreenState extends State<G3DivisionScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color:
-                              learnMode
-                                  ? const Color(0xFF7C4DFF)
-                                  : const Color(0xFFB39DDB),
+                          color: learnMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -104,10 +103,9 @@ class _G3DivisionScreenState extends State<G3DivisionScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color:
-                              !learnMode
-                                  ? const Color(0xFF00C853)
-                                  : const Color(0xFFA5D6A7),
+                          color: !learnMode
+                              ? const Color(0xFF00C853)
+                              : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -166,10 +164,9 @@ class _G3DivisionScreenState extends State<G3DivisionScreen> {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.volume_up_rounded),
-                              onPressed:
-                                  () => VoiceService.arabic(
-                                    '${arNum(dividend)} تقسيم ${arNum(divisor)}',
-                                  ),
+                              onPressed: () => VoiceService.arabic(
+                                '${arNum(dividend)} تقسيم ${arNum(divisor)}',
+                              ),
                             ),
                             Text(
                               '${arNum(dividend)} ÷ ${arNum(divisor)} = ${learnMode ? arNum(quotient) : '؟'}',
@@ -193,23 +190,22 @@ class _G3DivisionScreenState extends State<G3DivisionScreen> {
                               crossAxisCount: 2,
                               mainAxisSpacing: 14,
                               crossAxisSpacing: 14,
-                              children:
-                                  options.map((o) {
-                                    return Button3D(
-                                      onTap: () => _answer(o),
-                                      color: const Color(0xFF00C853),
-                                      child: Center(
-                                        child: Text(
-                                          arNum(o),
-                                          style: const TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                              children: options.map((o) {
+                                return Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF00C853),
+                                  child: Center(
+                                    child: Text(
+                                      arNum(o),
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
                                       ),
-                                    );
-                                  }).toList(),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ),
                       ],

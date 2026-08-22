@@ -50,10 +50,9 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => writingMode = false),
-                          color:
-                              !writingMode
-                                  ? const Color(0xFF7C4DFF)
-                                  : const Color(0xFFB39DDB),
+                          color: !writingMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
                           depth: !writingMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -72,10 +71,9 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => writingMode = true),
-                          color:
-                              writingMode
-                                  ? const Color(0xFF00BFA6)
-                                  : const Color(0xFFB2DFDB),
+                          color: writingMode
+                              ? const Color(0xFF00BFA6)
+                              : const Color(0xFFB2DFDB),
                           depth: writingMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -112,10 +110,10 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
-                              ),
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                          ),
                           itemCount: arabicLetters.length,
                           itemBuilder: (_, i) {
                             final marked = letterWithHaraka(
@@ -150,29 +148,28 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                         Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children:
-                              harakaSampleLetters.map((l) {
-                                final w = longVowelWord(l, h);
-                                return Button3D(
-                                  onTap: () {
-                                    VoiceService.arabic(w);
-                                    _celebrate();
-                                  },
-                                  color: const Color(0xFFFF6B35),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 16,
-                                  ),
-                                  child: Text(
-                                    w,
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
+                          children: harakaSampleLetters.map((l) {
+                            final w = longVowelWord(l, h);
+                            return Button3D(
+                              onTap: () {
+                                VoiceService.arabic(w);
+                                _celebrate();
+                              },
+                              color: const Color(0xFFFF6B35),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 16,
+                              ),
+                              child: Text(
+                                w,
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     ),
@@ -209,10 +206,8 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                             onPressed: () {
                               canvasKey.currentState?.clear();
                               setState(
-                                () =>
-                                    wordIndex =
-                                        (wordIndex + 1) %
-                                        harakaSampleLetters.length,
+                                () => wordIndex = (wordIndex + 1) %
+                                    harakaSampleLetters.length,
                               );
                               _celebrate();
                             },

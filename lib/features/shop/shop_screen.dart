@@ -79,21 +79,20 @@ class _S extends State<ShopScreen> {
                     Text('⭐ ${x.price}'),
                     const SizedBox(height: 6),
                     FilledButton(
-                      onPressed:
-                          owned
-                              ? null
-                              : () async {
-                                final ok = await ProgressV5.buy(x.id, x.price);
-                                if (ok) {
-                                  await load();
-                                } else if (c.mounted) {
-                                  ScaffoldMessenger.of(c).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('تحتاج إلى نجوم أكثر'),
-                                    ),
-                                  );
-                                }
-                              },
+                      onPressed: owned
+                          ? null
+                          : () async {
+                              final ok = await ProgressV5.buy(x.id, x.price);
+                              if (ok) {
+                                await load();
+                              } else if (c.mounted) {
+                                ScaffoldMessenger.of(c).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('تحتاج إلى نجوم أكثر'),
+                                  ),
+                                );
+                              }
+                            },
                       child: Text(owned ? 'تم الشراء' : 'شراء'),
                     ),
                   ],

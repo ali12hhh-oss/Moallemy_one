@@ -137,10 +137,9 @@ class _ArabicPracticeV16State extends State<ArabicPracticeV16> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color:
-                              selected == question.answer
-                                  ? Colors.green
-                                  : Colors.orange,
+                          color: selected == question.answer
+                              ? Colors.green
+                              : Colors.orange,
                         ),
                       ),
                       const SizedBox(height: 5),

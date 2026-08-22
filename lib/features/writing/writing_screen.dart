@@ -107,10 +107,9 @@ class _WritingScreenState extends State<WritingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final label =
-        isNumber
-            ? 'اكتب الرقم'
-            : isEnglish
+    final label = isNumber
+        ? 'اكتب الرقم'
+        : isEnglish
             ? 'اكتب الحرف'
             : (target.length > 1 ? 'اكتب الكلمة' : 'اكتب الحرف');
     return Directionality(
@@ -163,10 +162,10 @@ class _WritingScreenState extends State<WritingScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: GestureDetector(
-                      onPanStart:
-                          (d) => setState(() => points.add(d.localPosition)),
-                      onPanUpdate:
-                          (d) => setState(() => points.add(d.localPosition)),
+                      onPanStart: (d) =>
+                          setState(() => points.add(d.localPosition)),
+                      onPanUpdate: (d) =>
+                          setState(() => points.add(d.localPosition)),
                       child: CustomPaint(
                         painter: DrawingPainter(points),
                         child: const SizedBox.expand(),
@@ -209,11 +208,10 @@ class DrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pen =
-        Paint()
-          ..strokeWidth = 7
-          ..strokeCap = StrokeCap.round
-          ..style = PaintingStyle.stroke;
+    final pen = Paint()
+      ..strokeWidth = 7
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
     for (var i = 1; i < points.length; i++) {
       canvas.drawLine(points[i - 1], points[i], pen);
     }

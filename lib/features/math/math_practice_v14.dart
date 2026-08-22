@@ -72,68 +72,68 @@ class _MathPracticeV14State extends State<MathPracticeV14> {
 
   @override
   Widget build(BuildContext context) => Directionality(
-    textDirection: TextDirection.rtl,
-    child: Scaffold(
-      appBar: AppBar(title: Text(widget.skill.title)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                    widget.skill.category,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _questionText(),
-                    style: const TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  ...options().map(
-                    (n) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.tonal(
-                          onPressed: answered ? null : () => _answer(n),
-                          child: Text(
-                            ar(n),
-                            style: const TextStyle(fontSize: 22),
-                          ),
-                        ),
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          appBar: AppBar(title: Text(widget.skill.title)),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Text(
+                        widget.skill.category,
+                        style: const TextStyle(fontSize: 18),
                       ),
-                    ),
-                  ),
-                  if (answered)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        chosen == answer
-                            ? 'أحسنت! ⭐'
-                            : 'حاول مرة أخرى — الإجابة ${ar(answer)}',
+                      const SizedBox(height: 12),
+                      Text(
+                        _questionText(),
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 34,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  const SizedBox(height: 10),
-                  Text('نتيجة التدريب: ${ar(correct)} / ${ar(total)}'),
-                ],
+                      const SizedBox(height: 18),
+                      ...options().map(
+                        (n) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: FilledButton.tonal(
+                              onPressed: answered ? null : () => _answer(n),
+                              child: Text(
+                                ar(n),
+                                style: const TextStyle(fontSize: 22),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (answered)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            chosen == answer
+                                ? 'أحسنت! ⭐'
+                                : 'حاول مرة أخرى — الإجابة ${ar(answer)}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 10),
+                      Text('نتيجة التدريب: ${ar(correct)} / ${ar(total)}'),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   String _questionText() {
     if (widget.skill.category == 'القيمة المكانية') {

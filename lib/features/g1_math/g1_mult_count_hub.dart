@@ -17,13 +17,12 @@ class G1MultCountHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const G1MultiplicationScreen(),
-                    ),
-                  ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const G1MultiplicationScreen(),
+                ),
+              ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -55,11 +54,10 @@ class G1MultCountHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const G1CountingScreen()),
-                  ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const G1CountingScreen()),
+              ),
               color: const Color(0xFF00BFA6),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

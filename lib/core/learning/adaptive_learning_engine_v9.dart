@@ -22,21 +22,20 @@ class SkillProgressV9 {
   bool get needsReview => attempts > 0 && mastery < .8;
 
   Map<String, dynamic> toMap() => {
-    'attempts': attempts,
-    'correct': correct,
-    'streak': streak,
-    'lastSeen': lastSeen?.toIso8601String(),
-  };
+        'attempts': attempts,
+        'correct': correct,
+        'streak': streak,
+        'lastSeen': lastSeen?.toIso8601String(),
+      };
   factory SkillProgressV9.fromMap(String id, Map<String, dynamic> m) =>
       SkillProgressV9(
         skillId: id,
         attempts: (m['attempts'] ?? 0) as int,
         correct: (m['correct'] ?? 0) as int,
         streak: (m['streak'] ?? 0) as int,
-        lastSeen:
-            m['lastSeen'] == null
-                ? null
-                : DateTime.tryParse(m['lastSeen'].toString()),
+        lastSeen: m['lastSeen'] == null
+            ? null
+            : DateTime.tryParse(m['lastSeen'].toString()),
       );
 }
 
@@ -107,9 +106,8 @@ class AdaptiveLearningEngineV9 {
 
   static Future<List<String>> weakSkills(String stageId) async {
     final all = await skills(stageId);
-    final weak =
-        all.values.where((x) => x.needsReview).toList()
-          ..sort((a, b) => a.mastery.compareTo(b.mastery));
+    final weak = all.values.where((x) => x.needsReview).toList()
+      ..sort((a, b) => a.mastery.compareTo(b.mastery));
     return weak.map((x) => x.skillId).toList();
   }
 
@@ -118,8 +116,7 @@ class AdaptiveLearningEngineV9 {
     Set<String> completedUnits,
   ) async {
     if (stage.units.isEmpty ||
-        !stage.units.every((u) => completedUnits.contains(u.id)))
-      return false;
+        !stage.units.every((u) => completedUnits.contains(u.id))) return false;
     final weak = await weakSkills(stage.id);
     return weak.isEmpty;
   }

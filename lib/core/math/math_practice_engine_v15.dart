@@ -97,11 +97,7 @@ class MathPracticeEngineV15 {
       answer: answer,
       options: options,
       explanation:
-          '${ar(a)} ${answer == 1
-              ? 'أكبر من'
-              : answer == -1
-              ? 'أصغر من'
-              : 'يساوي'} ${ar(b)}',
+          '${ar(a)} ${answer == 1 ? 'أكبر من' : answer == -1 ? 'أصغر من' : 'يساوي'} ${ar(b)}',
     );
   }
 
@@ -125,10 +121,9 @@ class MathPracticeEngineV15 {
     required String skillId,
     required int max,
   }) {
-    final value =
-        max >= 1000
-            ? (_random.nextInt(900) + 100)
-            : (_random.nextInt(max - 10) + 10);
+    final value = max >= 1000
+        ? (_random.nextInt(900) + 100)
+        : (_random.nextInt(max - 10) + 10);
     final digits = value.toString().split('');
     final placeIndex = _random.nextInt(digits.length);
     final digit = int.parse(digits[placeIndex]);

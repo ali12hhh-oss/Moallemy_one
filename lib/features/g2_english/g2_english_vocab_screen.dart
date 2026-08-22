@@ -17,10 +17,9 @@ class _G2EnglishVocabScreenState extends State<G2EnglishVocabScreen> {
   @override
   Widget build(BuildContext context) {
     final categories = englishWordsV11.map((w) => w.category).toSet().toList();
-    final words =
-        category == null
-            ? englishWordsV11
-            : englishWordsV11.where((w) => w.category == category).toList();
+    final words = category == null
+        ? englishWordsV11
+        : englishWordsV11.where((w) => w.category == category).toList();
 
     return Directionality(
       textDirection: TextDirection.rtl,

@@ -33,12 +33,12 @@ class _AnimatedMascotState extends State<AnimatedMascot>
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-    animation: floatAnimation,
-    builder:
-        (_, child) => Transform.translate(
+        animation: floatAnimation,
+        builder: (_, child) => Transform.translate(
           offset: Offset(0, floatAnimation.value),
           child: child,
         ),
-    child: Image.asset(widget.asset, width: widget.size, height: widget.size),
-  );
+        child:
+            Image.asset(widget.asset, width: widget.size, height: widget.size),
+      );
 }

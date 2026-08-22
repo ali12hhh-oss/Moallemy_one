@@ -75,43 +75,42 @@ class _Kg2LettersScreenState extends State<Kg2LettersScreen> {
                   ),
                   const SizedBox(height: 14),
                   Row(
-                    children:
-                        forms.all.map((f) {
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                              ),
-                              child: Button3D(
-                                onTap: () => _onFormTap(f.$2),
-                                color: color,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 18,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      f.$2,
-                                      style: const TextStyle(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      f.$1,
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                    children: forms.all.map((f) {
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                          ),
+                          child: Button3D(
+                            onTap: () => _onFormTap(f.$2),
+                            color: color,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 18,
                             ),
-                          );
-                        }).toList(),
+                            child: Column(
+                              children: [
+                                Text(
+                                  f.$2,
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  f.$1,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                   const SizedBox(height: 18),
                   Text(

@@ -44,17 +44,15 @@ class ArabicCurriculumScreenV16 extends StatelessWidget {
                         '${skill.category} — الإتقان ${ArabicPracticeEngineV16.arabicNumber(mastery)}٪',
                       ),
                       trailing: const Icon(Icons.arrow_back_ios_new),
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) => ArabicPracticeV16(
-                                    skillId: skill.id,
-                                    title: skill.title,
-                                  ),
-                            ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ArabicPracticeV16(
+                            skillId: skill.id,
+                            title: skill.title,
                           ),
+                        ),
+                      ),
                     ),
                   );
                 },

@@ -55,13 +55,12 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
                           ChoiceChip(
                             label: Text('الصف ${_arabic(g)}'),
                             selected: _grade == g,
-                            onSelected:
-                                (_) => setState(() {
-                                  _grade = g;
-                                  _selectedTable = null;
-                                  _started = false;
-                                  _showResult = false;
-                                }),
+                            onSelected: (_) => setState(() {
+                              _grade = g;
+                              _selectedTable = null;
+                              _started = false;
+                              _showResult = false;
+                            }),
                           ),
                       ],
                     ),
@@ -70,8 +69,8 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
                       _grade == 1
                           ? 'للصف الأول: جدول ١ و٢ اختياري ويمكن التخطي دون التأثير على نجاح المرحلة.'
                           : _grade == 2
-                          ? 'للصف الثاني: من جدول ١ إلى جدول ٥ ضمن مسار الرياضيات.'
-                          : 'للصف الثالث: من جدول ١ إلى جدول ١٠ مع مراجعة متدرجة.',
+                              ? 'للصف الثاني: من جدول ١ إلى جدول ٥ ضمن مسار الرياضيات.'
+                              : 'للصف الثالث: من جدول ١ إلى جدول ١٠ مع مراجعة متدرجة.',
                     ),
                   ],
                 ),
@@ -109,11 +108,10 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
                   : 'إتقان ${_arabic(mastery)}٪',
             ),
             trailing: const Icon(Icons.arrow_back_ios_new_rounded),
-            onTap:
-                () => setState(() {
-                  _selectedTable = item.table;
-                  _newQuestion();
-                }),
+            onTap: () => setState(() {
+              _selectedTable = item.table;
+              _newQuestion();
+            }),
           ),
         );
       },
@@ -140,11 +138,10 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
             const SizedBox(height: 16),
             if (!_started)
               FilledButton.icon(
-                onPressed:
-                    () => setState(() {
-                      _started = true;
-                      _newQuestion();
-                    }),
+                onPressed: () => setState(() {
+                  _started = true;
+                  _newQuestion();
+                }),
                 icon: const Icon(Icons.play_arrow),
                 label: const Text('ابدأ التدريب'),
               )

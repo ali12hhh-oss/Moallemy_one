@@ -129,10 +129,9 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                     children: [
                       Button3D(
                         onTap: () => _answerPlaceValue(true),
-                        color:
-                            answered
-                                ? const Color(0xFF00C853)
-                                : const Color(0xFF2979FF),
+                        color: answered
+                            ? const Color(0xFF00C853)
+                            : const Color(0xFF2979FF),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
                           vertical: 14,
@@ -149,10 +148,9 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                       const SizedBox(width: 14),
                       Button3D(
                         onTap: () => _answerPlaceValue(false),
-                        color:
-                            answered
-                                ? const Color(0xFF00C853)
-                                : const Color(0xFFFF6B35),
+                        color: answered
+                            ? const Color(0xFF00C853)
+                            : const Color(0xFFFF6B35),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
                           vertical: 14,

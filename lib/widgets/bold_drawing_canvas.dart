@@ -76,10 +76,10 @@ class BoldDrawingCanvasState extends State<BoldDrawingCanvas> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
                 child: GestureDetector(
-                  onPanStart:
-                      (d) => setState(() => points.add(d.localPosition)),
-                  onPanUpdate:
-                      (d) => setState(() => points.add(d.localPosition)),
+                  onPanStart: (d) =>
+                      setState(() => points.add(d.localPosition)),
+                  onPanUpdate: (d) =>
+                      setState(() => points.add(d.localPosition)),
                   onPanEnd: (_) => setState(() => points.add(null)),
                   child: CustomPaint(
                     painter: BoldDrawingPainter(points, penColor),
@@ -103,13 +103,12 @@ class BoldDrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pen =
-        Paint()
-          ..color = color
-          ..strokeWidth = 14
-          ..strokeCap = StrokeCap.round
-          ..strokeJoin = StrokeJoin.round
-          ..style = PaintingStyle.stroke;
+    final pen = Paint()
+      ..color = color
+      ..strokeWidth = 14
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
     for (var i = 0; i < points.length - 1; i++) {
       final a = points[i];
       final b = points[i + 1];

@@ -53,10 +53,9 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => onesMode = true),
-                      color:
-                          onesMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                      color: onesMode
+                          ? const Color(0xFF2979FF)
+                          : const Color(0xFF90CAF9),
                       depth: onesMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       child: const Center(
@@ -75,10 +74,9 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => onesMode = false),
-                      color:
-                          !onesMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                      color: !onesMode
+                          ? const Color(0xFF7C4DFF)
+                          : const Color(0xFFB39DDB),
                       depth: !onesMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       child: const Center(
@@ -119,14 +117,12 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                 itemBuilder: (_, i) {
                   final n = onesMode ? ones[i] : tens[i];
                   return Button3D(
-                    onTap:
-                        () => VoiceService.arabic(
-                          '$n${onesMode ? '، من الآحاد' : '، من العشرات'}',
-                        ),
-                    color:
-                        onesMode
-                            ? const Color(0xFF2979FF)
-                            : const Color(0xFF7C4DFF),
+                    onTap: () => VoiceService.arabic(
+                      '$n${onesMode ? '، من الآحاد' : '، من العشرات'}',
+                    ),
+                    color: onesMode
+                        ? const Color(0xFF2979FF)
+                        : const Color(0xFF7C4DFF),
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -197,12 +193,12 @@ class _Dot extends StatelessWidget {
   const _Dot();
   @override
   Widget build(BuildContext context) => Container(
-    width: 6,
-    height: 6,
-    margin: const EdgeInsets.symmetric(horizontal: .5),
-    decoration: const BoxDecoration(
-      color: Colors.white,
-      shape: BoxShape.circle,
-    ),
-  );
+        width: 6,
+        height: 6,
+        margin: const EdgeInsets.symmetric(horizontal: .5),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+      );
 }

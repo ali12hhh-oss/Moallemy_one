@@ -80,10 +80,9 @@ class _ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
-        Paint()
-          ..color = Colors.white
-          ..style = PaintingStyle.fill;
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
     final w = size.width, h = size.height;
     final path = Path();
     switch (kind) {

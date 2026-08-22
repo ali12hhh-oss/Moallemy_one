@@ -104,10 +104,9 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => _switch(true),
-                      color:
-                          lettersMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                      color: lettersMode
+                          ? const Color(0xFF7C4DFF)
+                          : const Color(0xFFB39DDB),
                       depth: lettersMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Center(
@@ -126,10 +125,9 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => _switch(false),
-                      color:
-                          !lettersMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                      color: !lettersMode
+                          ? const Color(0xFF2979FF)
+                          : const Color(0xFF90CAF9),
                       depth: !lettersMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Center(
@@ -211,10 +209,10 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: GestureDetector(
-                      onPanStart:
-                          (d) => setState(() => points.add(d.localPosition)),
-                      onPanUpdate:
-                          (d) => setState(() => points.add(d.localPosition)),
+                      onPanStart: (d) =>
+                          setState(() => points.add(d.localPosition)),
+                      onPanUpdate: (d) =>
+                          setState(() => points.add(d.localPosition)),
                       onPanEnd: (_) => setState(() => points.add(null)),
                       child: CustomPaint(
                         painter: _BoldDrawingPainter(points, penColor),
@@ -261,13 +259,12 @@ class _BoldDrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pen =
-        Paint()
-          ..color = color
-          ..strokeWidth = 14
-          ..strokeCap = StrokeCap.round
-          ..strokeJoin = StrokeJoin.round
-          ..style = PaintingStyle.stroke;
+    final pen = Paint()
+      ..color = color
+      ..strokeWidth = 14
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
     for (var i = 0; i < points.length - 1; i++) {
       final a = points[i];
       final b = points[i + 1];

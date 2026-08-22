@@ -32,18 +32,16 @@ class StoriesScreen extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) => StoryPage(
-                                s: story['title']!,
-                                text: story['text']!,
-                                emoji: story['emoji']!,
-                              ),
-                        ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => StoryPage(
+                        s: story['title']!,
+                        text: story['text']!,
+                        emoji: story['emoji']!,
                       ),
+                    ),
+                  ),
                 ),
               ),
             for (final story in storiesV11)
@@ -62,18 +60,16 @@ class StoriesScreen extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) => StoryPage(
-                                s: story.title,
-                                text: story.text,
-                                emoji: story.emoji,
-                              ),
-                        ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => StoryPage(
+                        s: story.title,
+                        text: story.text,
+                        emoji: story.emoji,
                       ),
+                    ),
+                  ),
                 ),
               ),
           ],

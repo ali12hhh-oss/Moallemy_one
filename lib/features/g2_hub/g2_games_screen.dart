@@ -52,53 +52,51 @@ class G2GamesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text('الألعاب 🎮')),
         body: ListView(
           padding: const EdgeInsets.all(18),
-          children:
-              games.map((g) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Button3D(
-                    onTap:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => g.$5),
-                        ),
-                    color: g.$4,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 20,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(g.$1, style: const TextStyle(fontSize: 34)),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                g.$2,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                g.$3,
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 12.5,
-                                ),
-                              ),
-                            ],
+          children: games.map((g) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Button3D(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => g.$5),
+                ),
+                color: g.$4,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 20,
+                ),
+                child: Row(
+                  children: [
+                    Text(g.$1, style: const TextStyle(fontSize: 34)),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            g.$2,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 3),
+                          Text(
+                            g.$3,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12.5,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
@@ -174,25 +172,24 @@ class _ReadingGameState extends State<_ReadingGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children:
-                          options
-                              .map(
-                                (o) => Button3D(
-                                  onTap: () => _answer(o),
-                                  color: const Color(0xFF7C4DFF),
-                                  child: Center(
-                                    child: Text(
-                                      o.word,
-                                      style: const TextStyle(
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                      children: options
+                          .map(
+                            (o) => Button3D(
+                              onTap: () => _answer(o),
+                              color: const Color(0xFF7C4DFF),
+                              child: Center(
+                                child: Text(
+                                  o.word,
+                                  style: const TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],
@@ -279,25 +276,24 @@ class _EnglishGameState extends State<_EnglishGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children:
-                          options
-                              .map(
-                                (o) => Button3D(
-                                  onTap: () => _answer(o),
-                                  color: const Color(0xFF2979FF),
-                                  child: Center(
-                                    child: Text(
-                                      '${o.emoji} ${o.arabic}',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                      children: options
+                          .map(
+                            (o) => Button3D(
+                              onTap: () => _answer(o),
+                              color: const Color(0xFF2979FF),
+                              child: Center(
+                                child: Text(
+                                  '${o.emoji} ${o.arabic}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],
@@ -399,25 +395,24 @@ class _MathGameState extends State<_MathGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children:
-                          options
-                              .map(
-                                (o) => Button3D(
-                                  onTap: () => _answer(o),
-                                  color: const Color(0xFF00C853),
-                                  child: Center(
-                                    child: Text(
-                                      arNum(o),
-                                      style: const TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                      children: options
+                          .map(
+                            (o) => Button3D(
+                              onTap: () => _answer(o),
+                              color: const Color(0xFF00C853),
+                              child: Center(
+                                child: Text(
+                                  arNum(o),
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              )
-                              .toList(),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],
@@ -468,10 +463,9 @@ class _GrammarGameState extends State<_GrammarGame> {
   }
 
   void _answer(bool chosenSecondOption) {
-    final isCorrect =
-        nounVerbRound
-            ? (chosenSecondOption == nvTarget.isVerb)
-            : (chosenSecondOption == genderShowFeminine);
+    final isCorrect = nounVerbRound
+        ? (chosenSecondOption == nvTarget.isVerb)
+        : (chosenSecondOption == genderShowFeminine);
     if (isCorrect) {
       score++;
       setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]);
@@ -493,14 +487,12 @@ class _GrammarGameState extends State<_GrammarGame> {
 
   @override
   Widget build(BuildContext context) {
-    final word =
-        nounVerbRound
-            ? nvTarget.word
-            : (genderShowFeminine ? genderPair.feminine : genderPair.masculine);
-    final emoji =
-        nounVerbRound
-            ? nvTarget.emoji
-            : (genderShowFeminine ? genderPair.emojiF : genderPair.emojiM);
+    final word = nounVerbRound
+        ? nvTarget.word
+        : (genderShowFeminine ? genderPair.feminine : genderPair.masculine);
+    final emoji = nounVerbRound
+        ? nvTarget.emoji
+        : (genderShowFeminine ? genderPair.emojiF : genderPair.emojiM);
     final leftLabel = nounVerbRound ? 'اسم' : 'مذكر';
     final rightLabel = nounVerbRound ? 'فعل' : 'مؤنث';
 

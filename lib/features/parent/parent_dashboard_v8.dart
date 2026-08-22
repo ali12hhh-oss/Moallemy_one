@@ -120,14 +120,13 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children:
-                    badges.isEmpty
-                        ? [
-                          const Chip(
-                            label: Text('ابدأ التعلم لتحصل على أول لقب'),
-                          ),
-                        ]
-                        : badges.map((b) => Chip(label: Text(b))).toList(),
+                children: badges.isEmpty
+                    ? [
+                        const Chip(
+                          label: Text('ابدأ التعلم لتحصل على أول لقب'),
+                        ),
+                      ]
+                    : badges.map((b) => Chip(label: Text(b))).toList(),
               ),
               const SizedBox(height: 12),
               const Text(
@@ -159,18 +158,18 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
   }
 
   Widget _stat(String title, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   Future<_StageProgress> _stageProgress(CurriculumStageV8 stage) async {
     var done = 0;

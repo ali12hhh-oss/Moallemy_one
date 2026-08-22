@@ -57,10 +57,9 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => placeValueMode = false),
-                      color:
-                          !placeValueMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                      color: !placeValueMode
+                          ? const Color(0xFF2979FF)
+                          : const Color(0xFF90CAF9),
                       depth: !placeValueMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Center(
@@ -79,10 +78,9 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => placeValueMode = true),
-                      color:
-                          placeValueMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                      color: placeValueMode
+                          ? const Color(0xFF7C4DFF)
+                          : const Color(0xFFB39DDB),
                       depth: placeValueMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: const Center(
@@ -194,25 +192,24 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
         Wrap(
           spacing: 10,
           runSpacing: 10,
-          children:
-              numbers.map((n) {
-                return Button3D(
-                  onTap: () => VoiceService.arabic('${arNum(n)}، ${_word(n)}'),
-                  color: color,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 14,
-                  ),
-                  child: Text(
-                    arNum(n),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-              }).toList(),
+          children: numbers.map((n) {
+            return Button3D(
+              onTap: () => VoiceService.arabic('${arNum(n)}، ${_word(n)}'),
+              color: color,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18,
+                vertical: 14,
+              ),
+              child: Text(
+                arNum(n),
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ],
     );

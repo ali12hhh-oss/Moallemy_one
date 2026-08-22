@@ -17,17 +17,15 @@ class G1ReadHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (_) => const G1ReadWordsScreen(
-                            words: twoLetterWords,
-                            title: 'كلمات من حرفين',
-                          ),
-                    ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const G1ReadWordsScreen(
+                    words: twoLetterWords,
+                    title: 'كلمات من حرفين',
                   ),
+                ),
+              ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -59,17 +57,15 @@ class G1ReadHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (_) => const G1ReadWordsScreen(
-                            words: threeLetterWords,
-                            title: 'كلمات من ثلاثة أحرف',
-                          ),
-                    ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const G1ReadWordsScreen(
+                    words: threeLetterWords,
+                    title: 'كلمات من ثلاثة أحرف',
                   ),
+                ),
+              ),
               color: const Color(0xFFFF1E7E),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

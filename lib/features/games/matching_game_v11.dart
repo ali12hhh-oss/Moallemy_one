@@ -103,29 +103,28 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
                     borderRadius: BorderRadius.circular(18),
                     child: Card(
                       child: Center(
-                        child:
-                            visible
-                                ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      cards[index].emoji,
-                                      style: const TextStyle(fontSize: 34),
+                        child: visible
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    cards[index].emoji,
+                                    style: const TextStyle(fontSize: 34),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    cards[index].word,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      cards[index].word,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                                : const Text(
-                                  '؟',
-                                  style: TextStyle(fontSize: 40),
-                                ),
+                                  ),
+                                ],
+                              )
+                            : const Text(
+                                '؟',
+                                style: TextStyle(fontSize: 40),
+                              ),
                       ),
                     ),
                   );

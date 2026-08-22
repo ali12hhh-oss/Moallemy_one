@@ -39,13 +39,12 @@ class MathCurriculumScreenV14 extends StatelessWidget {
                       title: Text(s.title),
                       subtitle: Text('الإتقان ${ar(m)}٪'),
                       trailing: const Icon(Icons.arrow_back_ios_new),
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => MathPracticeV14(skill: s),
-                            ),
-                          ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MathPracticeV14(skill: s),
+                        ),
+                      ),
                     ),
                   );
                 },

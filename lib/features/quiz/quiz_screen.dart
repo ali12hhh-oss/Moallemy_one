@@ -37,24 +37,23 @@ class _S extends State<QuizScreen> {
     if (q == 10) {
       showDialog<void>(
         context: context,
-        builder:
-            (_) => AlertDialog(
-              title: const Text('نتيجة الاختبار 🎉'),
-              content: Text('النتيجة: ${arNum(score)} من ${arNum(10)}'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      q = 1;
-                      score = 0;
-                      next();
-                    });
-                  },
-                  child: const Text('إعادة الاختبار'),
-                ),
-              ],
+        builder: (_) => AlertDialog(
+          title: const Text('نتيجة الاختبار 🎉'),
+          content: Text('النتيجة: ${arNum(score)} من ${arNum(10)}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  q = 1;
+                  score = 0;
+                  next();
+                });
+              },
+              child: const Text('إعادة الاختبار'),
             ),
+          ],
+        ),
       );
     } else {
       setState(() {

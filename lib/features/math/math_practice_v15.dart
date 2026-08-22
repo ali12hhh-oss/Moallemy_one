@@ -168,8 +168,8 @@ class _MathPracticeV15State extends State<MathPracticeV15> {
                                       }[value] ??
                                       _ar(value))
                                   : widget.category == 'الترتيب'
-                                  ? (q.optionLabels?[value] ?? 'ترتيب آخر')
-                                  : _ar(value),
+                                      ? (q.optionLabels?[value] ?? 'ترتيب آخر')
+                                      : _ar(value),
                               style: const TextStyle(fontSize: 22),
                             ),
                           ),
@@ -185,10 +185,9 @@ class _MathPracticeV15State extends State<MathPracticeV15> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color:
-                              selected == q.answer
-                                  ? Colors.green
-                                  : Colors.orange,
+                          color: selected == q.answer
+                              ? Colors.green
+                              : Colors.orange,
                         ),
                       ),
                       const SizedBox(height: 6),

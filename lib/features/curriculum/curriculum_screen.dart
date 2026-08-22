@@ -87,27 +87,24 @@ class _CurriculumScreenState extends State<CurriculumScreen> {
                       ),
                       const SizedBox(height: 6),
                       LinearProgressIndicator(
-                        value:
-                            stage.units.isEmpty
-                                ? 0
-                                : p.done / stage.units.length,
+                        value: stage.units.isEmpty
+                            ? 0
+                            : p.done / stage.units.length,
                         minHeight: 9,
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.icon(
-                          onPressed:
-                              ready
-                                  ? () => Navigator.push(
+                          onPressed: ready
+                              ? () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder:
-                                          (_) =>
-                                              FinalExamScreenV8(stage: stage),
+                                      builder: (_) =>
+                                          FinalExamScreenV8(stage: stage),
                                     ),
                                   )
-                                  : null,
+                              : null,
                           icon: const Icon(Icons.school),
                           label: Text(
                             ready
@@ -130,29 +127,31 @@ class _CurriculumScreenState extends State<CurriculumScreen> {
   Widget _unitCard(
     CurriculumStageV8 stage,
     CurriculumUnitV8 unit,
-  ) => FutureBuilder<bool>(
-    future: ProgressV8.lessonDone(unit.id),
-    builder: (_, snap) {
-      final done = snap.data ?? false;
-      return Card(
-        child: ListTile(
-          leading: CircleAvatar(
-            child: Text(unit.icon, style: const TextStyle(fontSize: 22)),
-          ),
-          title: Text(
-            unit.title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            '${unit.description}\n${arNum(unit.minutes)} دقيقة  •  ⭐ ${arNum(unit.stars)}\nالمهارات: ${unit.skills.join('، ')}',
-          ),
-          isThreeLine: true,
-          trailing: Icon(done ? Icons.check_circle : Icons.play_circle_fill),
-          onTap: () => _completeUnit(unit),
-        ),
+  ) =>
+      FutureBuilder<bool>(
+        future: ProgressV8.lessonDone(unit.id),
+        builder: (_, snap) {
+          final done = snap.data ?? false;
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Text(unit.icon, style: const TextStyle(fontSize: 22)),
+              ),
+              title: Text(
+                unit.title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                '${unit.description}\n${arNum(unit.minutes)} دقيقة  •  ⭐ ${arNum(unit.stars)}\nالمهارات: ${unit.skills.join('، ')}',
+              ),
+              isThreeLine: true,
+              trailing:
+                  Icon(done ? Icons.check_circle : Icons.play_circle_fill),
+              onTap: () => _completeUnit(unit),
+            ),
+          );
+        },
       );
-    },
-  );
 
   Future<void> _completeUnit(CurriculumUnitV8 unit) async {
     await ProgressV8.finishLesson(unit.id, unit.stars);

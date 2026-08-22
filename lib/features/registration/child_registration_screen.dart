@@ -49,13 +49,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     if (loaded != null && mounted) {
       setState(() {
         name.text = loaded.name;
-        stageId =
-            stages
-                .firstWhere(
-                  (s) => s.$2 == loaded.stage,
-                  orElse: () => stages.first,
-                )
-                .$1;
+        stageId = stages
+            .firstWhere(
+              (s) => s.$2 == loaded.stage,
+              orElse: () => stages.first,
+            )
+            .$1;
       });
     }
   }
@@ -107,13 +106,13 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   }
 
   int _age(String id) => switch (id) {
-    'kg1' => 4,
-    'kg2' => 5,
-    'prep' => 6,
-    'g1' => 7,
-    'g2' => 8,
-    _ => 9,
-  };
+        'kg1' => 4,
+        'kg2' => 5,
+        'prep' => 6,
+        'g1' => 7,
+        'g2' => 8,
+        _ => 9,
+      };
 
   @override
   Widget build(BuildContext context) {

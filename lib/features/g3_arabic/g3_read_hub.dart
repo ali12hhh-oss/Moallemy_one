@@ -60,40 +60,38 @@ class G3ReadHub extends StatelessWidget {
         appBar: AppBar(title: const Text('اقرأ 📖')),
         body: ListView(
           padding: const EdgeInsets.all(18),
-          children:
-              items.map((g) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: Button3D(
-                    onTap:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => g.$4),
+          children: items.map((g) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Button3D(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => g.$4),
+                ),
+                color: g.$3,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 18,
+                ),
+                child: Row(
+                  children: [
+                    Text(g.$1, style: const TextStyle(fontSize: 28)),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Text(
+                        g.$2,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
                         ),
-                    color: g.$3,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 18,
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        Text(g.$1, style: const TextStyle(fontSize: 28)),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            g.$2,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

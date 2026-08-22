@@ -18,15 +18,15 @@ class LetterForms {
   });
 
   factory LetterForms.of(String letter) => LetterForms(
-    isolated: letter,
-    initial: '$letter$_tatweel',
-    medial: '$_tatweel$letter$_tatweel',
-    finalForm: '$_tatweel$letter',
-  );
+        isolated: letter,
+        initial: '$letter$_tatweel',
+        medial: '$_tatweel$letter$_tatweel',
+        finalForm: '$_tatweel$letter',
+      );
 
   List<(String label, String form)> get all => [
-    ('البداية', initial),
-    ('الوسط', medial),
-    ('النهاية', finalForm),
-  ];
+        ('البداية', initial),
+        ('الوسط', medial),
+        ('النهاية', finalForm),
+      ];
 }

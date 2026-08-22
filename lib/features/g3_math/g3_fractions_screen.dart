@@ -36,9 +36,11 @@ class _G3FractionsScreenState extends State<G3FractionsScreen> {
 
   void _nextQuiz() {
     target = fractions[rnd.nextInt(fractions.length)];
-    final others =
-        fractions.map((f) => f.name).where((n) => n != target.name).toList()
-          ..shuffle(rnd);
+    final others = fractions
+        .map((f) => f.name)
+        .where((n) => n != target.name)
+        .toList()
+      ..shuffle(rnd);
     options = [target.name, ...others]..shuffle(rnd);
   }
 
@@ -79,10 +81,9 @@ class _G3FractionsScreenState extends State<G3FractionsScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color:
-                              learnMode
-                                  ? const Color(0xFF7C4DFF)
-                                  : const Color(0xFFB39DDB),
+                          color: learnMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -101,10 +102,9 @@ class _G3FractionsScreenState extends State<G3FractionsScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color:
-                              !learnMode
-                                  ? const Color(0xFF00C853)
-                                  : const Color(0xFFA5D6A7),
+                          color: !learnMode
+                              ? const Color(0xFF00C853)
+                              : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -201,33 +201,32 @@ class _G3FractionsScreenState extends State<G3FractionsScreen> {
                           ),
                           const SizedBox(height: 24),
                           Row(
-                            children:
-                                options.map((o) {
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                      ),
-                                      child: Button3D(
-                                        onTap: () => _answer(o),
-                                        color: const Color(0xFF2979FF),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 20,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            o,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
-                                            ),
-                                          ),
+                            children: options.map((o) {
+                              return Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                  ),
+                                  child: Button3D(
+                                    onTap: () => _answer(o),
+                                    color: const Color(0xFF2979FF),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 20,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        o,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
-                                  );
-                                }).toList(),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                           ),
                         ],
                       ),
@@ -253,17 +252,14 @@ class _PiePainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = min(size.width, size.height) / 2 - 2;
     final sweep = 2 * pi / parts;
-    final border =
-        Paint()
-          ..color = Colors.white
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2;
+    final border = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
     for (var i = 0; i < parts; i++) {
-      final fill =
-          Paint()
-            ..color =
-                i == 0 ? Colors.white : Colors.white.withValues(alpha: .25)
-            ..style = PaintingStyle.fill;
+      final fill = Paint()
+        ..color = i == 0 ? Colors.white : Colors.white.withValues(alpha: .25)
+        ..style = PaintingStyle.fill;
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
         -pi / 2 + i * sweep,

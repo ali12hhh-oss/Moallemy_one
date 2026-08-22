@@ -17,13 +17,12 @@ class Kg2NumbersHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const NumbersScreenV6(start: 1, end: 50),
-                    ),
-                  ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const NumbersScreenV6(start: 1, end: 50),
+                ),
+              ),
               color: const Color(0xFF2979FF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -55,13 +54,12 @@ class Kg2NumbersHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap:
-                  () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const Kg2PlaceValueScreen(),
-                    ),
-                  ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const Kg2PlaceValueScreen(),
+                ),
+              ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

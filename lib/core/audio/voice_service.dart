@@ -56,10 +56,9 @@ class VoiceService {
       await _player.stop();
       // AssetSource paths are relative to the `assets/` folder declared
       // in pubspec.yaml, so strip the leading "assets/".
-      final relative =
-          assetPath.startsWith('assets/')
-              ? assetPath.substring('assets/'.length)
-              : assetPath;
+      final relative = assetPath.startsWith('assets/')
+          ? assetPath.substring('assets/'.length)
+          : assetPath;
       await _player.play(AssetSource(relative));
       return true;
     } catch (_) {

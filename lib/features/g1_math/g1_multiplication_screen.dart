@@ -30,31 +30,30 @@ class _G1MultiplicationScreenState extends State<G1MultiplicationScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 12, 14, 4),
               child: Row(
-                children:
-                    [1, 2, 3].map((t) {
-                      final selected = t == table;
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Button3D(
-                            onTap: () => setState(() => table = t),
-                            color: colors[t - 1],
-                            depth: selected ? 2 : 7,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Center(
-                              child: Text(
-                                'جدول ${arNum(t)}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                              ),
+                children: [1, 2, 3].map((t) {
+                  final selected = t == table;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Button3D(
+                        onTap: () => setState(() => table = t),
+                        color: colors[t - 1],
+                        depth: selected ? 2 : 7,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: Text(
+                            'جدول ${arNum(t)}',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
             const SizedBox(height: 8),
@@ -70,10 +69,9 @@ class _G1MultiplicationScreenState extends State<G1MultiplicationScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Button3D(
-                      onTap:
-                          () => VoiceService.arabic(
-                            '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
-                          ),
+                      onTap: () => VoiceService.arabic(
+                        '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
+                      ),
                       color: color,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,

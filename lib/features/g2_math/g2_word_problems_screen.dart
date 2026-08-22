@@ -135,23 +135,22 @@ class _G2WordProblemsScreenState extends State<G2WordProblemsScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children:
-                          options.map((o) {
-                            return Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF7C4DFF),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                      children: options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: const Color(0xFF7C4DFF),
+                          child: Center(
+                            child: Text(
+                              arNum(o),
+                              style: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
                               ),
-                            );
-                          }).toList(),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],

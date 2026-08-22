@@ -17,9 +17,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       Navigator.push(c, MaterialPageRoute(builder: (_) => w));
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-    animation: prefs,
-    builder:
-        (context, _) => Directionality(
+        animation: prefs,
+        builder: (context, _) => Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
             appBar: AppBar(title: const Text('الإعدادات')),
@@ -73,15 +72,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     subtitle: Text('${arNum(prefs.sessionMinutes)} دقيقة'),
                     trailing: DropdownButton<int>(
                       value: prefs.sessionMinutes,
-                      items:
-                          [10, 15, 20, 30, 45]
-                              .map(
-                                (x) => DropdownMenuItem(
-                                  value: x,
-                                  child: Text(arNum(x)),
-                                ),
-                              )
-                              .toList(),
+                      items: [10, 15, 20, 30, 45]
+                          .map(
+                            (x) => DropdownMenuItem(
+                              value: x,
+                              child: Text(arNum(x)),
+                            ),
+                          )
+                          .toList(),
                       onChanged: (v) {
                         if (v != null) prefs.setSessionMinutes(v);
                       },
@@ -121,5 +119,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ),
-  );
+      );
 }

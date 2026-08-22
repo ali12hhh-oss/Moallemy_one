@@ -32,31 +32,30 @@ class _G2MultiplicationScreenState extends State<G2MultiplicationScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 12, 10, 4),
               child: Row(
-                children:
-                    [1, 2, 3, 4, 5].map((t) {
-                      final selected = t == table;
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: Button3D(
-                            onTap: () => setState(() => table = t),
-                            color: colors[t - 1],
-                            depth: selected ? 2 : 7,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Center(
-                              child: Text(
-                                arNum(t),
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                              ),
+                children: [1, 2, 3, 4, 5].map((t) {
+                  final selected = t == table;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Button3D(
+                        onTap: () => setState(() => table = t),
+                        color: colors[t - 1],
+                        depth: selected ? 2 : 7,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: Text(
+                            arNum(t),
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
             const SizedBox(height: 8),
@@ -72,10 +71,9 @@ class _G2MultiplicationScreenState extends State<G2MultiplicationScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Button3D(
-                      onTap:
-                          () => VoiceService.arabic(
-                            '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
-                          ),
+                      onTap: () => VoiceService.arabic(
+                        '${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}',
+                      ),
                       color: color,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 18,

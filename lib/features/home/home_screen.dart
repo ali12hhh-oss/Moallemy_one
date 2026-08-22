@@ -22,9 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final prefs = AppPreferencesV10.instance;
 
   static const List<
-    (String id, String title, String age, String emoji, String desc)
-  >
-  stages = [
+          (String id, String title, String age, String emoji, String desc)>
+      stages = [
     (
       'kg1',
       'الروضة الأولى',
@@ -111,71 +110,67 @@ class _HomeScreenState extends State<HomeScreen> {
     final result = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder:
-          (dialogContext) => StatefulBuilder(
-            builder:
-                (context, setDialog) => AlertDialog(
-                  title: const Text('منطقة الوالدين 🔒'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.',
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        '${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟',
-                        style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      TextField(
-                        controller: controller,
-                        autofocus: true,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          labelText: 'الإجابة',
-                          errorText:
-                              error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null,
-                        ),
-                        onSubmitted: (_) {
-                          if (int.tryParse(controller.text.trim()) ==
-                              expected) {
-                            Navigator.pop(dialogContext, true);
-                          } else {
-                            setDialog(() {
-                              error = true;
-                              controller.clear();
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(dialogContext, false),
-                      child: const Text('إلغاء'),
-                    ),
-                    FilledButton(
-                      onPressed: () {
-                        if (int.tryParse(controller.text.trim()) == expected) {
-                          Navigator.pop(dialogContext, true);
-                        } else {
-                          setDialog(() {
-                            error = true;
-                            controller.clear();
-                          });
-                        }
-                      },
-                      child: const Text('دخول'),
-                    ),
-                  ],
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialog) => AlertDialog(
+          title: const Text('منطقة الوالدين 🔒'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.',
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟',
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                autofocus: true,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  labelText: 'الإجابة',
+                  errorText: error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null,
+                ),
+                onSubmitted: (_) {
+                  if (int.tryParse(controller.text.trim()) == expected) {
+                    Navigator.pop(dialogContext, true);
+                  } else {
+                    setDialog(() {
+                      error = true;
+                      controller.clear();
+                    });
+                  }
+                },
+              ),
+            ],
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: const Text('إلغاء'),
+            ),
+            FilledButton(
+              onPressed: () {
+                if (int.tryParse(controller.text.trim()) == expected) {
+                  Navigator.pop(dialogContext, true);
+                } else {
+                  setDialog(() {
+                    error = true;
+                    controller.clear();
+                  });
+                }
+              },
+              child: const Text('دخول'),
+            ),
+          ],
+        ),
+      ),
     );
     controller.dispose();
     return result == true;
@@ -206,11 +201,10 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: IconButton(
             tooltip: 'الإعدادات',
             icon: const Icon(Icons.settings_rounded),
-            onPressed:
-                () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
-                ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
           ),
           actions: [
             IconButton(
@@ -306,51 +300,51 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _parentButton() => Button3D(
-    onTap: _openParents,
-    color: StageColors.family,
-    depth: 9,
-    child: Row(
-      children: [
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: .3),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Center(
-            child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)),
-          ),
-        ),
-        const SizedBox(width: 14),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'متابعة الأسرة',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
+        onTap: _openParents,
+        color: StageColors.family,
+        depth: 9,
+        child: Row(
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: .3),
+                borderRadius: BorderRadius.circular(16),
               ),
-              SizedBox(height: 3),
-              Text(
-                'نتائج الطفل، المهارات المتقنة، وما يحتاج مراجعة',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
+              child: const Center(
+                child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'متابعة الأسرة',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    'نتائج الطفل، المهارات المتقنة، وما يحتاج مراجعة',
+                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 20,
+              color: Colors.white,
+            ),
+          ],
         ),
-        const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 20,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
+      );
 
   List<Widget> _stageButtons() {
     return stages.map((s) {
@@ -410,51 +404,51 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _storeButton() => Button3D(
-    onTap:
-        () => Navigator.push(
+        onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const ShopScreen()),
         ),
-    color: StageColors.store,
-    depth: 9,
-    child: Row(
-      children: [
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: .32),
-            shape: BoxShape.circle,
-          ),
-          child: const Center(child: Text('⭐', style: TextStyle(fontSize: 27))),
-        ),
-        const SizedBox(width: 14),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'المتجر',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
+        color: StageColors.store,
+        depth: 9,
+        child: Row(
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: .32),
+                shape: BoxShape.circle,
               ),
-              SizedBox(height: 3),
-              Text(
-                'جوائز وملصقات وشخصيات تشجيعية بالنجوم',
-                style: TextStyle(color: Colors.white, fontSize: 13),
+              child: const Center(
+                  child: Text('⭐', style: TextStyle(fontSize: 27))),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'المتجر',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    'جوائز وملصقات وشخصيات تشجيعية بالنجوم',
+                    style: TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 20,
+              color: Colors.white,
+            ),
+          ],
         ),
-        const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 20,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
+      );
 }

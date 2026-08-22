@@ -80,7 +80,6 @@ const mathCurriculumV15 = <MathSkillV15>[
     maxNumber: 100,
     required: true,
   ),
-
   MathSkillV15(
     id: 'addition_100',
     grade: 2,
@@ -137,7 +136,6 @@ const mathCurriculumV15 = <MathSkillV15>[
     maxNumber: 1000,
     required: true,
   ),
-
   MathSkillV15(
     id: 'addition_1000',
     grade: 3,

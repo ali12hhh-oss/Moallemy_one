@@ -58,42 +58,41 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
       child: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child:
-              msg == null
-                  ? const SizedBox.shrink()
-                  : ScaleTransition(
-                    key: ValueKey(
-                      msg + DateTime.now().millisecondsSinceEpoch.toString(),
+          child: msg == null
+              ? const SizedBox.shrink()
+              : ScaleTransition(
+                  key: ValueKey(
+                    msg + DateTime.now().millisecondsSinceEpoch.toString(),
+                  ),
+                  scale: scale,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28,
+                      vertical: 18,
                     ),
-                    scale: scale,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 28,
-                        vertical: 18,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: gradients[msg.length % gradients.length],
                       ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: gradients[msg.length % gradients.length],
+                      borderRadius: BorderRadius.circular(26),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 16,
+                          offset: Offset(0, 6),
                         ),
-                        borderRadius: BorderRadius.circular(26),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 16,
-                            offset: Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        msg,
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
+                      ],
+                    ),
+                    child: Text(
+                      msg,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
                       ),
                     ),
                   ),
+                ),
         ),
       ),
     );

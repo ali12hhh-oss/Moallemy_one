@@ -34,9 +34,10 @@ class GameEngineV19 {
   static GameRoundV19 math() {
     final a = _r.nextInt(9) + 1, b = _r.nextInt(9) + 1;
     final ans = a + b;
-    final opts =
-        <int>{ans, ans + 1, ans - 1, ans + 2}.where((x) => x >= 0).toList()
-          ..shuffle(_r);
+    final opts = <int>{ans, ans + 1, ans - 1, ans + 2}
+        .where((x) => x >= 0)
+        .toList()
+      ..shuffle(_r);
     return GameRoundV19(
       'احسب: $a + $b',
       '$ans',
@@ -47,9 +48,10 @@ class GameEngineV19 {
   static GameRoundV19 multiplication(int maxTable) {
     final a = _r.nextInt(maxTable) + 1, b = _r.nextInt(10) + 1;
     final ans = a * b;
-    final opts =
-        <int>{ans, ans + a, ans - a, ans + 1}.where((x) => x >= 0).toList()
-          ..shuffle(_r);
+    final opts = <int>{ans, ans + a, ans - a, ans + 1}
+        .where((x) => x >= 0)
+        .toList()
+      ..shuffle(_r);
     return GameRoundV19(
       'احسب: $a × $b',
       '$ans',
