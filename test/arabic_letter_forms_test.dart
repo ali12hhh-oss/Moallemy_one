@@ -66,9 +66,9 @@ group('Arabic letter positional forms', () {
   test('joining letters have distinct positional glyphs', () {
     for (final letter in <String>['ب', 'ت', 'ج', 'س', 'ع', 'ف', 'ك', 'م', 'ي']) {
       final forms = LetterForms.of(letter);
-      expect(forms.initial, isNot(forms.is(forms.isolated)), reason: letter);
-      expect(forms.medial, isNot(forms.is(forms.isolated)), reason: letter);
-      expect(forms.finalForm, isNot(forms.is(forms.isolated)), reason: letter);
+      expect(forms.initial, isNot(equals(forms.isolated)), reason: letter);
+      expect(forms.medial, isNot(equals(forms.isolated)), reason: letter);
+      expect(forms.finalForm, isNot(equals(forms.isolated)), reason: letter);
     }
   });
 });
