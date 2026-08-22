@@ -54,33 +54,19 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Verify Gradle wrapper
-        run: |
-          set -e
-          test -f android/gradlew
-          test -f android/gradle/wrapper/gradle-wrapper.properties
-          chmod +x android/gradlew
       - name: Build one universal release APK
         run: |
           set -e
-          cd android
-          ./gradlew :app:assembleRelease --no-daemon --stacktrace
+          flutter build apk --release --no-tree-shake-icons
       - name: Collect and verify universal APK
         run: |
           set -e
-          source_dir="android/app/build/outputs/apk/release"
+          apk_source="build/app/outputs/flutter-apk/app-release.apk"
           apk_dir="build/app/outputs/flutter-apk"
-          apk_target="$apk_dir/daleel-child-release.apk"
-          mkdir -p "$apk_dir"
+          apk_target="$apk_dir/daleel-child-universal-release.apk"
 
-          mapfile -t APKS < <(find "$source_dir" -maxdepth 1 -type f -name '*.apk' -print | sort)
-          if [ "${#APKS[@]}" -ne 1 ]; then
-            echo "Expected exactly one universal release APK, found ${#APKS[@]}."
-            find "$source_dir" -maxdepth 2 -type f -name '*.apk' -print -exec ls -lh {} \; || true
-            exit 1
-          fi
-
-          cp -f "${APKS[0]}" "$apk_target"
+          test -f "$apk_source"
+          cp -f "$apk_source" "$apk_target"
 
           echo "Universal release APK:"
           ls -lh "$apk_target"
@@ -91,6 +77,6 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: daleel-child-apk
-          path: build/app/outputs/flutter-apk/daleel-child-release.apk
+          name: daleel-child-universal-apk
+          path: build/app/outputs/flutter-apk/daleel-child-universal-release.apk
           if-no-files-found: error
