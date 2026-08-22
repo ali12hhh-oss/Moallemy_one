@@ -61,24 +61,25 @@ class _ParentsScreenState extends State<ParentsScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: const Text('متابعة الأسرة')),
-        body: loading
-            ? const Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: _load,
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    _headerCard(),
-                    const SizedBox(height: 12),
-                    _statsCard(accuracy, stars, xp),
-                    const SizedBox(height: 12),
-                    _learningCard(),
-                    const SizedBox(height: 12),
-                    _weakCard(),
-                  ],
+        body:
+            loading
+                ? const Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                  onRefresh: _load,
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      _headerCard(),
+                      const SizedBox(height: 12),
+                      _statsCard(accuracy, stars, xp),
+                      const SizedBox(height: 12),
+                      _learningCard(),
+                      const SizedBox(height: 12),
+                      _weakCard(),
+                    ],
+                  ),
                 ),
-              ),
       ),
     );
   }

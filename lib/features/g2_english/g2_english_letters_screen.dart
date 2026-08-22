@@ -25,10 +25,11 @@ class G2EnglishLettersScreen extends StatelessWidget {
           itemBuilder: (_, i) {
             final e = englishLetters[i];
             return Button3D(
-              onTap: () => VoiceService.englishLetterSound(
-                e.letter.toLowerCase(),
-                fallbackText: e.sound,
-              ),
+              onTap:
+                  () => VoiceService.englishLetterSound(
+                    e.letter.toLowerCase(),
+                    fallbackText: e.sound,
+                  ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.all(4),
               child: Center(

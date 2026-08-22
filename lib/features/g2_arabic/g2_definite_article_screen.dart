@@ -78,9 +78,10 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color: learnMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              learnMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -99,9 +100,10 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color: !learnMode
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFA5D6A7),
+                          color:
+                              !learnMode
+                                  ? const Color(0xFF00C853)
+                                  : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -136,9 +138,10 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Button3D(
-                            onTap: () => VoiceService.arabic(
-                              '${p.bare}... ${p.defined}',
-                            ),
+                            onTap:
+                                () => VoiceService.arabic(
+                                  '${p.bare}... ${p.defined}',
+                                ),
                             color: const Color(0xFF7C4DFF),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 18,
@@ -190,9 +193,10 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                           Text(
                             'ما الشكل المعرَّف لكلمة:',
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -209,24 +213,25 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                               crossAxisCount: 2,
                               mainAxisSpacing: 14,
                               crossAxisSpacing: 14,
-                              children: options
-                                  .map(
-                                    (o) => Button3D(
-                                      onTap: () => _answer(o),
-                                      color: const Color(0xFF00C853),
-                                      child: Center(
-                                        child: Text(
-                                          o,
-                                          style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.white,
+                              children:
+                                  options
+                                      .map(
+                                        (o) => Button3D(
+                                          onTap: () => _answer(o),
+                                          color: const Color(0xFF00C853),
+                                          child: Center(
+                                            child: Text(
+                                              o,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w900,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
+                                      )
+                                      .toList(),
                             ),
                           ),
                         ],

@@ -17,10 +17,11 @@ class Kg2StoriesGamesHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const Kg2StoriesScreen()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Kg2StoriesScreen()),
+                  ),
               color: const Color(0xFFFF6B35),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -52,10 +53,11 @@ class Kg2StoriesGamesHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const Kg2GamesScreen()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Kg2GamesScreen()),
+                  ),
               color: const Color(0xFF00BFA6),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

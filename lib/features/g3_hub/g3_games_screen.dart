@@ -59,51 +59,53 @@ class G3GamesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text('الألعاب 🎮')),
         body: ListView(
           padding: const EdgeInsets.all(18),
-          children: games.map((g) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Button3D(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => g.$5),
-                ),
-                color: g.$4,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 20,
-                ),
-                child: Row(
-                  children: [
-                    Text(g.$1, style: const TextStyle(fontSize: 32)),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            g.$2,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            g.$3,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12.5,
-                            ),
-                          ),
-                        ],
-                      ),
+          children:
+              games.map((g) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Button3D(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => g.$5),
+                        ),
+                    color: g.$4,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 20,
                     ),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+                    child: Row(
+                      children: [
+                        Text(g.$1, style: const TextStyle(fontSize: 32)),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                g.$2,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                g.$3,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );
@@ -183,24 +185,25 @@ class _ReadingGameState extends State<_ReadingGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF7C4DFF),
-                              child: Center(
-                                child: Text(
-                                  o.word,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF7C4DFF),
+                                  child: Center(
+                                    child: Text(
+                                      o.word,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -286,24 +289,25 @@ class _EnglishGameState extends State<_EnglishGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF2979FF),
-                              child: Center(
-                                child: Text(
-                                  '${o.emoji} ${o.arabic}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF2979FF),
+                                  child: Center(
+                                    child: Text(
+                                      '${o.emoji} ${o.arabic}',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -391,24 +395,25 @@ class _MultiplicationGameState extends State<_MultiplicationGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF00C853),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF00C853),
+                                  child: Center(
+                                    child: Text(
+                                      arNum(o),
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -496,24 +501,25 @@ class _DivisionGameState extends State<_DivisionGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFFFF6B35),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFFFF6B35),
+                                  child: Center(
+                                    child: Text(
+                                      arNum(o),
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -604,24 +610,25 @@ class _FractionsGameState extends State<_FractionsGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFFFF1E7E),
-                              child: Center(
-                                child: Text(
-                                  o,
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFFFF1E7E),
+                                  child: Center(
+                                    child: Text(
+                                      o,
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],

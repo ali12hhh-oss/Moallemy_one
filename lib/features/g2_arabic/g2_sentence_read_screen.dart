@@ -94,24 +94,25 @@ class _G2SentenceReadScreenState extends State<G2SentenceReadScreen> {
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 12,
-                      children: s.parts.map((p) {
-                        return Button3D(
-                          onTap: () => VoiceService.arabic(p),
-                          color: color,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 22,
-                            vertical: 18,
-                          ),
-                          child: Text(
-                            p,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                      children:
+                          s.parts.map((p) {
+                            return Button3D(
+                              onTap: () => VoiceService.arabic(p),
+                              color: color,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 22,
+                                vertical: 18,
+                              ),
+                              child: Text(
+                                p,
+                                style: const TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }).toList(),
                     ),
                   const SizedBox(height: 22),
                   OutlinedButton.icon(

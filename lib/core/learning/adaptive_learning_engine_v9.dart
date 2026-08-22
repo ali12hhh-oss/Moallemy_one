@@ -33,9 +33,10 @@ class SkillProgressV9 {
         attempts: (m['attempts'] ?? 0) as int,
         correct: (m['correct'] ?? 0) as int,
         streak: (m['streak'] ?? 0) as int,
-        lastSeen: m['lastSeen'] == null
-            ? null
-            : DateTime.tryParse(m['lastSeen'].toString()),
+        lastSeen:
+            m['lastSeen'] == null
+                ? null
+                : DateTime.tryParse(m['lastSeen'].toString()),
       );
 }
 
@@ -106,8 +107,9 @@ class AdaptiveLearningEngineV9 {
 
   static Future<List<String>> weakSkills(String stageId) async {
     final all = await skills(stageId);
-    final weak = all.values.where((x) => x.needsReview).toList()
-      ..sort((a, b) => a.mastery.compareTo(b.mastery));
+    final weak =
+        all.values.where((x) => x.needsReview).toList()
+          ..sort((a, b) => a.mastery.compareTo(b.mastery));
     return weak.map((x) => x.skillId).toList();
   }
 

@@ -17,10 +17,13 @@ class G1ArabicHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const G1LettersWordsHub()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const G1LettersWordsHub(),
+                    ),
+                  ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -52,10 +55,11 @@ class G1ArabicHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const G1HarakatHub()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const G1HarakatHub()),
+                  ),
               color: const Color(0xFF2979FF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

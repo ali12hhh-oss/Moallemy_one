@@ -32,17 +32,19 @@ class MenuCard extends StatelessWidget {
                   width: 76,
                   height: 58,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stack) => Container(
-                    width: 76,
-                    height: 58,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surfaceContainerHighest,
-                    child: Icon(
-                      Icons.image_rounded,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+                  errorBuilder:
+                      (context, error, stack) => Container(
+                        width: 76,
+                        height: 58,
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
+                        child: Icon(
+                          Icons.image_rounded,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                 ),
               ),
               const SizedBox(width: 12),

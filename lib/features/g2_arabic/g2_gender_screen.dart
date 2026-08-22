@@ -72,9 +72,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color: learnMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              learnMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -93,9 +94,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color: !learnMode
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFA5D6A7),
+                          color:
+                              !learnMode
+                                  ? const Color(0xFF00C853)
+                                  : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -126,9 +128,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                             children: [
                               Expanded(
                                 child: Button3D(
-                                  onTap: () => VoiceService.arabic(
-                                    '${p.masculine}، مذكر',
-                                  ),
+                                  onTap:
+                                      () => VoiceService.arabic(
+                                        '${p.masculine}، مذكر',
+                                      ),
                                   color: const Color(0xFF2979FF),
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
@@ -154,9 +157,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Button3D(
-                                  onTap: () => VoiceService.arabic(
-                                    '${p.feminine}، مؤنث',
-                                  ),
+                                  onTap:
+                                      () => VoiceService.arabic(
+                                        '${p.feminine}، مؤنث',
+                                      ),
                                   color: const Color(0xFFFF1E7E),
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
@@ -194,9 +198,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                           Text(
                             'هل هذه الكلمة مؤنثة أم مذكرة؟',
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 10),

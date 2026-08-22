@@ -22,10 +22,11 @@ class Kg1GamesScreen extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const _LetterGame()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const _LetterGame()),
+                  ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -57,10 +58,11 @@ class Kg1GamesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const _NumberGame()),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const _NumberGame()),
+                  ),
               color: const Color(0xFF2979FF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -167,10 +169,11 @@ class _LetterGameState extends State<_LetterGame> {
               IconButton(
                 iconSize: 42,
                 icon: const Icon(Icons.volume_up_rounded),
-                onPressed: () => VoiceService.arabicLetterSound(
-                  target.letter,
-                  fallbackText: target.sound,
-                ),
+                onPressed:
+                    () => VoiceService.arabicLetterSound(
+                      target.letter,
+                      fallbackText: target.sound,
+                    ),
               ),
               const Text(
                 'أي حرف سمعت؟',
@@ -179,16 +182,17 @@ class _LetterGameState extends State<_LetterGame> {
               const SizedBox(height: 12),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
-                child: feedback == null
-                    ? const SizedBox(height: 30)
-                    : Text(
-                        feedback!,
-                        key: ValueKey(feedback),
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
+                child:
+                    feedback == null
+                        ? const SizedBox(height: 30)
+                        : Text(
+                          feedback!,
+                          key: ValueKey(feedback),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
               ),
               const SizedBox(height: 18),
               Expanded(
@@ -196,22 +200,23 @@ class _LetterGameState extends State<_LetterGame> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
-                  children: options.map((o) {
-                    return Button3D(
-                      onTap: () => _answer(o),
-                      color: const Color(0xFF00BFA6),
-                      child: Center(
-                        child: Text(
-                          o.letter,
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
+                  children:
+                      options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: const Color(0xFF00BFA6),
+                          child: Center(
+                            child: Text(
+                              o.letter,
+                              style: const TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                        );
+                      }).toList(),
                 ),
               ),
             ],
@@ -318,16 +323,17 @@ class _NumberGameState extends State<_NumberGame> {
               const SizedBox(height: 14),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
-                child: feedback == null
-                    ? const SizedBox(height: 30)
-                    : Text(
-                        feedback!,
-                        key: ValueKey(feedback),
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
+                child:
+                    feedback == null
+                        ? const SizedBox(height: 30)
+                        : Text(
+                          feedback!,
+                          key: ValueKey(feedback),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
               ),
               const SizedBox(height: 12),
               Expanded(
@@ -335,22 +341,23 @@ class _NumberGameState extends State<_NumberGame> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
-                  children: options.map((o) {
-                    return Button3D(
-                      onTap: () => _answer(o),
-                      color: const Color(0xFFFF6B35),
-                      child: Center(
-                        child: Text(
-                          arNum(o),
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
+                  children:
+                      options.map((o) {
+                        return Button3D(
+                          onTap: () => _answer(o),
+                          color: const Color(0xFFFF6B35),
+                          child: Center(
+                            child: Text(
+                              arNum(o),
+                              style: const TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                        );
+                      }).toList(),
                 ),
               ),
             ],

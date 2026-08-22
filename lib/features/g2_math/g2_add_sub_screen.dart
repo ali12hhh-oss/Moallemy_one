@@ -92,9 +92,10 @@ class _G2AddSubScreenState extends State<G2AddSubScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => vertical = false),
-                          color: !vertical
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                          color:
+                              !vertical
+                                  ? const Color(0xFF2979FF)
+                                  : const Color(0xFF90CAF9),
                           depth: !vertical ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: const Center(
@@ -113,9 +114,10 @@ class _G2AddSubScreenState extends State<G2AddSubScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => vertical = true),
-                          color: vertical
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              vertical
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: vertical ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: const Center(
@@ -206,24 +208,26 @@ class _G2AddSubScreenState extends State<G2AddSubScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options.map((o) {
-                        return Button3D(
-                          onTap: () => _answer(o),
-                          color: widget.isAddition
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFFF6B35),
-                          child: Center(
-                            child: Text(
-                              arNum(o),
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
+                      children:
+                          options.map((o) {
+                            return Button3D(
+                              onTap: () => _answer(o),
+                              color:
+                                  widget.isAddition
+                                      ? const Color(0xFF00C853)
+                                      : const Color(0xFFFF6B35),
+                              child: Center(
+                                child: Text(
+                                  arNum(o),
+                                  style: const TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
                     ),
                   ),
                 ],

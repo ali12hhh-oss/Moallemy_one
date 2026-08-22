@@ -23,9 +23,10 @@ class _S extends State<WordBankScreen> {
   ];
   @override
   Widget build(BuildContext c) {
-    final list = filter == 'الكل'
-        ? arabicWordBank
-        : arabicWordBank.where((x) => x['category'] == filter).toList();
+    final list =
+        filter == 'الكل'
+            ? arabicWordBank
+            : arabicWordBank.where((x) => x['category'] == filter).toList();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -36,18 +37,19 @@ class _S extends State<WordBankScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(8),
               child: Row(
-                children: cats
-                    .map(
-                      (x) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(x),
-                          selected: filter == x,
-                          onSelected: (_) => setState(() => filter = x),
-                        ),
-                      ),
-                    )
-                    .toList(),
+                children:
+                    cats
+                        .map(
+                          (x) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: ChoiceChip(
+                              label: Text(x),
+                              selected: filter == x,
+                              onSelected: (_) => setState(() => filter = x),
+                            ),
+                          ),
+                        )
+                        .toList(),
               ),
             ),
             Expanded(

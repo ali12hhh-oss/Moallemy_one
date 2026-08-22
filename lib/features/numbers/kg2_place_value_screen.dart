@@ -53,9 +53,10 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => onesMode = true),
-                      color: onesMode
-                          ? const Color(0xFF2979FF)
-                          : const Color(0xFF90CAF9),
+                      color:
+                          onesMode
+                              ? const Color(0xFF2979FF)
+                              : const Color(0xFF90CAF9),
                       depth: onesMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       child: const Center(
@@ -74,9 +75,10 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                   Expanded(
                     child: Button3D(
                       onTap: () => setState(() => onesMode = false),
-                      color: !onesMode
-                          ? const Color(0xFF7C4DFF)
-                          : const Color(0xFFB39DDB),
+                      color:
+                          !onesMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
                       depth: !onesMode ? 2 : 7,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       child: const Center(
@@ -97,7 +99,9 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
             Padding(
               padding: const EdgeInsets.all(14),
               child: Text(
-                onesMode ? 'الآحاد أعداد من رقم واحد فقط: من ١ إلى ٩.' : 'العشرات مجموعات من عشر نقاط معًا. اضغط على أي عدد لتسمعه وترى العشرات مجمّعة.',
+                onesMode
+                    ? 'الآحاد أعداد من رقم واحد فقط: من ١ إلى ٩.'
+                    : 'العشرات مجموعات من عشر نقاط معًا. اضغط على أي عدد لتسمعه وترى العشرات مجمّعة.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 15),
               ),
@@ -115,12 +119,14 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
                 itemBuilder: (_, i) {
                   final n = onesMode ? ones[i] : tens[i];
                   return Button3D(
-                    onTap: () => VoiceService.arabic(
-                      '$n${onesMode ? '، من الآحاد' : '، من العشرات'}',
-                    ),
-                    color: onesMode
-                        ? const Color(0xFF2979FF)
-                        : const Color(0xFF7C4DFF),
+                    onTap:
+                        () => VoiceService.arabic(
+                          '$n${onesMode ? '، من الآحاد' : '، من العشرات'}',
+                        ),
+                    color:
+                        onesMode
+                            ? const Color(0xFF2979FF)
+                            : const Color(0xFF7C4DFF),
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

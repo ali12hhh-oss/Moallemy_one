@@ -21,15 +21,16 @@ class _DaleelChildAppState extends State<DaleelChildApp> {
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: prefs,
-    builder: (context, _) => MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'معلمي',
-      themeMode: prefs.themeMode,
-      theme: _theme(Brightness.light),
-      darkTheme: _theme(Brightness.dark),
-      locale: const Locale('ar'),
-      home: const HomeScreen(),
-    ),
+    builder:
+        (context, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'معلمي',
+          themeMode: prefs.themeMode,
+          theme: _theme(Brightness.light),
+          darkTheme: _theme(Brightness.dark),
+          locale: const Locale('ar'),
+          home: const HomeScreen(),
+        ),
   );
   ThemeData _theme(Brightness brightness) =>
       brightness == Brightness.dark ? AppThemeV25.dark() : AppThemeV25.light();

@@ -104,9 +104,10 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
                             fruit,
                             style: TextStyle(
                               fontSize: 34,
-                              color: crossed
-                                  ? Colors.grey.withValues(alpha: .4)
-                                  : null,
+                              color:
+                                  crossed
+                                      ? Colors.grey.withValues(alpha: .4)
+                                      : null,
                             ),
                           ),
                           if (crossed)
@@ -155,24 +156,26 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options.map((o) {
-                        return Button3D(
-                          onTap: () => _answer(o),
-                          color: widget.isAddition
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFFF6B35),
-                          child: Center(
-                            child: Text(
-                              arNum(o),
-                              style: const TextStyle(
-                                fontSize: 34,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
+                      children:
+                          options.map((o) {
+                            return Button3D(
+                              onTap: () => _answer(o),
+                              color:
+                                  widget.isAddition
+                                      ? const Color(0xFF00C853)
+                                      : const Color(0xFFFF6B35),
+                              child: Center(
+                                child: Text(
+                                  arNum(o),
+                                  style: const TextStyle(
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
                     ),
                   ),
                 ],

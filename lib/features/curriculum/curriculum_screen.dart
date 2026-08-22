@@ -87,24 +87,27 @@ class _CurriculumScreenState extends State<CurriculumScreen> {
                       ),
                       const SizedBox(height: 6),
                       LinearProgressIndicator(
-                        value: stage.units.isEmpty
-                            ? 0
-                            : p.done / stage.units.length,
+                        value:
+                            stage.units.isEmpty
+                                ? 0
+                                : p.done / stage.units.length,
                         minHeight: 9,
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.icon(
-                          onPressed: ready
-                              ? () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        FinalExamScreenV8(stage: stage),
-                                  ),
-                                )
-                              : null,
+                          onPressed:
+                              ready
+                                  ? () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (_) =>
+                                              FinalExamScreenV8(stage: stage),
+                                    ),
+                                  )
+                                  : null,
                           icon: const Icon(Icons.school),
                           label: Text(
                             ready

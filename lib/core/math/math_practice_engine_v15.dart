@@ -125,9 +125,10 @@ class MathPracticeEngineV15 {
     required String skillId,
     required int max,
   }) {
-    final value = max >= 1000
-        ? (_random.nextInt(900) + 100)
-        : (_random.nextInt(max - 10) + 10);
+    final value =
+        max >= 1000
+            ? (_random.nextInt(900) + 100)
+            : (_random.nextInt(max - 10) + 10);
     final digits = value.toString().split('');
     final placeIndex = _random.nextInt(digits.length);
     final digit = int.parse(digits[placeIndex]);

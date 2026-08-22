@@ -111,67 +111,71 @@ class _HomeScreenState extends State<HomeScreen> {
     final result = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => StatefulBuilder(
-        builder: (context, setDialog) => AlertDialog(
-          title: const Text('منطقة الوالدين 🔒'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.',
-              ),
-              const SizedBox(height: 16),
-              Text(
-                '${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+      builder:
+          (dialogContext) => StatefulBuilder(
+            builder:
+                (context, setDialog) => AlertDialog(
+                  title: const Text('منطقة الوالدين 🔒'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        'أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.',
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        '${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟',
+                        style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: controller,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          labelText: 'الإجابة',
+                          errorText:
+                              error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null,
+                        ),
+                        onSubmitted: (_) {
+                          if (int.tryParse(controller.text.trim()) ==
+                              expected) {
+                            Navigator.pop(dialogContext, true);
+                          } else {
+                            setDialog(() {
+                              error = true;
+                              controller.clear();
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(dialogContext, false),
+                      child: const Text('إلغاء'),
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        if (int.tryParse(controller.text.trim()) == expected) {
+                          Navigator.pop(dialogContext, true);
+                        } else {
+                          setDialog(() {
+                            error = true;
+                            controller.clear();
+                          });
+                        }
+                      },
+                      child: const Text('دخول'),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  labelText: 'الإجابة',
-                  errorText: error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null,
-                ),
-                onSubmitted: (_) {
-                  if (int.tryParse(controller.text.trim()) == expected) {
-                    Navigator.pop(dialogContext, true);
-                  } else {
-                    setDialog(() {
-                      error = true;
-                      controller.clear();
-                    });
-                  }
-                },
-              ),
-            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('إلغاء'),
-            ),
-            FilledButton(
-              onPressed: () {
-                if (int.tryParse(controller.text.trim()) == expected) {
-                  Navigator.pop(dialogContext, true);
-                } else {
-                  setDialog(() {
-                    error = true;
-                    controller.clear();
-                  });
-                }
-              },
-              child: const Text('دخول'),
-            ),
-          ],
-        ),
-      ),
     );
     controller.dispose();
     return result == true;
@@ -190,9 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: isDark
-            ? const Color(0xFF14162A)
-            : const Color(0xFFF3F1FF),
+        backgroundColor:
+            isDark ? const Color(0xFF14162A) : const Color(0xFFF3F1FF),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
@@ -203,10 +206,11 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: IconButton(
             tooltip: 'الإعدادات',
             icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
-            ),
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                ),
           ),
           actions: [
             IconButton(
@@ -406,10 +410,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _storeButton() => Button3D(
-    onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ShopScreen()),
-    ),
+    onTap:
+        () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ShopScreen()),
+        ),
     color: StageColors.store,
     depth: 9,
     child: Row(

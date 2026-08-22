@@ -107,14 +107,15 @@ class _ArabicGrammarScreenV12State extends State<ArabicGrammarScreenV12> {
         child: Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: data.options
-              .map(
-                (o) => OutlinedButton(
-                  onPressed: () => _answer(data, o),
-                  child: Text(o),
-                ),
-              )
-              .toList(),
+          children:
+              data.options
+                  .map(
+                    (o) => OutlinedButton(
+                      onPressed: () => _answer(data, o),
+                      child: Text(o),
+                    ),
+                  )
+                  .toList(),
         ),
       ),
     ];

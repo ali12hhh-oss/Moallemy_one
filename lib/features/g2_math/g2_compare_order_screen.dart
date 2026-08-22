@@ -49,8 +49,9 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
     while (set.length < 4) {
       set.add(1 + rnd.nextInt(99));
     }
-    correctOrder = set.toList()
-      ..sort((p, q) => ascending ? p.compareTo(q) : q.compareTo(p));
+    correctOrder =
+        set.toList()
+          ..sort((p, q) => ascending ? p.compareTo(q) : q.compareTo(p));
     shuffled = [...correctOrder]..shuffle(rnd);
     chosen = [];
   }
@@ -118,9 +119,10 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => compareMode = true),
-                          color: compareMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                          color:
+                              compareMode
+                                  ? const Color(0xFF2979FF)
+                                  : const Color(0xFF90CAF9),
                           depth: compareMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -139,9 +141,10 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => compareMode = false),
-                          color: !compareMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              !compareMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: !compareMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -176,9 +179,10 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                           const SizedBox(height: 8),
                           IconButton(
                             icon: const Icon(Icons.volume_up_rounded),
-                            onPressed: () => VoiceService.arabic(
-                              '${arNum(x)}، أم ${arNum(y)}؟',
-                            ),
+                            onPressed:
+                                () => VoiceService.arabic(
+                                  '${arNum(x)}، أم ${arNum(y)}؟',
+                                ),
                           ),
                           const SizedBox(height: 16),
                           Row(
@@ -247,24 +251,26 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                           const SizedBox(height: 16),
                           Wrap(
                             spacing: 10,
-                            children: chosen
-                                .map(
-                                  (n) => Chip(
-                                    label: Text(
-                                      arNum(n),
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                            children:
+                                chosen
+                                    .map(
+                                      (n) => Chip(
+                                        label: Text(
+                                          arNum(n),
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
                           ),
                           const SizedBox(height: 24),
                           Wrap(
                             spacing: 14,
                             runSpacing: 14,
-                            children: shuffled
-                                .where((n) => !chosen.contains(n))
-                                .map((n) {
+                            children:
+                                shuffled.where((n) => !chosen.contains(n)).map((
+                                  n,
+                                ) {
                                   return Button3D(
                                     onTap: () => _pickOrder(n),
                                     color: const Color(0xFF7C4DFF),
@@ -281,8 +287,7 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                                       ),
                                     ),
                                   );
-                                })
-                                .toList(),
+                                }).toList(),
                           ),
                         ],
                       ),

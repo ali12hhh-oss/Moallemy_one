@@ -49,9 +49,13 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     if (loaded != null && mounted) {
       setState(() {
         name.text = loaded.name;
-        stageId = stages
-            .firstWhere((s) => s.$2 == loaded.stage, orElse: () => stages.first)
-            .$1;
+        stageId =
+            stages
+                .firstWhere(
+                  (s) => s.$2 == loaded.stage,
+                  orElse: () => stages.first,
+                )
+                .$1;
       });
     }
   }

@@ -76,10 +76,11 @@ class _EnglishPhonicsRulesScreenV12State
         ListTile(
           leading: const Icon(Icons.volume_up),
           title: Text('Hear: ${r.pattern}'),
-          onTap: () => VoiceService.englishLetterSound(
-            r.pattern,
-            fallbackText: r.pattern,
-          ),
+          onTap:
+              () => VoiceService.englishLetterSound(
+                r.pattern,
+                fallbackText: r.pattern,
+              ),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
@@ -90,27 +91,29 @@ class _EnglishPhonicsRulesScreenV12State
         ),
         Wrap(
           spacing: 8,
-          children: _words(r)
-              .map(
-                (w) => OutlinedButton(
-                  onPressed: () => _check(r, w),
-                  child: Text(w),
-                ),
-              )
-              .toList(),
+          children:
+              _words(r)
+                  .map(
+                    (w) => OutlinedButton(
+                      onPressed: () => _check(r, w),
+                      child: Text(w),
+                    ),
+                  )
+                  .toList(),
         ),
         const SizedBox(height: 12),
       ],
     ),
   );
 
-  List<String> _words(EnglishPhonicsRuleV12 r) => r.pattern == 'sh'
-      ? ['ship', 'cat', 'fish']
-      : r.pattern == 'ch'
-      ? ['chair', 'dog', 'chicken']
-      : r.pattern == 'th'
-      ? ['three', 'sun', 'this']
-      : r.examples.split(', ').take(2).toList() + ['cat'];
+  List<String> _words(EnglishPhonicsRuleV12 r) =>
+      r.pattern == 'sh'
+          ? ['ship', 'cat', 'fish']
+          : r.pattern == 'ch'
+          ? ['chair', 'dog', 'chicken']
+          : r.pattern == 'th'
+          ? ['three', 'sun', 'this']
+          : r.examples.split(', ').take(2).toList() + ['cat'];
 
   void _check(EnglishPhonicsRuleV12 r, String word) {
     final correct = word.toLowerCase().contains(r.pattern);

@@ -194,15 +194,19 @@ class _GamesScreenV11State extends State<GamesScreenV11> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: options
-                .map(
-                  (x) => ChoiceChip(
-                    label: Text(x.letter, style: const TextStyle(fontSize: 25)),
-                    selected: false,
-                    onSelected: (_) => _answer(x.letter),
-                  ),
-                )
-                .toList(),
+            children:
+                options
+                    .map(
+                      (x) => ChoiceChip(
+                        label: Text(
+                          x.letter,
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                        selected: false,
+                        onSelected: (_) => _answer(x.letter),
+                      ),
+                    )
+                    .toList(),
           ),
         ],
       ),

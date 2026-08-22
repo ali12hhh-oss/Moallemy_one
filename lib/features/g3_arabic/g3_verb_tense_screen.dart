@@ -79,9 +79,10 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color: learnMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              learnMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -100,9 +101,10 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color: !learnMode
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFA5D6A7),
+                          color:
+                              !learnMode
+                                  ? const Color(0xFF00C853)
+                                  : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -151,8 +153,8 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                                       horizontal: 3,
                                     ),
                                     child: Button3D(
-                                      onTap: () =>
-                                          VoiceService.arabic(forms[j]),
+                                      onTap:
+                                          () => VoiceService.arabic(forms[j]),
                                       color: colors[j],
                                       padding: const EdgeInsets.symmetric(
                                         vertical: 12,

@@ -30,12 +30,13 @@ class ArabicLearningScreen extends StatelessWidget {
                   'تعلم القواعد بأمثلة وتمارين مناسبة للعمر',
                 ),
                 trailing: const Icon(Icons.arrow_back),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ArabicGrammarScreenV12(),
-                  ),
-                ),
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ArabicGrammarScreenV12(),
+                      ),
+                    ),
               ),
             ),
             const SizedBox(height: 10),

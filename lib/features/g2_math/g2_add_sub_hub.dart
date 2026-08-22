@@ -16,12 +16,13 @@ class G2AddSubHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubScreen(isAddition: true),
-                ),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const G2AddSubScreen(isAddition: true),
+                    ),
+                  ),
               color: const Color(0xFF00C853),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -53,12 +54,13 @@ class G2AddSubHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubScreen(isAddition: false),
-                ),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const G2AddSubScreen(isAddition: false),
+                    ),
+                  ),
               color: const Color(0xFFFF6B35),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(

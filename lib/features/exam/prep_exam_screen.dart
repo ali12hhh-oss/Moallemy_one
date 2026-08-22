@@ -94,10 +94,11 @@ List<_ExamQ> _buildBank(Random rnd) {
         visual: const Icon(Icons.hearing_rounded, size: 60),
         options: opts,
         correct: opts.indexOf(target.letter),
-        speak: () => VoiceService.arabicLetterSound(
-          target.letter,
-          fallbackText: target.sound,
-        ),
+        speak:
+            () => VoiceService.arabicLetterSound(
+              target.letter,
+              fallbackText: target.sound,
+            ),
       ),
     );
   }
@@ -105,8 +106,9 @@ List<_ExamQ> _buildBank(Random rnd) {
   // ٢) الأرقام: استمع للعدد (١-١٠) واختر رقمه الصحيح.
   for (var k = 0; k < 2; k++) {
     final n = 1 + rnd.nextInt(10);
-    final others = List.generate(10, (i) => i + 1).where((x) => x != n).toList()
-      ..shuffle(rnd);
+    final others =
+        List.generate(10, (i) => i + 1).where((x) => x != n).toList()
+          ..shuffle(rnd);
     final opts = [n, ...others.take(3)]..shuffle(rnd);
     bank.add(
       _ExamQ(
@@ -195,8 +197,9 @@ List<_ExamQ> _buildBank(Random rnd) {
   for (var k = 0; k < 2; k++) {
     final n = 1 + rnd.nextInt(9);
     final icon = _icons[rnd.nextInt(_icons.length)];
-    final others = List.generate(9, (i) => i + 1).where((x) => x != n).toList()
-      ..shuffle(rnd);
+    final others =
+        List.generate(9, (i) => i + 1).where((x) => x != n).toList()
+          ..shuffle(rnd);
     final opts = [n, ...others.take(3)]..shuffle(rnd);
     bank.add(
       _ExamQ(
@@ -271,9 +274,10 @@ class _ExamShapePainter extends CustomPainter {
   _ExamShapePainter(this.kind);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF7C4DFF)
-      ..style = PaintingStyle.fill;
+    final paint =
+        Paint()
+          ..color = const Color(0xFF7C4DFF)
+          ..style = PaintingStyle.fill;
     final w = size.width, h = size.height;
     final path = Path();
     switch (kind) {
@@ -479,9 +483,10 @@ class _ResultScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 34),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: passed
-                      ? const [Color(0xFFFFD54F), Color(0xFFFF7043)]
-                      : const [Color(0xFF90CAF9), Color(0xFF64B5F6)],
+                  colors:
+                      passed
+                          ? const [Color(0xFFFFD54F), Color(0xFFFF7043)]
+                          : const [Color(0xFF90CAF9), Color(0xFF64B5F6)],
                 ),
                 borderRadius: BorderRadius.circular(28),
               ),
@@ -528,9 +533,10 @@ class _ResultScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w900,
-                        color: passed
-                            ? const Color(0xFFFF7043)
-                            : const Color(0xFF1E88E5),
+                        color:
+                            passed
+                                ? const Color(0xFFFF7043)
+                                : const Color(0xFF1E88E5),
                       ),
                     ),
                   ),

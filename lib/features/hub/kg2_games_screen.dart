@@ -73,51 +73,53 @@ class Kg2GamesScreen extends StatelessWidget {
         appBar: AppBar(title: const Text('الألعاب 🎮')),
         body: ListView(
           padding: const EdgeInsets.all(18),
-          children: games.map((g) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Button3D(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => g.$5),
-                ),
-                color: g.$4,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 20,
-                ),
-                child: Row(
-                  children: [
-                    Text(g.$1, style: const TextStyle(fontSize: 36)),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            g.$2,
-                            style: const TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            g.$3,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
+          children:
+              games.map((g) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Button3D(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => g.$5),
+                        ),
+                    color: g.$4,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 20,
                     ),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+                    child: Row(
+                      children: [
+                        Text(g.$1, style: const TextStyle(fontSize: 36)),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                g.$2,
+                                style: const TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                g.$3,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );
@@ -188,10 +190,11 @@ class _LetterGameState extends State<_LetterGame> {
                   IconButton(
                     iconSize: 42,
                     icon: const Icon(Icons.volume_up_rounded),
-                    onPressed: () => VoiceService.arabicLetterSound(
-                      target.letter,
-                      fallbackText: target.sound,
-                    ),
+                    onPressed:
+                        () => VoiceService.arabicLetterSound(
+                          target.letter,
+                          fallbackText: target.sound,
+                        ),
                   ),
                   const Text(
                     'أي حرف سمعت؟',
@@ -203,24 +206,25 @@ class _LetterGameState extends State<_LetterGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF7C4DFF),
-                              child: Center(
-                                child: Text(
-                                  o.letter,
-                                  style: const TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF7C4DFF),
+                                  child: Center(
+                                    child: Text(
+                                      o.letter,
+                                      style: const TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -329,24 +333,25 @@ class _CombineGameState extends State<_CombineGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFFFF1E7E),
-                              child: Center(
-                                child: Text(
-                                  o,
-                                  style: const TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFFFF1E7E),
+                                  child: Center(
+                                    child: Text(
+                                      o,
+                                      style: const TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -437,24 +442,25 @@ class _OnesGameState extends State<_OnesGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF2979FF),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 38,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF2979FF),
+                                  child: Center(
+                                    child: Text(
+                                      arNum(o),
+                                      style: const TextStyle(
+                                        fontSize: 38,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],
@@ -564,24 +570,25 @@ class _TensGameState extends State<_TensGame> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF00C853),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
+                      children:
+                          options
+                              .map(
+                                (o) => Button3D(
+                                  onTap: () => _answer(o),
+                                  color: const Color(0xFF00C853),
+                                  child: Center(
+                                    child: Text(
+                                      arNum(o),
+                                      style: const TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
                     ),
                   ),
                 ],

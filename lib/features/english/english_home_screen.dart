@@ -52,10 +52,11 @@ class EnglishHomeScreen extends StatelessWidget {
                 subtitle: const Text(
                   'الحروف a–z بصورتها الصغيرة مع الصوت والقراءة والترجمة العربية',
                 ),
-                onTap: () => open(
-                  context,
-                  const EnglishLettersScreen(lowercaseOnly: true),
-                ),
+                onTap:
+                    () => open(
+                      context,
+                      const EnglishLettersScreen(lowercaseOnly: true),
+                    ),
               ),
             ListTile(
               leading: const Text('🧩', style: TextStyle(fontSize: 35)),
@@ -102,9 +103,8 @@ class _ELS extends State<EnglishLettersScreen> {
   @override
   Widget build(BuildContext context) {
     final x = englishLetters[i];
-    final displayLetter = widget.lowercaseOnly
-        ? x.letter.toLowerCase()
-        : x.letter;
+    final displayLetter =
+        widget.lowercaseOnly ? x.letter.toLowerCase() : x.letter;
     return Scaffold(
       appBar: AppBar(title: const Text('الحروف الإنجليزية')),
       body: Padding(
@@ -128,10 +128,11 @@ class _ELS extends State<EnglishLettersScreen> {
             ),
             const SizedBox(height: 14),
             FilledButton.icon(
-              onPressed: () => VoiceService.englishLetterSound(
-                x.letter,
-                fallbackText: x.sound,
-              ),
+              onPressed:
+                  () => VoiceService.englishLetterSound(
+                    x.letter,
+                    fallbackText: x.sound,
+                  ),
               icon: const Icon(Icons.volume_up),
               label: const Text('استمع إلى صوت الحرف'),
             ),
@@ -152,9 +153,10 @@ class _ELS extends State<EnglishLettersScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: FilledButton(
-                    onPressed: i == englishLetters.length - 1
-                        ? null
-                        : () => setState(() => i++),
+                    onPressed:
+                        i == englishLetters.length - 1
+                            ? null
+                            : () => setState(() => i++),
                     child: const Text('التالي'),
                   ),
                 ),

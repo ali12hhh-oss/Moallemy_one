@@ -14,9 +14,8 @@ class AppThemeV25 {
       brightness: brightness,
       colorScheme: scheme,
       fontFamily: 'Tajawal',
-      scaffoldBackgroundColor: dark
-          ? const Color(0xFF14162A)
-          : const Color(0xFFF3F1FF),
+      scaffoldBackgroundColor:
+          dark ? const Color(0xFF14162A) : const Color(0xFFF3F1FF),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,

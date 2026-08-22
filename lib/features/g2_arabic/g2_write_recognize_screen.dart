@@ -64,14 +64,17 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
         setState(() {
           downloading = false;
           modelReady = ok;
-          if (!ok) error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          if (!ok)
+            error =
+                'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
         });
       }
     } catch (_) {
       if (mounted) {
         setState(() {
           downloading = false;
-          error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          error =
+              'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
         });
       }
     }
@@ -241,9 +244,8 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
                             color: c,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: selected
-                                  ? Colors.black
-                                  : Colors.transparent,
+                              color:
+                                  selected ? Colors.black : Colors.transparent,
                               width: 3,
                             ),
                           ),
@@ -300,20 +302,21 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
                   child: FilledButton.icon(
                     onPressed:
                         modelReady &&
-                            !recognizing &&
-                            strokesForRecognition.isNotEmpty
-                        ? _recognize
-                        : null,
-                    icon: recognizing
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Icon(Icons.record_voice_over_rounded),
+                                !recognizing &&
+                                strokesForRecognition.isNotEmpty
+                            ? _recognize
+                            : null,
+                    icon:
+                        recognizing
+                            ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Icon(Icons.record_voice_over_rounded),
                     label: Text(
                       recognizing ? 'جارٍ القراءة...' : 'اقرأ ما كتبته 🔊',
                     ),
@@ -336,12 +339,13 @@ class _RecoPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final pen = Paint()
-      ..color = color
-      ..strokeWidth = 14
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round
-      ..style = PaintingStyle.stroke;
+    final pen =
+        Paint()
+          ..color = color
+          ..strokeWidth = 14
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round
+          ..style = PaintingStyle.stroke;
     for (final stroke in strokes) {
       for (var i = 0; i < stroke.length - 1; i++) {
         canvas.drawLine(stroke[i], stroke[i + 1], pen);

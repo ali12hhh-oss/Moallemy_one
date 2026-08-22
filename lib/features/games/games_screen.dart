@@ -85,11 +85,12 @@ class _S extends State<GamesScreen> {
               ),
             ),
             Expanded(
-              child: mode == 0
-                  ? _hunter(c)
-                  : mode == 1
-                  ? _match(c)
-                  : _numbers(c),
+              child:
+                  mode == 0
+                      ? _hunter(c)
+                      : mode == 1
+                      ? _match(c)
+                      : _numbers(c),
             ),
           ],
         ),

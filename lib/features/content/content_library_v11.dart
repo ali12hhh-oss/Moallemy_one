@@ -77,29 +77,32 @@ class ContentLibraryV11 extends StatelessWidget {
             ),
             ListView(
               padding: const EdgeInsets.all(12),
-              children: stageNumberMilestonesV11.entries
-                  .map(
-                    (entry) => Card(
-                      child: ExpansionTile(
-                        title: Text(entry.key),
-                        subtitle: Text('أهداف الأعداد: ${entry.value.length}'),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                for (final n in entry.value)
-                                  Chip(label: Text(n)),
-                              ],
+              children:
+                  stageNumberMilestonesV11.entries
+                      .map(
+                        (entry) => Card(
+                          child: ExpansionTile(
+                            title: Text(entry.key),
+                            subtitle: Text(
+                              'أهداف الأعداد: ${entry.value.length}',
                             ),
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    for (final n in entry.value)
+                                      Chip(label: Text(n)),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
+                        ),
+                      )
+                      .toList(),
             ),
           ],
         ),

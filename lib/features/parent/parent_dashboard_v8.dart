@@ -120,9 +120,14 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: badges.isEmpty
-                    ? [const Chip(label: Text('ابدأ التعلم لتحصل على أول لقب'))]
-                    : badges.map((b) => Chip(label: Text(b))).toList(),
+                children:
+                    badges.isEmpty
+                        ? [
+                          const Chip(
+                            label: Text('ابدأ التعلم لتحصل على أول لقب'),
+                          ),
+                        ]
+                        : badges.map((b) => Chip(label: Text(b))).toList(),
               ),
               const SizedBox(height: 12),
               const Text(

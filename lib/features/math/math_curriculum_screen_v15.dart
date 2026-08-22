@@ -36,12 +36,13 @@ class MathCurriculumScreenV15 extends StatelessWidget {
                 title: const Text('لعبة المسألة المصورة'),
                 subtitle: const Text('تطبيق الجمع والطرح في موقف قصصي حقيقي'),
                 trailing: const Icon(Icons.arrow_back_ios_new),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => MathStoryGameV15(grade: grade),
-                  ),
-                ),
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MathStoryGameV15(grade: grade),
+                      ),
+                    ),
               ),
             ),
             ...skills.map(
@@ -64,19 +65,21 @@ class MathCurriculumScreenV15 extends StatelessWidget {
                       title: Text(skill.title),
                       subtitle: Text('الإتقان ${ar(mastery)}٪'),
                       trailing: const Icon(Icons.arrow_back_ios_new),
-                      onTap: playable
-                          ? () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MathPracticeV15(
-                                  skillId: skill.id,
-                                  title: skill.title,
-                                  category: skill.category,
-                                  maxNumber: skill.maxNumber,
+                      onTap:
+                          playable
+                              ? () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => MathPracticeV15(
+                                        skillId: skill.id,
+                                        title: skill.title,
+                                        category: skill.category,
+                                        maxNumber: skill.maxNumber,
+                                      ),
                                 ),
-                              ),
-                            )
-                          : null,
+                              )
+                              : null,
                     ),
                   );
                 },

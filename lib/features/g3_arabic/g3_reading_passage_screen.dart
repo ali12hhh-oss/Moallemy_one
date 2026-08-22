@@ -60,88 +60,99 @@ class _G3ReadingPassageScreenState extends State<G3ReadingPassageScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20),
-              child: !showQuestions
-                  ? Column(
-                      children: [
-                        Text(
-                          passage.emoji,
-                          style: const TextStyle(fontSize: 50),
-                        ),
-                        const SizedBox(height: 10),
-                        IconButton(
-                          icon: const Icon(Icons.volume_up_rounded),
-                          iconSize: 34,
-                          onPressed: () => VoiceService.arabic(passage.text),
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Text(
-                              passage.text,
-                              style: const TextStyle(fontSize: 19, height: 1.9),
-                              textAlign: TextAlign.right,
+              child:
+                  !showQuestions
+                      ? Column(
+                        children: [
+                          Text(
+                            passage.emoji,
+                            style: const TextStyle(fontSize: 50),
+                          ),
+                          const SizedBox(height: 10),
+                          IconButton(
+                            icon: const Icon(Icons.volume_up_rounded),
+                            iconSize: 34,
+                            onPressed: () => VoiceService.arabic(passage.text),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Text(
+                                passage.text,
+                                style: const TextStyle(
+                                  fontSize: 19,
+                                  height: 1.9,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
                             ),
                           ),
-                        ),
-                        FilledButton.icon(
-                          onPressed: _startQuestions,
-                          icon: const Icon(Icons.quiz_rounded),
-                          label: const Text('أسئلة الفهم'),
-                        ),
-                        const SizedBox(height: 10),
-                        OutlinedButton(
-                          onPressed: () => setState(
-                            () => passageIndex =
-                                (passageIndex + 1) % readingPassages.length,
+                          FilledButton.icon(
+                            onPressed: _startQuestions,
+                            icon: const Icon(Icons.quiz_rounded),
+                            label: const Text('أسئلة الفهم'),
                           ),
-                          child: const Text('الفقرة التالية'),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        LinearProgressIndicator(
-                          value: (questionIndex + 1) / passage.questions.length,
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          passage.questions[questionIndex].question,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                          const SizedBox(height: 10),
+                          OutlinedButton(
+                            onPressed:
+                                () => setState(
+                                  () =>
+                                      passageIndex =
+                                          (passageIndex + 1) %
+                                          readingPassages.length,
+                                ),
+                            child: const Text('الفقرة التالية'),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: ListView(
-                            children: passage.questions[questionIndex].options
-                                .asMap()
-                                .entries
-                                .map((e) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 12),
-                                    child: Button3D(
-                                      onTap: () => _answer(e.key),
-                                      color: const Color(0xFF7C4DFF),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 18,
-                                        vertical: 16,
-                                      ),
-                                      child: Text(
-                                        e.value,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                })
-                                .toList(),
+                        ],
+                      )
+                      : Column(
+                        children: [
+                          LinearProgressIndicator(
+                            value:
+                                (questionIndex + 1) / passage.questions.length,
                           ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(height: 20),
+                          Text(
+                            passage.questions[questionIndex].question,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: ListView(
+                              children:
+                                  passage.questions[questionIndex].options
+                                      .asMap()
+                                      .entries
+                                      .map((e) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 12,
+                                          ),
+                                          child: Button3D(
+                                            onTap: () => _answer(e.key),
+                                            color: const Color(0xFF7C4DFF),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 18,
+                                              vertical: 16,
+                                            ),
+                                            child: Text(
+                                              e.value,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
             ),
             CelebrationOverlay(message: cheer),
           ],

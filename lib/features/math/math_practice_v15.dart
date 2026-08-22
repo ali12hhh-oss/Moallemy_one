@@ -162,11 +162,11 @@ class _MathPracticeV15State extends State<MathPracticeV15> {
                             child: Text(
                               widget.category == 'المقارنة'
                                   ? ({
-                                          1: 'أكبر',
-                                          0: 'يساوي',
-                                          -1: 'أصغر',
-                                        }[value] ??
-                                        _ar(value))
+                                        1: 'أكبر',
+                                        0: 'يساوي',
+                                        -1: 'أصغر',
+                                      }[value] ??
+                                      _ar(value))
                                   : widget.category == 'الترتيب'
                                   ? (q.optionLabels?[value] ?? 'ترتيب آخر')
                                   : _ar(value),
@@ -185,9 +185,10 @@ class _MathPracticeV15State extends State<MathPracticeV15> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: selected == q.answer
-                              ? Colors.green
-                              : Colors.orange,
+                          color:
+                              selected == q.answer
+                                  ? Colors.green
+                                  : Colors.orange,
                         ),
                       ),
                       const SizedBox(height: 6),

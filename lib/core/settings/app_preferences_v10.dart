@@ -12,9 +12,10 @@ class AppPreferencesV10 extends ChangeNotifier {
   Future<void> load() async {
     if (_loaded) return;
     final p = await SharedPreferences.getInstance();
-    themeMode = (p.getBool('dark_mode_v10') ?? false)
-        ? ThemeMode.dark
-        : ThemeMode.light;
+    themeMode =
+        (p.getBool('dark_mode_v10') ?? false)
+            ? ThemeMode.dark
+            : ThemeMode.light;
     sounds = p.getBool('sounds_v10') ?? true;
     effects = p.getBool('effects_v10') ?? true;
     sessionMinutes = p.getInt('session_minutes_v10') ?? 20;

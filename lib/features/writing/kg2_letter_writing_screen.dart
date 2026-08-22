@@ -124,9 +124,10 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => _switch(true),
-                          color: singleMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              singleMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: singleMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -145,9 +146,10 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => _switch(false),
-                          color: !singleMode
-                              ? const Color(0xFFFF1E7E)
-                              : const Color(0xFFF48FB1),
+                          color:
+                              !singleMode
+                                  ? const Color(0xFFFF1E7E)
+                                  : const Color(0xFFF48FB1),
                           depth: !singleMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(

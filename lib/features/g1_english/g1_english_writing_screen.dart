@@ -65,9 +65,10 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final target = lettersMode
-        ? englishLetters[index].letter.toLowerCase()
-        : '${index + 1}';
+    final target =
+        lettersMode
+            ? englishLetters[index].letter.toLowerCase()
+            : '${index + 1}';
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -98,9 +99,10 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => _switch(true),
-                          color: lettersMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color:
+                              lettersMode
+                                  ? const Color(0xFF7C4DFF)
+                                  : const Color(0xFFB39DDB),
                           depth: lettersMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
@@ -119,9 +121,10 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => _switch(false),
-                          color: !lettersMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
+                          color:
+                              !lettersMode
+                                  ? const Color(0xFF2979FF)
+                                  : const Color(0xFF90CAF9),
                           depth: !lettersMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(

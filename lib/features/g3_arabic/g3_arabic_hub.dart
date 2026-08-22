@@ -31,51 +31,53 @@ class G3ArabicHub extends StatelessWidget {
         appBar: AppBar(title: const Text('اللغة العربية 📚')),
         body: ListView(
           padding: const EdgeInsets.all(18),
-          children: items.map((g) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Button3D(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => g.$5),
-                ),
-                color: g.$4,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 22,
-                ),
-                child: Row(
-                  children: [
-                    Text(g.$1, style: const TextStyle(fontSize: 36)),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            g.$2,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            g.$3,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
+          children:
+              items.map((g) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Button3D(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => g.$5),
+                        ),
+                    color: g.$4,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 22,
                     ),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
+                    child: Row(
+                      children: [
+                        Text(g.$1, style: const TextStyle(fontSize: 36)),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                g.$2,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                g.$3,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
         ),
       ),
     );

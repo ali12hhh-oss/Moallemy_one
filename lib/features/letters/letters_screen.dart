@@ -87,10 +87,11 @@ class _S extends State<LettersScreen> {
                       ),
                       const SizedBox(height: 12),
                       FilledButton.icon(
-                        onPressed: () => VoiceService.arabicLetterSound(
-                          l.letter,
-                          fallbackText: l.sound,
-                        ),
+                        onPressed:
+                            () => VoiceService.arabicLetterSound(
+                              l.letter,
+                              fallbackText: l.sound,
+                            ),
                         icon: const Icon(Icons.volume_up),
                         label: const Text('استمع إلى صوت الحرف'),
                       ),
@@ -100,8 +101,8 @@ class _S extends State<LettersScreen> {
                         label: const Text('استمع إلى الكلمة'),
                       ),
                       OutlinedButton.icon(
-                        onPressed: () =>
-                            VoiceService.arabic(_letterName(l.letter)),
+                        onPressed:
+                            () => VoiceService.arabic(_letterName(l.letter)),
                         icon: const Icon(Icons.badge),
                         label: const Text('اسم الحرف'),
                       ),
@@ -121,9 +122,10 @@ class _S extends State<LettersScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: FilledButton(
-                      onPressed: i == arabicLetters.length - 1
-                          ? null
-                          : () => setState(() => i++),
+                      onPressed:
+                          i == arabicLetters.length - 1
+                              ? null
+                              : () => setState(() => i++),
                       child: const Text('التالي'),
                     ),
                   ),

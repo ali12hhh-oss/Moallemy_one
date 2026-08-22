@@ -17,12 +17,13 @@ class Kg2WritingHub extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const Kg2LetterWritingScreen(),
-                ),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const Kg2LetterWritingScreen(),
+                    ),
+                  ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -54,12 +55,13 @@ class Kg2WritingHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const Kg2NumberWritingScreen(),
-                ),
-              ),
+              onTap:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const Kg2NumberWritingScreen(),
+                    ),
+                  ),
               color: const Color(0xFF2979FF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
