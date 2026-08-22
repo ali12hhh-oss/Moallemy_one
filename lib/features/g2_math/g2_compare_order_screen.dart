@@ -76,6 +76,7 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
   void _pickOrder(int n) {
     if (chosen.length >= correctOrder.length) return;
     final expected = correctOrder[chosen.length];
+    VoiceService.arabic(arNum(n));
     if (n == expected) {
       setState(() => chosen.add(n));
       if (chosen.length == correctOrder.length) {
@@ -135,8 +136,14 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(children: [
+                  child: Column(children: [
                     const Text('أي عدد أكبر؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
+                    IconButton(
+                      icon: const Icon(Icons.volume_up_rounded),
+                      onPressed: () => VoiceService.arabic('${arNum(x)}، أم ${arNum(y)}؟'),
+                    ),
+                    const SizedBox(height: 16),
                     Row(children: [
                       Expanded(
                         child: Button3D(
