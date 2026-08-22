@@ -26,7 +26,6 @@ class ChildProgressRepository {
         if (decoded is Map) return Map<String, dynamic>.from(decoded);
       } catch (_) {}
     }
-
     final legacyRaw = p.getString(_legacyKey);
     if (legacyRaw != null && legacyRaw.isNotEmpty) {
       try {
@@ -77,6 +76,33 @@ class ChildProgressRepository {
     await save(state);
   }
 
+  static Future<void> recordAdaptive(String skillId, bool correct) async {
+    final state = await load();
+    final adaptive = Map<String, dynamic>.from(state['adaptive'] ?? const {});
+    final item = Map<String, dynamic>.from(adaptive[skillId] ?? const {});
+    item['attempts'] = _int(item['attempts']) + 1;
+    item['successes'] = _int(item['successes']) + (correct ? 1 : 0);
+    item['lastAt'] = DateTime.now().millisecondsSinceEpoch;
+    adaptive[skillId] = item;
+    state['adaptive'] = adaptive;
+    await save(state);
+  }
+
+  static Future<Map<String, Map<String, int>>> adaptiveData() async {
+    final state = await load();
+    final raw = Map<String, dynamic>.from(state['adaptive'] ?? const {});
+    final result = <String, Map<String, int>>{};
+    for (final entry in raw.entries) {
+      final item = Map<String, dynamic>.from(entry.value ?? const {});
+      result[entry.key] = {
+        'attempts': _int(item['attempts']),
+        'successes': _int(item['successes']),
+        'lastAt': _int(item['lastAt']),
+      };
+    }
+    return result;
+  }
+
   static Future<bool> lessonDone(String id) async {
     final state = await load();
     final done = List<String>.from(state['done'] ?? const <String>[]);
@@ -109,7 +135,6 @@ class ChildProgressRepository {
       'bestScore': _bestScore(previous, score),
     };
     state['finalExams'] = exams;
-
     final badges = List<String>.from(state['badges'] ?? const <String>[]);
     if (passed) {
       final badge = 'ختم $stageId';
