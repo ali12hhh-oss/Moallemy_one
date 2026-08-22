@@ -136,7 +136,6 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(children: [
-                  child: Column(children: [
                     const Text('أي عدد أكبر؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     IconButton(
