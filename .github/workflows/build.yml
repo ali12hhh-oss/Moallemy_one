@@ -53,12 +53,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Make Gradle wrapper executable
+        working-directory: android
+        run: chmod +x ./gradlew
+
+      - name: Verify Gradle wrapper permissions
+        working-directory: android
+        run: ls -l ./gradlew
+
       # Do not use `flutter build apk` here. With the current Android
       # Gradle Plugin/Plugin DSL setup, Gradle can successfully produce the
       # APK while Flutter CLI fails to discover its Android output location.
       - name: Build release APK with Gradle
         working-directory: android
-        run: ./gradlew app:assembleRelease --stacktrace
+        run: ./gradlew app:assembleRelease --stacktrace --no-daemon
 
       - name: Locate and stage release APK
         shell: bash
