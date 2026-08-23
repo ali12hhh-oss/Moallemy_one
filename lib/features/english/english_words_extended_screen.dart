@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/content.dart';
 import '../../core/audio/voice_service.dart';
+import '../../widgets/speakable_text.dart';
 
 class EnglishWordsExtendedScreen extends StatelessWidget {
   const EnglishWordsExtendedScreen({super.key});
@@ -24,18 +25,24 @@ class EnglishWordsExtendedScreen extends StatelessWidget {
           return Card(
             child: InkWell(
               onTap: () => VoiceService.english(word['word']!),
+              borderRadius: BorderRadius.circular(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(word['emoji']!, style: const TextStyle(fontSize: 45)),
-                  Text(
+                  SpeakableText(
                     word['word']!,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
+                    language: 'en-US',
                   ),
-                  Text(word['ar']!, style: const TextStyle(fontSize: 16)),
+                  SpeakableText(
+                    word['ar']!,
+                    style: const TextStyle(fontSize: 16),
+                    language: 'ar-SA',
+                  ),
                 ],
               ),
             ),
