@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [IconButton(color: Colors.white, tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
         ),
         body: Stack(children: [
-          Positioned.fill(child: Image.asset('assets/images/home_bg.jpg', fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(color: Theme.of(context).colorScheme.surface))),
+          Positioned.fill(child: Image.asset('assets/images/games/home_bg.jpg', fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(color: Theme.of(context).colorScheme.surface))),
           Positioned.fill(child: IgnorePointer(child: Container(color: isDark ? Colors.black.withValues(alpha: .30) : Colors.white.withValues(alpha: .06)))),
           SafeArea(child: ListView(padding: const EdgeInsets.fromLTRB(16, 72, 16, 32), children: [
             _childButton(),
