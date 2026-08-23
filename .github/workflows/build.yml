@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLUTTER_VERSION: "stable"
+  FLUTTER_VERSION: "3.22.2"
 
 jobs:
   analyze_and_test:
@@ -23,7 +23,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
           cache: true
       - name: Install dependencies
         run: flutter pub get
@@ -50,7 +49,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
           cache: true
       - name: Install dependencies
         run: flutter pub get
