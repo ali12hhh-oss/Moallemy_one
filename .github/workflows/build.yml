@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLUTTER_VERSION: "3.44.7"
+  FLUTTER_VERSION: "stable"
 
 jobs:
   analyze_and_test:
