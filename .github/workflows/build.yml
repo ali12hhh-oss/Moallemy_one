@@ -52,9 +52,14 @@ jobs:
         run: flutter pub get
       - name: Build APK with Flutter
         run: flutter build apk --release --android-skip-build-dependency-validation
+      - name: Find and Move APK
+        run: |
+          mkdir -p build/app/outputs/flutter-apk/
+          find build/ -name "*.apk" -exec cp {} build/app/outputs/flutter-apk/app-release.apk \;
+          ls -lh build/app/outputs/flutter-apk/
       - name: Upload Flutter APK
         uses: actions/upload-artifact@v4
         with:
           name: daleel-child-universal-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-          if-no-files-found: warn
+          if-no-files-found: error
