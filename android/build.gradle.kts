@@ -1,4 +1,2 @@
-plugins {
-    id("com.android.application") version "8.7.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
-}
+// Plugin versions are declared in android/settings.gradle.kts.
+// Keeping this file free of duplicate plugin versions avoids classpath conflicts.
