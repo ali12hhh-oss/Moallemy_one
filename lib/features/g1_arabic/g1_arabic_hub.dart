@@ -19,9 +19,7 @@ class G1ArabicHub extends StatelessWidget {
             Button3D(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const G1LettersWordsHub(),
-                ),
+                MaterialPageRoute(builder: (_) => const G1LettersWordsHub()),
               ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),

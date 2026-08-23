@@ -110,10 +110,10 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                          ),
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                              ),
                           itemCount: arabicLetters.length,
                           itemBuilder: (_, i) {
                             final marked = letterWithHaraka(
@@ -206,7 +206,8 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                             onPressed: () {
                               canvasKey.currentState?.clear();
                               setState(
-                                () => wordIndex = (wordIndex + 1) %
+                                () => wordIndex =
+                                    (wordIndex + 1) %
                                     harakaSampleLetters.length,
                               );
                               _celebrate();

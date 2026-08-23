@@ -62,9 +62,10 @@ class VoiceService {
   /// Plays only the real recorded Arabic phoneme. There is deliberately no
   /// TTS fallback because TTS may teach the letter name (باء، تاء...) instead
   /// of the reading sound.
-  static Future<bool> arabicLetterSound(String letter,
-          {String? fallbackText}) =>
-      _playAsset(AssetCatalogV27.arabicAudio(letter));
+  static Future<bool> arabicLetterSound(
+    String letter, {
+    String? fallbackText,
+  }) => _playAsset(AssetCatalogV27.arabicAudio(letter));
 
   static Future<void> englishLetterSound(
     String letter, {

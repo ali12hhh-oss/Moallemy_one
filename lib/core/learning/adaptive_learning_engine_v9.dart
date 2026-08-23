@@ -22,11 +22,11 @@ class SkillProgressV9 {
   bool get needsReview => attempts > 0 && mastery < .8;
 
   Map<String, dynamic> toMap() => {
-        'attempts': attempts,
-        'correct': correct,
-        'streak': streak,
-        'lastSeen': lastSeen?.toIso8601String(),
-      };
+    'attempts': attempts,
+    'correct': correct,
+    'streak': streak,
+    'lastSeen': lastSeen?.toIso8601String(),
+  };
   factory SkillProgressV9.fromMap(String id, Map<String, dynamic> m) =>
       SkillProgressV9(
         skillId: id,
@@ -116,7 +116,8 @@ class AdaptiveLearningEngineV9 {
     Set<String> completedUnits,
   ) async {
     if (stage.units.isEmpty ||
-        !stage.units.every((u) => completedUnits.contains(u.id))) return false;
+        !stage.units.every((u) => completedUnits.contains(u.id)))
+      return false;
     final weak = await weakSkills(stage.id);
     return weak.isEmpty;
   }

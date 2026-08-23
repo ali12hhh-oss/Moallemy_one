@@ -67,9 +67,13 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('📊 تقدم $childName',
-                          style: const TextStyle(
-                              fontSize: 23, fontWeight: FontWeight.bold)),
+                      Text(
+                        '📊 تقدم $childName',
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 12),
                       _stat('⭐ النجوم', arNum(state['stars'] ?? 0)),
                       _stat('✨ XP', arNum(state['xp'] ?? 0)),
@@ -81,8 +85,10 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text('🎓 تقدم المراحل',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text(
+                '🎓 تقدم المراحل',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               ...curriculumV8.map(
                 (stage) => FutureBuilder<_StageProgress>(
@@ -99,10 +105,14 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
                             Row(
                               children: [
                                 Expanded(
-                                    child: Text(stage.title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18))),
+                                  child: Text(
+                                    stage.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
                                 Text('${arNum(p.done)} / ${arNum(p.total)}'),
                               ],
                             ),
@@ -127,23 +137,34 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text('🧠 المهارات التي تحتاج تدريباً',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text(
+                '🧠 المهارات التي تحتاج تدريباً',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               if (weakSkills.isEmpty)
                 const Card(
-                    child: ListTile(
-                        title: Text('لا توجد مهارات ضعيفة مؤكدة حالياً'),
-                        subtitle: Text(
-                            'يحتاج النظام إلى خمس محاولات على الأقل قبل تصنيف المهارة.')))
+                  child: ListTile(
+                    title: Text('لا توجد مهارات ضعيفة مؤكدة حالياً'),
+                    subtitle: Text(
+                      'يحتاج النظام إلى خمس محاولات على الأقل قبل تصنيف المهارة.',
+                    ),
+                  ),
+                )
               else
-                ...weakSkills.map((skill) => Card(
+                ...weakSkills.map(
+                  (skill) => Card(
                     child: ListTile(
-                        leading: const Icon(Icons.school_rounded),
-                        title: Text(skill)))),
+                      leading: const Icon(Icons.school_rounded),
+                      title: Text(skill),
+                    ),
+                  ),
+                ),
               const SizedBox(height: 12),
-              const Text('🏅 الإنجازات',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text(
+                '🏅 الإنجازات',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -152,16 +173,22 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
                     : badges.map((b) => Chip(label: Text(b))).toList(),
               ),
               const SizedBox(height: 12),
-              const Text('🛍️ مشتريات المتجر',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text(
+                '🛍️ مشتريات المتجر',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               if (owned.isEmpty)
                 const Card(child: ListTile(title: Text('لا توجد مشتريات بعد')))
               else
-                ...owned.map((id) => Card(
+                ...owned.map(
+                  (id) => Card(
                     child: ListTile(
-                        leading: const Icon(Icons.check_circle_rounded),
-                        title: Text(id)))),
+                      leading: const Icon(Icons.check_circle_rounded),
+                      title: Text(id),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -170,14 +197,18 @@ class _ParentDashboardV8State extends State<ParentDashboardV8> {
   }
 
   Widget _stat(String title, String value) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(title),
-          Text(value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
-        ]),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  );
 
   Future<_StageProgress> _stageProgress(CurriculumStageV8 stage) async {
     var done = 0;

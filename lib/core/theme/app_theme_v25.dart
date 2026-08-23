@@ -16,8 +16,9 @@ class AppThemeV25 {
       colorScheme: scheme,
       // No custom font is declared in pubspec, so do not reference a missing
       // font family. Flutter's platform fallback gives reliable Arabic glyphs.
-      scaffoldBackgroundColor:
-          dark ? const Color(0xFF14162A) : const Color(0xFFF3F1FF),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF14162A)
+          : const Color(0xFFF3F1FF),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,

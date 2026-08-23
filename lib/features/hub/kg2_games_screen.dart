@@ -257,11 +257,12 @@ class _CombineGameState extends State<_CombineGame> {
   void _next() {
     target = _kg2Pairs[rnd.nextInt(_kg2Pairs.length)];
     final correct = '${target.$1}${target.$2}';
-    final others = _kg2Pairs
-        .map((p) => '${p.$1}${p.$2}')
-        .where((c) => c != correct)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        _kg2Pairs
+            .map((p) => '${p.$1}${p.$2}')
+            .where((c) => c != correct)
+            .toList()
+          ..shuffle(rnd);
     options = [correct, ...others.take(3)]..shuffle(rnd);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => VoiceService.arabic('${target.$1} مع ${target.$2}'),

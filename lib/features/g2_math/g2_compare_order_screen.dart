@@ -262,27 +262,27 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                           Wrap(
                             spacing: 14,
                             runSpacing: 14,
-                            children:
-                                shuffled.where((n) => !chosen.contains(n)).map((
-                              n,
-                            ) {
-                              return Button3D(
-                                onTap: () => _pickOrder(n),
-                                color: const Color(0xFF7C4DFF),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 22,
-                                  vertical: 18,
-                                ),
-                                child: Text(
-                                  arNum(n),
-                                  style: const TextStyle(
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                            children: shuffled
+                                .where((n) => !chosen.contains(n))
+                                .map((n) {
+                                  return Button3D(
+                                    onTap: () => _pickOrder(n),
+                                    color: const Color(0xFF7C4DFF),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 22,
+                                      vertical: 18,
+                                    ),
+                                    child: Text(
+                                      arNum(n),
+                                      style: const TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                })
+                                .toList(),
                           ),
                         ],
                       ),

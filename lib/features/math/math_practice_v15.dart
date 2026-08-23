@@ -162,14 +162,14 @@ class _MathPracticeV15State extends State<MathPracticeV15> {
                             child: Text(
                               widget.category == 'المقارنة'
                                   ? ({
-                                        1: 'أكبر',
-                                        0: 'يساوي',
-                                        -1: 'أصغر',
-                                      }[value] ??
-                                      _ar(value))
+                                          1: 'أكبر',
+                                          0: 'يساوي',
+                                          -1: 'أصغر',
+                                        }[value] ??
+                                        _ar(value))
                                   : widget.category == 'الترتيب'
-                                      ? (q.optionLabels?[value] ?? 'ترتيب آخر')
-                                      : _ar(value),
+                                  ? (q.optionLabels?[value] ?? 'ترتيب آخر')
+                                  : _ar(value),
                               style: const TextStyle(fontSize: 22),
                             ),
                           ),

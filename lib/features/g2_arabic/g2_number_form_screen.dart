@@ -195,9 +195,9 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                           Text(
                             'هل هذه الكلمة مفرد أم مثنى أم جمع؟',
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 10),

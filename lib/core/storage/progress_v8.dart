@@ -26,8 +26,7 @@ class ProgressV8 {
     int score,
     int total,
     bool passed,
-  ) =>
-      ChildProgressRepository.recordFinalExam(stageId, score, total, passed);
+  ) => ChildProgressRepository.recordFinalExam(stageId, score, total, passed);
 
   static Future<Map<String, dynamic>?> finalExam(String stageId) =>
       ChildProgressRepository.finalExam(stageId);

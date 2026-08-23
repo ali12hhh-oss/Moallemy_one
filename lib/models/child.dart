@@ -21,34 +21,34 @@ class Child {
   double get accuracy => total <= 0 ? 0 : (correct / total).clamp(0, 1);
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'name': name,
-        'age': age,
-        'stage': stage,
-        'stars': stars,
-        'lessons': lessons,
-        'quizzes': quizzes,
-        'correct': correct,
-        'total': total,
-        'minutes': minutes,
-        'streak': streak,
-        'weakItems': weakItems,
-      };
+    'id': id,
+    'name': name,
+    'age': age,
+    'stage': stage,
+    'stars': stars,
+    'lessons': lessons,
+    'quizzes': quizzes,
+    'correct': correct,
+    'total': total,
+    'minutes': minutes,
+    'streak': streak,
+    'weakItems': weakItems,
+  };
 
   factory Child.fromMap(Map<String, dynamic> m) => Child(
-        id: m['id']?.toString() ?? '',
-        name: m['name']?.toString() ?? '',
-        age: _int(m['age'], 5),
-        stage: m['stage']?.toString() ?? 'الروضة',
-        stars: _int(m['stars']),
-        lessons: _int(m['lessons']),
-        quizzes: _int(m['quizzes']),
-        correct: _int(m['correct']),
-        total: _int(m['total']),
-        minutes: _int(m['minutes']),
-        streak: _int(m['streak']),
-        weakItems: _strings(m['weakItems']),
-      );
+    id: m['id']?.toString() ?? '',
+    name: m['name']?.toString() ?? '',
+    age: _int(m['age'], 5),
+    stage: m['stage']?.toString() ?? 'الروضة',
+    stars: _int(m['stars']),
+    lessons: _int(m['lessons']),
+    quizzes: _int(m['quizzes']),
+    correct: _int(m['correct']),
+    total: _int(m['total']),
+    minutes: _int(m['minutes']),
+    streak: _int(m['streak']),
+    weakItems: _strings(m['weakItems']),
+  );
 
   static int _int(dynamic value, [int fallback = 0]) {
     if (value is num) return value.toInt();

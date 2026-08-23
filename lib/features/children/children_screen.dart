@@ -37,9 +37,7 @@ class _S extends State<ChildrenScreen> {
             children: [
               TextField(
                 controller: name,
-                decoration: const InputDecoration(
-                  labelText: 'اسم الطفل',
-                ),
+                decoration: const InputDecoration(labelText: 'اسم الطفل'),
               ),
               const SizedBox(height: 10),
               DropdownButton<int>(
@@ -70,14 +68,14 @@ class _S extends State<ChildrenScreen> {
                 final stage = age <= 4
                     ? 'الروضة الأولى'
                     : age == 5
-                        ? 'الروضة الثانية'
-                        : age == 6
-                            ? 'التمهيدي'
-                            : age == 7
-                                ? 'الصف الأول'
-                                : age == 8
-                                    ? 'الصف الثاني'
-                                    : 'الصف الثالث';
+                    ? 'الروضة الثانية'
+                    : age == 6
+                    ? 'التمهيدي'
+                    : age == 7
+                    ? 'الصف الأول'
+                    : age == 8
+                    ? 'الصف الثاني'
+                    : 'الصف الثالث';
                 kids.add(
                   Child(
                     id: DateTime.now().microsecondsSinceEpoch.toString(),
@@ -127,9 +125,7 @@ class _S extends State<ChildrenScreen> {
                           subtitle: Text(
                             '${arNum(k.age)} سنوات • ${k.stage} • ${arNum(k.stars)} نجمة',
                           ),
-                          trailing: const Icon(
-                            Icons.check_circle_outline,
-                          ),
+                          trailing: const Icon(Icons.check_circle_outline),
                           onTap: () async {
                             await AppStorage.setActive(k.id);
                             if (c.mounted)

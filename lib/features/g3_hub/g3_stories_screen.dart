@@ -60,10 +60,7 @@ class G3StoriesScreen extends StatelessWidget {
           children: _stories.map((s) {
             return Card(
               child: ListTile(
-                leading: Text(
-                  s.emoji,
-                  style: const TextStyle(fontSize: 38),
-                ),
+                leading: Text(s.emoji, style: const TextStyle(fontSize: 38)),
                 title: Text(
                   s.title,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -76,11 +73,8 @@ class G3StoriesScreen extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => StoryPage(
-                      s: s.title,
-                      text: s.text,
-                      emoji: s.emoji,
-                    ),
+                    builder: (_) =>
+                        StoryPage(s: s.title, text: s.text, emoji: s.emoji),
                   ),
                 ),
               ),

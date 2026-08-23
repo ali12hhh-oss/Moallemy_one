@@ -548,11 +548,9 @@ class _FractionsGameState extends State<_FractionsGame> {
 
   void _next() {
     target = fractions[rnd.nextInt(fractions.length)];
-    final others = fractions
-        .map((f) => f.name)
-        .where((n) => n != target.name)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        fractions.map((f) => f.name).where((n) => n != target.name).toList()
+          ..shuffle(rnd);
     options = [target.name, ...others]..shuffle(rnd);
   }
 

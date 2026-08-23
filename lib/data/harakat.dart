@@ -2,26 +2,26 @@ enum Haraka { fatha, damma, kasra }
 
 extension HarakaInfo on Haraka {
   String get mark => switch (this) {
-        Haraka.fatha => 'َ',
-        Haraka.damma => 'ُ',
-        Haraka.kasra => 'ِ',
-      };
+    Haraka.fatha => 'َ',
+    Haraka.damma => 'ُ',
+    Haraka.kasra => 'ِ',
+  };
   String get name => switch (this) {
-        Haraka.fatha => 'الفتحة',
-        Haraka.damma => 'الضمة',
-        Haraka.kasra => 'الكسرة',
-      };
+    Haraka.fatha => 'الفتحة',
+    Haraka.damma => 'الضمة',
+    Haraka.kasra => 'الكسرة',
+  };
   String get soundHint => switch (this) {
-        Haraka.fatha => 'a',
-        Haraka.damma => 'u',
-        Haraka.kasra => 'i',
-      };
+    Haraka.fatha => 'a',
+    Haraka.damma => 'u',
+    Haraka.kasra => 'i',
+  };
   // الحرف الممدود المرافق تقليديًا: الفتحة مع الألف، الضمة مع الواو، الكسرة مع الياء.
   String get longVowelLetter => switch (this) {
-        Haraka.fatha => 'ا',
-        Haraka.damma => 'و',
-        Haraka.kasra => 'ي',
-      };
+    Haraka.fatha => 'ا',
+    Haraka.damma => 'و',
+    Haraka.kasra => 'ي',
+  };
 }
 
 /// يبني شكل الحرف مع الحركة (مثال: ب + فتحة = بَ).

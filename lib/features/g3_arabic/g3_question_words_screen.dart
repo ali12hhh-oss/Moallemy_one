@@ -30,11 +30,9 @@ class _G3QuestionWordsScreenState extends State<G3QuestionWordsScreen> {
 
   void _nextQuiz() {
     target = questionWords[rnd.nextInt(questionWords.length)];
-    final others = questionWords
-        .map((q) => q.word)
-        .where((w) => w != target.word)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        questionWords.map((q) => q.word).where((w) => w != target.word).toList()
+          ..shuffle(rnd);
     options = [target.word, ...others.take(3)]..shuffle(rnd);
   }
 

@@ -138,8 +138,8 @@ class _Kg2LettersScreenState extends State<Kg2LettersScreen> {
                                   FilledButton.icon(
                                     onPressed: () =>
                                         VoiceService.arabicLetterSound(
-                                      letter.letter,
-                                    ),
+                                          letter.letter,
+                                        ),
                                     icon: const Icon(Icons.volume_up_rounded),
                                     label: const Text('صوت الحرف'),
                                   ),

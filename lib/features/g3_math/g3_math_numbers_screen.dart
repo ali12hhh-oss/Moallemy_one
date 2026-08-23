@@ -180,10 +180,7 @@ class _G3MathNumbersScreenState extends State<G3MathNumbersScreen> {
             return Button3D(
               onTap: () => VoiceService.arabic(arNum(n)),
               color: color,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Text(
                 arNum(n),
                 style: const TextStyle(

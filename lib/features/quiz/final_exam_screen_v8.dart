@@ -82,8 +82,9 @@ class _FinalExamScreenV8State extends State<FinalExamScreenV8> {
                   child: SizedBox(
                     width: double.infinity,
                     child: FilledButton.tonal(
-                      onPressed:
-                          answered ? null : () => _answer(option == q.answer),
+                      onPressed: answered
+                          ? null
+                          : () => _answer(option == q.answer),
                       child: Text(option, style: const TextStyle(fontSize: 21)),
                     ),
                   ),

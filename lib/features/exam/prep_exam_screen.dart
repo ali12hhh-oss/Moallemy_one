@@ -170,11 +170,12 @@ List<_ExamQ> _buildBank(Random rnd) {
   for (var k = 0; k < 2; k++) {
     final target = _examPairs[rnd.nextInt(_examPairs.length)];
     final correctStr = '${target.$1}${target.$2}';
-    final others = _examPairs
-        .map((p) => '${p.$1}${p.$2}')
-        .where((c) => c != correctStr)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        _examPairs
+            .map((p) => '${p.$1}${p.$2}')
+            .where((c) => c != correctStr)
+            .toList()
+          ..shuffle(rnd);
     final opts = [correctStr, ...others.take(3)]..shuffle(rnd);
     bank.add(
       _ExamQ(

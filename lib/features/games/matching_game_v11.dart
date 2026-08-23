@@ -121,10 +121,7 @@ class _MatchingGameV11State extends State<MatchingGameV11> {
                                   ),
                                 ],
                               )
-                            : const Text(
-                                '؟',
-                                style: TextStyle(fontSize: 40),
-                              ),
+                            : const Text('؟', style: TextStyle(fontSize: 40)),
                       ),
                     ),
                   );

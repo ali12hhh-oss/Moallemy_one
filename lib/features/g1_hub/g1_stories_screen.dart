@@ -19,7 +19,8 @@ class G1StoriesScreen extends StatelessWidget {
     (
       title: 'النجمة التي أضاءت الطريق',
       emoji: '⭐',
-      text: 'في ليلة مظلمة، ضلّ طائر صغير طريقه إلى عشّه، وأصابه الخوف والحزن. '
+      text:
+          'في ليلة مظلمة، ضلّ طائر صغير طريقه إلى عشّه، وأصابه الخوف والحزن. '
           'رأته نجمة صغيرة في السماء، فقررت أن تضيء بكل قوتها لتساعده. '
           'بدأ الطائر يتبع ضوء النجمة، خطوة بخطوة، حتى وصل أخيرًا إلى عشّه الدافئ حيث كانت أمه تنتظره بقلق. '
           'قال الطائر للنجمة: "شكرًا لك، لولا ضوؤك لبقيت تائهًا". '
@@ -49,10 +50,7 @@ class G1StoriesScreen extends StatelessWidget {
           children: _stories.map((s) {
             return Card(
               child: ListTile(
-                leading: Text(
-                  s.emoji,
-                  style: const TextStyle(fontSize: 38),
-                ),
+                leading: Text(s.emoji, style: const TextStyle(fontSize: 38)),
                 title: Text(
                   s.title,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -65,11 +63,8 @@ class G1StoriesScreen extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => StoryPage(
-                      s: s.title,
-                      text: s.text,
-                      emoji: s.emoji,
-                    ),
+                    builder: (_) =>
+                        StoryPage(s: s.title, text: s.text, emoji: s.emoji),
                   ),
                 ),
               ),

@@ -88,8 +88,8 @@ class _S extends State<GamesScreen> {
               child: mode == 0
                   ? _hunter(c)
                   : mode == 1
-                      ? _match(c)
-                      : _numbers(c),
+                  ? _match(c)
+                  : _numbers(c),
             ),
           ],
         ),

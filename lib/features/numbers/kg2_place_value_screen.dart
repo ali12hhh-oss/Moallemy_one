@@ -97,9 +97,7 @@ class _Kg2PlaceValueScreenState extends State<Kg2PlaceValueScreen> {
             Padding(
               padding: const EdgeInsets.all(14),
               child: Text(
-                onesMode
-                    ? 'الآحاد أعداد من رقم واحد فقط: من ١ إلى ٩.'
-                    : 'العشرات مجموعات من عشر نقاط معًا. اضغط على أي عدد لتسمعه وترى العشرات مجمّعة.',
+                onesMode ? 'الآحاد أعداد من رقم واحد فقط: من ١ إلى ٩.' : 'العشرات مجموعات من عشر نقاط معًا. اضغط على أي عدد لتسمعه وترى العشرات مجمّعة.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 15),
               ),
@@ -193,12 +191,12 @@ class _Dot extends StatelessWidget {
   const _Dot();
   @override
   Widget build(BuildContext context) => Container(
-        width: 6,
-        height: 6,
-        margin: const EdgeInsets.symmetric(horizontal: .5),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-      );
+    width: 6,
+    height: 6,
+    margin: const EdgeInsets.symmetric(horizontal: .5),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      shape: BoxShape.circle,
+    ),
+  );
 }

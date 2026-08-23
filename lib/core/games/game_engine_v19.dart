@@ -55,7 +55,10 @@ class GameEngineV19 {
     }
     final result = opts.toList()..shuffle(_r);
     return GameRoundV19(
-        'احسب: $a + $b', '$ans', result.map((e) => '$e').toList());
+      'احسب: $a + $b',
+      '$ans',
+      result.map((e) => '$e').toList(),
+    );
   }
 
   static GameRoundV19 multiplication(int maxTable) {
@@ -70,7 +73,10 @@ class GameEngineV19 {
     }
     final result = opts.toList()..shuffle(_r);
     return GameRoundV19(
-        'احسب: $a × $b', '$ans', result.map((e) => '$e').toList());
+      'احسب: $a × $b',
+      '$ans',
+      result.map((e) => '$e').toList(),
+    );
   }
 
   static Future<void> finish(String gameId, int score) async {

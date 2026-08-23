@@ -69,8 +69,8 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
                       _grade == 1
                           ? 'للصف الأول: جدول ١ و٢ اختياري ويمكن التخطي دون التأثير على نجاح المرحلة.'
                           : _grade == 2
-                              ? 'للصف الثاني: من جدول ١ إلى جدول ٥ ضمن مسار الرياضيات.'
-                              : 'للصف الثالث: من جدول ١ إلى جدول ١٠ مع مراجعة متدرجة.',
+                          ? 'للصف الثاني: من جدول ١ إلى جدول ٥ ضمن مسار الرياضيات.'
+                          : 'للصف الثالث: من جدول ١ إلى جدول ١٠ مع مراجعة متدرجة.',
                     ),
                   ],
                 ),
@@ -154,8 +154,9 @@ class _MultiplicationScreenV13State extends State<MultiplicationScreenV13> {
                     SizedBox(
                       width: 90,
                       child: FilledButton.tonal(
-                        onPressed:
-                            _showResult ? null : () => _submit(n, answer),
+                        onPressed: _showResult
+                            ? null
+                            : () => _submit(n, answer),
                         child: Text(
                           _arabic(n),
                           style: const TextStyle(fontSize: 23),

@@ -64,17 +64,14 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
         setState(() {
           downloading = false;
           modelReady = ok;
-          if (!ok)
-            error =
-                'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          if (!ok) error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
         });
       }
     } catch (_) {
       if (mounted) {
         setState(() {
           downloading = false;
-          error =
-              'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
         });
       }
     }
@@ -244,8 +241,9 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
                             color: c,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color:
-                                  selected ? Colors.black : Colors.transparent,
+                              color: selected
+                                  ? Colors.black
+                                  : Colors.transparent,
                               width: 3,
                             ),
                           ),
@@ -300,7 +298,8 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
                   child: FilledButton.icon(
-                    onPressed: modelReady &&
+                    onPressed:
+                        modelReady &&
                             !recognizing &&
                             strokesForRecognition.isNotEmpty
                         ? _recognize

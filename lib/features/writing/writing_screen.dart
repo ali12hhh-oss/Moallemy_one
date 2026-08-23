@@ -110,8 +110,8 @@ class _WritingScreenState extends State<WritingScreen> {
     final label = isNumber
         ? 'اكتب الرقم'
         : isEnglish
-            ? 'اكتب الحرف'
-            : (target.length > 1 ? 'اكتب الكلمة' : 'اكتب الحرف');
+        ? 'اكتب الحرف'
+        : (target.length > 1 ? 'اكتب الكلمة' : 'اكتب الحرف');
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(

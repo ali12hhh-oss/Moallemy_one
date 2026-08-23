@@ -56,9 +56,7 @@ class Kg2NumbersHub extends StatelessWidget {
             Button3D(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const Kg2PlaceValueScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const Kg2PlaceValueScreen()),
               ),
               color: const Color(0xFF7C4DFF),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),

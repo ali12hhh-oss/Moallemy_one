@@ -97,10 +97,7 @@ class EarlyBasicsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    items[i].emoji,
-                    style: const TextStyle(fontSize: 34),
-                  ),
+                  Text(items[i].emoji, style: const TextStyle(fontSize: 34)),
                   Text(
                     items[i].name,
                     style: const TextStyle(fontWeight: FontWeight.bold),

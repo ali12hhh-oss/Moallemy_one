@@ -102,8 +102,9 @@ class _ELS extends State<EnglishLettersScreen> {
   @override
   Widget build(BuildContext context) {
     final x = englishLetters[i];
-    final displayLetter =
-        widget.lowercaseOnly ? x.letter.toLowerCase() : x.letter;
+    final displayLetter = widget.lowercaseOnly
+        ? x.letter.toLowerCase()
+        : x.letter;
     return Scaffold(
       appBar: AppBar(title: const Text('الحروف الإنجليزية')),
       body: Padding(

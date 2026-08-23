@@ -20,9 +20,9 @@ class _G3ReadingPassageScreenState extends State<G3ReadingPassageScreen> {
   String? cheer;
 
   void _startQuestions() => setState(() {
-        showQuestions = true;
-        questionIndex = 0;
-      });
+    showQuestions = true;
+    questionIndex = 0;
+  });
 
   void _answer(int chosen) {
     final q = readingPassages[passageIndex].questions[questionIndex];
@@ -77,10 +77,7 @@ class _G3ReadingPassageScreenState extends State<G3ReadingPassageScreen> {
                           child: SingleChildScrollView(
                             child: Text(
                               passage.text,
-                              style: const TextStyle(
-                                fontSize: 19,
-                                height: 1.9,
-                              ),
+                              style: const TextStyle(fontSize: 19, height: 1.9),
                               textAlign: TextAlign.right,
                             ),
                           ),
@@ -121,27 +118,26 @@ class _G3ReadingPassageScreenState extends State<G3ReadingPassageScreen> {
                                 .asMap()
                                 .entries
                                 .map((e) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  bottom: 12,
-                                ),
-                                child: Button3D(
-                                  onTap: () => _answer(e.key),
-                                  color: const Color(0xFF7C4DFF),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 18,
-                                    vertical: 16,
-                                  ),
-                                  child: Text(
-                                    e.value,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: Button3D(
+                                      onTap: () => _answer(e.key),
+                                      color: const Color(0xFF7C4DFF),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 18,
+                                        vertical: 16,
+                                      ),
+                                      child: Text(
+                                        e.value,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                                  );
+                                })
+                                .toList(),
                           ),
                         ),
                       ],

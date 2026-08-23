@@ -32,11 +32,12 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
 
   void _nextQuiz() {
     target = definiteArticlePairs[rnd.nextInt(definiteArticlePairs.length)];
-    final others = definiteArticlePairs
-        .map((p) => p.defined)
-        .where((d) => d != target.defined)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        definiteArticlePairs
+            .map((p) => p.defined)
+            .where((d) => d != target.defined)
+            .toList()
+          ..shuffle(rnd);
     options = [target.defined, ...others.take(3)]..shuffle(rnd);
   }
 
@@ -189,9 +190,9 @@ class _G2DefiniteArticleScreenState extends State<G2DefiniteArticleScreen> {
                           Text(
                             'ما الشكل المعرَّف لكلمة:',
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 8),

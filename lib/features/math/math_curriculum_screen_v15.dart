@@ -66,16 +66,16 @@ class MathCurriculumScreenV15 extends StatelessWidget {
                       trailing: const Icon(Icons.arrow_back_ios_new),
                       onTap: playable
                           ? () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => MathPracticeV15(
-                                    skillId: skill.id,
-                                    title: skill.title,
-                                    category: skill.category,
-                                    maxNumber: skill.maxNumber,
-                                  ),
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MathPracticeV15(
+                                  skillId: skill.id,
+                                  title: skill.title,
+                                  category: skill.category,
+                                  maxNumber: skill.maxNumber,
                                 ),
-                              )
+                              ),
+                            )
                           : null,
                     ),
                   );

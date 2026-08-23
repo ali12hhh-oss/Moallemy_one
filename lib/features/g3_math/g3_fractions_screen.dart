@@ -36,11 +36,9 @@ class _G3FractionsScreenState extends State<G3FractionsScreen> {
 
   void _nextQuiz() {
     target = fractions[rnd.nextInt(fractions.length)];
-    final others = fractions
-        .map((f) => f.name)
-        .where((n) => n != target.name)
-        .toList()
-      ..shuffle(rnd);
+    final others =
+        fractions.map((f) => f.name).where((n) => n != target.name).toList()
+          ..shuffle(rnd);
     options = [target.name, ...others]..shuffle(rnd);
   }
 

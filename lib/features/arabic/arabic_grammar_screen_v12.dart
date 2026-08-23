@@ -16,76 +16,74 @@ class _ArabicGrammarScreenV12State extends State<ArabicGrammarScreenV12> {
 
   @override
   Widget build(BuildContext context) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          appBar: AppBar(title: const Text('اللغة العربية: قواعد القراءة')),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'تعلّم ثم طبّق',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'نتعلم القاعدة مع مثال مسموع، ثم نستخدمها في سؤال قصير.',
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'نتيجتك في هذه الجلسة: ${score.toArabic()} من ${answered.toArabic()}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
+    textDirection: TextDirection.rtl,
+    child: Scaffold(
+      appBar: AppBar(title: const Text('اللغة العربية: قواعد القراءة')),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 28),
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'تعلّم ثم طبّق',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SegmentedButton<int>(
-                segments: const [
-                  ButtonSegment(value: 0, label: Text('حروف الجر')),
-                  ButtonSegment(value: 1, label: Text('الـ التعريف')),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'نتعلم القاعدة مع مثال مسموع، ثم نستخدمها في سؤال قصير.',
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'نتيجتك في هذه الجلسة: ${score.toArabic()} من ${answered.toArabic()}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
-                selected: {tab},
-                onSelectionChanged: (v) => setState(() => tab = v.first),
-              ),
-              const SizedBox(height: 12),
-              ...(tab == 0 ? arabicPrepositionsV12 : arabicDefiniteArticleV12)
-                  .map(
-                _lesson,
-              ),
-            ],
-          ),
-        ),
-      );
-
-  Widget _lesson(ArabicGrammarLessonV12 x) => Card(
-        child: ExpansionTile(
-          leading: Text(x.emoji, style: const TextStyle(fontSize: 32)),
-          title: Text(
-            x.title,
-            style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(x.explanation),
-          children: [
-            ListTile(
-              title: Text(x.example, style: const TextStyle(fontSize: 22)),
-              trailing: IconButton(
-                tooltip: 'استمع',
-                icon: const Icon(Icons.volume_up),
-                onPressed: () => VoiceService.arabic(x.example),
               ),
             ),
-            ..._practiceFor(x),
-          ],
+          ),
+          const SizedBox(height: 8),
+          SegmentedButton<int>(
+            segments: const [
+              ButtonSegment(value: 0, label: Text('حروف الجر')),
+              ButtonSegment(value: 1, label: Text('الـ التعريف')),
+            ],
+            selected: {tab},
+            onSelectionChanged: (v) => setState(() => tab = v.first),
+          ),
+          const SizedBox(height: 12),
+          ...(tab == 0 ? arabicPrepositionsV12 : arabicDefiniteArticleV12).map(
+            _lesson,
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _lesson(ArabicGrammarLessonV12 x) => Card(
+    child: ExpansionTile(
+      leading: Text(x.emoji, style: const TextStyle(fontSize: 32)),
+      title: Text(
+        x.title,
+        style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(x.explanation),
+      children: [
+        ListTile(
+          title: Text(x.example, style: const TextStyle(fontSize: 22)),
+          trailing: IconButton(
+            tooltip: 'استمع',
+            icon: const Icon(Icons.volume_up),
+            onPressed: () => VoiceService.arabic(x.example),
+          ),
         ),
-      );
+        ..._practiceFor(x),
+      ],
+    ),
+  );
 
   List<Widget> _practiceFor(ArabicGrammarLessonV12 x) {
     final data = _arabicQuestion(x.id);
@@ -139,104 +137,71 @@ class _ArabicGrammarScreenV12State extends State<ArabicGrammarScreenV12> {
   _Question? _arabicQuestion(String id) {
     switch (id) {
       case 'min':
-        return const _Question(
-            'خرجتُ ___ المدرسةِ.',
-            [
-              'مِنْ',
-              'إِلَى',
-              'فِي',
-            ],
-            'مِنْ');
+        return const _Question('خرجتُ ___ المدرسةِ.', [
+          'مِنْ',
+          'إِلَى',
+          'فِي',
+        ], 'مِنْ');
       case 'ila':
-        return const _Question(
-            'أذهبُ ___ الحديقةِ.',
-            [
-              'إِلَى',
-              'عَنْ',
-              'عَلَى',
-            ],
-            'إِلَى');
+        return const _Question('أذهبُ ___ الحديقةِ.', [
+          'إِلَى',
+          'عَنْ',
+          'عَلَى',
+        ], 'إِلَى');
       case 'fi':
-        return const _Question(
-            'القلمُ ___ الحقيبةِ.',
-            [
-              'فِي',
-              'إِلَى',
-              'مِنْ',
-            ],
-            'فِي');
+        return const _Question('القلمُ ___ الحقيبةِ.', [
+          'فِي',
+          'إِلَى',
+          'مِنْ',
+        ], 'فِي');
       case 'ala':
-        return const _Question(
-            'الكتابُ ___ الطاولةِ.',
-            [
-              'عَلَى',
-              'فِي',
-              'عَنْ',
-            ],
-            'عَلَى');
+        return const _Question('الكتابُ ___ الطاولةِ.', [
+          'عَلَى',
+          'فِي',
+          'عَنْ',
+        ], 'عَلَى');
       case 'an':
-        return const _Question(
-            'تحدثتُ ___ القراءةِ.',
-            [
-              'عَنْ',
-              'إِلَى',
-              'لِـ',
-            ],
-            'عَنْ');
+        return const _Question('تحدثتُ ___ القراءةِ.', [
+          'عَنْ',
+          'إِلَى',
+          'لِـ',
+        ], 'عَنْ');
       case 'bi':
-        return const _Question(
-            'أكتبُ ___ القلمِ.',
-            [
-              'بِـ',
-              'كَـ',
-              'عَلَى',
-            ],
-            'بِـ');
+        return const _Question('أكتبُ ___ القلمِ.', [
+          'بِـ',
+          'كَـ',
+          'عَلَى',
+        ], 'بِـ');
       case 'ka':
-        return const _Question(
-            'الطفلُ ___ النجمِ.',
-            [
-              'كَـ',
-              'فِي',
-              'مِنْ',
-            ],
-            'كَـ');
+        return const _Question('الطفلُ ___ النجمِ.', [
+          'كَـ',
+          'فِي',
+          'مِنْ',
+        ], 'كَـ');
       case 'li':
-        return const _Question(
-            'هذا الكتابُ ___ الطالبِ.',
-            [
-              'لِـ',
-              'بِـ',
-              'عَنْ',
-            ],
-            'لِـ');
+        return const _Question('هذا الكتابُ ___ الطالبِ.', [
+          'لِـ',
+          'بِـ',
+          'عَنْ',
+        ], 'لِـ');
       case 'al_basic':
-        return const _Question(
-            'كتابٌ ← ؟',
-            [
-              'الكتاب',
-              'كتاباً',
-              'كتب',
-            ],
-            'الكتاب');
+        return const _Question('كتابٌ ← ؟', [
+          'الكتاب',
+          'كتاباً',
+          'كتب',
+        ], 'الكتاب');
       case 'al_sun':
-        return const _Question(
-            'أي كلمة فيها لام شمسية؟',
-            [
-              'الشَّمْس',
-              'الْقَمَر',
-              'الْبَاب',
-            ],
-            'الشَّمْس');
+        return const _Question('أي كلمة فيها لام شمسية؟', [
+          'الشَّمْس',
+          'الْقَمَر',
+          'الْبَاب',
+        ], 'الشَّمْس');
       case 'al_moon':
-        return const _Question(
-            'أي كلمة فيها لام قمرية؟',
-            [
-              'الْقَمَر',
-              'الشَّجَرَة',
-              'النَّجْم',
-            ],
-            'الْقَمَر');
+        return const _Question('أي كلمة فيها لام قمرية؟', [
+          'الْقَمَر',
+          'الشَّجَرَة',
+          'النَّجْم',
+        ], 'الْقَمَر');
       default:
         return null;
     }
@@ -251,7 +216,7 @@ class _Question {
 
 extension _ArabicDigits on int {
   String toArabic() => toString().replaceAllMapped(
-        RegExp(r'[0-9]'),
-        (m) => '٠١٢٣٤٥٦٧٨٩'[int.parse(m.group(0)!)],
-      );
+    RegExp(r'[0-9]'),
+    (m) => '٠١٢٣٤٥٦٧٨٩'[int.parse(m.group(0)!)],
+  );
 }

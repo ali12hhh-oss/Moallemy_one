@@ -28,9 +28,7 @@ class G1HarakatHub extends StatelessWidget {
               child: Button3D(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => G1HarakaScreen(haraka: h),
-                  ),
+                  MaterialPageRoute(builder: (_) => G1HarakaScreen(haraka: h)),
                 ),
                 color: e.$2,
                 padding: const EdgeInsets.symmetric(
@@ -41,10 +39,7 @@ class G1HarakatHub extends StatelessWidget {
                   children: [
                     Text(
                       '◌${h.mark}',
-                      style: const TextStyle(
-                        fontSize: 44,
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(fontSize: 44, color: Colors.white),
                     ),
                     const SizedBox(width: 18),
                     Expanded(

@@ -71,8 +71,8 @@ class LetterForms {
   }
 
   List<(String label, String form)> get all => [
-        ('أول الكلمة', initial),
-        ('وسط الكلمة', medial),
-        ('آخر الكلمة', finalForm),
-      ];
+    ('أول الكلمة', initial),
+    ('وسط الكلمة', medial),
+    ('آخر الكلمة', finalForm),
+  ];
 }

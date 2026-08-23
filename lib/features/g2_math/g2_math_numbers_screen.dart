@@ -176,10 +176,7 @@ class _G2MathNumbersScreenState extends State<G2MathNumbersScreen> {
             return Button3D(
               onTap: () => VoiceService.arabic(arNum(n)),
               color: color,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18,
-                vertical: 14,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
               child: Text(
                 arNum(n),
                 style: const TextStyle(

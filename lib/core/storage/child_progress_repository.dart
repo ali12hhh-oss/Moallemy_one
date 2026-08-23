@@ -93,8 +93,10 @@ class ChildProgressRepository {
   static Future<void> recordSkill(String skillId, bool correct) async {
     final state = await load();
     final skills = Map<String, dynamic>.from(state['skillMastery'] ?? const {});
-    skills[skillId] =
-        (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(0, 100);
+    skills[skillId] = (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(
+      0,
+      100,
+    );
     state['skillMastery'] = skills;
     if (correct) {
       state['stars'] = _int(state['stars']) + 1;
@@ -201,7 +203,11 @@ class ChildProgressRepository {
   }
 
   static Future<void> recordFinalExam(
-      String stageId, int score, int total, bool passed) async {
+    String stageId,
+    int score,
+    int total,
+    bool passed,
+  ) async {
     final state = await load();
     final exams = Map<String, dynamic>.from(state['finalExams'] ?? const {});
     final previous = exams[stageId];
@@ -214,8 +220,10 @@ class ChildProgressRepository {
       'passed': passed,
       'date': DateTime.now().toIso8601String(),
       'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
-      'bestScore':
-          _max(_int(previous is Map ? previous['bestScore'] : null), safeScore),
+      'bestScore': _max(
+        _int(previous is Map ? previous['bestScore'] : null),
+        safeScore,
+      ),
     };
     state['finalExams'] = exams;
     final badges = List<String>.from(state['badges'] ?? const <String>[]);

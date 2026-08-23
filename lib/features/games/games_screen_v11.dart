@@ -121,94 +121,91 @@ class _GamesScreenV11State extends State<GamesScreenV11> {
   }
 
   Widget _hunt() => Column(
+    children: [
+      const Text(
+        'صائد الحروف',
+        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'التقط الحرف الذي تبدأ به كلمة ${target.word}',
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 19),
+      ),
+      Text(target.emoji, style: const TextStyle(fontSize: 82)),
+      const SizedBox(height: 12),
+      ...options.map(
+        (x) => Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton.tonal(
+              onPressed: () => _answer(x.letter),
+              child: Text(x.letter, style: const TextStyle(fontSize: 30)),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+
+  Widget _sound() => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
         children: [
           const Text(
-            'صائد الحروف',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+            'اسمع ثم اختر',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          Text(
-            'التقط الحرف الذي تبدأ به كلمة ${target.word}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 19),
+          const SizedBox(height: 10),
+          IconButton.filled(
+            onPressed: () => VoiceService.arabic(target.letter),
+            icon: const Icon(Icons.volume_up),
+            iconSize: 40,
           ),
-          Text(target.emoji, style: const TextStyle(fontSize: 82)),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           ...options.map(
-            (x) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton.tonal(
-                  onPressed: () => _answer(x.letter),
-                  child: Text(x.letter, style: const TextStyle(fontSize: 30)),
-                ),
+            (x) => ListTile(
+              title: Center(
+                child: Text(x.letter, style: const TextStyle(fontSize: 32)),
               ),
+              onTap: () => _answer(x.letter),
             ),
           ),
         ],
-      );
-
-  Widget _sound() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const Text(
-                'اسمع ثم اختر',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              IconButton.filled(
-                onPressed: () => VoiceService.arabic(target.letter),
-                icon: const Icon(Icons.volume_up),
-                iconSize: 40,
-              ),
-              const SizedBox(height: 16),
-              ...options.map(
-                (x) => ListTile(
-                  title: Center(
-                    child: Text(x.letter, style: const TextStyle(fontSize: 32)),
-                  ),
-                  onTap: () => _answer(x.letter),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 
   Widget _match() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const Text(
-                'طابق الحرف مع الصورة',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              Text(target.emoji, style: const TextStyle(fontSize: 80)),
-              Text(target.word, style: const TextStyle(fontSize: 22)),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: options
-                    .map(
-                      (x) => ChoiceChip(
-                        label: Text(
-                          x.letter,
-                          style: const TextStyle(fontSize: 25),
-                        ),
-                        selected: false,
-                        onSelected: (_) => _answer(x.letter),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ],
+    child: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const Text(
+            'طابق الحرف مع الصورة',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-        ),
-      );
+          const SizedBox(height: 12),
+          Text(target.emoji, style: const TextStyle(fontSize: 80)),
+          Text(target.word, style: const TextStyle(fontSize: 22)),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: options
+                .map(
+                  (x) => ChoiceChip(
+                    label: Text(x.letter, style: const TextStyle(fontSize: 25)),
+                    selected: false,
+                    onSelected: (_) => _answer(x.letter),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    ),
+  );
 }
