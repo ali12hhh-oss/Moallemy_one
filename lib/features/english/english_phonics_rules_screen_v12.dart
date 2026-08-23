@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/audio/voice_service.dart';
 import '../../data/language_rules_v12.dart';
+import '../../widgets/speakable_text.dart';
 
 class EnglishPhonicsRulesScreenV12 extends StatefulWidget {
   const EnglishPhonicsRulesScreenV12({super.key});
@@ -24,13 +25,15 @@ class _EnglishPhonicsRulesScreenV12State
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
+          const SpeakableText(
             'Letter combinations',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            language: 'en-US',
           ),
           const SizedBox(height: 6),
-          const Text(
+          const SpeakableText(
             'Learn the sound made by two or more letters together, then practise it in a word.',
+            language: 'en-US',
           ),
           const SizedBox(height: 12),
           SegmentedButton<int>(
@@ -45,13 +48,14 @@ class _EnglishPhonicsRulesScreenV12State
           const SizedBox(height: 12),
           Card(
             child: ListTile(
-              title: const Text('Session score'),
-              trailing: Text(
+              title: const SpeakableText('Session score', language: 'en-US'),
+              trailing: SpeakableText(
                 '$score / $answered',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
+                language: 'en-US',
               ),
             ),
           ),
@@ -67,34 +71,40 @@ class _EnglishPhonicsRulesScreenV12State
   Widget _ruleCard(EnglishPhonicsRuleV12 r) => Card(
     child: ExpansionTile(
       leading: Text(r.emoji, style: const TextStyle(fontSize: 32)),
-      title: Text(
+      title: SpeakableText(
         '${r.pattern}  →  ${r.sound}',
         style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        language: 'en-US',
       ),
-      subtitle: Text('${r.name}\nExamples: ${r.examples}'),
+      subtitle: SpeakableText(
+        '${r.name}\nExamples: ${r.examples}',
+        language: 'en-US',
+      ),
       children: [
         ListTile(
           leading: const Icon(Icons.volume_up),
-          title: Text('Hear: ${r.pattern}'),
+          title: SpeakableText('Hear: ${r.pattern}', language: 'en-US'),
           onTap: () => VoiceService.englishLetterSound(
             r.pattern,
             fallbackText: r.pattern,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-          child: Text(
-            'Listen, then choose a word containing “${r.pattern}”.',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 4, 16, 8),
+          child: SpeakableText(
+            'Listen, then choose a word containing the sound.',
+            language: 'en-US',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Wrap(
           spacing: 8,
           children: _words(r)
               .map(
-                (w) => OutlinedButton(
+                (w) => OutlinedButton.icon(
                   onPressed: () => _check(r, w),
-                  child: Text(w),
+                  icon: const Icon(Icons.volume_up, size: 18),
+                  label: Text(w),
                 ),
               )
               .toList(),
@@ -121,6 +131,8 @@ class _EnglishPhonicsRulesScreenV12State
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(correct ? 'Correct! ⭐' : 'Try again 🌱')),
     );
-    if (correct) VoiceService.english('Correct. ${r.pattern}');
+    VoiceService.english(
+      correct ? 'Correct. $word.' : 'Try again. $word.',
+    );
   }
 }
