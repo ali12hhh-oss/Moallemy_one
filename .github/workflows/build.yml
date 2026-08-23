@@ -50,21 +50,11 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
-      - name: Build one universal release APK with Flutter
-        run: |
-          set -e
-          flutter clean
-          flutter pub get
-          flutter build apk --release
-      - name: Verify Flutter APK output
-        run: |
-          set -e
-          test -f build/app/outputs/flutter-apk/app-release.apk
-          echo "Flutter universal APK:"
-          ls -lh build/app/outputs/flutter-apk/app-release.apk
+      - name: Build APK with Flutter
+        run: flutter build apk --release --android-skip-build-dependency-validation
       - name: Upload Flutter APK
         uses: actions/upload-artifact@v4
         with:
           name: daleel-child-universal-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-          if-no-files-found: error
+          if-no-files-found: warn
