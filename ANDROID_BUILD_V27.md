@@ -1,20 +1,46 @@
-# إعداد Android V27
+# إعداد Android
 
 تم تضمين مجلد Android فعلي داخل المشروع.
 
 - Application ID: `com.daleel.child`
-- App label: `دليل الطفل`
-- minSdk: 21 (يدعم Android 5.0+، وهو الحد الأدنى الحالي لـFlutter)
+- App label: `معلمي`
+- minSdk: 24
+- compileSdk: 36
+- targetSdk: قيمة Flutter الحالية
 - Java/Kotlin JVM: 17
-- AGP: 8.13.2
-- Kotlin plugin: 2.2.21
-- Gradle wrapper: 8.13
-- ABI: armeabi-v7a / arm64-v8a / x86_64
+- Android Gradle Plugin (AGP): 8.11.1
+- Kotlin plugin: 2.2.20
+- Gradle wrapper: 8.14
+- NDK: 28.2.13676358
+- ABI: إعداد Android الافتراضي للمشروع
 - AndroidX + Jetifier
 - TTS service query مضاف لـflutter_tts
 - RTL: `supportsRtl=true`
 - Cleartext HTTP disabled
-- Release APK/AAB build في GitHub Actions
-- أيقونة Android فعلية مولدة محلياً بأحجام mdpi إلى xxxhdpi + adaptive icon.
+- Release APK يتم بناؤه في GitHub Actions باستخدام Gradle مباشرة.
 
-ملاحظة: لا توجد مفاتيح توقيع Release داخل المستودع. توقيع Play Store يجب أن يتم بمفتاح خاص خارج GitHub source.
+## مسار APK في CI
+
+يتم بناء الإصدار بواسطة:
+
+```text
+android/gradlew app:assembleRelease
+```
+
+ثم يكون الناتج المتوقع في:
+
+```text
+android/app/build/outputs/apk/release/app-release.apk
+```
+
+ويتم نسخه إلى المسار القياسي الذي يستخدمه Artifact:
+
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
+
+تم اعتماد البناء المباشر بواسطة Gradle في GitHub Actions لأن إعداد Android الحالي يستخدم Android Gradle Plugin عبر Plugin DSL، وفي بعض إصدارات Flutter قد ينجح `assembleRelease` بينما يفشل Flutter CLI في اكتشاف ملف APK الناتج.
+
+## التوقيع
+
+إصدار CI الحالي يستخدم Debug signing حتى يكون APK قابلاً للتثبيت والاختبار. لا توجد مفاتيح توقيع Release داخل المستودع. إصدار Google Play النهائي يجب أن يستخدم مفتاح توقيع/رفع خاصاً محفوظاً خارج GitHub source، ويفضل تخزين بياناته في GitHub Secrets.
