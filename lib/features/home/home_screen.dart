@@ -21,46 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Child? child;
   final prefs = AppPreferencesV10.instance;
 
-  static const List<
-    (String id, String title, String age, String emoji, String desc)
-  >
-  stages = [
-    (
-      'kg1',
-      'الروضة الأولى',
-      '٣–٤ سنوات',
-      '🎨',
-      'ألوان وأشكال واستماع وأعداد أولى',
-    ),
-    (
-      'kg2',
-      'الروضة الثانية',
-      '٤–٥ سنوات',
-      '🔤',
-      'حروف وأرقام وكتابة وكلمات قصيرة',
-    ),
-    (
-      'prep',
-      'الاختبار',
-      '٥–٦ سنوات',
-      '📝',
-      'اختبار شامل يراجع ما تعلمه الطفل في الروضة الأولى والثانية',
-    ),
+  static const stages = [
+    ('kg1', 'الروضة الأولى', '٣–٤ سنوات', '🎨', 'ألوان وأشكال واستماع وأعداد أولى'),
+    ('kg2', 'الروضة الثانية', '٤–٥ سنوات', '🔤', 'حروف وأرقام وكتابة وكلمات قصيرة'),
+    ('prep', 'الاختبار', '٥–٦ سنوات', '📝', 'اختبار شامل يراجع ما تعلمه الطفل'),
     ('g1', 'الصف الأول', '٦–٧ سنوات', '🌟', 'قراءة وكتابة وحساب وإنجليزي مبسط'),
-    (
-      'g2',
-      'الصف الثاني',
-      '٧–٨ سنوات',
-      '🚀',
-      'قواعد وقراءة وحساب ومفردات إنجليزية',
-    ),
-    (
-      'g3',
-      'الصف الثالث',
-      '٨–٩ سنوات',
-      '🏆',
-      'قراءة متقدمة وقواعد وحساب وتحديات',
-    ),
+    ('g2', 'الصف الثاني', '٧–٨ سنوات', '🚀', 'قواعد وقراءة وحساب ومفردات إنجليزية'),
+    ('g3', 'الصف الثالث', '٨–٩ سنوات', '🏆', 'قراءة متقدمة وقواعد وحساب وتحديات'),
   ];
 
   @override
@@ -84,20 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _openRegistration() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ChildRegistrationScreen()),
-    );
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const ChildRegistrationScreen()));
     await _loadChild();
   }
 
   Future<void> _openParents() async {
     final ok = await _parentGate();
     if (!ok || !mounted) return;
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ParentsScreen()),
-    );
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const ParentsScreen()));
     await _loadChild();
   }
 
@@ -114,61 +75,22 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setDialog) => AlertDialog(
           title: const Text('منطقة الوالدين 🔒'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.',
-              ),
-              const SizedBox(height: 16),
-              Text(
-                '${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  labelText: 'الإجابة',
-                  errorText: error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null,
-                ),
-                onSubmitted: (_) {
-                  if (int.tryParse(controller.text.trim()) == expected) {
-                    Navigator.pop(dialogContext, true);
-                  } else {
-                    setDialog(() {
-                      error = true;
-                      controller.clear();
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            const Text('أجب عن السؤال حتى لا يدخل الطفل إلى المتابعة بالخطأ.'),
+            const SizedBox(height: 16),
+            Text('${a.toString()} ${isAddition ? '+' : '−'} ${b.toString()} = ؟', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            TextField(controller: controller, autofocus: true, keyboardType: TextInputType.number, textAlign: TextAlign.center, decoration: InputDecoration(labelText: 'الإجابة', errorText: error ? 'إجابة غير صحيحة، حاول مرة أخرى' : null), onSubmitted: (_) {
+              if (int.tryParse(controller.text.trim()) == expected) Navigator.pop(dialogContext, true);
+              else setDialog(() { error = true; controller.clear(); });
+            }),
+          ]),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: const Text('إلغاء'),
-            ),
-            FilledButton(
-              onPressed: () {
-                if (int.tryParse(controller.text.trim()) == expected) {
-                  Navigator.pop(dialogContext, true);
-                } else {
-                  setDialog(() {
-                    error = true;
-                    controller.clear();
-                  });
-                }
-              },
-              child: const Text('دخول'),
-            ),
+            TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('إلغاء')),
+            FilledButton(onPressed: () {
+              if (int.tryParse(controller.text.trim()) == expected) Navigator.pop(dialogContext, true);
+              else setDialog(() { error = true; controller.clear(); });
+            }, child: const Text('دخول')),
           ],
         ),
       ),
@@ -177,12 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return result == true;
   }
 
-  void _openStage(String id) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => StageScreen(stageId: id)),
-    );
-  }
+  void _openStage(String id) => Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
 
   @override
   Widget build(BuildContext context) {
@@ -190,264 +107,65 @@ class _HomeScreenState extends State<HomeScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: isDark
-            ? const Color(0xFF14162A)
-            : const Color(0xFFF3F1FF),
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
-          title: const Text(
-            'معلمي',
-            style: TextStyle(fontWeight: FontWeight.w900),
-          ),
-          leading: IconButton(
-            tooltip: 'الإعدادات',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
-            ),
-          ),
-          actions: [
-            IconButton(
-              tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي',
-              icon: Icon(
-                isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-              ),
-              onPressed: () => prefs.setDarkMode(!isDark),
-            ),
-          ],
+          elevation: 0,
+          title: const Text('معلمي', style: TextStyle(fontWeight: FontWeight.w900)),
+          leading: IconButton(tooltip: 'الإعدادات', icon: const Icon(Icons.settings_rounded), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
+          actions: [IconButton(tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
         ),
-        body: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-          children: [
+        body: Stack(children: [
+          Positioned.fill(child: Image.asset('assets/images/home_bg.jpg', fit: BoxFit.cover)),
+          Positioned.fill(child: Container(color: isDark ? Colors.black.withValues(alpha: .28) : Colors.white.withValues(alpha: .10))),
+          ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 32), children: [
             _childButton(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             _parentButton(),
-            const SizedBox(height: 26),
-            const Text(
-              'مراحل التعلم',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-            ),
+            const SizedBox(height: 22),
+            const Text('مراحل التعلم', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, shadows: [Shadow(blurRadius: 4)])),
             const SizedBox(height: 6),
-            Text(
-              child == null
-                  ? 'اختر المرحلة المناسبة لطفلك وابدأ الرحلة.'
-                  : 'اختر مرحلة ${child!.name} وابدأ التعلم.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
+            Text(child == null ? 'اختر المرحلة المناسبة لطفلك وابدأ الرحلة.' : 'اختر مرحلة ${child!.name} وابدأ التعلم.', style: const TextStyle(fontWeight: FontWeight.w700, shadows: [Shadow(blurRadius: 3)])),
             const SizedBox(height: 14),
             ..._stageButtons(),
-            const SizedBox(height: 12),
+            const SizedBox(height: 4),
             _storeButton(),
-          ],
-        ),
+          ]),
+        ]),
       ),
     );
   }
 
-  Widget _childButton() => Button3D(
-    onTap: _openRegistration,
-    color: StageColors.registration,
-    depth: 9,
-    child: Row(
-      children: [
-        Container(
-          width: 62,
-          height: 62,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: .3),
-            shape: BoxShape.circle,
-          ),
-          child: const Center(
-            child: Text('🧒', style: TextStyle(fontSize: 34)),
-          ),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                child == null
-                    ? 'اكتب اسمك يا بطل ⭐'
-                    : 'أهلاً يا ${child!.name} 🌟',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                child == null
-                    ? 'سجّل اسمك ومرحلتك لنحفظ تقدمك.'
-                    : 'المرحلة: ${child!.stage}  •  اضغط لتعديل البيانات',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-        const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 20,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
+  Widget _childButton() => Button3D(onTap: _openRegistration, color: StageColors.registration, depth: 9, child: Row(children: [
+    Container(width: 62, height: 62, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: const Center(child: Text('🧒', style: TextStyle(fontSize: 34)))),
+    const SizedBox(width: 14),
+    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(child == null ? 'اكتب اسمك يا بطل ⭐' : 'أهلاً يا ${child!.name} 🌟', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
+      const SizedBox(height: 5),
+      Text(child == null ? 'سجّل اسمك ومرحلتك لنحفظ تقدمك.' : 'المرحلة: ${child!.stage}  •  اضغط لتعديل البيانات', style: const TextStyle(color: Colors.white)),
+    ])),
+    const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
+  ]));
 
-  Widget _parentButton() => Button3D(
-    onTap: _openParents,
-    color: StageColors.family,
-    depth: 9,
-    child: Row(
-      children: [
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: .3),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: const Center(
-            child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)),
-          ),
-        ),
-        const SizedBox(width: 14),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'متابعة الأسرة',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 3),
-              Text(
-                'نتائج الطفل، المهارات المتقنة، وما يحتاج مراجعة',
-                style: TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-            ],
-          ),
-        ),
-        const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 20,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
+  Widget _parentButton() => Button3D(onTap: _openParents, color: StageColors.family, depth: 9, child: Row(children: [
+    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)))),
+    const SizedBox(width: 14),
+    const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متابعة الأسرة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)), SizedBox(height: 3), Text('نتائج الطفل، المهارات المتقنة، وما يحتاج مراجعة', style: TextStyle(color: Colors.white70, fontSize: 13))])),
+    const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
+  ]));
 
-  List<Widget> _stageButtons() => stages
-      .map(
-        (s) => Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Button3D(
-            onTap: () => _openStage(s.$1),
-            color: StageColors.of(s.$1),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            child: Row(
-              children: [
-                Container(
-                  width: 54,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .3),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Center(
-                    child: Text(s.$4, style: const TextStyle(fontSize: 29)),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        s.$2,
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        '${s.$3} • ${s.$5}',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 12.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ),
-        ),
-      )
-      .toList();
+  List<Widget> _stageButtons() => stages.map((s) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Button3D(onTap: () => _openStage(s.$1), color: StageColors.of(s.$1), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), child: Row(children: [
+    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: Center(child: Text(s.$4, style: const TextStyle(fontSize: 29)))),
+    const SizedBox(width: 14),
+    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(s.$2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white)), const SizedBox(height: 3), Text('${s.$3} • ${s.$5}', style: const TextStyle(color: Colors.white70, fontSize: 12.5))])),
+    const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
+  ])))).toList();
 
-  Widget _storeButton() => Button3D(
-    onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ShopScreen()),
-    ),
-    color: StageColors.store,
-    depth: 9,
-    child: Row(
-      children: [
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: .32),
-            shape: BoxShape.circle,
-          ),
-          child: const Center(child: Text('⭐', style: TextStyle(fontSize: 27))),
-        ),
-        const SizedBox(width: 14),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'المتجر',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 3),
-              Text(
-                'جوائز وملصقات وشخصيات تشجيعية بالنجوم',
-                style: TextStyle(color: Colors.white, fontSize: 13),
-              ),
-            ],
-          ),
-        ),
-        const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          size: 20,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
+  Widget _storeButton() => Button3D(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ShopScreen())), color: StageColors.store, depth: 9, child: Row(children: [
+    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .32), shape: BoxShape.circle), child: const Center(child: Text('⭐', style: TextStyle(fontSize: 27)))),
+    const SizedBox(width: 14),
+    const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('المتجر', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)), SizedBox(height: 3), Text('جوائز وملصقات وشخصيات تشجيعية بالنجوم', style: TextStyle(color: Colors.white, fontSize: 13))])),
+    const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
+  ]));
 }
