@@ -34,10 +34,7 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
   void _speak() {
     if (lettersMode) {
       final e = englishLetters[index];
-      VoiceService.englishLetterSound(
-        e.letter.toLowerCase(),
-        fallbackText: e.sound,
-      );
+      VoiceService.englishLetterSound(e.letter.toLowerCase(), fallbackText: e.sound);
     } else {
       VoiceService.english(numberWords[index + 1]!);
     }
@@ -57,9 +54,8 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final target = lettersMode
-        ? englishLetters[index].letter.toLowerCase()
-        : '${index + 1}';
+    final target = lettersMode ? englishLetters[index].letter.toLowerCase() : '${index + 1}';
+    final theme = Theme.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -72,93 +68,104 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
               tooltip: 'Listen',
               icon: const Icon(Icons.volume_up_rounded),
             ),
-            IconButton(
-              onPressed: () => canvasKey.currentState?.clear(),
-              tooltip: 'Clear',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
           ],
         ),
         body: SafeArea(
           child: Stack(
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 14),
+              Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Button3D(
-                          onTap: () => _switch(true),
-                          color: lettersMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
-                          depth: lettersMode ? 2 : 7,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Center(
-                            child: Text(
-                              'Letters 🔤',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 4, 10, 5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Button3D(
+                            onTap: () => _switch(true),
+                            color: lettersMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
+                            depth: lettersMode ? 2 : 7,
+                            padding: const EdgeInsets.symmetric(vertical: 9),
+                            child: const Center(
+                              child: Text('Letters 🔤', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white)),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Button3D(
-                          onTap: () => _switch(false),
-                          color: !lettersMode
-                              ? const Color(0xFF2979FF)
-                              : const Color(0xFF90CAF9),
-                          depth: !lettersMode ? 2 : 7,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Center(
-                            child: Text(
-                              'Numbers 🔢',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Button3D(
+                            onTap: () => _switch(false),
+                            color: !lettersMode ? const Color(0xFF2979FF) : const Color(0xFF90CAF9),
+                            depth: !lettersMode ? 2 : 7,
+                            padding: const EdgeInsets.symmetric(vertical: 9),
+                            child: const Center(
+                              child: Text('Numbers 🔢', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white)),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Text(
-                      target,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: lettersMode ? 64 : 54,
-                        fontWeight: FontWeight.w900,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 320,
-                    child: BoldDrawingCanvas(key: canvasKey),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        target,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: lettersMode ? 48 : 40, height: 1.0, fontWeight: FontWeight.w900, color: theme.colorScheme.primary),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: () => _next(1),
-                      icon: const Icon(Icons.arrow_forward_rounded),
-                      label: const Text('Next'),
+                  const SizedBox(height: 6),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(22),
+                        child: BoldDrawingCanvas(key: canvasKey),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(-1),
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: const Text('Previous'),
+                            style: FilledButton.styleFrom(minimumSize: const Size(0, 54)),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => canvasKey.currentState?.clear(),
+                            icon: const Icon(Icons.delete_sweep_rounded),
+                            label: const Text('Clear board'),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFFE53935),
+                              minimumSize: const Size(0, 54),
+                              textStyle: const TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(1),
+                            icon: const Icon(Icons.arrow_back_rounded),
+                            label: const Text('Next'),
+                            style: FilledButton.styleFrom(minimumSize: const Size(0, 54)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
