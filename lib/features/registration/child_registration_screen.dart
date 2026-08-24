@@ -4,6 +4,7 @@ import '../../core/storage/app_storage.dart';
 import '../../core/theme/stage_colors.dart';
 import '../../models/child.dart';
 import '../../widgets/button_3d.dart';
+import '../exam/prep_exam_screen.dart';
 
 class ChildRegistrationScreen extends StatefulWidget {
   const ChildRegistrationScreen({super.key});
@@ -109,6 +110,13 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     _ => 9,
   };
 
+  void _openPlacementTest() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const PrepExamScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -179,13 +187,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
               );
             }),
             const SizedBox(height: 6),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.amber.withValues(alpha: .16),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.amber.withValues(alpha: .55), width: 1.5),
-              ),
+            Button3D(
+              onTap: _openPlacementTest,
+              color: const Color(0xFFFFB300),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(
                 children: [
                   const Text('📝', style: TextStyle(fontSize: 30)),
@@ -194,12 +199,19 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('اختبار تحديد المستوى', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+                        Text(
+                          'اختبار تحديد المستوى',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                        ),
                         SizedBox(height: 4),
-                        Text('اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.', style: TextStyle(fontSize: 12.5)),
+                        Text(
+                          'اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.',
+                          style: TextStyle(fontSize: 12.5, color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
+                  const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
                 ],
               ),
             ),
