@@ -50,7 +50,11 @@ class _ShopScreenState extends State<ShopScreen> {
       return;
     }
 
-    final success = await StoreServiceV23.buy(item.id, item.price);
+    final success = await StoreServiceV23.buy(
+      item.id,
+      item.price,
+      title: item.type == 'ألقاب' ? item.title : null,
+    );
     if (!mounted) return;
     if (success) {
       await _refresh();
