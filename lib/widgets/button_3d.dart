@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// A chunky, playful "3D" button: a colored face sits on top of a darker
-/// slab of the same hue. On press, the face drops down to meet the slab
-/// (like a real button being pushed), then springs back up on release.
-/// Used everywhere in the app instead of flat Material cards so every
-/// tappable button feels physical and satisfying for kids.
+/// A chunky, playful "3D" button: a translucent colored face sits on top
+/// of a darker translucent slab, allowing the page artwork to remain visible.
 class Button3D extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
@@ -33,7 +30,7 @@ class Button3D extends StatefulWidget {
 class _Button3DState extends State<Button3D> {
   bool pressed = false;
 
-  Color get _slab => widget.shadowColor ?? _darken(widget.color, .28);
+  Color get _slab => (widget.shadowColor ?? _darken(widget.color, .28)).withValues(alpha: .78);
 
   static Color _darken(Color c, double amount) {
     final hsl = HSLColor.fromColor(c);
@@ -57,24 +54,22 @@ class _Button3DState extends State<Button3D> {
       },
       child: Stack(
         children: [
-          // The darker "slab" underneath — always full-size, never moves.
           Container(
             decoration: BoxDecoration(
               color: _slab,
               borderRadius: widget.borderRadius,
             ),
           ),
-          // The bright face on top — drops down onto the slab when pressed.
           AnimatedContainer(
             duration: const Duration(milliseconds: 90),
             curve: Curves.easeOut,
             margin: EdgeInsets.only(bottom: pressed ? 0 : widget.depth),
             padding: widget.padding,
             decoration: BoxDecoration(
-              color: widget.color,
+              color: widget.color.withValues(alpha: .72),
               borderRadius: widget.borderRadius,
               border: Border.all(
-                color: Colors.white.withValues(alpha: .22),
+                color: Colors.white.withValues(alpha: .28),
                 width: 1.4,
               ),
             ),
