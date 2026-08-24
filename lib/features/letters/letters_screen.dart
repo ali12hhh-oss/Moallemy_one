@@ -23,6 +23,18 @@ class _S extends State<LettersScreen> {
         'ه': 'هاء', 'و': 'واو', 'ي': 'ياء',
       }[x] ?? x;
 
+  static ButtonStyle _navigationButtonStyle() => FilledButton.styleFrom(
+        minimumSize: const Size(0, 52),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        textStyle: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w900,
+        ),
+      );
+
   @override
   Widget build(BuildContext c) {
     final l = arabicLetters[i];
@@ -110,18 +122,22 @@ class _S extends State<LettersScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton(
+                    child: FilledButton.icon(
+                      style: _navigationButtonStyle(),
                       onPressed: i == 0 ? null : () => setState(() => i--),
-                      child: const SpeakableText('السابق'),
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      label: const SpeakableText('السابق'),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: FilledButton(
+                    child: FilledButton.icon(
+                      style: _navigationButtonStyle(),
                       onPressed: i == arabicLetters.length - 1
                           ? null
                           : () => setState(() => i++),
-                      child: const SpeakableText('التالي'),
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: const SpeakableText('التالي'),
                     ),
                   ),
                 ],
