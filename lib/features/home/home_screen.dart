@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/settings/app_preferences_v10.dart';
 import '../../core/storage/app_storage.dart';
@@ -108,6 +111,35 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
   }
 
+  Widget _childAvatar({double size = 62}) {
+    final current = child;
+    if (current == null) {
+      return Center(child: Text('🧒', style: TextStyle(fontSize: size * .55)));
+    }
+    if (current.avatarPath.isNotEmpty) {
+      return ClipOval(
+        child: Image.file(
+          File(current.avatarPath),
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => SvgPicture.asset(
+            current.avatarAsset,
+            width: size,
+            height: size,
+            fit: BoxFit.contain,
+          ),
+        ),
+      );
+    }
+    return SvgPicture.asset(
+      current.avatarAsset,
+      width: size,
+      height: size,
+      fit: BoxFit.contain,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = prefs.themeMode == ThemeMode.dark;
@@ -126,9 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: const Color(0xFF0B6E8E).withValues(alpha: .72),
               borderRadius: BorderRadius.circular(22),
               border: Border.all(color: const Color(0xFFFFD54F), width: 2),
-              boxShadow: const [
-                BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3)),
-              ],
+              boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3))],
             ),
             child: const Text(
               'مُعَلِّمِي',
@@ -137,9 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w900,
                 letterSpacing: .5,
                 color: Color(0xFFFFF8E1),
-                shadows: [
-                  Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2)),
-                ],
+                shadows: [Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2))],
               ),
             ),
           ),
@@ -168,12 +196,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _childButton() => Button3D(onTap: _openRegistration, color: StageColors.registration, depth: 9, child: Row(children: [
-    Container(width: 62, height: 62, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: const Center(child: Text('🧒', style: TextStyle(fontSize: 34)))),
+    Container(width: 62, height: 62, clipBehavior: Clip.antiAlias, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: _childAvatar(size: 62)),
     const SizedBox(width: 14),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(child == null ? 'اكتب اسمك يا بطل ⭐' : 'أهلاً يا ${child!.name} 🌟', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
       const SizedBox(height: 5),
       Text(child == null ? 'سجّل اسمك ومرحلتك لنحفظ تقدمك.' : 'المرحلة: ${child!.stage}  •  اضغط لتعديل البيانات', style: const TextStyle(color: Colors.white)),
+      if (child?.activeTitle != null) ...[
+        const SizedBox(height: 4),
+        Text('🏅 ${child!.activeTitle}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+      ],
     ])),
     const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
   ]));
