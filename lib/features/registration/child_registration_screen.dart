@@ -20,7 +20,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   static const stages = [
     ('kg1', 'الروضة الأولى', '🎨'),
     ('kg2', 'الروضة الثانية', '🔤'),
-    ('prep', 'التمهيدي', '📚'),
     ('g1', 'الصف الأول', '🌟'),
     ('g2', 'الصف الثاني', '🚀'),
     ('g3', 'الصف الثالث', '🏆'),
@@ -105,7 +104,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   int _age(String id) => switch (id) {
     'kg1' => 4,
     'kg2' => 5,
-    'prep' => 6,
     'g1' => 7,
     'g2' => 8,
     _ => 9,
@@ -138,7 +136,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             ),
             const SizedBox(height: 22),
             const Text(
-              'اختر مرحلتك',
+              'اختر مرحلتك الدراسية',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -180,6 +178,31 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 ),
               );
             }),
+            const SizedBox(height: 6),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.amber.withValues(alpha: .16),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.amber.withValues(alpha: .55), width: 1.5),
+              ),
+              child: Row(
+                children: [
+                  const Text('📝', style: TextStyle(fontSize: 30)),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('اختبار تحديد المستوى', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+                        SizedBox(height: 4),
+                        Text('اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.', style: TextStyle(fontSize: 12.5)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 22),
             Button3D(
               onTap: saving ? () {} : _save,
@@ -214,8 +237,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   }
 }
 
-/// A festive success dialog shown right after saving — bouncing star,
-/// scattered emoji, and an encouraging message.
 class _CelebrationDialog extends StatefulWidget {
   final String name;
   final String stage;
