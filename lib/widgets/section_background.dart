@@ -12,7 +12,7 @@ class SectionBackground extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(asset, fit: BoxFit.cover),
-        Container(color: Colors.black.withValues(alpha: .16)),
+        Container(color: Colors.black.withValues(alpha: .06)),
         child,
       ],
     );
