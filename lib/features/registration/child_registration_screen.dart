@@ -722,7 +722,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             const SizedBox(height: 22),
 
             Button3D(
-              onTap: saving ? null : _save,
+              onTap: saving
+    ? null
+    : () {
+        _save();
+      },,
               color: const Color(0xFF00C853),
               padding: const EdgeInsets.symmetric(
                 vertical: 16,
