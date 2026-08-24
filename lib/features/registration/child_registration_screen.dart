@@ -282,10 +282,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                     style: TextStyle(fontSize: 30),
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         Text(
                           'اختبار تحديد المستوى',
                           style: TextStyle(
