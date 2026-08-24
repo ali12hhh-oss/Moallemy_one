@@ -108,21 +108,15 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
   }
 
   void _onPanEnd() {
-    if (_currentPaintStroke != null) {
-      strokesForPaint.add(_currentPaintStroke!);
-    }
-    if (_currentRecoStroke != null) {
-      strokesForRecognition.add(_currentRecoStroke!);
-    }
+    if (_currentPaintStroke != null) strokesForPaint.add(_currentPaintStroke!);
+    if (_currentRecoStroke != null) strokesForRecognition.add(_currentRecoStroke!);
     _currentPaintStroke = null;
     _currentRecoStroke = null;
     setState(() {});
   }
 
   Future<void> _recognize() async {
-    if (!modelReady || recognizer == null || strokesForRecognition.isEmpty) {
-      return;
-    }
+    if (!modelReady || recognizer == null || strokesForRecognition.isEmpty) return;
     setState(() {
       recognizing = true;
       recognizedText = null;
@@ -167,118 +161,83 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('الكتابة الذكية ✏️'),
-          actions: [
-            IconButton(
-              onPressed: _clear,
-              tooltip: 'مسح',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
-          ],
-        ),
+        appBar: AppBar(title: const Text('الكتابة الذكية ✏️')),
         body: SafeArea(
           child: Stack(
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+              Column(
                 children: [
-                  if (downloading)
-                    const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'جارٍ تحميل نموذج التعرّف على الكتابة لأول مرة (يحتاج إنترنت)...',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (error != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 6,
-                      ),
-                      child: Text(
-                        error!,
-                        style: const TextStyle(color: Colors.red),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(8, 6, 8, 4),
-                    child: Text(
-                      'اكتب أي حرف أو كلمة أو جملة بحرية تامة، بأي اتجاه',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
                   SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemCount: penColors.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 10),
-                      itemBuilder: (_, i) {
-                        final c = penColors[i];
+                    height: 42,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: penColors.map((c) {
                         final selected = c.toARGB32() == penColor.toARGB32();
-                        return GestureDetector(
-                          onTap: () => setState(() => penColor = c),
-                          child: Container(
-                            width: 34,
-                            height: 34,
-                            decoration: BoxDecoration(
-                              color: c,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: selected
-                                    ? Colors.black
-                                    : Colors.transparent,
-                                width: 3,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: GestureDetector(
+                            onTap: () => setState(() => penColor = c),
+                            child: Container(
+                              width: 31,
+                              height: 31,
+                              decoration: BoxDecoration(
+                                color: c,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: selected ? Colors.white : Colors.transparent,
+                                  width: 3,
+                                ),
+                                boxShadow: selected
+                                    ? [const BoxShadow(blurRadius: 3)]
+                                    : null,
                               ),
                             ),
                           ),
                         );
-                      },
+                      }).toList(),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 330,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.outlineVariant,
-                            width: 2,
+                  if (downloading || error != null)
+                    SizedBox(
+                      height: 34,
+                      child: Center(
+                        child: Text(
+                          downloading
+                              ? 'جارٍ تحميل نموذج الكتابة لأول مرة...'
+                              : error!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: downloading ? theme.colorScheme.onSurface : Colors.red,
                           ),
                         ),
-                        child: ClipRRect(
+                      ),
+                    ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
                           borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: theme.colorScheme.outlineVariant, width: 2),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(22),
                           child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
                             onPanStart: (d) => _onPanStart(d.localPosition),
                             onPanUpdate: (d) => _onPanUpdate(d.localPosition),
                             onPanEnd: (_) => _onPanEnd(),
                             child: CustomPaint(
                               painter: _RecoPainter([
                                 ...strokesForPaint,
-                                if (_currentPaintStroke != null)
-                                  _currentPaintStroke!,
+                                if (_currentPaintStroke != null) _currentPaintStroke!,
                               ], penColor),
                               child: const SizedBox.expand(),
                             ),
@@ -288,39 +247,51 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
                     ),
                   ),
                   if (recognizedText != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        'قرأت: $recognizedText',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 34,
+                      child: Center(
+                        child: Text(
+                          'قرأت: $recognizedText',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: modelReady &&
-                              !recognizing &&
-                              strokesForRecognition.isNotEmpty
-                          ? _recognize
-                          : null,
-                      icon: recognizing
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
-                          : const Icon(Icons.record_voice_over_rounded),
-                      label: Text(
-                        recognizing ? 'جارٍ القراءة...' : 'اقرأ ما كتبته 🔊',
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: _clear,
+                            icon: const Icon(Icons.delete_sweep_rounded),
+                            label: const Text('مسح السبورة'),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFFE53935),
+                              minimumSize: const Size(0, 56),
+                              textStyle: const TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: modelReady && !recognizing && strokesForRecognition.isNotEmpty
+                                ? _recognize
+                                : null,
+                            icon: recognizing
+                                ? const SizedBox(
+                                    width: 17,
+                                    height: 17,
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  )
+                                : const Icon(Icons.record_voice_over_rounded),
+                            label: Text(recognizing ? 'جارٍ القراءة...' : 'اقرأ ما كتبته 🔊'),
+                            style: FilledButton.styleFrom(minimumSize: const Size(0, 56)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
