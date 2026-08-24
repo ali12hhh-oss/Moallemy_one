@@ -32,6 +32,18 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
 
   static const numbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
 
+  static ButtonStyle _navigationButtonStyle() => FilledButton.styleFrom(
+        minimumSize: const Size(0, 52),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        textStyle: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w900,
+        ),
+      );
+
   void _switch(bool letters) {
     setState(() {
       lettersMode = letters;
@@ -75,7 +87,7 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
   @override
   Widget build(BuildContext context) {
     final target = lettersMode ? arabicLetters[index].letter : numbers[index];
-    final isTwo = !lettersMode && index == 1; // الرقم ٢
+    final isTwo = !lettersMode && index == 1;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -164,7 +176,6 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                 ),
               ),
             const SizedBox(height: 6),
-            // اختيار لون القلم
             SizedBox(
               height: 40,
               child: ListView.separated(
@@ -228,16 +239,20 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton(
+                    child: FilledButton.icon(
+                      style: _navigationButtonStyle(),
                       onPressed: () => _next(-1),
-                      child: const Text('السابق'),
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      label: const Text('السابق'),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: FilledButton(
+                    child: FilledButton.icon(
+                      style: _navigationButtonStyle(),
                       onPressed: () => _next(1),
-                      child: const Text('التالي'),
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: const Text('التالي'),
                     ),
                   ),
                 ],
@@ -250,8 +265,6 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
   }
 }
 
-/// A bold, clearly-visible pen stroke painter — thick, round-capped lines
-/// with a soft glow so a child can clearly see their own writing.
 class _BoldDrawingPainter extends CustomPainter {
   final List<Offset?> points;
   final Color color;
