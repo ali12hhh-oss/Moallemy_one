@@ -19,16 +19,8 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
   String? cheer;
 
   static const numberWords = {
-    1: 'one',
-    2: 'two',
-    3: 'three',
-    4: 'four',
-    5: 'five',
-    6: 'six',
-    7: 'seven',
-    8: 'eight',
-    9: 'nine',
-    10: 'ten',
+    1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five',
+    6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
   };
 
   void _switch(bool letters) {
@@ -87,13 +79,13 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
             ),
           ],
         ),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-                  child: Row(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              ListView(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 14),
+                children: [
+                  Row(
                     children: [
                       Expanded(
                         child: Button3D(
@@ -138,29 +130,42 @@ class _G1EnglishWritingScreenState extends State<G1EnglishWritingScreen> {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  target,
-                  style: const TextStyle(
-                    fontSize: 70,
-                    fontWeight: FontWeight.w900,
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Text(
+                      target,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: lettersMode ? 64 : 54,
+                        fontWeight: FontWeight.w900,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: FilledButton.icon(
-                    onPressed: () => _next(1),
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: const Text('Next'),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 320,
+                    child: BoldDrawingCanvas(key: canvasKey),
                   ),
-                ),
-              ],
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () => _next(1),
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: const Text('Next'),
+                    ),
+                  ),
+                ],
+              ),
+              CelebrationOverlay(message: cheer),
+            ],
+          ),
         ),
       ),
     );
