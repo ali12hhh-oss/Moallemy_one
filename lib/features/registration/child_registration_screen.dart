@@ -199,12 +199,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'اختبار تحديد المستوى',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
                         ),
-                        SizedBox(height: 4),
-                        Text(
+                        const SizedBox(height: 4),
+                        const Text(
                           'اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.',
                           style: TextStyle(fontSize: 12.5, color: Colors.white),
                         ),
