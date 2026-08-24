@@ -12,6 +12,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_tts: ^4.2.5
   audioplayers: ^6.1.0
+  flutter_svg: ^2.0.17
   google_mlkit_digital_ink_recognition: ^0.16.1
 
 dev_dependencies:
@@ -24,5 +25,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/games/
+    - assets/images/store/
     - assets/audio/
     - assets/data/
