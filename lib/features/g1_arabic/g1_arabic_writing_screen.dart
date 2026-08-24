@@ -47,6 +47,7 @@ class _G1ArabicWritingScreenState extends State<G1ArabicWritingScreen> {
   Widget build(BuildContext context) {
     final target = targets[index];
     final isLetter = target.$1.runes.length == 1;
+    final theme = Theme.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -59,71 +60,92 @@ class _G1ArabicWritingScreenState extends State<G1ArabicWritingScreen> {
               tooltip: 'استمع',
               icon: const Icon(Icons.volume_up_rounded),
             ),
-            IconButton(
-              onPressed: () => canvasKey.currentState?.clear(),
-              tooltip: 'مسح',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
           ],
         ),
         body: SafeArea(
           child: Stack(
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+              Column(
                 children: [
-                  const Center(
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(12, 5, 12, 3),
                     child: Text(
                       'اكتب على السبورة',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Text(
-                      target.$1,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: isLetter ? 58 : 42,
-                        fontWeight: FontWeight.w900,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 320,
-                    child: BoldDrawingCanvas(key: canvasKey),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => _next(-1),
-                          child: const Text('السابق'),
+                      child: Text(
+                        target.$1,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: isLetter ? 48 : 34,
+                          height: 1.05,
+                          fontWeight: FontWeight.w900,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: FilledButton(
-                          onPressed: () => _next(1),
-                          child: const Text('التالي'),
-                        ),
+                    ),
+                  ),
+                  const SizedBox(height: 7),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(22),
+                        child: BoldDrawingCanvas(key: canvasKey),
                       ),
-                    ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(-1),
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: const Text('السابق'),
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size(0, 54),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => canvasKey.currentState?.clear(),
+                            icon: const Icon(Icons.delete_sweep_rounded),
+                            label: const Text('مسح السبورة'),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFFE53935),
+                              minimumSize: const Size(0, 54),
+                              textStyle: const TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(1),
+                            icon: const Icon(Icons.arrow_back_rounded),
+                            label: const Text('التالي'),
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size(0, 54),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
