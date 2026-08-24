@@ -79,17 +79,62 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 }
 
 class _CelebrationDialog extends StatefulWidget {
-  final String name; final String stage;
+  final String name;
+  final String stage;
   const _CelebrationDialog({required this.name, required this.stage});
   @override State<_CelebrationDialog> createState() => _CelebrationDialogState();
 }
+
 class _CelebrationDialogState extends State<_CelebrationDialog> with SingleTickerProviderStateMixin {
-  late final AnimationController controller; late final Animation<double> bounce;
+  late final AnimationController controller;
+  late final Animation<double> bounce;
   static const cheers = ['أحسنت يا بطل! 🎉', 'رائع جدًا! 🌟', 'ما شاء الله عليك! 🏆', 'يلا نبدأ المغامرة! 🚀'];
-  @override void initState() { super.initState(); controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward(); bounce = CurvedAnimation(parent: controller, curve: Curves.elasticOut); }
-  @override void dispose() { controller.dispose(); super.dispose(); }
-  @override Widget build(BuildContext context) {
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
+    bounce = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
+  }
+
+  @override
+  void dispose() { controller.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
     final cheer = cheers[widget.name.length % cheers.length];
-    return Dialog(backgroundColor: Colors.transparent, child: Container(padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30), decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFF7043)], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(28)), child: Column(mainAxisSize: MainAxisSize.min, children: [ScaleTransition(scale: bounce, child: const Text('🎉⭐🎊', style: TextStyle(fontSize: 46))), const SizedBox(height: 14), Text(cheer, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white), textAlign: TextAlign.center), const SizedBox(height: 10), Text('تم حفظ اسم ${widget.name} في ${widget.stage} 🌟\nسنحفظ تقدمك مع كل نشاط.', style: const TextStyle(color: Colors.white, fontSize: 15), textAlign: TextAlign.center), const SizedBox(height: 22), Button3D(onTap: () => Navigator.pop(context), color: Colors.white, padding: const EdgeInsets.symmetric(vertical: 14), child: const Center(child: Text('هيا نبدأ!', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Color(0xFFFF7043)))))]));
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFFD54F), Color(0xFFFF7043)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ScaleTransition(scale: bounce, child: const Text('🎉⭐🎊', style: TextStyle(fontSize: 46))),
+            const SizedBox(height: 14),
+            Text(cheer, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white), textAlign: TextAlign.center),
+            const SizedBox(height: 10),
+            Text('تم حفظ اسم ${widget.name} في ${widget.stage} 🌟\nسنحفظ تقدمك مع كل نشاط.', style: const TextStyle(color: Colors.white, fontSize: 15), textAlign: TextAlign.center),
+            const SizedBox(height: 22),
+            Button3D(
+              onTap: () => Navigator.pop(context),
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              child: const Center(
+                child: Text('هيا نبدأ!', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Color(0xFFFF7043))),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
