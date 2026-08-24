@@ -24,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   static const stages = [
     ('kg1', 'الروضة الأولى', '٣–٤ سنوات', '🎨', 'ألوان وأشكال واستماع وأعداد أولى'),
     ('kg2', 'الروضة الثانية', '٤–٥ سنوات', '🔤', 'حروف وأرقام وكتابة وكلمات قصيرة'),
-    ('prep', 'الاختبار', '٥–٦ سنوات', '📝', 'اختبار شامل يراجع ما تعلمه الطفل'),
     ('g1', 'الصف الأول', '٦–٧ سنوات', '🌟', 'قراءة وكتابة وحساب وإنجليزي مبسط'),
     ('g2', 'الصف الثاني', '٧–٨ سنوات', '🚀', 'قواعد وقراءة وحساب ومفردات إنجليزية'),
     ('g3', 'الصف الثالث', '٨–٩ سنوات', '🏆', 'قراءة متقدمة وقواعد وحساب وتحديات'),
@@ -113,7 +112,29 @@ class _HomeScreenState extends State<HomeScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text('معلمي', style: TextStyle(fontWeight: FontWeight.w900, color: Colors.white, shadows: [Shadow(blurRadius: 5)])),
+          title: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0B6E8E).withValues(alpha: .72),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color(0xFFFFD54F), width: 2),
+              boxShadow: const [
+                BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3)),
+              ],
+            ),
+            child: const Text(
+              'مُعَلِّمِي',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w900,
+                letterSpacing: .5,
+                color: Color(0xFFFFF8E1),
+                shadows: [
+                  Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2)),
+                ],
+              ),
+            ),
+          ),
           leading: IconButton(color: Colors.white, tooltip: 'الإعدادات', icon: const Icon(Icons.settings_rounded), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
           actions: [IconButton(color: Colors.white, tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
         ),
