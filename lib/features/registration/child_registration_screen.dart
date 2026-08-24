@@ -24,26 +24,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   static const int maxChildren = 2;
 
   static const List<(String, String, String)> avatars = [
-    (
-      'assets/images/child_avatars/boy_1.svg',
-      'ولد ١',
-      'boy',
-    ),
-    (
-      'assets/images/child_avatars/boy_2.svg',
-      'ولد ٢',
-      'boy',
-    ),
-    (
-      'assets/images/child_avatars/girl_1.svg',
-      'بنت ١',
-      'girl',
-    ),
-    (
-      'assets/images/child_avatars/girl_2.svg',
-      'بنت ٢',
-      'girl',
-    ),
+    ('assets/images/child_avatars/boy_1.svg', 'ولد ١', 'boy'),
+    ('assets/images/child_avatars/boy_2.svg', 'ولد ٢', 'boy'),
+    ('assets/images/child_avatars/girl_1.svg', 'بنت ١', 'girl'),
+    ('assets/images/child_avatars/girl_2.svg', 'بنت ٢', 'girl'),
   ];
 
   static const List<(String, String, String)> stages = [
@@ -55,19 +39,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   ];
 
   List<Child> kids = [];
-
   int selectedChildIndex = 0;
-
   String stageId = 'kg1';
-
-  String selectedAvatar =
-      'assets/images/child_avatars/boy_1.svg';
-
+  String selectedAvatar = 'assets/images/child_avatars/boy_1.svg';
   String avatarPath = '';
-
   bool saving = false;
-
-  bool get hasSecondChild => kids.length >= 2;
 
   @override
   void initState() {
@@ -90,15 +66,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
         return;
       }
 
-      int activeIndex = 0;
-
+      var activeIndex = 0;
       if (activeId != null) {
-        final index =
-            loadedKids.indexWhere((child) => child.id == activeId);
-
-        if (index >= 0) {
-          activeIndex = index;
-        }
+        final index = loadedKids.indexWhere((child) => child.id == activeId);
+        if (index >= 0) activeIndex = index;
       }
 
       selectedChildIndex = activeIndex;
@@ -119,22 +90,14 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     selectedAvatar = child.avatarAsset.isNotEmpty
         ? child.avatarAsset
         : avatars.first.$1;
-
     avatarPath = child.avatarPath;
   }
 
   void _resetNewChild() {
     name.clear();
-
     stageId = 'kg1';
-
     avatarPath = '';
-
-    if (selectedChildIndex == 0) {
-      selectedAvatar = avatars[0].$1;
-    } else {
-      selectedAvatar = avatars[1].$1;
-    }
+    selectedAvatar = selectedChildIndex == 0 ? avatars[0].$1 : avatars[1].$1;
   }
 
   void _selectChild(int index) {
@@ -159,7 +122,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   Future<void> _pickImage() async {
     try {
       final picker = ImagePicker();
-
       final picked = await picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 88,
@@ -174,7 +136,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       });
     } catch (_) {
       if (!mounted) return;
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('تعذر فتح معرض الصور. حاول مرة أخرى.'),
@@ -188,22 +149,17 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 
     if (childName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('اكتب اسم الطفل أولاً 🌟'),
-        ),
+        const SnackBar(content: Text('اكتب اسم الطفل أولاً 🌟')),
       );
       return;
     }
 
     if (saving) return;
 
-    setState(() {
-      saving = true;
-    });
+    setState(() => saving = true);
 
     try {
       final currentKids = await AppStorage.getChildren();
-
       final selectedStage =
           stages.firstWhere((stage) => stage.$1 == stageId).$2;
 
@@ -238,23 +194,20 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
               ),
             );
           }
-
           return;
         }
 
-        final id =
-            DateTime.now().microsecondsSinceEpoch.toString();
-
-        final newChild = Child(
-          id: id,
-          name: childName,
-          age: _age(stageId),
-          stage: selectedStage,
-          avatarAsset: selectedAvatar,
-          avatarPath: avatarPath,
+        final id = DateTime.now().microsecondsSinceEpoch.toString();
+        currentKids.add(
+          Child(
+            id: id,
+            name: childName,
+            age: _age(stageId),
+            stage: selectedStage,
+            avatarAsset: selectedAvatar,
+            avatarPath: avatarPath,
+          ),
         );
-
-        currentKids.add(newChild);
 
         await AppStorage.setActive(id);
       }
@@ -278,14 +231,9 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       );
 
       if (!mounted) return;
-
       Navigator.pop(context);
     } finally {
-      if (mounted) {
-        setState(() {
-          saving = false;
-        });
-      }
+      if (mounted) setState(() => saving = false);
     }
   }
 
@@ -307,9 +255,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   void _openPlacementTest() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const PrepExamScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const PrepExamScreen()),
     );
   }
 
@@ -319,10 +265,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       children: [
         const Text(
           'اختر بطاقة الطفل',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w900,
-          ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
         ),
         const SizedBox(height: 12),
         Row(
@@ -364,17 +307,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
               ? const Color(0xFF26A69A)
               : const Color(0xFF78909C),
       depth: selected ? 2 : 7,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 14,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
       child: Column(
         children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 28,
-          ),
+          Icon(icon, color: Colors.white, size: 28),
           const SizedBox(height: 5),
           Text(
             label,
@@ -387,10 +323,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           const SizedBox(height: 3),
           Text(
             exists ? 'مسجل' : 'إضافة',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-            ),
+            style: const TextStyle(color: Colors.white, fontSize: 11),
           ),
         ],
       ),
@@ -398,7 +331,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   }
 
   Widget _avatarPreview() {
-    final size = 105.0;
+    const double size = 105.0;
 
     if (avatarPath.isNotEmpty) {
       return ClipOval(
@@ -407,14 +340,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           width: size,
           height: size,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) {
-            return SvgPicture.asset(
-              selectedAvatar,
-              width: size,
-              height: size,
-              fit: BoxFit.contain,
-            );
-          },
+          errorBuilder: (_, __, ___) => SvgPicture.asset(
+            selectedAvatar,
+            width: size,
+            height: size,
+            fit: BoxFit.contain,
+          ),
         ),
       );
     }
@@ -433,24 +364,15 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFFE8EAF6),
-            Color(0xFFFCE4EC),
-          ],
+          colors: [Color(0xFFE8EAF6), Color(0xFFFCE4EC)],
         ),
-        border: Border.all(
-          color: const Color(0xFF7E57C2),
-          width: 2,
-        ),
+        border: Border.all(color: const Color(0xFF7E57C2), width: 2),
       ),
       child: Column(
         children: [
           const Text(
             'اختر صورة الطفل',
-            style: TextStyle(
-              fontSize: 21,
-              fontWeight: FontWeight.w900,
-            ),
+            style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 12),
           Container(
@@ -464,7 +386,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 BoxShadow(
                   blurRadius: 12,
                   offset: const Offset(0, 5),
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                 ),
               ],
             ),
@@ -473,9 +395,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           const SizedBox(height: 14),
           const Text(
             'شخصيات مختلفة للأولاد والبنات',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 14),
           Wrap(
@@ -510,8 +430,8 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                     boxShadow: [
                       BoxShadow(
                         blurRadius: selected ? 10 : 4,
-                        color: Colors.black.withOpacity(
-                          selected ? 0.18 : 0.08,
+                        color: Colors.black.withValues(
+                          alpha: selected ? 0.18 : 0.08,
                         ),
                       ),
                     ],
@@ -543,12 +463,8 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: _pickImage,
-              icon: const Icon(
-                Icons.photo_library_rounded,
-              ),
-              label: const Text(
-                'اختيار صورة من معرض الهاتف',
-              ),
+              icon: const Icon(Icons.photo_library_rounded),
+              label: const Text('اختيار صورة من معرض الهاتف'),
             ),
           ),
           if (avatarPath.isNotEmpty) ...[
@@ -571,68 +487,44 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('تسجيل اسم البطل'),
-        ),
+        appBar: AppBar(title: const Text('تسجيل اسم البطل')),
         body: ListView(
           padding: const EdgeInsets.all(18),
           children: [
             const Text(
               'اكتب اسمك يا بطل ⭐',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w900,
-              ),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 8),
             const Text(
               'يمكن تسجيل طفلين، ولكل طفل بطاقة وتقدم ونجوم وألقاب خاصة به.',
             ),
             const SizedBox(height: 22),
-
             _childSelector(),
-
             const SizedBox(height: 22),
-
             _avatarSection(),
-
             const SizedBox(height: 22),
-
             TextField(
               controller: name,
               textInputAction: TextInputAction.done,
               decoration: const InputDecoration(
                 labelText: 'اسم الطفل',
-                prefixIcon: Icon(
-                  Icons.person_rounded,
-                ),
+                prefixIcon: Icon(Icons.person_rounded),
                 hintText: 'مثال: أحمد',
               ),
             ),
-
             const SizedBox(height: 22),
-
             const Text(
               'اختر مرحلتك الدراسية',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 12),
-
             ...stages.map((stage) {
               final selected = stageId == stage.$1;
-
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Button3D(
-                  onTap: () {
-                    setState(() {
-                      stageId = stage.$1;
-                    });
-                  },
+                  onTap: () => setState(() => stageId = stage.$1),
                   color: StageColors.of(stage.$1),
                   depth: selected ? 2 : 8,
                   padding: const EdgeInsets.symmetric(
@@ -641,12 +533,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        stage.$3,
-                        style: const TextStyle(
-                          fontSize: 26,
-                        ),
-                      ),
+                      Text(stage.$3, style: const TextStyle(fontSize: 26)),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -669,9 +556,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 ),
               );
             }),
-
             const SizedBox(height: 6),
-
             Button3D(
               onTap: _openPlacementTest,
               color: const Color(0xFFFFB300),
@@ -681,15 +566,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
               ),
               child: const Row(
                 children: [
-                  Text(
-                    '📝',
-                    style: TextStyle(fontSize: 30),
-                  ),
+                  Text('📝', style: TextStyle(fontSize: 30)),
                   SizedBox(width: 12),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'اختبار تحديد المستوى',
@@ -718,27 +599,19 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 22),
-
             Button3D(
-              onTap: saving
-    ? null
-    : () {
-        _save();
-      },,
+              onTap: () {
+                if (!saving) {
+                  _save();
+                }
+              },
               color: const Color(0xFF00C853),
-              padding: const EdgeInsets.symmetric(
-                vertical: 16,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.save_rounded,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.save_rounded, color: Colors.white),
                   const SizedBox(width: 10),
                   Text(
                     saving
@@ -755,9 +628,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             if (kids.length >= maxChildren)
               const Center(
                 child: Text(
@@ -796,16 +667,10 @@ class _CelebrationDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 26,
-          vertical: 30,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [
-              Color(0xFFFFD54F),
-              Color(0xFFFF7043),
-            ],
+            colors: [Color(0xFFFFD54F), Color(0xFFFF7043)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -814,10 +679,7 @@ class _CelebrationDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              '🎉⭐🎊',
-              style: TextStyle(fontSize: 46),
-            ),
+            const Text('🎉⭐🎊', style: TextStyle(fontSize: 46)),
             const SizedBox(height: 14),
             const Text(
               'تم التسجيل بنجاح! 🎉',
@@ -832,21 +694,14 @@ class _CelebrationDialog extends StatelessWidget {
             Text(
               'تم حفظ اسم $name في $stage 🌟\n'
               'سنحفظ تقدمك مع كل نشاط.',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 15),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 22),
             Button3D(
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => Navigator.pop(context),
               color: Colors.white,
-              padding: const EdgeInsets.symmetric(
-                vertical: 14,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               child: const Center(
                 child: Text(
                   'هيا نبدأ!',
