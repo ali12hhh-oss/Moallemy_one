@@ -32,14 +32,8 @@ class ChildProgressRepository {
       try {
         final decoded = jsonDecode(raw);
         if (decoded is Map) return Map<String, dynamic>.from(decoded);
-      } catch (_) {
-        // Fall through to an empty state rather than crashing the child app.
-      }
+      } catch (_) {}
     }
-
-    // Migrate the old global state only once, and only into the first
-    // registered child. Never copy legacy progress into a newly-created
-    // sibling merely because that sibling is currently active.
     if (p.getBool(_legacyMigratedKey) != true) {
       final targetId = await _legacyTargetId();
       if (targetId == id) {
@@ -53,10 +47,7 @@ class ChildProgressRepository {
               await p.setBool(_legacyMigratedKey, true);
               return state;
             }
-          } catch (_) {
-            // Mark the migration as consumed so corrupt legacy data cannot
-            // repeatedly interfere with child creation or progress loading.
-          }
+          } catch (_) {}
         }
         await p.setBool(_legacyMigratedKey, true);
       }
@@ -93,10 +84,7 @@ class ChildProgressRepository {
   static Future<void> recordSkill(String skillId, bool correct) async {
     final state = await load();
     final skills = Map<String, dynamic>.from(state['skillMastery'] ?? const {});
-    skills[skillId] = (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(
-      0,
-      100,
-    );
+    skills[skillId] = (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(0, 100);
     state['skillMastery'] = skills;
     if (correct) {
       state['stars'] = _int(state['stars']) + 1;
@@ -139,9 +127,6 @@ class ChildProgressRepository {
     final oldBest = _int(bests[gameId]);
     final improvement = safeScore - oldBest;
     if (improvement <= 0) return;
-
-    // Reward only genuine improvement. Replaying the same or a lower score
-    // cannot farm Stars/XP indefinitely.
     bests[gameId] = safeScore;
     state['gameBests'] = bests;
     state['stars'] = _int(state['stars']) + improvement ~/ 10;
@@ -202,12 +187,7 @@ class ChildProgressRepository {
     await save(state);
   }
 
-  static Future<void> recordFinalExam(
-    String stageId,
-    int score,
-    int total,
-    bool passed,
-  ) async {
+  static Future<void> recordFinalExam(String stageId, int score, int total, bool passed) async {
     final state = await load();
     final exams = Map<String, dynamic>.from(state['finalExams'] ?? const {});
     final previous = exams[stageId];
@@ -220,10 +200,7 @@ class ChildProgressRepository {
       'passed': passed,
       'date': DateTime.now().toIso8601String(),
       'attempts': _int(previous is Map ? previous['attempts'] : null) + 1,
-      'bestScore': _max(
-        _int(previous is Map ? previous['bestScore'] : null),
-        safeScore,
-      ),
+      'bestScore': _max(_int(previous is Map ? previous['bestScore'] : null), safeScore),
     };
     state['finalExams'] = exams;
     final badges = List<String>.from(state['badges'] ?? const <String>[]);
@@ -252,16 +229,33 @@ class ChildProgressRepository {
     return owned.contains(itemId);
   }
 
-  static Future<bool> buy(String itemId, int price) async {
+  static Future<bool> buy(String itemId, int price, {String? title}) async {
     final safePrice = price < 0 ? 0 : price;
     final state = await load();
     final owned = List<String>.from(state['ownedItems'] ?? const <String>[]);
-    if (owned.contains(itemId) || _int(state['stars']) < safePrice)
-      return false;
+    if (owned.contains(itemId) || _int(state['stars']) < safePrice) return false;
+
     state['stars'] = _int(state['stars']) - safePrice;
     owned.add(itemId);
+    if (title != null && title.trim().isNotEmpty) {
+      owned.removeWhere((item) => item.startsWith('title:'));
+      owned.add('title:${title.trim()}');
+    }
     state['ownedItems'] = owned;
     await save(state);
+
+    // Keep the child card synchronized with the same per-child state.
+    final activeId = await AppStorage.activeId();
+    if (activeId != null && activeId.isNotEmpty) {
+      final children = await AppStorage.getChildren();
+      final index = children.indexWhere((child) => child.id == activeId);
+      if (index >= 0) {
+        final child = children[index];
+        child.stars = _int(state['stars']);
+        child.ownedItems = List<String>.from(owned);
+        await AppStorage.saveChildren(children);
+      }
+    }
     return true;
   }
 
