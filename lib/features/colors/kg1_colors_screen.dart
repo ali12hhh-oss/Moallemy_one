@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/audio/voice_service.dart';
 import '../../widgets/button_3d.dart';
@@ -18,7 +19,15 @@ class _ColorEntry {
   final Color color;
   final String animal;
   final String animalEmoji;
-  const _ColorEntry(this.name, this.color, this.animal, this.animalEmoji);
+  final String? imageAsset;
+
+  const _ColorEntry(
+    this.name,
+    this.color,
+    this.animal,
+    this.animalEmoji, {
+    this.imageAsset,
+  });
 }
 
 class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
@@ -30,7 +39,13 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
     _ColorEntry('برتقالي', Color(0xFFFB8C00), 'السمكة البرتقالية', '🐠'),
     _ColorEntry('بنفسجي', Color(0xFF8E24AA), 'الأخطبوط', '🐙'),
     _ColorEntry('أبيض', Color(0xFFECEFF1), 'الحمامة', '🕊️'),
-    _ColorEntry('أسود', Color(0xFF212121), 'الغراب', '🐦‍⬛'),
+    _ColorEntry(
+      'أسود',
+      Color(0xFF212121),
+      'الغراب',
+      '',
+      imageAsset: 'assets/images/crow_black.svg',
+    ),
     _ColorEntry('بني', Color(0xFF6D4C41), 'الدب', '🐻'),
     _ColorEntry('وردي', Color(0xFFEC407A), 'الفلامنجو', '🦩'),
     _ColorEntry('رمادي', Color(0xFF9E9E9E), 'الفيل', '🐘'),
@@ -72,10 +87,7 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          c.animalEmoji,
-                          style: const TextStyle(fontSize: 30),
-                        ),
+                        _animalVisual(c, 30),
                         const SizedBox(height: 4),
                         Text(
                           c.name,
@@ -97,6 +109,17 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
     );
   }
 
+  Widget _animalVisual(_ColorEntry c, double size) {
+    if (c.imageAsset != null) {
+      return SizedBox(
+        width: size + 12,
+        height: size + 12,
+        child: SvgPicture.asset(c.imageAsset!, fit: BoxFit.contain),
+      );
+    }
+    return Text(c.animalEmoji, style: TextStyle(fontSize: size));
+  }
+
   Widget _preview(_ColorEntry s) {
     final isDark = s.color.computeLuminance() < .5;
     return Container(
@@ -109,7 +132,7 @@ class _Kg1ColorsScreenState extends State<Kg1ColorsScreen> {
       ),
       child: Column(
         children: [
-          Text(s.animalEmoji, style: const TextStyle(fontSize: 64)),
+          _animalVisual(s, 64),
           const SizedBox(height: 8),
           Text(
             'اللون ${s.name}',
