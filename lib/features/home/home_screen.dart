@@ -10,6 +10,7 @@ import '../settings/settings_screen.dart';
 import '../shop/shop_screen.dart';
 import '../stages/stage_screen.dart';
 import '../registration/child_registration_screen.dart';
+import '../exam/prep_exam_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const stages = [
     ('kg1', 'الروضة الأولى', '٣–٤ سنوات', '🎨', 'ألوان وأشكال واستماع وأعداد أولى'),
     ('kg2', 'الروضة الثانية', '٤–٥ سنوات', '🔤', 'حروف وأرقام وكتابة وكلمات قصيرة'),
+    ('prep', 'اختبار تحديد المستوى', 'مراجعة', '📝', 'اختبار للمرحلتين السابقتين وتمهيد للصف الأول'),
     ('g1', 'الصف الأول', '٦–٧ سنوات', '🌟', 'قراءة وكتابة وحساب وإنجليزي مبسط'),
     ('g2', 'الصف الثاني', '٧–٨ سنوات', '🚀', 'قواعد وقراءة وحساب ومفردات إنجليزية'),
     ('g3', 'الصف الثالث', '٨–٩ سنوات', '🏆', 'قراءة متقدمة وقواعد وحساب وتحديات'),
@@ -98,7 +100,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return result == true;
   }
 
-  void _openStage(String id) => Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
+  void _openStage(String id) {
+    if (id == 'prep') {
+      Navigator.push(context, MaterialPageRoute(builder: (_) => const PrepExamScreen()));
+      return;
+    }
+    Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
   ]));
 
-  List<Widget> _stageButtons() => stages.map((s) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Button3D(onTap: () => _openStage(s.$1), color: StageColors.of(s.$1), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), child: Row(children: [
+  List<Widget> _stageButtons() => stages.map((s) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Button3D(onTap: () => _openStage(s.$1), color: s.$1 == 'prep' ? const Color(0xFFFFB300) : StageColors.of(s.$1), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), child: Row(children: [
     Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: Center(child: Text(s.$4, style: const TextStyle(fontSize: 29)))),
     const SizedBox(width: 14),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(s.$2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white)), const SizedBox(height: 3), Text('${s.$3} • ${s.$5}', style: const TextStyle(color: Colors.white70, fontSize: 12.5))])),
