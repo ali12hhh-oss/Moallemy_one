@@ -50,39 +50,65 @@ class _G2EnglishWritingScreenState extends State<G2EnglishWritingScreen> {
             ),
           ],
         ),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 6),
-                Text(w.emoji, style: const TextStyle(fontSize: 40)),
-                Text(
-                  w.word,
-                  style: const TextStyle(
-                    fontSize: 46,
-                    fontWeight: FontWeight.w900,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              ListView(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+                children: [
+                  Center(
+                    child: Text(w.emoji, style: const TextStyle(fontSize: 40)),
                   ),
-                ),
-                Text(
-                  w.arabic,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  const SizedBox(height: 2),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          w.word,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.w900,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        Text(
+                          w.arabic,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: FilledButton.icon(
-                    onPressed: () => _next(1),
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: const Text('Next'),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 320,
+                    child: BoldDrawingCanvas(key: canvasKey),
                   ),
-                ),
-              ],
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () => _next(1),
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: const Text('Next'),
+                    ),
+                  ),
+                ],
+              ),
+              CelebrationOverlay(message: cheer),
+            ],
+          ),
         ),
       ),
     );
