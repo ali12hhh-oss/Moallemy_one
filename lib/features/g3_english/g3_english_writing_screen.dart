@@ -59,37 +59,58 @@ class _G3EnglishWritingScreenState extends State<G3EnglishWritingScreen> {
             ),
           ],
         ),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 6),
-                const Text(
-                  'اكتب الجملة',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  _targets[index],
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              ListView(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+                children: [
+                  const Center(
+                    child: Text(
+                      'اكتب الجملة',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  textDirection: TextDirection.ltr,
-                ),
-                const SizedBox(height: 6),
-                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: FilledButton.icon(
-                    onPressed: () => _next(1),
-                    icon: const Icon(Icons.arrow_forward_rounded),
-                    label: const Text('Next'),
+                  const SizedBox(height: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Text(
+                      _targets[index],
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.ltr,
+                      style: TextStyle(
+                        fontSize: 29,
+                        fontWeight: FontWeight.w900,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 320,
+                    child: BoldDrawingCanvas(key: canvasKey),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () => _next(1),
+                      icon: const Icon(Icons.arrow_forward_rounded),
+                      label: const Text('Next'),
+                    ),
+                  ),
+                ],
+              ),
+              CelebrationOverlay(message: cheer),
+            ],
+          ),
         ),
       ),
     );
