@@ -1,14 +1,20 @@
 class RewardItemV23 {
-  final String id, title, type;
+  final String id, title, type, image;
   final int price;
-  const RewardItemV23(this.id, this.title, this.type, this.price);
+  const RewardItemV23(this.id, this.title, this.type, this.price, this.image);
 }
 
 const rewardsV23 = <RewardItemV23>[
-  RewardItemV23('badge_reader', 'وسام القارئ الصغير', 'وسام', 20),
-  RewardItemV23('pet_cat', 'قطة لطيفة', 'حيوان', 50),
-  RewardItemV23('pet_bird', 'عصفور سعيد', 'حيوان', 60),
-  RewardItemV23('hat_star', 'قبعة النجمة', 'ملابس', 40),
-  RewardItemV23('room_space', 'غرفة الفضاء', 'خلفية', 100),
-  RewardItemV23('title_hero', 'لقب بطل التعلم', 'لقب', 150),
+  RewardItemV23('badge_reader', 'وسام القارئ الصغير', 'أوسمة', 20, 'assets/images/store/reward_1.svg'),
+  RewardItemV23('badge_math', 'وسام بطل الرياضيات', 'أوسمة', 35, 'assets/images/store/reward_1.svg'),
+  RewardItemV23('badge_english', 'وسام نجم English', 'أوسمة', 35, 'assets/images/store/reward_1.svg'),
+  RewardItemV23('character_cat', 'شخصية القطة المرحة', 'شخصيات', 80, 'assets/images/store/reward_2.svg'),
+  RewardItemV23('character_bird', 'شخصية العصفور السريع', 'شخصيات', 90, 'assets/images/store/reward_2.svg'),
+  RewardItemV23('character_runner', 'شخصية الرياضي الصغير', 'شخصيات رياضية', 120, 'assets/images/store/reward_2.svg'),
+  RewardItemV23('sports_ball', 'كرة البطل الرياضية', 'رسومات رياضية', 70, 'assets/images/store/reward_3.svg'),
+  RewardItemV23('sports_champion', 'شارة البطل الرياضي', 'رسومات رياضية', 140, 'assets/images/store/reward_3.svg'),
+  RewardItemV23('hat_star', 'قبعة النجمة', 'إكسسوارات', 60, 'assets/images/store/reward_3.svg'),
+  RewardItemV23('room_space', 'غرفة الفضاء', 'خلفيات', 180, 'assets/images/store/reward_4.svg'),
+  RewardItemV23('title_super_learner', 'لقب المتعلم الخارق', 'ألقاب', 250, 'assets/images/store/reward_5.svg'),
+  RewardItemV23('title_champion', 'لقب بطل الأبطال', 'ألقاب', 400, 'assets/images/store/reward_5.svg'),
 ];
