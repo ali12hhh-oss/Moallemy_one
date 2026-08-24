@@ -275,17 +275,17 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 horizontal: 16,
                 vertical: 14,
               ),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Text(
+                  Text(
                     '📝',
                     style: TextStyle(fontSize: 30),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'اختبار تحديد المستوى',
                           style: TextStyle(
@@ -305,7 +305,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                       ],
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.arrow_back_ios_new_rounded,
                     color: Colors.white,
                     size: 18,
