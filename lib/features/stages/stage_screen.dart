@@ -42,13 +42,6 @@ class StageScreen extends StatelessWidget {
 
   void open(BuildContext c, Widget w) => Navigator.push(c, MaterialPageRoute(builder: (_) => w));
 
-  String? _imageFor(String title) {
-    if (title == 'English') return 'assets/images/games/english_bg.jpg';
-    if (title == 'الرياضيات' || title == 'الأرقام') return 'assets/images/games/math_bg.jpg';
-    if (title == 'اللغة العربية' || title == 'الحروف' || title == 'الكتابة') return 'assets/images/games/arabic_bg.jpg';
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final d = data[stageId]!;
@@ -61,7 +54,6 @@ class StageScreen extends StatelessWidget {
         subtitle: subtitle,
         emoji: emoji,
         color: color,
-        imageAsset: _imageFor(title),
         onTap: () => open(context, page),
       ));
     }
@@ -142,44 +134,31 @@ class StageScreen extends StatelessWidget {
 class _ActivityButton extends StatelessWidget {
   final String title, subtitle, emoji;
   final Color color;
-  final String? imageAsset;
   final VoidCallback onTap;
   const _ActivityButton({
     required this.title,
     required this.subtitle,
     required this.emoji,
     required this.color,
-    required this.imageAsset,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final content = Row(children: [
-      Container(width: 52, height: 52, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: Center(child: Text(emoji, style: const TextStyle(fontSize: 25)))),
-      const SizedBox(width: 14),
-      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
-        const SizedBox(height: 2),
-        Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
-      ])),
-      const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
-    ]);
-
     return Button3D(
       onTap: onTap,
       color: color,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: imageAsset == null
-          ? content
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Stack(children: [
-                Positioned.fill(child: Image.asset(imageAsset!, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const SizedBox.shrink())),
-                Positioned.fill(child: Container(color: Colors.black.withValues(alpha: .28))),
-                Padding(padding: const EdgeInsets.symmetric(vertical: 1), child: content),
-              ]),
-            ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(children: [
+        Container(width: 52, height: 52, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: Center(child: Text(emoji, style: const TextStyle(fontSize: 25)))),
+        const SizedBox(width: 14),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
+          const SizedBox(height: 2),
+          Text(subtitle, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
+        ])),
+        const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
+      ]),
     );
   }
 }
