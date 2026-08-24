@@ -32,6 +32,8 @@ class _G2EnglishWritingScreenState extends State<G2EnglishWritingScreen> {
   @override
   Widget build(BuildContext context) {
     final w = englishWordsV11[index];
+    final theme = Theme.of(context);
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -43,65 +45,84 @@ class _G2EnglishWritingScreenState extends State<G2EnglishWritingScreen> {
               tooltip: 'Listen',
               icon: const Icon(Icons.volume_up_rounded),
             ),
-            IconButton(
-              onPressed: () => canvasKey.currentState?.clear(),
-              tooltip: 'Clear',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
           ],
         ),
         body: SafeArea(
           child: Stack(
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+              Column(
                 children: [
-                  Center(
-                    child: Text(w.emoji, style: const TextStyle(fontSize: 40)),
-                  ),
-                  const SizedBox(height: 2),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Column(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 3, 10, 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          w.word,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 42,
-                            fontWeight: FontWeight.w900,
-                            color: Theme.of(context).colorScheme.primary,
+                        Text(w.emoji, style: const TextStyle(fontSize: 30)),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            w.word,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 27, fontWeight: FontWeight.w900, color: theme.colorScheme.primary),
                           ),
                         ),
-                        Text(
-                          w.arabic,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            w.arabic,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 320,
-                    child: BoldDrawingCanvas(key: canvasKey),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(22),
+                        child: BoldDrawingCanvas(key: canvasKey),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: () => _next(1),
-                      icon: const Icon(Icons.arrow_forward_rounded),
-                      label: const Text('Next'),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(-1),
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: const Text('Previous'),
+                            style: FilledButton.styleFrom(minimumSize: const Size(0, 54)),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => canvasKey.currentState?.clear(),
+                            icon: const Icon(Icons.delete_sweep_rounded),
+                            label: const Text('Clear board'),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: const Color(0xFFE53935),
+                              minimumSize: const Size(0, 54),
+                              textStyle: const TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _next(1),
+                            icon: const Icon(Icons.arrow_back_rounded),
+                            label: const Text('Next'),
+                            style: FilledButton.styleFrom(minimumSize: const Size(0, 54)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
