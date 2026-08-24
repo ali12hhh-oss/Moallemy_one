@@ -5,13 +5,7 @@ import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_re
 import '../../core/audio/voice_service.dart';
 import '../../widgets/celebration_overlay.dart';
 
-/// سبورة كتابة **ذكية حقيقية**: الطفل يكتب أي حرف أو كلمة أو جملة بحرية
-/// تامة (بكل الاتجاهات، بأي لون يختاره)، ثم يضغط "اقرأ ما كتبته" فيقوم
-/// التطبيق فعليًا بالتعرّف على الخط المكتوب (Google ML Kit Digital Ink
-/// Recognition، يعمل على الجهاز مباشرة ويدعم العربية) وينطق النتيجة بصوته.
-///
-/// ملاحظة تقنية: يحتاج تحميل نموذج التعرّف على العربية اتصالًا بالإنترنت
-/// **مرة واحدة فقط** عند أول استخدام؛ بعدها يعمل النموذج بلا إنترنت بالكامل.
+/// سبورة كتابة ذكية تعمل على الجهاز بعد تنزيل نموذج العربية لأول مرة.
 class G2WriteRecognizeScreen extends StatefulWidget {
   const G2WriteRecognizeScreen({super.key});
   @override
@@ -55,16 +49,18 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
     try {
       final downloaded = await modelManager.isModelDownloaded('ar');
       if (downloaded) {
-        setState(() => modelReady = true);
+        if (mounted) setState(() => modelReady = true);
         return;
       }
-      setState(() => downloading = true);
+      if (mounted) setState(() => downloading = true);
       final ok = await modelManager.downloadModel('ar');
       if (mounted) {
         setState(() {
           downloading = false;
           modelReady = ok;
-          if (!ok) error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          if (!ok) {
+            error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          }
         });
       }
     } catch (_) {
@@ -112,17 +108,21 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
   }
 
   void _onPanEnd() {
-    if (_currentPaintStroke != null) strokesForPaint.add(_currentPaintStroke!);
-    if (_currentRecoStroke != null)
+    if (_currentPaintStroke != null) {
+      strokesForPaint.add(_currentPaintStroke!);
+    }
+    if (_currentRecoStroke != null) {
       strokesForRecognition.add(_currentRecoStroke!);
+    }
     _currentPaintStroke = null;
     _currentRecoStroke = null;
     setState(() {});
   }
 
   Future<void> _recognize() async {
-    if (!modelReady || recognizer == null || strokesForRecognition.isEmpty)
+    if (!modelReady || recognizer == null || strokesForRecognition.isEmpty) {
       return;
+    }
     setState(() {
       recognizing = true;
       recognizedText = null;
@@ -180,149 +180,154 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
             ),
           ],
         ),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                if (downloading)
-                  const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            'جارٍ تحميل نموذج التعرّف على الكتابة لأول مرة (يحتاج إنترنت)...',
+        body: SafeArea(
+          child: Stack(
+            children: [
+              ListView(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+                children: [
+                  if (downloading)
+                    const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'جارٍ تحميل نموذج التعرّف على الكتابة لأول مرة (يحتاج إنترنت)...',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                if (error != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 6,
+                  if (error != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 6,
+                      ),
+                      child: Text(
+                        error!,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(8, 6, 8, 4),
                     child: Text(
-                      error!,
-                      style: const TextStyle(color: Colors.red),
+                      'اكتب أي حرف أو كلمة أو جملة بحرية تامة، بأي اتجاه',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(14, 8, 14, 4),
-                  child: Text(
-                    'اكتب أي حرف أو كلمة أو جملة بحرية تامة، بأي اتجاه',
-                    textAlign: TextAlign.center,
+                  SizedBox(
+                    height: 40,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      itemCount: penColors.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      itemBuilder: (_, i) {
+                        final c = penColors[i];
+                        final selected = c.toARGB32() == penColor.toARGB32();
+                        return GestureDetector(
+                          onTap: () => setState(() => penColor = c),
+                          child: Container(
+                            width: 34,
+                            height: 34,
+                            decoration: BoxDecoration(
+                              color: c,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: selected
+                                    ? Colors.black
+                                    : Colors.transparent,
+                                width: 3,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 40,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: penColors.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
-                    itemBuilder: (_, i) {
-                      final c = penColors[i];
-                      final selected = c.toARGB32() == penColor.toARGB32();
-                      return GestureDetector(
-                        onTap: () => setState(() => penColor = c),
-                        child: Container(
-                          width: 34,
-                          height: 34,
-                          decoration: BoxDecoration(
-                            color: c,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: selected
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: 3,
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 330,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: GestureDetector(
+                            onPanStart: (d) => _onPanStart(d.localPosition),
+                            onPanUpdate: (d) => _onPanUpdate(d.localPosition),
+                            onPanEnd: (_) => _onPanEnd(),
+                            child: CustomPaint(
+                              painter: _RecoPainter([
+                                ...strokesForPaint,
+                                if (_currentPaintStroke != null)
+                                  _currentPaintStroke!,
+                              ], penColor),
+                              child: const SizedBox.expand(),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.outlineVariant,
-                          width: 2,
-                        ),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: GestureDetector(
-                          onPanStart: (d) => _onPanStart(d.localPosition),
-                          onPanUpdate: (d) => _onPanUpdate(d.localPosition),
-                          onPanEnd: (_) => _onPanEnd(),
-                          child: CustomPaint(
-                            painter: _RecoPainter([
-                              ...strokesForPaint,
-                              if (_currentPaintStroke != null)
-                                _currentPaintStroke!,
-                            ], penColor),
-                            child: const SizedBox.expand(),
-                          ),
+                    ),
+                  ),
+                  if (recognizedText != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        'قرأت: $recognizedText',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ),
-                ),
-                if (recognizedText != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'قرأت: $recognizedText',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: modelReady &&
+                              !recognizing &&
+                              strokesForRecognition.isNotEmpty
+                          ? _recognize
+                          : null,
+                      icon: recognizing
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Icon(Icons.record_voice_over_rounded),
+                      label: Text(
+                        recognizing ? 'جارٍ القراءة...' : 'اقرأ ما كتبته 🔊',
                       ),
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
-                  child: FilledButton.icon(
-                    onPressed:
-                        modelReady &&
-                            !recognizing &&
-                            strokesForRecognition.isNotEmpty
-                        ? _recognize
-                        : null,
-                    icon: recognizing
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Icon(Icons.record_voice_over_rounded),
-                    label: Text(
-                      recognizing ? 'جارٍ القراءة...' : 'اقرأ ما كتبته 🔊',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
+                ],
+              ),
+              CelebrationOverlay(message: cheer),
+            ],
+          ),
         ),
       ),
     );
