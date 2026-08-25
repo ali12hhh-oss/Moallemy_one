@@ -8,8 +8,11 @@ import '../../widgets/bold_drawing_canvas.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
+/// كتابة أرقام الروضة الثانية.
+/// الأرقام تسير بالتسلسل، والآحاد دائمًا في يمين العدد والعشرات في يساره.
 class Kg2NumberWritingScreen extends StatefulWidget {
   const Kg2NumberWritingScreen({super.key});
+
   @override
   State<Kg2NumberWritingScreen> createState() => _Kg2NumberWritingScreenState();
 }
@@ -18,16 +21,27 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
   final rnd = Random();
   final canvasKey = GlobalKey<BoldDrawingCanvasState>();
   String? cheer;
-  final history = <int>[3];
-  int historyIndex = 0;
+
+  static const int firstNumber = 1;
+  static const int lastNumber = 50;
+  int number = firstNumber;
   bool askTens = true;
   bool answered = false;
 
-  int get number => history[historyIndex];
+  int get tensDigit => number ~/ 10;
+  int get onesDigit => number % 10;
+  bool get isTwoDigit => number >= 10;
 
   static String _word(int n) => const {
-        1: 'واحد', 2: 'اثنان', 3: 'ثلاثة', 4: 'أربعة', 5: 'خمسة',
-        6: 'ستة', 7: 'سبعة', 8: 'ثمانية', 9: 'تسعة',
+        1: 'واحد',
+        2: 'اثنان',
+        3: 'ثلاثة',
+        4: 'أربعة',
+        5: 'خمسة',
+        6: 'ستة',
+        7: 'سبعة',
+        8: 'ثمانية',
+        9: 'تسعة',
       }[n] ?? '$n';
 
   void _celebrate() {
@@ -45,33 +59,21 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
     }
   }
 
-  void _next() {
+  void _setNumber(int next) {
+    if (next < firstNumber || next > lastNumber) return;
     canvasKey.currentState?.clear();
-    final nextNumber = 1 + rnd.nextInt(50);
     setState(() {
-      if (historyIndex < history.length - 1) {
-        history.removeRange(historyIndex + 1, history.length);
-      }
-      history.add(nextNumber);
-      historyIndex++;
-      askTens = rnd.nextBool();
+      number = next;
+      askTens = next >= 10 ? rnd.nextBool() : false;
       answered = false;
     });
-    _celebrate();
   }
 
-  void _previous() {
-    if (historyIndex == 0) return;
-    canvasKey.currentState?.clear();
-    setState(() {
-      historyIndex--;
-      askTens = rnd.nextBool();
-      answered = false;
-    });
-  }
+  void _next() => _setNumber(number + 1);
+  void _previous() => _setNumber(number - 1);
 
   void _answerPlaceValue(bool tappedTens) {
-    if (answered) return;
+    if (!isTwoDigit || answered) return;
     final correct = tappedTens == askTens;
     if (correct) {
       setState(() => answered = true);
@@ -84,7 +86,8 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
     }
   }
 
-  ButtonStyle _controlStyle({required Color background}) => FilledButton.styleFrom(
+  ButtonStyle _controlStyle({required Color background}) =>
+      FilledButton.styleFrom(
         minimumSize: const Size(0, 54),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
         backgroundColor: background,
@@ -93,50 +96,92 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
         textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900),
       );
 
+  Widget _placeValueButton({required bool tens}) {
+    final selectedCorrect = answered;
+    return Expanded(
+      child: Button3D(
+        onTap: () => _answerPlaceValue(tens),
+        color: selectedCorrect
+            ? const Color(0xFF00C853)
+            : (tens ? const Color(0xFF2979FF) : const Color(0xFFFF6B35)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              arNum(tens ? tensDigit : onesDigit),
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              tens ? 'العشرات' : 'الآحاد',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: Colors.white70,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isTwoDigit = number >= 10;
-    final tensDigit = number ~/ 10;
-    final onesDigit = number % 10;
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('كتابة الأرقام'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'استمع',
+              icon: const Icon(Icons.volume_up_rounded),
+            ),
+            IconButton(
+              onPressed: () => canvasKey.currentState?.clear(),
+              tooltip: 'مسح',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
         body: Stack(
           children: [
             Column(
               children: [
-                const SizedBox(height: 6),
-                const Text('اكتب العدد', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text(arNum(number), style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900)),
+                const SizedBox(height: 4),
+                const Text(
+                  'اكتب العدد بالترتيب',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  arNum(number),
+                  textDirection: TextDirection.rtl,
+                  style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900),
+                ),
                 if (isTwoDigit) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    'اختر ${askTens ? 'العشرات' : 'الآحاد'} في العدد',
+                    style: const TextStyle(fontSize: 14),
+                  ),
                   const SizedBox(height: 6),
-                  Text('اضغط على رقم ${askTens ? 'العشرات' : 'الآحاد'} في العدد 👇', style: const TextStyle(fontSize: 14)),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Button3D(
-                        onTap: () => _answerPlaceValue(true),
-                        color: answered ? const Color(0xFF00C853) : const Color(0xFF2979FF),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                        child: Text(arNum(tensDigit), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)),
-                      ),
-                      const SizedBox(width: 14),
-                      Button3D(
-                        onTap: () => _answerPlaceValue(false),
-                        color: answered ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                        child: Text(arNum(onesDigit), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        // في RTL: العنصر الأول يظهر في اليمين، لذلك الآحاد أولًا.
+                        _placeValueButton(tens: false),
+                        const SizedBox(width: 10),
+                        _placeValueButton(tens: true),
+                      ],
+                    ),
                   ),
                 ],
                 const SizedBox(height: 6),
@@ -145,26 +190,32 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                   padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
                   child: Row(
                     children: [
-                      Expanded(child: FilledButton.icon(
-                        style: _controlStyle(background: const Color(0xFF00897B)),
-                        onPressed: historyIndex > 0 ? _previous : null,
-                        icon: const Icon(Icons.arrow_forward_rounded),
-                        label: const Text('السابق'),
-                      )),
+                      Expanded(
+                        child: FilledButton.icon(
+                          style: _controlStyle(background: const Color(0xFF00897B)),
+                          onPressed: number > firstNumber ? _previous : null,
+                          icon: const Icon(Icons.arrow_forward_rounded),
+                          label: const Text('السابق'),
+                        ),
+                      ),
                       const SizedBox(width: 7),
-                      Expanded(child: FilledButton.icon(
-                        style: _controlStyle(background: const Color(0xFFE53935)),
-                        onPressed: () => canvasKey.currentState?.clear(),
-                        icon: const Icon(Icons.delete_sweep_rounded),
-                        label: const Text('مسح السبورة'),
-                      )),
+                      Expanded(
+                        child: FilledButton.icon(
+                          style: _controlStyle(background: const Color(0xFFE53935)),
+                          onPressed: () => canvasKey.currentState?.clear(),
+                          icon: const Icon(Icons.delete_sweep_rounded),
+                          label: const Text('مسح السبورة'),
+                        ),
+                      ),
                       const SizedBox(width: 7),
-                      Expanded(child: FilledButton.icon(
-                        style: _controlStyle(background: const Color(0xFF00897B)),
-                        onPressed: _next,
-                        icon: const Icon(Icons.arrow_back_rounded),
-                        label: const Text('التالي'),
-                      )),
+                      Expanded(
+                        child: FilledButton.icon(
+                          style: _controlStyle(background: const Color(0xFF00897B)),
+                          onPressed: number < lastNumber ? _next : null,
+                          icon: const Icon(Icons.arrow_back_rounded),
+                          label: const Text('التالي'),
+                        ),
+                      ),
                     ],
                   ),
                 ),
