@@ -64,6 +64,17 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
     });
   }
 
+  /// Returns the correct positional form for a letter inside the word.
+  /// For two letters: first = initial, second = final.
+  /// For three letters: first = initial, middle = medial, last = final.
+  String _letterForm(String letter, int position, int length) {
+    if (letter.trim().isEmpty) return letter;
+    if (length <= 1) return letter;
+    if (position == 0) return '$letter‍';
+    if (position == length - 1) return '‍$letter';
+    return '‍$letter‍';
+  }
+
   @override
   void dispose() {
     VoiceService.stop();
@@ -80,6 +91,8 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
     final color = _wordColors[index % _wordColors.length];
     final width = MediaQuery.sizeOf(context).width;
     final letterSize = (width * 0.14).clamp(38.0, 58.0);
+    final isTwoLetterWord = w.letters.length == 2;
+    final letterGap = isTwoLetterWord ? 3.0 : 8.0;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -108,7 +121,7 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                         const SizedBox(height: 8),
                         Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 18),
+                          padding: EdgeInsets.symmetric(horizontal: isTwoLetterWord ? 28 : 10, vertical: 18),
                           decoration: BoxDecoration(
                             color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(24),
@@ -119,18 +132,19 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                             child: split
                                 ? Row(
                                     key: ValueKey('letters-${w.word}'),
+                                    mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     textDirection: TextDirection.rtl,
                                     children: [
                                       for (int j = 0; j < w.letters.length; j++) ...[
-                                        if (j > 0) const SizedBox(width: 8),
+                                        if (j > 0) SizedBox(width: letterGap),
                                         Flexible(
                                           child: Button3D(
                                             onTap: () => VoiceService.arabicLetterSound(w.letters[j]),
                                             color: color,
                                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                                             child: Text(
-                                              w.letters[j],
+                                              _letterForm(w.letters[j], j, w.letters.length),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: letterSize,
