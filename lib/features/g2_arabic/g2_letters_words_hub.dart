@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/button_3d.dart';
-import 'g2_letters_screen.dart';
+import 'g2_al_definition_screen.dart';
 import 'g2_read_hub.dart';
 import 'g2_write_recognize_screen.dart';
 
@@ -12,18 +12,18 @@ class G2LettersWordsHub extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <(String, String, String, Color, Widget)>[
       (
-        '🔤',
-        'الحروف',
-        'الحروف الـ٢٨ مع الأشكال الأولية والوسطية والأخيرة وصوت الحرف',
-        const Color(0xFF7C4DFF),
-        const G2LettersScreen(),
-      ),
-      (
         '📖',
-        'اقرأ',
+        'القراءة',
         'كلمات من حرفين وثلاثة وأربعة أحرف، وجمل قصيرة',
         const Color(0xFFFF6B35),
         const G2ReadHub(),
+      ),
+      (
+        'الـ',
+        'ال التعريف',
+        'فصل ال التعريف عن الكلمة ثم دمجهما لتكوين الكلمة بشكل صحيح',
+        const Color(0xFF7C4DFF),
+        const G2AlDefinitionScreen(),
       ),
       (
         '✏️',
