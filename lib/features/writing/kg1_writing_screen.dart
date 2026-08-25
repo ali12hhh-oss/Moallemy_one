@@ -5,7 +5,7 @@ import '../../data/content.dart';
 import '../../widgets/button_3d.dart';
 
 /// شاشة الكتابة للروضة الأولى.
-/// ثابتة بملء المساحة المتاحة بدون تمرير، والكتابة تظهر مباشرة تحت إصبع الطفل.
+/// ثابتة بملء المساحة المتاحة، والكتابة تظهر مباشرة تحت إصبع الطفل.
 class Kg1WritingScreen extends StatefulWidget {
   const Kg1WritingScreen({super.key});
 
@@ -28,37 +28,9 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
     Color(0xFF212121),
   ];
 
-  static const numbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
+  static const numbers = ['١','٢','٣','٤','٥','٦','٧','٨','٩','١٠'];
 
-  static ButtonStyle _navigationButtonStyle() => FilledButton.styleFrom(
-        minimumSize: const Size(0, 54),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        textStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
-        ),
-      );
-
-  static ButtonStyle _clearButtonStyle() => FilledButton.styleFrom(
-        minimumSize: const Size(0, 54),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        backgroundColor: const Color(0xFFE53935),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        textStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
-        ),
-      );
-
-  void _clearBoard() {
-    setState(points.clear);
-  }
+  void _clearBoard() => setState(points.clear);
 
   void _switch(bool letters) {
     setState(() {
@@ -68,54 +40,45 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
     });
   }
 
-  void _next(int delta) {
-    final len = lettersMode ? arabicLetters.length : numbers.length;
+  void _move(int delta) {
+    final length = lettersMode ? arabicLetters.length : numbers.length;
     setState(() {
-      index = (index + delta + len) % len;
+      index = (index + delta + length) % length;
       points.clear();
     });
   }
 
   void _speak() {
     if (lettersMode) {
-      final l = arabicLetters[index];
-      VoiceService.arabicLetterSound(l.letter, fallbackText: l.sound);
+      final letter = arabicLetters[index];
+      VoiceService.arabicLetterSound(letter.letter, fallbackText: letter.sound);
     } else {
       VoiceService.arabic(_numberWord(index + 1));
     }
   }
 
-  static String _numberWord(int n) =>
-      const {
-        1: 'واحد',
-        2: 'اثنان',
-        3: 'ثلاثة',
-        4: 'أربعة',
-        5: 'خمسة',
-        6: 'ستة',
-        7: 'سبعة',
-        8: 'ثمانية',
-        9: 'تسعة',
-        10: 'عشرة',
-      }[n] ??
-      '$n';
+  static String _numberWord(int n) => const {
+    1: 'واحد', 2: 'اثنان', 3: 'ثلاثة', 4: 'أربعة', 5: 'خمسة',
+    6: 'ستة', 7: 'سبعة', 8: 'ثمانية', 9: 'تسعة', 10: 'عشرة',
+  }[n] ?? '$n';
 
-  void _startStroke(Offset p) {
-    setState(() => points.add(p));
-  }
+  void _startStroke(Offset point) => setState(() => points.add(point));
+  void _continueStroke(Offset point) => setState(() => points.add(point));
+  void _endStroke() => setState(() => points.add(null));
 
-  void _continueStroke(Offset p) {
-    setState(() => points.add(p));
-  }
-
-  void _endStroke() {
-    setState(() => points.add(null));
-  }
+  ButtonStyle _controlStyle({required Color background, double fontSize = 15}) =>
+      FilledButton.styleFrom(
+        minimumSize: const Size(0, 54),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+        backgroundColor: background,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        textStyle: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w900),
+      );
 
   @override
   Widget build(BuildContext context) {
     final target = lettersMode ? arabicLetters[index].letter : numbers[index];
-    final isTwo = !lettersMode && index == 1;
     final theme = Theme.of(context);
 
     return Directionality(
@@ -141,70 +104,28 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                     Expanded(
                       child: Button3D(
                         onTap: () => _switch(true),
-                        color: lettersMode
-                            ? const Color(0xFF7C4DFF)
-                            : const Color(0xFFB39DDB),
+                        color: lettersMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
                         depth: lettersMode ? 2 : 7,
                         padding: const EdgeInsets.symmetric(vertical: 9),
-                        child: const Center(
-                          child: Text(
-                            'الحروف 🔤',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        child: const Center(child: Text('الحروف 🔤', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Button3D(
                         onTap: () => _switch(false),
-                        color: !lettersMode
-                            ? const Color(0xFF2979FF)
-                            : const Color(0xFF90CAF9),
+                        color: !lettersMode ? const Color(0xFF2979FF) : const Color(0xFF90CAF9),
                         depth: !lettersMode ? 2 : 7,
                         padding: const EdgeInsets.symmetric(vertical: 9),
-                        child: const Center(
-                          child: Text(
-                            'الأرقام 🔢',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        child: const Center(child: Text('الأرقام 🔢', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 2),
-              Text(
-                lettersMode ? 'اكتب الحرف' : 'اكتب الرقم',
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  target,
-                  style: const TextStyle(fontSize: 68, fontWeight: FontWeight.w900),
-                ),
-              ),
-              if (isTwo)
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    '💡 لاحظ: الرقم ٢ يُكتب بانحناءة من الأعلى نحو الأسفل، مثل حرف الدال (د) لكن بالعكس.',
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ),
+              Text(lettersMode ? 'اكتب الحرف' : 'اكتب الرقم', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              FittedBox(fit: BoxFit.scaleDown, child: Text(target, style: const TextStyle(fontSize: 68, fontWeight: FontWeight.w900))),
               const SizedBox(height: 3),
               SizedBox(
                 height: 34,
@@ -224,10 +145,7 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                         decoration: BoxDecoration(
                           color: color,
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: selected ? Colors.black : Colors.transparent,
-                            width: 3,
-                          ),
+                          border: Border.all(color: selected ? Colors.black : Colors.transparent, width: 3),
                         ),
                       ),
                     );
@@ -242,10 +160,7 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                     decoration: BoxDecoration(
                       color: theme.colorScheme.surface,
                       borderRadius: BorderRadius.circular(22),
-                      border: Border.all(
-                        color: theme.colorScheme.outlineVariant,
-                        width: 2,
-                      ),
+                      border: Border.all(color: theme.colorScheme.outlineVariant, width: 2),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -264,34 +179,33 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
                   ),
                 ),
               ),
-              // شريط تحكم ثابت أسفل السبورة: السابق | مسح السبورة | التالي.
+              // الأزرار الثلاثة ثابتة أسفل السبورة وبنفس الحجم والشكل.
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
                 child: Row(
                   children: [
                     Expanded(
                       child: FilledButton.icon(
-                        style: _navigationButtonStyle(),
-                        onPressed: () => _next(-1),
+                        style: _controlStyle(background: const Color(0xFF00897B)),
+                        onPressed: () => _move(-1),
                         icon: const Icon(Icons.arrow_forward_rounded),
                         label: const Text('السابق'),
                       ),
                     ),
                     const SizedBox(width: 7),
                     Expanded(
-                      flex: 12,
                       child: FilledButton.icon(
-                        style: _clearButtonStyle(),
+                        style: _controlStyle(background: const Color(0xFFE53935), fontSize: 14),
                         onPressed: _clearBoard,
-                        icon: const Icon(Icons.delete_sweep_rounded, size: 25),
+                        icon: const Icon(Icons.delete_sweep_rounded, size: 22),
                         label: const Text('مسح السبورة'),
                       ),
                     ),
                     const SizedBox(width: 7),
                     Expanded(
                       child: FilledButton.icon(
-                        style: _navigationButtonStyle(),
-                        onPressed: () => _next(1),
+                        style: _controlStyle(background: const Color(0xFF00897B)),
+                        onPressed: () => _move(1),
                         icon: const Icon(Icons.arrow_back_rounded),
                         label: const Text('التالي'),
                       ),
@@ -325,15 +239,11 @@ class _BoldDrawingPainter extends CustomPainter {
     for (var i = 0; i < points.length - 1; i++) {
       final first = points[i];
       final second = points[i + 1];
-      if (first != null && second != null) {
-        canvas.drawLine(first, second, pen);
-      }
+      if (first != null && second != null) canvas.drawLine(first, second, pen);
     }
 
     final last = points.isEmpty ? null : points.last;
-    if (last != null) {
-      canvas.drawCircle(last, pen.strokeWidth / 2, Paint()..color = color);
-    }
+    if (last != null) canvas.drawCircle(last, pen.strokeWidth / 2, Paint()..color = color);
   }
 
   @override
