@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/button_3d.dart';
 import 'g2_letters_screen.dart';
 import 'g2_read_hub.dart';
-import 'g2_writing_hub.dart';
+import 'g2_write_recognize_screen.dart';
 
 class G2LettersWordsHub extends StatelessWidget {
   const G2LettersWordsHub({super.key});
@@ -28,9 +28,9 @@ class G2LettersWordsHub extends StatelessWidget {
       (
         '✏️',
         'الكتابة',
-        'كتابة الحروف وكتابة الأرقام من ١ إلى ٥٠',
+        'سبورة ذكية تقرأ ما تكتبه بصوتها، بألوان مختلفة',
         const Color(0xFF00BFA6),
-        const G2WritingHub(),
+        const G2WriteRecognizeScreen(),
       ),
     ];
     return Directionality(
