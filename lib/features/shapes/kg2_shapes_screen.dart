@@ -24,9 +24,6 @@ class _ShapeEntry {
   const _ShapeEntry(this.name, this.kind, this.color);
 }
 
-/// أشكال الروضة الثانية: جميع الأشكال الأصلية محفوظة.
-/// عند الدخول تكون متساوية، وعند اختيار شكل يظهر كبيراً في الأعلى
-/// وتبقى بقية الأشكال أسفلَه للاختيار، مع نطق اسم الشكل.
 class Kg2ShapesScreen extends StatefulWidget {
   const Kg2ShapesScreen({super.key});
 
@@ -56,7 +53,7 @@ class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shapes = Kg2ShapesScreen.shapes;
+    const shapes = Kg2ShapesScreen.shapes;
     final selected = selectedIndex == null ? null : shapes[selectedIndex!];
     final remaining = <int>[
       for (var i = 0; i < shapes.length; i++)
