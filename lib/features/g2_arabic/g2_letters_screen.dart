@@ -57,12 +57,9 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
     if (playing) return;
     setState(() => playing = true);
     try {
-      // Keep the G2 button identical to the known-working G1 letter-sound
-      // path: play the phoneme, never the letter name.
-      await VoiceService.arabicLetterSound(
-        current.letter,
-        fallbackText: current.sound,
-      );
+      // G2 must pronounce the phonetic sound (for example بَ), never the
+      // letter name (باء). Keep this isolated to the G2 screen.
+      await VoiceService.arabic(current.sound);
     } finally {
       if (mounted) setState(() => playing = false);
     }
