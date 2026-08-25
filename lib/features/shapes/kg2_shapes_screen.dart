@@ -5,17 +5,7 @@ import 'package:flutter/material.dart';
 import '../../core/audio/voice_service.dart';
 import '../../widgets/button_3d.dart';
 
-enum _ShapeKind {
-  square,
-  triangle,
-  circle,
-  rectangle,
-  trapezoid,
-  oblique,
-  pentagon,
-  hexagon,
-  rhombus,
-}
+enum _ShapeKind { square, triangle, circle, rectangle, trapezoid, oblique, pentagon, hexagon, rhombus }
 
 class _ShapeEntry {
   final String name;
@@ -24,9 +14,6 @@ class _ShapeEntry {
   const _ShapeEntry(this.name, this.kind, this.color);
 }
 
-/// أشكال الروضة الثانية: جميع الأشكال الأصلية محفوظة.
-/// عند الدخول تكون متساوية، وعند اختيار شكل يظهر كبيراً في الأعلى
-/// وتبقى بقية الأشكال أسفلَه للاختيار، مع نطق اسم الشكل.
 class Kg2ShapesScreen extends StatefulWidget {
   const Kg2ShapesScreen({super.key});
 
@@ -56,7 +43,7 @@ class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shapes = Kg2ShapesScreen.shapes;
+    const shapes = Kg2ShapesScreen.shapes;
     final selected = selectedIndex == null ? null : shapes[selectedIndex!];
     final remaining = <int>[
       for (var i = 0; i < shapes.length; i++)
@@ -105,11 +92,7 @@ class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
       itemCount: indices.length,
       itemBuilder: (_, i) {
         final index = indices[i];
-        return _buildShapeCard(
-          Kg2ShapesScreen.shapes[index],
-          index,
-          large: false,
-        );
+        return _buildShapeCard(shapes[index], index, large: false);
       },
     );
   }
@@ -123,39 +106,20 @@ class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
         color: shape.color,
         borderRadius: BorderRadius.circular(24),
         boxShadow: const [
-          BoxShadow(
-            blurRadius: 8,
-            offset: Offset(0, 4),
-            color: Color(0x33000000),
-          ),
+          BoxShadow(blurRadius: 8, offset: Offset(0, 4), color: Color(0x33000000)),
         ],
       ),
       child: Column(
         children: [
-          SizedBox(
-            width: 170,
-            height: 140,
-            child: CustomPaint(painter: _ShapePainter(shape.kind)),
-          ),
+          SizedBox(width: 170, height: 140, child: CustomPaint(painter: _ShapePainter(shape.kind))),
           const SizedBox(height: 8),
-          Text(
-            shape.name,
-            style: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-            ),
-          ),
+          Text(shape.name, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900, color: Colors.white)),
         ],
       ),
     );
   }
 
-  Widget _buildShapeCard(
-    _ShapeEntry shape,
-    int index, {
-    required bool large,
-  }) {
+  Widget _buildShapeCard(_ShapeEntry shape, int index, {required bool large}) {
     return Button3D(
       onTap: () => _select(index),
       color: shape.color,
@@ -163,21 +127,9 @@ class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: large ? 150 : 70,
-            height: large ? 120 : 70,
-            child: CustomPaint(painter: _ShapePainter(shape.kind)),
-          ),
+          SizedBox(width: large ? 150 : 70, height: large ? 120 : 70, child: CustomPaint(painter: _ShapePainter(shape.kind))),
           const SizedBox(height: 6),
-          Text(
-            shape.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: large ? 24 : 15,
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-            ),
-          ),
+          Text(shape.name, textAlign: TextAlign.center, style: TextStyle(fontSize: large ? 24 : 15, fontWeight: FontWeight.w900, color: Colors.white)),
         ],
       ),
     );
@@ -190,83 +142,41 @@ class _ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
+    final paint = Paint()..color = Colors.white..style = PaintingStyle.fill;
     final w = size.width, h = size.height;
     final path = Path();
     switch (kind) {
       case _ShapeKind.square:
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(4, 4, w - 8, h - 8),
-            const Radius.circular(8),
-          ),
-          paint,
-        );
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(4, 4, w - 8, h - 8), const Radius.circular(8)), paint);
       case _ShapeKind.rectangle:
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTWH(0, 14, w, h - 28),
-            const Radius.circular(8),
-          ),
-          paint,
-        );
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 14, w, h - 28), const Radius.circular(8)), paint);
       case _ShapeKind.circle:
         canvas.drawCircle(Offset(w / 2, h / 2), w / 2 - 2, paint);
       case _ShapeKind.triangle:
-        path.moveTo(w / 2, 2);
-        path.lineTo(w - 4, h - 4);
-        path.lineTo(4, h - 4);
-        path.close();
-        canvas.drawPath(path, paint);
+        path.moveTo(w / 2, 2); path.lineTo(w - 4, h - 4); path.lineTo(4, h - 4); path.close(); canvas.drawPath(path, paint);
       case _ShapeKind.trapezoid:
-        path.moveTo(w * .28, 6);
-        path.lineTo(w * .72, 6);
-        path.lineTo(w - 4, h - 6);
-        path.lineTo(4, h - 6);
-        path.close();
-        canvas.drawPath(path, paint);
+        path.moveTo(w * .28, 6); path.lineTo(w * .72, 6); path.lineTo(w - 4, h - 6); path.lineTo(4, h - 6); path.close(); canvas.drawPath(path, paint);
       case _ShapeKind.oblique:
-        path.moveTo(w * .32, 4);
-        path.lineTo(w - 4, 4);
-        path.lineTo(w * .68, h - 4);
-        path.lineTo(4, h - 4);
-        path.close();
-        canvas.drawPath(path, paint);
+        path.moveTo(w * .32, 4); path.lineTo(w - 4, 4); path.lineTo(w * .68, h - 4); path.lineTo(4, h - 4); path.close(); canvas.drawPath(path, paint);
       case _ShapeKind.rhombus:
-        path.moveTo(w / 2, 2);
-        path.lineTo(w - 4, h / 2);
-        path.lineTo(w / 2, h - 2);
-        path.lineTo(4, h / 2);
-        path.close();
-        canvas.drawPath(path, paint);
+        path.moveTo(w / 2, 2); path.lineTo(w - 4, h / 2); path.lineTo(w / 2, h - 2); path.lineTo(4, h / 2); path.close(); canvas.drawPath(path, paint);
       case _ShapeKind.pentagon:
-        _regularPolygon(path, w, h, 5);
-        canvas.drawPath(path, paint);
+        _regularPolygon(path, w, h, 5); canvas.drawPath(path, paint);
       case _ShapeKind.hexagon:
-        _regularPolygon(path, w, h, 6);
-        canvas.drawPath(path, paint);
+        _regularPolygon(path, w, h, 6); canvas.drawPath(path, paint);
     }
   }
 
   static void _regularPolygon(Path path, double w, double h, int sides) {
-    const sidesToUse = 6;
     final cx = w / 2, cy = h / 2, r = math.min(w, h) / 2 - 3;
-    for (var i = 0; i < sidesToUse; i++) {
+    for (var i = 0; i < sides; i++) {
       final angle = -math.pi / 2 + i * 2 * math.pi / sides;
-      final x = cx + r * math.cos(angle);
-      final y = cy + r * math.sin(angle);
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
+      final x = cx + r * math.cos(angle), y = cy + r * math.sin(angle);
+      if (i == 0) path.moveTo(x, y); else path.lineTo(x, y);
     }
     path.close();
   }
 
   @override
-  bool shouldRepaint(covariant _ShapePainter oldDelegate) =>
-      oldDelegate.kind != kind;
+  bool shouldRepaint(covariant _ShapePainter oldDelegate) => oldDelegate.kind != kind;
 }
