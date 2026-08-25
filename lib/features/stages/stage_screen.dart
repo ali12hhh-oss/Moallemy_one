@@ -18,7 +18,7 @@ import '../g3_hub/g3_games_stories_hub.dart';
 import '../g3_math/g3_math_hub.dart';
 import '../hub/kg2_stories_games_hub.dart';
 import '../letters/letters_screen.dart';
-import '../letters/kg2_letters_screen.dart';
+import '../g2_arabic/g2_letters_screen.dart';
 import '../numbers/numbers_screen_v6.dart';
 import '../numbers/kg2_numbers_hub.dart';
 import '../shapes/kg1_shapes_screen.dart';
@@ -66,7 +66,7 @@ class StageScreen extends StatelessWidget {
       add('الأشكال', 'مربع ومثلث ودائرة ومستطيل ومنحرف وشبه منحرف', '🔷', const Kg1ShapesScreen());
       add('الألعاب', 'لعبة الحروف ولعبة الأرقام مع تشجيع', '🎮', const Kg1GamesScreen());
     } else if (stageId == 'kg2') {
-      add('الحروف', 'كل حرف بأشكاله الثلاثة: أول ووسط وآخر، مع النطق', '🔤', const Kg2LettersScreen());
+      add('الحروف', 'كل حرف بأشكاله الثلاثة: أول ووسط وآخر، مع النطق', '🔤', const G2LettersScreen());
       add('الأرقام', 'الأعداد من ١ إلى ٥٠، ومراتب الأعداد (آحاد وعشرات)', '🔢', const Kg2NumbersHub());
       add('الكتابة', 'كتابة الحروف بأشكالها ودمجها، وكتابة الأعداد', '✏️', const Kg2WritingHub());
       add('الألوان', 'كل الألوان بأسماء واضحة مع حيوان بنفس اللون', '🎨', const Kg1ColorsScreen());
