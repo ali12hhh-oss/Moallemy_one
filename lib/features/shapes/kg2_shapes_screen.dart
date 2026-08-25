@@ -24,9 +24,10 @@ class _ShapeEntry {
   const _ShapeEntry(this.name, this.kind, this.color);
 }
 
-/// أشكال الروضة الثانية: كل أشكال الروضة الأولى، بالإضافة إلى الخماسي
-/// والسداسي والمعيّن — كل شكل مرسوم بدقة بلون مختلف مع النطق.
-class Kg2ShapesScreen extends StatelessWidget {
+/// أشكال الروضة الثانية: جميع الأشكال الأصلية محفوظة.
+/// عند الدخول تكون متساوية، وعند اختيار شكل يظهر كبيراً في الأعلى
+/// وتبقى بقية الأشكال أسفلَه للاختيار، مع نطق اسم الشكل.
+class Kg2ShapesScreen extends StatefulWidget {
   const Kg2ShapesScreen({super.key});
 
   static const shapes = <_ShapeEntry>[
@@ -42,48 +43,142 @@ class Kg2ShapesScreen extends StatelessWidget {
   ];
 
   @override
+  State<Kg2ShapesScreen> createState() => _Kg2ShapesScreenState();
+}
+
+class _Kg2ShapesScreenState extends State<Kg2ShapesScreen> {
+  int? selectedIndex;
+
+  void _select(int index) {
+    setState(() => selectedIndex = index);
+    VoiceService.arabic(Kg2ShapesScreen.shapes[index].name);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final shapes = Kg2ShapesScreen.shapes;
+    final selected = selectedIndex == null ? null : shapes[selectedIndex!];
+    final remaining = <int>[
+      for (var i = 0; i < shapes.length; i++)
+        if (i != selectedIndex) i,
+    ];
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: const Text('الأشكال 🔷')),
-        body: GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 14,
-            mainAxisSpacing: 14,
-            childAspectRatio: .95,
-          ),
-          itemCount: shapes.length,
-          itemBuilder: (_, i) {
-            final s = shapes[i];
-            return Button3D(
-              onTap: () => VoiceService.arabic(s.name),
-              color: s.color,
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: selected == null
+            ? _buildInitialGrid(shapes)
+            : Column(
                 children: [
-                  SizedBox(
-                    width: 74,
-                    height: 74,
-                    child: CustomPaint(painter: _ShapePainter(s.kind)),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    s.name,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
-                  ),
+                  _buildLargePreview(selected),
+                  Expanded(child: _buildChoicesGrid(remaining)),
                 ],
               ),
-            );
-          },
-        ),
+      ),
+    );
+  }
+
+  Widget _buildInitialGrid(List<_ShapeEntry> shapes) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 14,
+        childAspectRatio: .95,
+      ),
+      itemCount: shapes.length,
+      itemBuilder: (_, i) => _buildShapeCard(shapes[i], i, large: false),
+    );
+  }
+
+  Widget _buildChoicesGrid(List<int> indices) {
+    return GridView.builder(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: .9,
+      ),
+      itemCount: indices.length,
+      itemBuilder: (_, i) {
+        final index = indices[i];
+        return _buildShapeCard(
+          Kg2ShapesScreen.shapes[index],
+          index,
+          large: false,
+        );
+      },
+    );
+  }
+
+  Widget _buildLargePreview(_ShapeEntry shape) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 6),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+      decoration: BoxDecoration(
+        color: shape.color,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 8,
+            offset: Offset(0, 4),
+            color: Color(0x33000000),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 170,
+            height: 140,
+            child: CustomPaint(painter: _ShapePainter(shape.kind)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            shape.name,
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShapeCard(
+    _ShapeEntry shape,
+    int index, {
+    required bool large,
+  }) {
+    return Button3D(
+      onTap: () => _select(index),
+      color: shape.color,
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: large ? 150 : 70,
+            height: large ? 120 : 70,
+            child: CustomPaint(painter: _ShapePainter(shape.kind)),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            shape.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: large ? 24 : 15,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }
