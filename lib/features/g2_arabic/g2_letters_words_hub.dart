@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/button_3d.dart';
-import '../letters/letters_screen.dart';
+import 'g2_letters_screen.dart';
 import 'g2_read_hub.dart';
 import 'g2_write_recognize_screen.dart';
 
@@ -14,9 +14,9 @@ class G2LettersWordsHub extends StatelessWidget {
       (
         '🔤',
         'الحروف',
-        'كل الحروف الـ٢٨: صوت الحرف واسمه',
+        'الحروف الـ٢٨ مع الأشكال الأولية والوسطية والأخيرة وصوت الحرف',
         const Color(0xFF7C4DFF),
-        const LettersScreen(),
+        const G2LettersScreen(),
       ),
       (
         '📖',
