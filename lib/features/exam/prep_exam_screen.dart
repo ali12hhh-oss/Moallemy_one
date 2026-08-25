@@ -10,7 +10,6 @@ import '../../data/content.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
-/// سؤال اختبار موحّد. جميع الأسئلة مصممة لتظهر مع خياراتها كاملة على الشاشة.
 class _ExamQ {
   final String category;
   final String skillKey;
@@ -83,7 +82,6 @@ const _tensList = [10, 20, 30, 40, 50];
 List<_ExamQ> _buildBank(Random rnd) {
   final bank = <_ExamQ>[];
 
-  // الحروف: استمع للصوت واختر الحرف.
   for (var k = 0; k < 2; k++) {
     final target = arabicLetters[rnd.nextInt(arabicLetters.length)];
     final others = [...arabicLetters]..shuffle(rnd);
@@ -100,7 +98,6 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // الأرقام: استمع للاسم واختر الرقم.
   for (var k = 0; k < 2; k++) {
     final n = 1 + rnd.nextInt(10);
     final others = List.generate(10, (i) => i + 1).where((x) => x != n).toList()..shuffle(rnd);
@@ -116,7 +113,6 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // الألوان: شاهد اللون واختر اسمه.
   for (var k = 0; k < 2; k++) {
     final target = _examColors[rnd.nextInt(_examColors.length)];
     final others = [..._examColors]..shuffle(rnd);
@@ -140,7 +136,7 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // الأشكال: السؤال كتابة اسم الشكل، والإجابات أشكال مرسومة فقط.
+  // السؤال كتابة اسم الشكل، والإجابات أشكال مرسومة فقط.
   for (var k = 0; k < 2; k++) {
     final target = _examShapes[rnd.nextInt(_examShapes.length)];
     final others = [..._examShapes]..shuffle(rnd);
@@ -160,15 +156,11 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // دمج الحروف: نعرض حرفين فقط، ولا نعرض الناتج المدمج داخل السؤال.
+  // السؤال يعرض حرفين فقط، والناتج المدمج موجود ضمن الخيارات فقط.
   for (var k = 0; k < 2; k++) {
     final target = _examPairs[rnd.nextInt(_examPairs.length)];
     final correctStr = '${target.$1}${target.$2}';
-    final others = _examPairs
-        .map((p) => '${p.$1}${p.$2}')
-        .where((c) => c != correctStr)
-        .toList()
-      ..shuffle(rnd);
+    final others = _examPairs.map((p) => '${p.$1}${p.$2}').where((c) => c != correctStr).toList()..shuffle(rnd);
     final opts = [correctStr, ...others.take(3)]..shuffle(rnd);
     bank.add(_ExamQ(
       category: 'دمج الحروف',
@@ -184,7 +176,6 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // آحاد: عد الصور واختر العدد.
   for (var k = 0; k < 2; k++) {
     final n = 1 + rnd.nextInt(9);
     final icon = _icons[rnd.nextInt(_icons.length)];
@@ -201,11 +192,10 @@ List<_ExamQ> _buildBank(Random rnd) {
         children: List.generate(n, (_) => Text(icon, style: const TextStyle(fontSize: 23))),
       ),
       options: opts.map(arNum).toList(),
-      correct: opts.indexOf(arNum(n)),
+      correct: opts.indexOf(n),
     ));
   }
 
-  // عشرات: مجموعات واضحة من عشرة.
   for (var k = 0; k < 2; k++) {
     final n = _tensList[rnd.nextInt(_tensList.length)];
     final others = _tensList.where((x) => x != n).toList()..shuffle(rnd);
@@ -236,10 +226,7 @@ List<_ExamQ> _buildBank(Random rnd) {
                 (_) => Container(
                   width: 5,
                   height: 5,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF00C853),
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: const BoxDecoration(color: Color(0xFF00C853), shape: BoxShape.circle),
                 ),
               ),
             ),
@@ -247,7 +234,7 @@ List<_ExamQ> _buildBank(Random rnd) {
         ),
       ),
       options: opts.map(arNum).toList(),
-      correct: opts.indexOf(arNum(n)),
+      correct: opts.indexOf(n),
     ));
   }
 
@@ -393,16 +380,9 @@ class _PrepExamScreenState extends State<PrepExamScreen> {
                   children: [
                     LinearProgressIndicator(value: (index + 1) / questions.length),
                     const SizedBox(height: 7),
-                    Chip(
-                      label: Text(q.category, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      visualDensity: VisualDensity.compact,
-                    ),
+                    Chip(label: Text(q.category, style: const TextStyle(fontWeight: FontWeight.bold)), visualDensity: VisualDensity.compact),
                     const SizedBox(height: 3),
-                    Text(
-                      q.prompt,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                    ),
+                    Text(q.prompt, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                     const SizedBox(height: 5),
                     SizedBox(height: 78, child: Center(child: q.visual)),
                     if (q.speak != null)
@@ -421,7 +401,6 @@ class _PrepExamScreenState extends State<PrepExamScreen> {
                         builder: (context, constraints) {
                           final tileWidth = (constraints.maxWidth - 12) / 2;
                           final tileHeight = (constraints.maxHeight - 12) / 2;
-                          final ratio = tileWidth / tileHeight;
                           return GridView.count(
                             primary: false,
                             physics: const NeverScrollableScrollPhysics(),
@@ -429,7 +408,7 @@ class _PrepExamScreenState extends State<PrepExamScreen> {
                             crossAxisCount: 2,
                             crossAxisSpacing: 12,
                             mainAxisSpacing: 12,
-                            childAspectRatio: ratio,
+                            childAspectRatio: tileWidth / tileHeight,
                             children: List.generate(q.options.length, (i) {
                               return Button3D(
                                 onTap: () => _answer(i),
@@ -473,9 +452,7 @@ class _ResultScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 34),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: passed
-                      ? const [Color(0xFFFFD54F), Color(0xFFFF7043)]
-                      : const [Color(0xFF90CAF9), Color(0xFF64B5F6)],
+                  colors: passed ? const [Color(0xFFFFD54F), Color(0xFFFF7043)] : const [Color(0xFF90CAF9), Color(0xFF64B5F6)],
                 ),
                 borderRadius: BorderRadius.circular(28),
               ),
@@ -504,11 +481,7 @@ class _ResultScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 30),
                     child: Text(
                       'عودة',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w900,
-                        color: passed ? const Color(0xFFFF7043) : const Color(0xFF1E88E5),
-                      ),
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: passed ? const Color(0xFFFF7043) : const Color(0xFF1E88E5)),
                     ),
                   ),
                 ],
