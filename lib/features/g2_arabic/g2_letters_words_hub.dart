@@ -98,7 +98,7 @@ class _G2AlDefinitionContentState extends State<G2AlDefinitionContent> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 650),
                 child: Column(children: [
-                  Text('افصل (ال) عن الكلمة ثم اجمعهما', textAlign: TextAlign.center, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+                  const Text('افصل (ال) عن الكلمة ثم اجمعهما', textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
                   const SizedBox(height: 6),
                   Text('${index + 1} من ${words.length}', style: const TextStyle(fontSize: 15)),
                   const SizedBox(height: 14),
