@@ -12,6 +12,7 @@ import '../settings/app_preferences_v10.dart';
 class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
+  static int _playRequest = 0;
 
   static bool get _enabled => AppPreferencesV10.instance.sounds;
 
@@ -89,6 +90,7 @@ class VoiceService {
   }
 
   static Future<void> stop() async {
+    _playRequest++;
     await _tts.stop();
     await _player.stop();
   }
@@ -102,11 +104,15 @@ class VoiceService {
     }
   }
 
+  /// Plays exactly one local asset at a time. A new request invalidates the
+  /// previous request so rapid taps cannot queue/overlap letter sounds.
   static Future<bool> _playAsset(String assetPath) async {
     if (!_enabled || !await _assetExists(assetPath)) return false;
+    final request = ++_playRequest;
     try {
       await _tts.stop();
       await _player.stop();
+      if (request != _playRequest) return false;
       await _player.setReleaseMode(ReleaseMode.stop);
       final relative = assetPath.startsWith('assets/')
           ? assetPath.substring('assets/'.length)
@@ -115,15 +121,13 @@ class VoiceService {
         AssetSource(relative, mimeType: 'audio/wav'),
         volume: 1.0,
       );
-      return true;
+      return request == _playRequest;
     } catch (_) {
       return false;
     }
   }
 
   /// Plays the local Arabic reading sound, never the letter name.
-  /// If a phoneme asset is unexpectedly unavailable and a phonetic fallback
-  /// such as "بَ" was supplied, that fallback is spoken instead.
   static Future<bool> arabicLetterSound(
     String letter, {
     String? fallbackText,
@@ -143,12 +147,14 @@ class VoiceService {
     String letter, {
     required String fallbackText,
   }) async {
-    final value = letter.trim();
+    final value = letter.trim().toLowerCase();
+    if (!_isEnglishLetter(value)) return;
+
     final played = await _playAsset(AssetCatalogV27.englishAudio(value));
     if (!played) {
       await stop();
       await _prepareTts(language: 'en-US');
-      await _tts.speak(fallbackText);
+      await _tts.speak(fallbackText.trim());
     }
   }
 }
