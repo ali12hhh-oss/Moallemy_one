@@ -46,7 +46,7 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
     'ن': ['نـ', 'ـنـ', 'ـن'],
     'ه': ['هـ', 'ـهـ', 'ـه'],
     'و': ['و', 'و', 'ـو'],
-    'ي': ['يـ', 'ـيـ', '\u0640\u064A'],
+    'ي': ['يـ', 'ـيـ', 'ـي'],
   };
 
   ArabicLetter get current => arabicLetters[index];
