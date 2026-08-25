@@ -6,7 +6,6 @@ import '../../data/harakat.dart';
 import '../../widgets/bold_drawing_canvas.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
-import '../../widgets/speakable_text.dart';
 
 class G1HarakaScreen extends StatefulWidget {
   final Haraka haraka;
@@ -42,9 +41,7 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
     canvasKey.currentState?.clear();
   }
 
-  void _speakMarkedLetter() {
-    VoiceService.arabic(_markedLetter);
-  }
+  void _speakMarkedLetter() => VoiceService.arabic(_markedLetter);
 
   void _celebrate() {
     setState(() => cheer = kCheers[letterIndex % kCheers.length]);
