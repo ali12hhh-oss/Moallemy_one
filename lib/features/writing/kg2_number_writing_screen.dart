@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../widgets/bold_drawing_canvas.dart';
@@ -12,7 +10,6 @@ import '../../widgets/celebration_overlay.dart';
 /// الأرقام تسير بالتسلسل، والآحاد دائمًا في يمين العدد والعشرات في يساره.
 class Kg2NumberWritingScreen extends StatefulWidget {
   const Kg2NumberWritingScreen({super.key});
-
   @override
   State<Kg2NumberWritingScreen> createState() => _Kg2NumberWritingScreenState();
 }
@@ -21,27 +18,18 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
   final rnd = Random();
   final canvasKey = GlobalKey<BoldDrawingCanvasState>();
   String? cheer;
-
   static const int firstNumber = 1;
   static const int lastNumber = 50;
   int number = firstNumber;
   bool askTens = true;
   bool answered = false;
-
   int get tensDigit => number ~/ 10;
   int get onesDigit => number % 10;
   bool get isTwoDigit => number >= 10;
 
   static String _word(int n) => const {
-        1: 'واحد',
-        2: 'اثنان',
-        3: 'ثلاثة',
-        4: 'أربعة',
-        5: 'خمسة',
-        6: 'ستة',
-        7: 'سبعة',
-        8: 'ثمانية',
-        9: 'تسعة',
+        1: 'واحد', 2: 'اثنان', 3: 'ثلاثة', 4: 'أربعة', 5: 'خمسة',
+        6: 'ستة', 7: 'سبعة', 8: 'ثمانية', 9: 'تسعة',
       }[n] ?? '$n';
 
   void _celebrate() {
@@ -86,8 +74,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
     }
   }
 
-  ButtonStyle _controlStyle({required Color background}) =>
-      FilledButton.styleFrom(
+  ButtonStyle _controlStyle({required Color background}) => FilledButton.styleFrom(
         minimumSize: const Size(0, 54),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
         backgroundColor: background,
@@ -98,36 +85,29 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
 
   Widget _placeValueButton({required bool tens}) {
     final selectedCorrect = answered;
-    return Expanded(
+    return SizedBox(
+      width: 138,
       child: Button3D(
         onTap: () => _answerPlaceValue(tens),
         color: selectedCorrect
             ? const Color(0xFF00C853)
             : (tens ? const Color(0xFF2979FF) : const Color(0xFFFF6B35)),
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              arNum(tens ? tensDigit : onesDigit),
-              style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              tens ? 'العشرات' : 'الآحاد',
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: Colors.white70,
-              ),
-            ),
+            Text(arNum(tens ? tensDigit : onesDigit), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)),
+            Text(tens ? 'العشرات' : 'الآحاد', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.white70)),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    VoiceService.stop();
+    super.dispose();
   }
 
   @override
@@ -138,16 +118,8 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
         appBar: AppBar(
           title: const Text('كتابة الأرقام'),
           actions: [
-            IconButton(
-              onPressed: _speak,
-              tooltip: 'استمع',
-              icon: const Icon(Icons.volume_up_rounded),
-            ),
-            IconButton(
-              onPressed: () => canvasKey.currentState?.clear(),
-              tooltip: 'مسح',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
+            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
+            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
           ],
         ),
         body: Stack(
@@ -155,30 +127,19 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
             Column(
               children: [
                 const SizedBox(height: 4),
-                const Text(
-                  'اكتب العدد بالترتيب',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  arNum(number),
-                  textDirection: TextDirection.rtl,
-                  style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900),
-                ),
+                const Text('اكتب العدد بالترتيب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(arNum(number), textDirection: TextDirection.rtl, style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900)),
                 if (isTwoDigit) ...[
                   const SizedBox(height: 2),
-                  Text(
-                    'اختر ${askTens ? 'العشرات' : 'الآحاد'} في العدد',
-                    style: const TextStyle(fontSize: 14),
-                  ),
+                  Text('اختر ${askTens ? 'العشرات' : 'الآحاد'} في العدد', style: const TextStyle(fontSize: 14)),
                   const SizedBox(height: 6),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                  Center(
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       textDirection: TextDirection.rtl,
                       children: [
-                        // في RTL: العنصر الأول يظهر في اليمين، لذلك الآحاد أولًا.
                         _placeValueButton(tens: false),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         _placeValueButton(tens: true),
                       ],
                     ),
@@ -190,32 +151,11 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                   padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: FilledButton.icon(
-                          style: _controlStyle(background: const Color(0xFF00897B)),
-                          onPressed: number > firstNumber ? _previous : null,
-                          icon: const Icon(Icons.arrow_forward_rounded),
-                          label: const Text('السابق'),
-                        ),
-                      ),
+                      Expanded(child: FilledButton.icon(style: _controlStyle(background: const Color(0xFF00897B)), onPressed: number > firstNumber ? _previous : null, icon: const Icon(Icons.arrow_forward_rounded), label: const Text('السابق'))),
                       const SizedBox(width: 7),
-                      Expanded(
-                        child: FilledButton.icon(
-                          style: _controlStyle(background: const Color(0xFFE53935)),
-                          onPressed: () => canvasKey.currentState?.clear(),
-                          icon: const Icon(Icons.delete_sweep_rounded),
-                          label: const Text('مسح السبورة'),
-                        ),
-                      ),
+                      Expanded(child: FilledButton.icon(style: _controlStyle(background: const Color(0xFFE53935)), onPressed: () => canvasKey.currentState?.clear(), icon: const Icon(Icons.delete_sweep_rounded), label: const Text('مسح السبورة'))),
                       const SizedBox(width: 7),
-                      Expanded(
-                        child: FilledButton.icon(
-                          style: _controlStyle(background: const Color(0xFF00897B)),
-                          onPressed: number < lastNumber ? _next : null,
-                          icon: const Icon(Icons.arrow_back_rounded),
-                          label: const Text('التالي'),
-                        ),
-                      ),
+                      Expanded(child: FilledButton.icon(style: _controlStyle(background: const Color(0xFF00897B)), onPressed: number < lastNumber ? _next : null, icon: const Icon(Icons.arrow_back_rounded), label: const Text('التالي'))),
                     ],
                   ),
                 ),
