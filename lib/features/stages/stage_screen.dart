@@ -17,7 +17,7 @@ import '../g3_english/g3_english_hub.dart';
 import '../g3_hub/g3_games_stories_hub.dart';
 import '../g3_math/g3_math_hub.dart';
 import '../hub/kg2_stories_games_hub.dart';
-import '../letters/letters_screen.dart';
+import '../letters/kg1_letters_screen.dart';
 import '../g2_arabic/g2_letters_screen.dart';
 import '../numbers/numbers_screen_v6.dart';
 import '../numbers/kg2_numbers_hub.dart';
@@ -49,17 +49,11 @@ class StageScreen extends StatelessWidget {
     final cards = <Widget>[];
 
     void add(String title, String subtitle, String emoji, Widget page) {
-      cards.add(_ActivityButton(
-        title: title,
-        subtitle: subtitle,
-        emoji: emoji,
-        color: color,
-        onTap: () => open(context, page),
-      ));
+      cards.add(_ActivityButton(title: title, subtitle: subtitle, emoji: emoji, color: color, onTap: () => open(context, page)));
     }
 
     if (stageId == 'kg1') {
-      add('الحروف', 'كل الحروف الـ٢٨: النطق والاسم مع كلمات ونطقها', '🔤', const LettersScreen());
+      add('الحروف', 'كل الحروف الـ٢٨: النطق والاسم مع كلمات ونطقها', '🔤', const Kg1LettersScreen());
       add('الأرقام', 'الأرقام من ١ إلى ١٠ مع النطق', '🔢', const NumbersScreenV6(start: 1, end: 10));
       add('الكتابة', 'كتابة الحروف والأرقام على الشاشة بخط عريض وواضح', '✏️', const Kg1WritingScreen());
       add('الألوان', 'كل الألوان بأسماء واضحة مع حيوان بنفس اللون', '🎨', const Kg1ColorsScreen());
@@ -135,13 +129,7 @@ class _ActivityButton extends StatelessWidget {
   final String title, subtitle, emoji;
   final Color color;
   final VoidCallback onTap;
-  const _ActivityButton({
-    required this.title,
-    required this.subtitle,
-    required this.emoji,
-    required this.color,
-    required this.onTap,
-  });
+  const _ActivityButton({required this.title, required this.subtitle, required this.emoji, required this.color, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
