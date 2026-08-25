@@ -56,7 +56,7 @@ class G1HarakatHub extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           const Text(
-                            'كل الحروف بهذه الحركة، وكلمات ممدودة',
+                            'كل الحروف بهذه الحركة، ثم تدريب الكتابة',
                             style: TextStyle(
                               color: Colors.white70,
                               fontSize: 13,
