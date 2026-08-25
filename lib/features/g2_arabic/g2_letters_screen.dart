@@ -46,7 +46,6 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
     'ن': ['نـ', 'ـنـ', 'ـن'],
     'ه': ['هـ', 'ـهـ', 'ـه'],
     'و': ['و', 'و', 'ـو'],
-    // Arabic yaa: initial يـ, medial ـيـ, final ـي (with two dots).
     'ي': ['يـ', 'ـيـ', '\u0640\u064A'],
   };
 
@@ -57,8 +56,6 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
     if (playing) return;
     setState(() => playing = true);
     try {
-      // G2 must pronounce the phonetic sound (for example بَ), never the
-      // letter name (باء). Keep this isolated to the G2 screen.
       await VoiceService.arabic(current.sound);
     } finally {
       if (mounted) setState(() => playing = false);
@@ -103,147 +100,187 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final compact = constraints.maxHeight < 650;
-              final letterSize = compact ? 78.0 : 104.0;
+              final width = constraints.maxWidth;
+              final height = constraints.maxHeight;
+              final compact = height < 620;
+              final veryCompact = height < 540;
+              final horizontalPadding = width < 360 ? 8.0 : 12.0;
+              final letterSize = veryCompact ? 62.0 : compact ? 72.0 : 92.0;
+              final cardPadding = veryCompact ? 7.0 : compact ? 9.0 : 12.0;
 
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(compact ? 10 : 16),
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: compact ? 6 : 10,
+                ),
                 child: Column(
                   children: [
                     LinearProgressIndicator(
                       value: (index + 1) / arabicLetters.length,
-                      minHeight: 7,
+                      minHeight: 6,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: compact ? 4 : 7),
                     Text(
                       'الحرف ${index + 1} من ${arabicLetters.length}',
-                      style: const TextStyle(fontWeight: FontWeight.w800),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: compact ? 13 : 15,
+                      ),
                     ),
-                    SizedBox(height: compact ? 8 : 12),
-                    Card(
-                      elevation: 4,
-                      child: Padding(
-                        padding: EdgeInsets.all(compact ? 10 : 16),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: compact ? 105 : 135,
-                              child: Center(
-                                child: AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 180),
-                                  child: Text(
-                                    displayedForm,
-                                    key: ValueKey('$index-$form'),
-                                    textDirection: TextDirection.rtl,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: letterSize,
-                                      height: 1.0,
-                                      fontWeight: FontWeight.w900,
-                                      color: StageColors.of('kg2'),
+                    SizedBox(height: compact ? 5 : 8),
+                    Expanded(
+                      child: Card(
+                        elevation: 4,
+                        margin: EdgeInsets.zero,
+                        child: Padding(
+                          padding: EdgeInsets.all(cardPadding),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: Center(
+                                  child: AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 180),
+                                    child: Text(
+                                      displayedForm,
+                                      key: ValueKey('$index-$form'),
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: letterSize,
+                                        height: 1.0,
+                                        fontWeight: FontWeight.w900,
+                                        color: StageColors.of('kg2'),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'صوت الحرف: ${letter.sound}',
-                              style: TextStyle(
-                                fontSize: compact ? 17 : 21,
-                                fontWeight: FontWeight.w800,
+                              Text(
+                                'صوت الحرف: ${letter.sound}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: compact ? 15 : 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              'اسم الحرف: ${_name(letter.letter)}',
-                              style: TextStyle(fontSize: compact ? 14 : 17),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              '${letter.emoji}  ${letter.word}',
-                              style: TextStyle(
-                                fontSize: compact ? 20 : 26,
-                                fontWeight: FontWeight.w900,
+                              Text(
+                                'اسم الحرف: ${_name(letter.letter)}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: compact ? 12 : 14),
                               ),
-                            ),
-                            SizedBox(height: compact ? 8 : 12),
-                            Row(
-                              children: List.generate(formNames.length, (i) {
-                                final selected = form == i;
-                                return Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      left: i == 0 ? 0 : 5,
-                                    ),
-                                    child: FilledButton(
-                                      style: FilledButton.styleFrom(
-                                        minimumSize: const Size(0, 44),
-                                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                                        backgroundColor: selected
-                                            ? StageColors.of('kg2')
-                                            : Colors.grey.shade600,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(11),
+                              SizedBox(height: compact ? 2 : 4),
+                              Text(
+                                '${letter.emoji}  ${letter.word}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: compact ? 17 : 21,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              SizedBox(height: compact ? 5 : 8),
+                              Row(
+                                children: List.generate(formNames.length, (i) {
+                                  final selected = form == i;
+                                  return Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: i == 0 ? 0 : 4),
+                                      child: FilledButton(
+                                        style: FilledButton.styleFrom(
+                                          minimumSize: Size(0, compact ? 36 : 40),
+                                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                                          backgroundColor: selected
+                                              ? StageColors.of('kg2')
+                                              : Colors.grey.shade600,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () => setState(() => form = i),
+                                        child: Text(
+                                          formNames[i],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      onPressed: () => setState(() => form = i),
-                                      child: Text(formNames[i]),
+                                    ),
+                                  );
+                                }),
+                              ),
+                              SizedBox(height: compact ? 4 : 7),
+                              SizedBox(
+                                width: double.infinity,
+                                child: FilledButton.icon(
+                                  style: FilledButton.styleFrom(
+                                    minimumSize: Size(0, compact ? 42 : 46),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    backgroundColor: const Color(0xFFFFA000),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                );
-                              }),
-                            ),
-                            SizedBox(height: compact ? 7 : 10),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FilledButton.icon(
-                                style: FilledButton.styleFrom(
-                                  minimumSize: const Size(0, 48),
-                                  backgroundColor: const Color(0xFFFFA000),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(13),
+                                  onPressed: playing ? null : _playLetter,
+                                  icon: Icon(
+                                    playing
+                                        ? Icons.volume_up_rounded
+                                        : Icons.play_circle_fill_rounded,
+                                    size: compact ? 20 : 23,
+                                  ),
+                                  label: Text(
+                                    playing
+                                        ? 'جارٍ تشغيل صوت الحرف...'
+                                        : 'استمع إلى صوت الحرف',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: compact ? 13 : 15,
+                                    ),
                                   ),
                                 ),
-                                onPressed: playing ? null : _playLetter,
-                                icon: Icon(
-                                  playing
-                                      ? Icons.volume_up_rounded
-                                      : Icons.play_circle_fill_rounded,
-                                ),
-                                label: Text(
-                                  playing
-                                      ? 'جارٍ تشغيل صوت الحرف...'
-                                      : 'استمع إلى صوت الحرف',
-                                  style: const TextStyle(fontWeight: FontWeight.w900),
-                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            TextButton.icon(
-                              onPressed: () =>
-                                  VoiceService.arabicLetterName(letter.letter),
-                              icon: const Icon(Icons.badge_outlined),
-                              label: const Text('اسم الحرف'),
-                            ),
-                          ],
+                              SizedBox(height: compact ? 0 : 2),
+                              TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  minimumSize: Size(0, compact ? 30 : 34),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                ),
+                                onPressed: () =>
+                                    VoiceService.arabicLetterName(letter.letter),
+                                icon: const Icon(Icons.badge_outlined, size: 18),
+                                label: const Text('اسم الحرف'),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(height: compact ? 8 : 14),
+                    SizedBox(height: compact ? 5 : 9),
                     Row(
                       children: [
                         Expanded(
                           child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              minimumSize: Size(0, compact ? 40 : 46),
+                              padding: const EdgeInsets.symmetric(horizontal: 6),
+                            ),
                             onPressed: index == 0 ? null : _previous,
                             icon: const Icon(Icons.arrow_back_rounded),
                             label: const Text('السابق'),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: width < 360 ? 6 : 10),
                         Expanded(
                           child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              minimumSize: Size(0, compact ? 40 : 46),
+                              padding: const EdgeInsets.symmetric(horizontal: 6),
+                            ),
                             onPressed: index == arabicLetters.length - 1
                                 ? null
                                 : _next,
