@@ -4,10 +4,8 @@ import '../../core/audio/voice_service.dart';
 import '../../data/content.dart';
 import '../../widgets/button_3d.dart';
 
-/// A focused writing-practice screen for الروضة الأولى: two big 3D tabs at
-/// the top switch between writing all 28 Arabic letters and writing the
-/// numbers ١-١٠. The pen is bold and clearly visible while drawing, and the
-/// child can pick their favorite ink color.
+/// شاشة الكتابة للروضة الأولى.
+/// ثابتة بملء المساحة المتاحة بدون تمرير، والكتابة تظهر مباشرة تحت إصبع الطفل.
 class Kg1WritingScreen extends StatefulWidget {
   const Kg1WritingScreen({super.key});
 
@@ -33,16 +31,34 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
   static const numbers = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'];
 
   static ButtonStyle _navigationButtonStyle() => FilledButton.styleFrom(
-        minimumSize: const Size(0, 52),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        minimumSize: const Size(0, 54),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         textStyle: const TextStyle(
-          fontSize: 17,
+          fontSize: 16,
           fontWeight: FontWeight.w900,
         ),
       );
+
+  static ButtonStyle _clearButtonStyle() => FilledButton.styleFrom(
+        minimumSize: const Size(0, 54),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        backgroundColor: const Color(0xFFE53935),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w900,
+        ),
+      );
+
+  void _clearBoard() {
+    setState(points.clear);
+  }
 
   void _switch(bool letters) {
     setState(() {
@@ -84,10 +100,23 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
       }[n] ??
       '$n';
 
+  void _startStroke(Offset p) {
+    setState(() => points.add(p));
+  }
+
+  void _continueStroke(Offset p) {
+    setState(() => points.add(p));
+  }
+
+  void _endStroke() {
+    setState(() => points.add(null));
+  }
+
   @override
   Widget build(BuildContext context) {
     final target = lettersMode ? arabicLetters[index].letter : numbers[index];
     final isTwo = !lettersMode && index == 1;
+    final theme = Theme.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -100,165 +129,178 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
               tooltip: 'استمع',
               icon: const Icon(Icons.volume_up_rounded),
             ),
-            IconButton(
-              onPressed: () => setState(points.clear),
-              tooltip: 'مسح',
-              icon: const Icon(Icons.delete_outline_rounded),
-            ),
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Button3D(
-                      onTap: () => _switch(true),
-                      color: lettersMode
-                          ? const Color(0xFF7C4DFF)
-                          : const Color(0xFFB39DDB),
-                      depth: lettersMode ? 2 : 7,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: const Center(
-                        child: Text(
-                          'الحروف 🔤',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 6, 12, 3),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Button3D(
+                        onTap: () => _switch(true),
+                        color: lettersMode
+                            ? const Color(0xFF7C4DFF)
+                            : const Color(0xFFB39DDB),
+                        depth: lettersMode ? 2 : 7,
+                        padding: const EdgeInsets.symmetric(vertical: 9),
+                        child: const Center(
+                          child: Text(
+                            'الحروف 🔤',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Button3D(
-                      onTap: () => _switch(false),
-                      color: !lettersMode
-                          ? const Color(0xFF2979FF)
-                          : const Color(0xFF90CAF9),
-                      depth: !lettersMode ? 2 : 7,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: const Center(
-                        child: Text(
-                          'الأرقام 🔢',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Button3D(
+                        onTap: () => _switch(false),
+                        color: !lettersMode
+                            ? const Color(0xFF2979FF)
+                            : const Color(0xFF90CAF9),
+                        depth: !lettersMode ? 2 : 7,
+                        padding: const EdgeInsets.symmetric(vertical: 9),
+                        child: const Center(
+                          child: Text(
+                            'الأرقام 🔢',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              lettersMode ? 'اكتب الحرف' : 'اكتب الرقم',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              target,
-              style: const TextStyle(fontSize: 74, fontWeight: FontWeight.w900),
-            ),
-            if (isTwo)
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              const SizedBox(height: 2),
+              Text(
+                lettersMode ? 'اكتب الحرف' : 'اكتب الرقم',
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Text(
-                  '💡 لاحظ: الرقم ٢ يُكتب بانحناءة من الأعلى نحو الأسفل، مثل حرف الدال (د) لكن بالعكس.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 13),
+                  target,
+                  style: const TextStyle(fontSize: 68, fontWeight: FontWeight.w900),
                 ),
               ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 40,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: penColors.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 10),
-                itemBuilder: (_, i) {
-                  final c = penColors[i];
-                  final selected = c.toARGB32() == penColor.toARGB32();
-                  return GestureDetector(
-                    onTap: () => setState(() => penColor = c),
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: c,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: selected ? Colors.black : Colors.transparent,
-                          width: 3,
+              if (isTwo)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    '💡 لاحظ: الرقم ٢ يُكتب بانحناءة من الأعلى نحو الأسفل، مثل حرف الدال (د) لكن بالعكس.',
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              const SizedBox(height: 3),
+              SizedBox(
+                height: 34,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: penColors.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 9),
+                  itemBuilder: (_, i) {
+                    final color = penColors[i];
+                    final selected = color.toARGB32() == penColor.toARGB32();
+                    return GestureDetector(
+                      onTap: () => setState(() => penColor = color),
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: selected ? Colors.black : Colors.transparent,
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 4),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 4),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(
+                        color: theme.colorScheme.outlineVariant,
+                        width: 2,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Listener(
+                        behavior: HitTestBehavior.opaque,
+                        onPointerDown: (event) => _startStroke(event.localPosition),
+                        onPointerMove: (event) => _continueStroke(event.localPosition),
+                        onPointerUp: (_) => _endStroke(),
+                        onPointerCancel: (_) => _endStroke(),
+                        child: CustomPaint(
+                          painter: _BoldDrawingPainter(points, penColor),
+                          child: const SizedBox.expand(),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.outlineVariant,
-                      width: 2,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: GestureDetector(
-                      onPanStart: (d) =>
-                          setState(() => points.add(d.localPosition)),
-                      onPanUpdate: (d) =>
-                          setState(() => points.add(d.localPosition)),
-                      onPanEnd: (_) => setState(() => points.add(null)),
-                      child: CustomPaint(
-                        painter: _BoldDrawingPainter(points, penColor),
-                        child: const SizedBox.expand(),
-                      ),
-                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: FilledButton.icon(
-                      style: _navigationButtonStyle(),
-                      onPressed: () => _next(-1),
-                      icon: const Icon(Icons.arrow_back_rounded),
-                      label: const Text('السابق'),
+              // شريط تحكم ثابت أسفل السبورة: السابق | مسح السبورة | التالي.
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton.icon(
+                        style: _navigationButtonStyle(),
+                        onPressed: () => _next(-1),
+                        icon: const Icon(Icons.arrow_forward_rounded),
+                        label: const Text('السابق'),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: FilledButton.icon(
-                      style: _navigationButtonStyle(),
-                      onPressed: () => _next(1),
-                      icon: const Icon(Icons.arrow_forward_rounded),
-                      label: const Text('التالي'),
+                    const SizedBox(width: 7),
+                    Expanded(
+                      flex: 12,
+                      child: FilledButton.icon(
+                        style: _clearButtonStyle(),
+                        onPressed: _clearBoard,
+                        icon: const Icon(Icons.delete_sweep_rounded, size: 25),
+                        label: const Text('مسح السبورة'),
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 7),
+                    Expanded(
+                      child: FilledButton.icon(
+                        style: _navigationButtonStyle(),
+                        onPressed: () => _next(1),
+                        icon: const Icon(Icons.arrow_back_rounded),
+                        label: const Text('التالي'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -268,6 +310,7 @@ class _Kg1WritingScreenState extends State<Kg1WritingScreen> {
 class _BoldDrawingPainter extends CustomPainter {
   final List<Offset?> points;
   final Color color;
+
   _BoldDrawingPainter(this.points, this.color);
 
   @override
@@ -278,14 +321,21 @@ class _BoldDrawingPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke;
+
     for (var i = 0; i < points.length - 1; i++) {
-      final a = points[i];
-      final b = points[i + 1];
-      if (a != null && b != null) canvas.drawLine(a, b, pen);
+      final first = points[i];
+      final second = points[i + 1];
+      if (first != null && second != null) {
+        canvas.drawLine(first, second, pen);
+      }
+    }
+
+    final last = points.isEmpty ? null : points.last;
+    if (last != null) {
+      canvas.drawCircle(last, pen.strokeWidth / 2, Paint()..color = color);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _BoldDrawingPainter oldDelegate) =>
-      oldDelegate.points != points || oldDelegate.color != color;
+  bool shouldRepaint(covariant _BoldDrawingPainter oldDelegate) => true;
 }
