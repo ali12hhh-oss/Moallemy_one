@@ -251,8 +251,9 @@ class _ShapePainter extends CustomPainter {
   }
 
   static void _regularPolygon(Path path, double w, double h, int sides) {
+    const sidesToUse = 6;
     final cx = w / 2, cy = h / 2, r = math.min(w, h) / 2 - 3;
-    for (var i = 0; i < sides; i++) {
+    for (var i = 0; i < sidesToUse; i++) {
       final angle = -math.pi / 2 + i * 2 * math.pi / sides;
       final x = cx + r * math.cos(angle);
       final y = cy + r * math.sin(angle);
