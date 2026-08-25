@@ -15,14 +15,10 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
   int index = 0;
   int form = 0;
 
-  static const List<String> formNames = [
-    'أولي',
-    'وسطي',
-    'أخري',
-  ];
+  static const List<String> formNames = ['أولي', 'وسطي', 'أخري'];
 
   static const Map<String, List<String>> forms = {
-    'أ': ['أ', 'أ', 'ـا'],
+    'أ': ['ا', 'ا', 'ـا'],
     'ب': ['بـ', 'ـبـ', 'ـب'],
     'ت': ['تـ', 'ـتـ', 'ـت'],
     'ث': ['ثـ', 'ـثـ', 'ـث'],
@@ -49,12 +45,10 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
     'ن': ['نـ', 'ـنـ', 'ـن'],
     'ه': ['هـ', 'ـهـ', 'ـه'],
     'و': ['و', 'و', 'ـو'],
-    // The requested final form is the dotless alif-maqsura shape.
     'ي': ['يـ', 'ـيـ', 'ى'],
   };
 
   ArabicLetter get current => arabicLetters[index];
-
   String get displayedForm => forms[current.letter]![form];
 
   Future<void> _playLetter() async {
@@ -107,7 +101,9 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
               return SingleChildScrollView(
                 padding: EdgeInsets.all(compact ? 10 : 16),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight - (compact ? 20 : 32)),
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - (compact ? 20 : 32),
+                  ),
                   child: Column(
                     children: [
                       LinearProgressIndicator(
@@ -168,7 +164,9 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
                                   final selected = form == i;
                                   return Expanded(
                                     child: Padding(
-                                      padding: EdgeInsets.only(left: i == 0 ? 0 : 6),
+                                      padding: EdgeInsets.only(
+                                        left: i == 0 ? 0 : 6,
+                                      ),
                                       child: FilledButton(
                                         style: FilledButton.styleFrom(
                                           minimumSize: const Size(0, 46),
@@ -207,7 +205,8 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
                               ),
                               const SizedBox(height: 7),
                               TextButton.icon(
-                                onPressed: () => VoiceService.arabicLetterName(letter.letter),
+                                onPressed: () =>
+                                    VoiceService.arabicLetterName(letter.letter),
                                 icon: const Icon(Icons.badge_outlined),
                                 label: const Text('اسم الحرف'),
                               ),
@@ -228,7 +227,9 @@ class _G2LettersScreenState extends State<G2LettersScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: FilledButton.icon(
-                              onPressed: index == arabicLetters.length - 1 ? null : _next,
+                              onPressed: index == arabicLetters.length - 1
+                                  ? null
+                                  : _next,
                               icon: const Icon(Icons.arrow_forward_rounded),
                               label: const Text('التالي'),
                             ),
