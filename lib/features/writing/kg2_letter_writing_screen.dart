@@ -9,11 +9,17 @@ import '../../widgets/bold_drawing_canvas.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
+// نماذج دمج حرفين للروضة الثانية: 20 نموذجًا أساسيًا + 20 نموذجًا إضافيًا.
+// الترتيب القديم محفوظ أولًا، ثم تضاف النماذج الجديدة بدون تكرار.
 const _pairs = <(String, String)>[
   ('د', 'ا'), ('ن', 'ا'), ('د', 'و'), ('د', 'ي'), ('ب', 'ا'),
   ('ب', 'و'), ('ت', 'ا'), ('س', 'ا'), ('م', 'ا'), ('ر', 'ا'),
   ('ل', 'ا'), ('ك', 'ا'), ('ف', 'ي'), ('ه', 'ي'), ('ن', 'ي'),
   ('م', 'ن'), ('ل', 'ك'), ('ب', 'ه'), ('ي', 'د'), ('و', 'ل'),
+  ('ج', 'ا'), ('ح', 'ا'), ('خ', 'ا'), ('س', 'و'), ('ش', 'ا'),
+  ('ص', 'ا'), ('ض', 'ا'), ('ط', 'ا'), ('ظ', 'ا'), ('ع', 'ا'),
+  ('غ', 'ا'), ('ق', 'ا'), ('ك', 'و'), ('ف', 'ا'), ('م', 'ي'),
+  ('ب', 'ي'), ('ت', 'ي'), ('ر', 'ي'), ('ل', 'ي'), ('و', 'ي'),
 ];
 
 class Kg2LetterWritingScreen extends StatefulWidget {
@@ -45,6 +51,7 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
       VoiceService.arabicLetterSound(l.letter, fallbackText: l.sound);
     } else {
       final p = _pairs[pairIndex];
+      // النطق الحالي يحافظ على نظام الأصوات الموجود أصلًا في خانة الدمج.
       VoiceService.arabic('${p.$1} مع ${p.$2} تصبح ${p.$1}${p.$2}');
     }
   }
@@ -110,8 +117,19 @@ class _Kg2LetterWritingScreenState extends State<Kg2LetterWritingScreen> {
         appBar: AppBar(
           title: const Text('كتابة الحروف'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
-            IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
+            // في RTL يظهر زر الاستماع في الجهة اليسرى، وتم تكبيره ليكون واضحًا للطفل.
+            IconButton(
+              onPressed: _speak,
+              tooltip: 'استمع',
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(minWidth: 60, minHeight: 60),
+              icon: const Icon(Icons.volume_up_rounded, size: 36),
+            ),
+            IconButton(
+              onPressed: () => canvasKey.currentState?.clear(),
+              tooltip: 'مسح',
+              icon: const Icon(Icons.delete_outline_rounded),
+            ),
           ],
         ),
         body: Stack(
