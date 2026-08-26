@@ -109,7 +109,7 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
                 flex: 4,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final gap = 12.0;
+                    const gap = 12.0;
                     final buttonWidth = (constraints.maxWidth - gap) / 2;
                     final buttonHeight = (constraints.maxHeight - gap) / 2;
                     return GridView.builder(
