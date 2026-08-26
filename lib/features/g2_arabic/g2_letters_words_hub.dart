@@ -56,9 +56,18 @@ class _G2AlDefinitionContentState extends State<G2AlDefinitionContent> {
   int index = 0;
   bool merged = false;
 
+  // ال التعريف تأتي مع الأسماء فقط. نُبقي «يد» كاستثناء من كلمتيْن،
+  // ثم نعرض الأسماء المعروفة من ثلاثة أحرف فأكثر. لا نستخدم هنا
+  // حروف الجر أو الضمائر أو أسماء الإشارة أو الأفعال.
   late final List<ShortWord> words = [
-    ...twoLetterWords.where((w) => w.word.isNotEmpty),
-    ...threeLetterWords.where((w) => w.word.isNotEmpty),
+    ...twoLetterWords.where((w) => w.word == 'يد'),
+    ...threeLetterWords.where((w) => const {
+      'قمر', 'شمس', 'بيت', 'قلم', 'باب', 'ولد', 'بنت', 'سمك', 'عين',
+      'جمل', 'كرة', 'ورد', 'نور', 'فيل', 'نمر', 'بحر', 'ذهب', 'حوت',
+      'أسد', 'أنف', 'أذن', 'رجل', 'قدم', 'علم', 'قطة', 'كلب', 'بقر',
+    }.contains(w.word)),
+    ...fourLetterWords,
+    ...fiveLetterWords,
   ];
 
   ShortWord get current => words[index];
