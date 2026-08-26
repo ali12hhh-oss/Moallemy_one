@@ -49,13 +49,6 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
 
   void _speakMarkedLetter() => VoiceService.arabic(_markedLetter);
 
-  void _celebrate() {
-    setState(() => cheer = kCheers[letterIndex % kCheers.length]);
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) setState(() => cheer = null);
-    });
-  }
-
   @override
   void dispose() {
     _stop();
