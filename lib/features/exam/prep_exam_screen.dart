@@ -82,8 +82,9 @@ const _tensList = [10, 20, 30, 40, 50];
 List<_ExamQ> _buildBank(Random rnd) {
   final bank = <_ExamQ>[];
 
-  for (var k = 0; k < 2; k++) {
-    final target = arabicLetters[rnd.nextInt(arabicLetters.length)];
+  // أسئلة سمعية للحروف: 8 أهداف مختلفة في كل اختبار، بلا تكرار.
+  final letterTargets = [...arabicLetters]..shuffle(rnd);
+  for (final target in letterTargets.take(8)) {
     final others = [...arabicLetters]..shuffle(rnd);
     others.removeWhere((l) => l.letter == target.letter);
     final opts = [target.letter, ...others.take(3).map((l) => l.letter)]..shuffle(rnd);
@@ -98,8 +99,9 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  for (var k = 0; k < 2; k++) {
-    final n = 1 + rnd.nextInt(10);
+  // أسئلة سمعية للأرقام: 8 أرقام مختلفة من 1 إلى 10، بلا تكرار.
+  final numberTargets = List.generate(10, (i) => i + 1)..shuffle(rnd);
+  for (final n in numberTargets.take(8)) {
     final others = List.generate(10, (i) => i + 1).where((x) => x != n).toList()..shuffle(rnd);
     final opts = [n, ...others.take(3)]..shuffle(rnd);
     bank.add(_ExamQ(
@@ -113,8 +115,9 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  for (var k = 0; k < 2; k++) {
-    final target = _examColors[rnd.nextInt(_examColors.length)];
+  // الألوان: أربعة ألوان مختلفة في كل اختبار، بلا تكرار.
+  final colorTargets = [..._examColors]..shuffle(rnd);
+  for (final target in colorTargets.take(4)) {
     final others = [..._examColors]..shuffle(rnd);
     others.removeWhere((c) => c.$1 == target.$1);
     final opts = [target.$1, ...others.take(3).map((c) => c.$1)]..shuffle(rnd);
@@ -136,9 +139,9 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // السؤال كتابة اسم الشكل، والإجابات أشكال مرسومة فقط.
-  for (var k = 0; k < 2; k++) {
-    final target = _examShapes[rnd.nextInt(_examShapes.length)];
+  // الأشكال: أربعة أشكال مختلفة في كل اختبار، بلا تكرار.
+  final shapeTargets = [..._examShapes]..shuffle(rnd);
+  for (final target in shapeTargets.take(4)) {
     final others = [..._examShapes]..shuffle(rnd);
     others.removeWhere((s) => s.$1 == target.$1);
     final opts = [target.$1, ...others.take(3).map((s) => s.$1)]..shuffle(rnd);
@@ -156,11 +159,15 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  // السؤال يعرض حرفين فقط، والناتج المدمج موجود ضمن الخيارات فقط.
-  for (var k = 0; k < 2; k++) {
-    final target = _examPairs[rnd.nextInt(_examPairs.length)];
+  // دمج الحروف: أربعة أزواج مختلفة في كل اختبار، بلا تكرار.
+  final pairTargets = [..._examPairs]..shuffle(rnd);
+  for (final target in pairTargets.take(4)) {
     final correctStr = '${target.$1}${target.$2}';
-    final others = _examPairs.map((p) => '${p.$1}${p.$2}').where((c) => c != correctStr).toList()..shuffle(rnd);
+    final others = _examPairs
+        .map((p) => '${p.$1}${p.$2}')
+        .where((c) => c != correctStr)
+        .toList()
+      ..shuffle(rnd);
     final opts = [correctStr, ...others.take(3)]..shuffle(rnd);
     bank.add(_ExamQ(
       category: 'دمج الحروف',
@@ -176,8 +183,9 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  for (var k = 0; k < 2; k++) {
-    final n = 1 + rnd.nextInt(9);
+  // الآحاد: أربعة أعداد مختلفة في كل اختبار، بلا تكرار.
+  final onesTargets = List.generate(9, (i) => i + 1)..shuffle(rnd);
+  for (final n in onesTargets.take(4)) {
     final icon = _icons[rnd.nextInt(_icons.length)];
     final others = List.generate(9, (i) => i + 1).where((x) => x != n).toList()..shuffle(rnd);
     final opts = [n, ...others.take(3)]..shuffle(rnd);
@@ -196,8 +204,9 @@ List<_ExamQ> _buildBank(Random rnd) {
     ));
   }
 
-  for (var k = 0; k < 2; k++) {
-    final n = _tensList[rnd.nextInt(_tensList.length)];
+  // العشرات: جميع القيم الخمس المختلفة، بلا تكرار.
+  final tensTargets = [..._tensList]..shuffle(rnd);
+  for (final n in tensTargets) {
     final others = _tensList.where((x) => x != n).toList()..shuffle(rnd);
     final opts = [n, ...others.take(3)]..shuffle(rnd);
     final groups = n ~/ 10;
