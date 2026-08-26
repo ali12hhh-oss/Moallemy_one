@@ -33,9 +33,9 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 12, 14, 4),
             child: Row(children: [
-              Expanded(child: Button3D(onTap: () => setState(() => placeValueMode = false), color: !placeValueMode ? const Color(0xFF2979FF) : const Color(0xFF90CAF9), depth: !placeValueMode ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: SpeakableText('العدّ ١-١٠٠', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))))),
+              Expanded(child: Button3D(onTap: () => setState(() => placeValueMode = false), color: !placeValueMode ? const Color(0xFF2979FF) : const Color(0xFF90CAF9), depth: !placeValueMode ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: Text('العدّ ١-١٠٠', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))))),
               const SizedBox(width: 10),
-              Expanded(child: Button3D(onTap: () => setState(() => placeValueMode = true), color: placeValueMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB), depth: placeValueMode ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: SpeakableText('الآحاد والعشرات والمئات', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, color: Colors.white))))),
+              Expanded(child: Button3D(onTap: () => setState(() => placeValueMode = true), color: placeValueMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB), depth: placeValueMode ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: Text('الآحاد والعشرات والمئات', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, color: Colors.white))))),
             ]),
           ),
           const SizedBox(height: 8),
@@ -52,7 +52,7 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
       itemCount: 100,
       itemBuilder: (_, i) {
         final n = i + 1;
-        return Card(child: InkWell(onTap: () => VoiceService.arabic(arNum(n)), child: Center(child: SpeakableText(arNum(n), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)))));
+        return Card(child: InkWell(onTap: () => VoiceService.arabic(arNum(n)), child: Center(child: Text(arNum(n), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)))));
       },
     );
   }
@@ -76,7 +76,7 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
         onTap: () => VoiceService.arabic('${arNum(n)}، ${_word(n)}'),
         color: color,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        child: SpeakableText(arNum(n), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
+        child: Text(arNum(n), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
       )).toList()),
     ]);
   }
