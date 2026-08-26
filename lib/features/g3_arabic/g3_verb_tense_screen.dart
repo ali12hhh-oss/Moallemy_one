@@ -24,6 +24,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
   String? cheer;
 
   static const labels = ['ماضٍ', 'مضارع', 'أمر'];
+  static const learnHeaders = ['الفعل الماضي', 'الفعل المضارع', 'الفعل الأمر'];
   static const colors = [
     Color(0xFFFF6B35),
     Color(0xFF2979FF),
@@ -128,9 +129,34 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 28),
+                        ...List.generate(3, (j) {
+                          return Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                              child: Center(
+                                child: Text(
+                                  learnHeaders[j],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
                       itemCount: verbTenses.length,
                       itemBuilder: (_, i) {
                         final v = verbTenses[i];
@@ -147,34 +173,21 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                               ...List.generate(3, (j) {
                                 return Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 3,
-                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 3),
                                     child: Button3D(
-                                      onTap: () =>
-                                          VoiceService.arabic(forms[j]),
+                                      onTap: () => VoiceService.arabic(forms[j]),
                                       color: colors[j],
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            forms[j],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
-                                            ),
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      child: Center(
+                                        child: Text(
+                                          forms[j],
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            labels[j],
-                                            style: const TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.white70,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -209,15 +222,11 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                             children: List.generate(3, (i) {
                               return Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
                                   child: Button3D(
                                     onTap: () => _answer(i),
                                     color: colors[i],
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 18,
-                                    ),
+                                    padding: const EdgeInsets.symmetric(vertical: 18),
                                     child: Center(
                                       child: Text(
                                         labels[i],
