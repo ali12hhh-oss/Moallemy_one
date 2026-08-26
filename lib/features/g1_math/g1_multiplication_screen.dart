@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../widgets/button_3d.dart';
-import '../../widgets/speakable_text.dart';
 
 class G1MultiplicationScreen extends StatefulWidget {
   const G1MultiplicationScreen({super.key});
@@ -21,7 +20,7 @@ class _G1MultiplicationScreenState extends State<G1MultiplicationScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const SpeakableText('جدول الضرب', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+        appBar: AppBar(title: const Text('جدول الضرب', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
         body: Column(children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 12, 14, 4),
@@ -31,7 +30,7 @@ class _G1MultiplicationScreenState extends State<G1MultiplicationScreen> {
                 onTap: () { VoiceService.arabic('جدول ${arNum(t)}'); setState(() => table = t); },
                 color: colors[t - 1], depth: selected ? 2 : 7,
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Center(child: SpeakableText('جدول ${arNum(t)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
+                child: Center(child: Text('جدول ${arNum(t)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))),
               )));
             }).toList()),
           ),
@@ -45,7 +44,7 @@ class _G1MultiplicationScreenState extends State<G1MultiplicationScreen> {
               return Padding(padding: const EdgeInsets.only(bottom: 10), child: Button3D(
                 onTap: () => VoiceService.arabic('${arNum(table)} في ${arNum(n)} يساوي ${arNum(product)}'),
                 color: color, padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                child: Center(child: SpeakableText(text, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white))),
+                child: Center(child: Text(text, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white))),
               ));
             },
           )),
