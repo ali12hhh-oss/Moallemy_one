@@ -80,26 +80,26 @@ const nounVerbWords = <NounVerbWord>[
   NounVerbWord('يقرأ', true, '📖'),
 ];
 
-/// ٥) أزمنة الفعل: ماضٍ، مضارع، مستقبل — للصف الثالث.
+/// ٥) أنواع الفعل: ماضٍ، مضارع، أمر — للصف الثالث.
 class VerbTense {
   final String past;
   final String present;
-  final String future;
+  final String imperative;
   final String emoji;
-  const VerbTense(this.past, this.present, this.future, this.emoji);
+  const VerbTense(this.past, this.present, this.imperative, this.emoji);
 }
 
 const verbTenses = <VerbTense>[
-  VerbTense('كتب', 'يكتب', 'سيكتب', '✍️'),
-  VerbTense('لعب', 'يلعب', 'سيلعب', '⚽'),
-  VerbTense('أكل', 'يأكل', 'سيأكل', '🍽️'),
-  VerbTense('نام', 'ينام', 'سينام', '😴'),
-  VerbTense('قرأ', 'يقرأ', 'سيقرأ', '📖'),
-  VerbTense('رسم', 'يرسم', 'سيرسم', '🎨'),
-  VerbTense('ركض', 'يركض', 'سيركض', '🏃'),
-  VerbTense('شرب', 'يشرب', 'سيشرب', '🥤'),
-  VerbTense('سبح', 'يسبح', 'سيسبح', '🏊'),
-  VerbTense('غنّى', 'يغنّي', 'سيغنّي', '🎤'),
+  VerbTense('كتب', 'يكتب', 'اكتب', '✍️'),
+  VerbTense('لعب', 'يلعب', 'العب', '⚽'),
+  VerbTense('أكل', 'يأكل', 'كل', '🍽️'),
+  VerbTense('نام', 'ينام', 'نم', '😴'),
+  VerbTense('قرأ', 'يقرأ', 'اقرأ', '📖'),
+  VerbTense('رسم', 'يرسم', 'ارسم', '🎨'),
+  VerbTense('ركض', 'يركض', 'اركض', '🏃'),
+  VerbTense('شرب', 'يشرب', 'اشرب', '🥤'),
+  VerbTense('سبح', 'يسبح', 'اسبح', '🏊'),
+  VerbTense('غنّى', 'يغنّي', 'غنِّ', '🎤'),
 ];
 
 /// ٦) أدوات الاستفهام — للصف الثالث.
