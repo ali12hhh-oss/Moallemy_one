@@ -18,9 +18,26 @@ class _S extends State<GamesScreen> {
   int mode = 0, score = 0;
   late ArabicLetter target;
   List<ArabicLetter> options = [];
-  List<ArabicWordV11> match = [];
+  late ArabicWordV11 matchTarget;
+  List<ArabicWordV11> matchOptions = [];
   int numberTarget = 0;
   List<int> numberOptions = [];
+
+  // Keep only common, reliably rendered emoji so the child never sees a square.
+  static const _reliableWordEmojis = <String>{
+    '🦁', '🐇', '🍚', '👩', '👨', '🚪', '🏠', '🍊', '👑', '🍎', '🌴', '👕',
+    '🐂', '🐪', '⛰️', '🔔', '🥕', '🐋', '🐎', '🎒', '🥛', '🍞', '🐑', '💍',
+    '🐔', '🚲', '🐻', '📓', '🐺', '🥇', '🌽', '🪶', '🎨', '🌸', '🦒', '🐟',
+    '🚢', '🚗', '🛏️', '☀️', '🌳', '🚚', '🍵', '🦅', '📦', '🧼', '🐸', '💡',
+    '🐦', '🥁', '🍽️', '🦌', '✉️', '👁️', '🍯', '🛋️', '☁️', '🐘', '🦋', '🍇',
+    '🪥', '✏️', '🐱', '🛶', '🌙', '📖', '⚽', '🎂', '🐶', '🍋', '🧸', '👅',
+    '🍌', '🌧️', '🏫', '🔑', '⭐', '🪟', '🐝', '📱', '🎁', '💨', '🌹', '📄',
+    '🙂', '✋', '🎃', '🕊️', '📅', '🍬', '🏟️', '📚', '✈️', '🚆', '🚌',
+  };
+
+  List<ArabicWordV11> get _playableWords => arabicWordsV11
+      .where((x) => _reliableWordEmojis.contains(x.emoji))
+      .toList(growable: false);
 
   @override
   void initState() {
@@ -40,8 +57,11 @@ class _S extends State<GamesScreen> {
   }
 
   void nextMatch() {
-    final shuffled = [...arabicWordsV11]..shuffle(r);
-    match = shuffled.take(4).toList();
+    final words = _playableWords.toList()..shuffle(r);
+    matchTarget = words.first;
+    // Options are words only; the image shown above belongs exclusively to matchTarget.
+    final distractors = words.where((x) => x.word != matchTarget.word).toList();
+    matchOptions = [matchTarget, ...distractors.take(3)]..shuffle(r);
   }
 
   void nextNumber() {
@@ -85,11 +105,7 @@ class _S extends State<GamesScreen> {
               ),
             ),
             Expanded(
-              child: mode == 0
-                  ? _hunter(c)
-                  : mode == 1
-                  ? _match(c)
-                  : _numbers(c),
+              child: mode == 0 ? _hunter(c) : mode == 1 ? _match(c) : _numbers(c),
             ),
           ],
         ),
@@ -102,17 +118,10 @@ class _S extends State<GamesScreen> {
       padding: const EdgeInsets.all(18),
       child: Column(
         children: [
-          Text(
-            'النجوم: ${arNum(score)} ⭐',
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
+          Text('النجوم: ${arNum(score)} ⭐', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 22),
           Text(target.emoji, style: const TextStyle(fontSize: 80)),
-          Text(
-            'اسمع الصوت وابحث عن الحرف المناسب لكلمة ${target.word}',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 22),
-          ),
+          Text('اسمع الصوت وابحث عن الحرف المناسب لكلمة ${target.word}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 22)),
           const SizedBox(height: 12),
           FilledButton.icon(
             onPressed: () => VoiceService.arabic(target.sound),
@@ -129,11 +138,7 @@ class _S extends State<GamesScreen> {
                   onPressed: () {
                     final ok = x.letter == target.letter;
                     if (ok) score++;
-                    ScaffoldMessenger.of(c).showSnackBar(
-                      SnackBar(
-                        content: Text(ok ? 'أحسنت! 🎉' : 'حاول مرة أخرى 💪'),
-                      ),
-                    );
+                    ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(ok ? 'أحسنت! 🎉' : 'حاول مرة أخرى 💪')));
                     setState(nextHunter);
                   },
                   child: Text(x.letter, style: const TextStyle(fontSize: 30)),
@@ -146,44 +151,70 @@ class _S extends State<GamesScreen> {
   }
 
   Widget _match(BuildContext c) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(18),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: match.length,
-      itemBuilder: (_, i) {
-        final x = match[i];
-        return Card(
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                score++;
-                nextMatch();
-              });
-              ScaffoldMessenger.of(c).showSnackBar(
-                SnackBar(content: Text('وجدت ${x.word} ${x.emoji}')),
-              );
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(x.emoji, style: const TextStyle(fontSize: 52)),
-                Text(
-                  x.word,
-                  style: const TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 18),
+      child: Column(
+        children: [
+          const Text('ما هذه الكلمة؟', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 8),
+          Text('النجوم: ${arNum(score)} ⭐', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          Expanded(
+            flex: 5,
+            child: Card(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(matchTarget.emoji, style: const TextStyle(fontSize: 92)),
+                    const SizedBox(height: 8),
+                    FilledButton.icon(
+                      onPressed: () => VoiceService.arabic(matchTarget.word),
+                      icon: const Icon(Icons.volume_up_rounded),
+                      label: const Text('استمع إلى الكلمة'),
+                    ),
+                  ],
                 ),
-                Text('يبدأ بالحرف ${x.letter}'),
-              ],
+              ),
             ),
           ),
-        );
-      },
+          const SizedBox(height: 10),
+          const Align(
+            alignment: Alignment.centerRight,
+            child: Text('اختر الكلمة الصحيحة:', style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            flex: 4,
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: matchOptions.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 2.5,
+              ),
+              itemBuilder: (_, i) {
+                final x = matchOptions[i];
+                return FilledButton.tonal(
+                  onPressed: () {
+                    final ok = identical(x, matchTarget) || x.word == matchTarget.word;
+                    if (ok) {
+                      score++;
+                      ScaffoldMessenger.of(c).showSnackBar(const SnackBar(content: Text('أحسنت! إجابة صحيحة 🎉')));
+                      setState(nextMatch);
+                    } else {
+                      ScaffoldMessenger.of(c).showSnackBar(const SnackBar(content: Text('ليست هذه الكلمة، حاول مرة أخرى 💪')));
+                    }
+                  },
+                  child: FittedBox(fit: BoxFit.scaleDown, child: Text(x.word, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -191,15 +222,9 @@ class _S extends State<GamesScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          'اختر العدد المطلوب',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
+        const Text('اختر العدد المطلوب', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         const SizedBox(height: 12),
-        Text(
-          arNum(numberTarget),
-          style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w900),
-        ),
+        Text(arNum(numberTarget), style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w900)),
         const SizedBox(height: 18),
         for (final n in numberOptions)
           Padding(
@@ -210,11 +235,7 @@ class _S extends State<GamesScreen> {
                 onPressed: () {
                   final ok = n == numberTarget;
                   if (ok) score++;
-                  ScaffoldMessenger.of(c).showSnackBar(
-                    SnackBar(
-                      content: Text(ok ? 'إجابة صحيحة ⭐' : 'حاول مرة أخرى'),
-                    ),
-                  );
+                  ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(ok ? 'إجابة صحيحة ⭐' : 'حاول مرة أخرى')));
                   setState(nextNumber);
                 },
                 child: Text(arNum(n), style: const TextStyle(fontSize: 26)),
