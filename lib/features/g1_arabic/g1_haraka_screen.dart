@@ -274,11 +274,11 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
             height: 52,
             child: Row(
               children: [
-                Expanded(child: Button3D(onTap: () => _move(-1), color: _previousColor, padding: EdgeInsets.zero, child: Center(child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900))])))),
+                Expanded(child: Button3D(onTap: () => _move(-1), color: _previousColor, padding: EdgeInsets.zero, child: const Center(child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900))])))),
                 const SizedBox(width: 7),
                 Expanded(child: Button3D(onTap: () => canvasKey.currentState?.clear(), color: _clearColor, padding: EdgeInsets.zero, child: const Center(child: Text('مسح', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900))))),
                 const SizedBox(width: 7),
-                Expanded(child: Button3D(onTap: () => _move(1), color: _nextColor, padding: EdgeInsets.zero, child: Center(child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [Text('التالي', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)), SizedBox(width: 6), Icon(Icons.arrow_forward_rounded, color: Colors.white)])))),
+                Expanded(child: Button3D(onTap: () => _move(1), color: _nextColor, padding: EdgeInsets.zero, child: const Center(child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [Text('التالي', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)), SizedBox(width: 6), Icon(Icons.arrow_forward_rounded, color: Colors.white)])))),
               ],
             ),
           ),
