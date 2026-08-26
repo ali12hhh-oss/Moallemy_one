@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/button_3d.dart';
-import '../../widgets/speakable_text.dart';
 import 'g1_add_sub_screen.dart';
 
 class G1AddSubHub extends StatelessWidget {
@@ -12,17 +11,12 @@ class G1AddSubHub extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const SpeakableText('الجمع والطرح', style: TextStyle(color: Colors.white))),
+        appBar: AppBar(title: const Text('الجمع والطرح', style: TextStyle(color: Colors.white))),
         body: ListView(
           padding: const EdgeInsets.all(18),
           children: [
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G1AddSubScreen(isAddition: true),
-                ),
-              ),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const G1AddSubScreen(isAddition: true))),
               color: const Color(0xFF00C853),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -33,9 +27,9 @@ class G1AddSubHub extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SpeakableText('الجمع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
+                        Text('الجمع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
                         SizedBox(height: 4),
-                        SpeakableText('اجمع الفواكه، والناتج لا يتجاوز ١٠', style: TextStyle(color: Colors.white70)),
+                        Text('اجمع الفواكه، والناتج لا يتجاوز ١٠', style: TextStyle(color: Colors.white70)),
                       ],
                     ),
                   ),
@@ -44,12 +38,7 @@ class G1AddSubHub extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Button3D(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G1AddSubScreen(isAddition: false),
-                ),
-              ),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const G1AddSubScreen(isAddition: false))),
               color: const Color(0xFFFF6B35),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
               child: const Row(
@@ -60,9 +49,9 @@ class G1AddSubHub extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SpeakableText('الطرح', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
+                        Text('الطرح', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
                         SizedBox(height: 4),
-                        SpeakableText('اطرح من الفواكه، والناتج لا يتجاوز ١٠', style: TextStyle(color: Colors.white70)),
+                        Text('اطرح من الفواكه، والناتج لا يتجاوز ١٠', style: TextStyle(color: Colors.white70)),
                       ],
                     ),
                   ),
