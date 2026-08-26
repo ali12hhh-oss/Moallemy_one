@@ -40,15 +40,6 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
     canvasKey.currentState?.clear();
   }
 
-  void _selectLetter(int index) {
-    _stop();
-    setState(() {
-      letterIndex = index;
-      cheer = null;
-    });
-    canvasKey.currentState?.clear();
-  }
-
   void _speakMarkedLetter() => VoiceService.arabic(_markedLetter);
 
   @override
@@ -232,7 +223,12 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                             height: 58,
                             child: Button3D(
                               onTap: () {
-                                _selectLetter(i);
+                                _stop();
+                                setState(() {
+                                  letterIndex = i;
+                                  cheer = null;
+                                });
+                                canvasKey.currentState?.clear();
                                 VoiceService.arabic(marked);
                               },
                               color: selected ? const Color(0xFF7C4DFF) : const Color(0xFF2979FF),
@@ -262,9 +258,7 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
   }
 
   Widget _buildWriting(BuildContext context, Haraka h, double width) {
-    final compact = width < 420;
     final letterSize = (width * .15).clamp(56.0, 84.0);
-    final pickerSize = compact ? 30.0 : 34.0;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 4, 12, 10),
@@ -272,44 +266,23 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
         children: [
           const Text('اكتب الحرف مع الحركة التي تسمعها', textAlign: TextAlign.center, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
           const SizedBox(height: 5),
-          SizedBox(
-            height: 54,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              reverse: true,
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              itemCount: arabicLetters.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 6),
-              itemBuilder: (_, i) {
-                final marked = letterWithHaraka(arabicLetters[i].letter, h);
-                final selected = letterIndex == i;
-                return SizedBox(
-                  width: compact ? 48 : 54,
-                  child: Button3D(
-                    onTap: () => _selectLetter(i),
-                    color: selected ? const Color(0xFF7C4DFF) : const Color(0xFF2979FF),
-                    padding: EdgeInsets.zero,
-                    child: Center(child: Text(marked, textAlign: TextAlign.center, style: TextStyle(fontSize: pickerSize, height: 1, fontWeight: FontWeight.w900, color: Colors.white))),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 5),
           Text(_markedLetter, textAlign: TextAlign.center, style: TextStyle(fontSize: letterSize, height: 1, fontWeight: FontWeight.w900)),
           const SizedBox(height: 3),
           const Text('هذا حرف واحد مع حركة، وليس كلمة مثل با أو بو أو بي.', textAlign: TextAlign.center, style: TextStyle(fontSize: 13)),
           const SizedBox(height: 5),
           Expanded(child: BoldDrawingCanvas(key: canvasKey)),
           const SizedBox(height: 7),
-          Row(
-            children: [
-              Expanded(child: Button3D(onTap: () => _move(-1), color: _previousColor, padding: const EdgeInsets.symmetric(vertical: 11), child: const Text('السابق', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)))),
-              const SizedBox(width: 7),
-              Expanded(child: Button3D(onTap: () => canvasKey.currentState?.clear(), color: _clearColor, padding: const EdgeInsets.symmetric(vertical: 11), child: const Text('مسح', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)))),
-              const SizedBox(width: 7),
-              Expanded(child: Button3D(onTap: () => _move(1), color: _nextColor, padding: const EdgeInsets.symmetric(vertical: 11), child: const Text('التالي', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)))),
-            ],
+          SizedBox(
+            height: 52,
+            child: Row(
+              children: [
+                Expanded(child: Button3D(onTap: () => _move(-1), color: _previousColor, padding: EdgeInsets.zero, child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900))]))),
+                const SizedBox(width: 7),
+                Expanded(child: Button3D(onTap: () => canvasKey.currentState?.clear(), color: _clearColor, padding: EdgeInsets.zero, child: const Text('مسح', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)))),
+                const SizedBox(width: 7),
+                Expanded(child: Button3D(onTap: () => _move(1), color: _nextColor, padding: EdgeInsets.zero, child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Text('التالي', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)), SizedBox(width: 6), Icon(Icons.arrow_forward_rounded, color: Colors.white)]))),
+              ],
+            ),
           ),
           const SizedBox(height: 7),
           SizedBox(
