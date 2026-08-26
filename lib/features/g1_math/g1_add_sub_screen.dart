@@ -101,7 +101,7 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
                     ],
                     const SizedBox(height: 6),
                     FittedBox(fit: BoxFit.scaleDown, child: SpeakableText('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900))),
-                    SizedBox(height: 2, child: IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى المسألة', onPressed: () { final opWord = widget.isAddition ? 'زائد' : 'ناقص'; VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}، كم الناتج؟'); })),
+                    SizedBox(height: 2, child: IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى المسألة', onPressed: () { const opWord = 'زائد'; VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}، كم الناتج؟'); })),
                   ],
                 ),
               ),
