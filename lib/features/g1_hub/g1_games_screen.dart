@@ -195,7 +195,7 @@ class _ArabicWordGameState extends State<_ArabicWordGame> {
   }
 }
 
-/// English Letters Game: hear the letter sound, pick the matching letter.
+/// English Letters Game: hear one clean phonics sound, then pick the letter.
 class _EnglishLetterGame extends StatefulWidget {
   const _EnglishLetterGame();
   @override
@@ -209,6 +209,46 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
   int score = 0;
   String? cheer;
 
+  // These are deliberately short phonics spellings, not letter names.
+  // The game uses the device's English TTS for this isolated question only,
+  // avoiding the duplicated/cross-wired local A-Z recordings currently in
+  // assets/audio/en and assets/audio/english.
+  static const Map<String, String> _gameSounds = {
+    'A': 'ah',
+    'B': 'buh',
+    'C': 'kuh',
+    'D': 'duh',
+    'E': 'eh',
+    'F': 'fuh',
+    'G': 'guh',
+    'H': 'huh',
+    'I': 'ih',
+    'J': 'juh',
+    'K': 'kuh',
+    'L': 'luh',
+    'M': 'muh',
+    'N': 'nuh',
+    'O': 'oh',
+    'P': 'puh',
+    'Q': 'kwuh',
+    'R': 'ruh',
+    'S': 'suh',
+    'T': 'tuh',
+    'U': 'uh',
+    'V': 'vuh',
+    'W': 'wuh',
+    'X': 'ks',
+    'Y': 'yuh',
+    'Z': 'zuh',
+  };
+
+  Future<void> _playTargetSound() async {
+    final sound = _gameSounds[target.letter.toUpperCase()];
+    if (sound == null) return;
+    await VoiceService.stop();
+    await VoiceService.english(sound);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -220,12 +260,9 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
     final others = [...englishLetters]..shuffle(rnd);
     others.removeWhere((l) => l.letter == target.letter);
     options = [target, ...others.take(3)]..shuffle(rnd);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => VoiceService.englishLetterSound(
-        target.letter.toLowerCase(),
-        fallbackText: target.sound,
-      ),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _playTargetSound();
+    });
   }
 
   void _answer(EnglishLetter chosen) {
@@ -240,10 +277,7 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
         }
       });
     } else {
-      VoiceService.englishLetterSound(
-        target.letter.toLowerCase(),
-        fallbackText: target.sound,
-      );
+      _playTargetSound();
     }
   }
 
@@ -262,10 +296,7 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
                   IconButton(
                     iconSize: 44,
                     icon: const Icon(Icons.volume_up_rounded),
-                    onPressed: () => VoiceService.englishLetterSound(
-                      target.letter.toLowerCase(),
-                      fallbackText: target.sound,
-                    ),
+                    onPressed: _playTargetSound,
                   ),
                   const Text(
                     'Which letter did you hear?',
