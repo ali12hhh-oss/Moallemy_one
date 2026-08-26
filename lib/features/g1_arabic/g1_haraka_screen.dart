@@ -27,13 +27,13 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
   void _stop() => VoiceService.stop();
 
   String get _markedLetter =>
-      letterWithHaraka(harakaSampleLetters[letterIndex], widget.haraka);
+      letterWithHaraka(arabicLetters[letterIndex].letter, widget.haraka);
 
   void _move(int delta) {
     _stop();
     setState(() {
       letterIndex =
-          (letterIndex + delta + harakaSampleLetters.length) % harakaSampleLetters.length;
+          (letterIndex + delta + arabicLetters.length) % arabicLetters.length;
       cheer = null;
     });
     canvasKey.currentState?.clear();
@@ -45,6 +45,7 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
       letterIndex = index;
       cheer = null;
     });
+    canvasKey.currentState?.clear();
   }
 
   void _speakMarkedLetter() => VoiceService.arabic(_markedLetter);
@@ -129,7 +130,8 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                   Expanded(
                     child: writingMode
                         ? _buildWriting(context, h, width)
-                        : _buildLettersAndHaraka(context, h, markedSize, pickerLetterSize),
+                        : _buildLettersAndHaraka(
+                            context, h, markedSize, pickerLetterSize),
                   ),
                 ],
               ),
@@ -230,7 +232,7 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                     itemCount: arabicLetters.length,
                     itemBuilder: (_, i) {
                       final marked = letterWithHaraka(arabicLetters[i].letter, h);
-                      final selected = harakaSampleLetters[letterIndex] == arabicLetters[i].letter;
+                      final selected = letterIndex == i;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 7),
                         child: Center(
@@ -239,7 +241,7 @@ class _G1HarakaScreenState extends State<G1HarakaScreen> {
                             height: 58,
                             child: Button3D(
                               onTap: () {
-                                _selectLetter(i < harakaSampleLetters.length ? i : letterIndex);
+                                _selectLetter(i);
                                 VoiceService.arabic(marked);
                               },
                               color: selected
