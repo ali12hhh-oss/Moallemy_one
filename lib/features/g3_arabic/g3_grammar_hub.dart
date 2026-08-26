@@ -13,8 +13,8 @@ class G3GrammarHub extends StatelessWidget {
     final items = <(String, String, String, Color, Widget)>[
       (
         '⏰',
-        'أزمنة الفعل',
-        'ماضٍ، مضارع، ومستقبل',
+        'أنواع الفعل',
+        'ماضٍ، مضارع، وأمر',
         const Color(0xFF7C4DFF),
         const G3VerbTenseScreen(),
       ),
