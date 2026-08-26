@@ -69,43 +69,68 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
         appBar: AppBar(title: SpeakableText('${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐')),
         body: Stack(children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 18),
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
             child: Column(children: [
-              Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(a, (i) {
-                final crossed = !widget.isAddition && i < b;
-                return Stack(alignment: Alignment.center, children: [
-                  SpeakableText(fruit, enabled: false, style: TextStyle(fontSize: 34, color: crossed ? Colors.grey.withValues(alpha: .4) : null)),
-                  if (crossed) const Icon(Icons.close_rounded, color: Colors.red, size: 30),
-                ]);
-              })),
-              const SizedBox(height: 10),
-              if (widget.isAddition) ...[
-                const SpeakableText('+', style: TextStyle(fontSize: 26)),
-                const SizedBox(height: 6),
-                Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(b, (_) => SpeakableText(fruit, enabled: false, style: const TextStyle(fontSize: 34)))),
-              ],
-              const SizedBox(height: 16),
-              SpeakableText('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
-              const SizedBox(height: 8),
-              IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى المسألة', onPressed: () { final opWord = widget.isAddition ? 'زائد' : 'ناقص'; VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}، كم الناتج؟'); }),
-              const SizedBox(height: 10),
               Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1.45,
-                  ),
-                  itemCount: options.length,
-                  itemBuilder: (context, index) {
-                    final o = options[index];
-                    return Button3D(
-                      onTap: () { VoiceService.arabic(arNum(o)); _answer(o); },
-                      color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                      child: Center(child: FittedBox(fit: BoxFit.scaleDown, child: Text(arNum(o), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white)))),
+                flex: 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(a, (i) {
+                          final crossed = !widget.isAddition && i < b;
+                          return Stack(alignment: Alignment.center, children: [
+                            SpeakableText(fruit, enabled: false, style: TextStyle(fontSize: 34, color: crossed ? Colors.grey.withValues(alpha: .4) : null)),
+                            if (crossed) const Icon(Icons.close_rounded, color: Colors.red, size: 30),
+                          ]);
+                        })),
+                      ),
+                    ),
+                    if (widget.isAddition) ...[
+                      const SizedBox(height: 4),
+                      const SpeakableText('+', style: TextStyle(fontSize: 26)),
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(b, (_) => SpeakableText(fruit, enabled: false, style: const TextStyle(fontSize: 34)))),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 6),
+                    FittedBox(fit: BoxFit.scaleDown, child: SpeakableText('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900))),
+                    SizedBox(height: 2, child: IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى المسألة', onPressed: () { final opWord = widget.isAddition ? 'زائد' : 'ناقص'; VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}، كم الناتج؟'); })),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final gap = 12.0;
+                    final buttonWidth = (constraints.maxWidth - gap) / 2;
+                    final buttonHeight = (constraints.maxHeight - gap) / 2;
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: gap,
+                        crossAxisSpacing: gap,
+                        childAspectRatio: buttonWidth / buttonHeight,
+                      ),
+                      itemCount: options.length,
+                      itemBuilder: (context, index) {
+                        final o = options[index];
+                        return Button3D(
+                          onTap: () { VoiceService.arabic(arNum(o)); _answer(o); },
+                          color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          child: Center(child: FittedBox(fit: BoxFit.scaleDown, child: Text(arNum(o), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white))),),
+                        );
+                      },
                     );
                   },
                 ),
