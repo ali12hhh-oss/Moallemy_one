@@ -7,8 +7,9 @@ import '../settings/app_preferences_v10.dart';
 
 /// Central audio service for the whole app.
 ///
-/// Arabic letters use the local phoneme asset only. The separate letter-name
-/// action intentionally uses Arabic TTS, so the two concepts never mix.
+/// Arabic letters use the local phoneme asset only. English A-Z letters also
+/// use local phoneme assets only, so letter pronunciation never falls back to
+/// TTS (which may pronounce the letter name instead of its phonics sound).
 class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
@@ -143,6 +144,9 @@ class VoiceService {
     return played;
   }
 
+  /// English A-Z letters always use the dedicated local phonics recordings.
+  /// They intentionally never fall back to TTS, because TTS can pronounce
+  /// the letter name ("bee", "ess", etc.) instead of the intended sound.
   static Future<void> englishLetterSound(
     String letter, {
     required String fallbackText,
@@ -150,11 +154,10 @@ class VoiceService {
     final value = letter.trim().toLowerCase();
     if (!_isEnglishLetter(value)) return;
 
-    final played = await _playAsset(AssetCatalogV27.englishAudio(value));
-    if (!played) {
-      await stop();
-      await _prepareTts(language: 'en-US');
-      await _tts.speak(fallbackText.trim());
-    }
+    // The old assets/audio/english set contains duplicated recordings for
+    // different letters. The dedicated assets/audio/en set is the source for
+    // English A-Z phonics. Keep the catalog for the rest of the app unchanged.
+    final assetPath = 'assets/audio/en/$value.wav';
+    await _playAsset(assetPath);
   }
 }
