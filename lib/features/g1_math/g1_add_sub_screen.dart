@@ -69,7 +69,7 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
         appBar: AppBar(title: SpeakableText('${widget.isAddition ? 'الجمع' : 'الطرح'} • ${arNum(score)} ⭐')),
         body: Stack(children: [
           Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 18),
             child: Column(children: [
               Wrap(alignment: WrapAlignment.center, spacing: 6, children: List.generate(a, (i) {
                 final crossed = !widget.isAddition && i < b;
@@ -88,17 +88,26 @@ class _G1AddSubScreenState extends State<G1AddSubScreen> {
               SpeakableText('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
               const SizedBox(height: 8),
               IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى المسألة', onPressed: () { final opWord = widget.isAddition ? 'زائد' : 'ناقص'; VoiceService.arabic('${arNum(a)} $opWord ${arNum(b)}، كم الناتج؟'); }),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  children: options.map((o) => Button3D(
-                    onTap: () { VoiceService.arabic(arNum(o)); _answer(o); },
-                    color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
-                    child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white))),
-                  )).toList(),
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 1.45,
+                  ),
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    final o = options[index];
+                    return Button3D(
+                      onTap: () { VoiceService.arabic(arNum(o)); _answer(o); },
+                      color: widget.isAddition ? const Color(0xFF00C853) : const Color(0xFFFF6B35),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      child: Center(child: FittedBox(fit: BoxFit.scaleDown, child: Text(arNum(o), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white)))),
+                    );
+                  },
                 ),
               ),
             ]),
