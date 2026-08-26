@@ -18,12 +18,12 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
   bool learnMode = true;
   final rnd = Random();
   late VerbTense target;
-  late int correctIndex; // 0=ماضٍ 1=مضارع 2=مستقبل
+  late int correctIndex; // 0=ماضٍ 1=مضارع 2=أمر
   late String shownForm;
   int score = 0;
   String? cheer;
 
-  static const labels = ['ماضٍ', 'مضارع', 'مستقبل'];
+  static const labels = ['ماضٍ', 'مضارع', 'أمر'];
   static const colors = [
     Color(0xFFFF6B35),
     Color(0xFF2979FF),
@@ -39,7 +39,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
   void _nextQuiz() {
     target = verbTenses[rnd.nextInt(verbTenses.length)];
     correctIndex = rnd.nextInt(3);
-    shownForm = [target.past, target.present, target.future][correctIndex];
+    shownForm = [target.past, target.present, target.imperative][correctIndex];
   }
 
   void _answer(int chosen) {
@@ -67,7 +67,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const Text('أزمنة الفعل')),
+        appBar: AppBar(title: const Text('أنواع الفعل')),
         body: Stack(
           children: [
             Column(
@@ -124,7 +124,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(
-                      'الماضي: حدث وانتهى. المضارع: يحدث الآن. المستقبل: سيحدث لاحقًا.',
+                      'الماضي: حدث وانتهى. المضارع: يحدث الآن. الأمر: طلب القيام بالفعل.',
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -134,7 +134,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                       itemCount: verbTenses.length,
                       itemBuilder: (_, i) {
                         final v = verbTenses[i];
-                        final forms = [v.past, v.present, v.future];
+                        final forms = [v.past, v.present, v.imperative];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 14),
                           child: Row(
@@ -193,7 +193,7 @@ class _G3VerbTenseScreenState extends State<G3VerbTenseScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'هل هذا الفعل ماضٍ أم مضارع أم مستقبل؟',
+                            'هل هذا الفعل ماضٍ أم مضارع أم أمر؟',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 10),
