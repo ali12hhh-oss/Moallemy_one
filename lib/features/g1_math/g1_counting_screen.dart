@@ -79,9 +79,9 @@ class _G1CountingScreenState extends State<G1CountingScreen> {
             padding: const EdgeInsets.all(18),
             child: Column(children: [
               Row(children: [
-                Expanded(child: Button3D(onTap: () => _switch(true), color: ascending ? const Color(0xFF00C853) : const Color(0xFFA5D6A7), depth: ascending ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: SpeakableText('تصاعدي ⬆️', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))))),
+                Expanded(child: Button3D(onTap: () => _switch(true), color: ascending ? const Color(0xFF00C853) : const Color(0xFFA5D6A7), depth: ascending ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: Text('تصاعدي ⬆️', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white)))),
                 const SizedBox(width: 10),
-                Expanded(child: Button3D(onTap: () => _switch(false), color: !ascending ? const Color(0xFFFF6B35) : const Color(0xFFFFCCBC), depth: !ascending ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: SpeakableText('تنازلي ⬇️', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white))))),
+                Expanded(child: Button3D(onTap: () => _switch(false), color: !ascending ? const Color(0xFFFF6B35) : const Color(0xFFFFCCBC), depth: !ascending ? 2 : 7, padding: const EdgeInsets.symmetric(vertical: 12), child: const Center(child: Text('تنازلي ⬇️', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: Colors.white)))),
               ]),
               const SizedBox(height: 22),
               Wrap(alignment: WrapAlignment.center, spacing: 10, children: [
@@ -91,7 +91,7 @@ class _G1CountingScreenState extends State<G1CountingScreen> {
               const SizedBox(height: 8),
               IconButton(icon: const Icon(Icons.volume_up_rounded), tooltip: 'استمع إلى السؤال', onPressed: () => VoiceService.arabic('${sequence.map(arNum).join('، ')}... ما العدد التالي؟')),
               const SizedBox(height: 16),
-              Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () { VoiceService.arabic(arNum(o)); _answer(o); }, color: const Color(0xFF2979FF), child: Center(child: SpeakableText(arNum(o), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white))))).toList())),
+              Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () { VoiceService.arabic(arNum(o)); _answer(o); }, color: const Color(0xFF2979FF), child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white))))).toList())),
             ]),
           ),
           CelebrationOverlay(message: cheer),
