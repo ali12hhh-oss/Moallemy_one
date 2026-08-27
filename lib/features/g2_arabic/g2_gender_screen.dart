@@ -135,27 +135,27 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                 ),
                 if (learnMode) ...[
                   const SizedBox(height: 4),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: 155,
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'المؤنث',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 28),
-                      const SizedBox(
+                      SizedBox(width: 28),
+                      SizedBox(
                         width: 155,
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'المذكر',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                           ),
                         ),
                       ),
