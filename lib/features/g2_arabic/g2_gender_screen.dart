@@ -22,7 +22,6 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
   int score = 0;
   String? cheer;
 
-  static const learnHeaders = ['المذكر', 'المؤنث'];
   static const colors = [Color(0xFF2979FF), Color(0xFFFF1E7E)];
 
   @override
@@ -141,22 +140,22 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                     children: [
                       const SizedBox(
                         width: 155,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'المؤنث',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                           ),
                         ),
                       ),
                       const SizedBox(width: 28),
                       const SizedBox(
                         width: 155,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'المذكر',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                           ),
                         ),
                       ),
