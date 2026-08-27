@@ -12,7 +12,7 @@ class G1EnglishLettersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: Scaffold(
         appBar: AppBar(title: const Text('English Letters')),
         body: GridView.builder(
