@@ -18,8 +18,8 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
   bool learnMode = true;
   final rnd = Random();
   late NumberForm target;
-  late String shownForm; // singular/dual/plural المعروض في السؤال
-  late int correctIndex; // 0=مفرد 1=مثنى 2=جمع
+  late String shownForm;
+  late int correctIndex;
   int score = 0;
   String? cheer;
 
@@ -160,18 +160,21 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            forms[j],
+                                            labels[j],
                                             style: const TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w900,
                                               color: Colors.white,
                                             ),
                                           ),
+                                          const SizedBox(height: 5),
                                           Text(
-                                            labels[j],
+                                            forms[j],
+                                            textAlign: TextAlign.center,
                                             style: const TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.white70,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.w900,
+                                              color: Colors.white,
                                             ),
                                           ),
                                         ],
