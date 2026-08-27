@@ -17,7 +17,7 @@ class _G2EnglishLettersScreenState extends State<G2EnglishLettersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final letters = englishLetters;
+    const letters = englishLetters;
 
     return Directionality(
       textDirection: TextDirection.ltr,
