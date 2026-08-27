@@ -117,8 +117,14 @@ class VoiceService {
       final relative = assetPath.startsWith('assets/')
           ? assetPath.substring('assets/'.length)
           : assetPath;
+      final lowerPath = assetPath.toLowerCase();
+      final mimeType = lowerPath.endsWith('.ogg')
+          ? 'audio/ogg'
+          : lowerPath.endsWith('.mp3')
+              ? 'audio/mpeg'
+              : 'audio/wav';
       await _player.play(
-        AssetSource(relative, mimeType: 'audio/wav'),
+        AssetSource(relative, mimeType: mimeType),
         volume: 1.0,
       );
       return request == _playRequest;
