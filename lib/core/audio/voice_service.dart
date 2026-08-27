@@ -157,6 +157,15 @@ class VoiceService {
     if (!_isEnglishLetter(value)) return;
 
     final played = await _playAsset(AssetCatalogV27.englishAudio(value));
+
+    // The replacement recordings must never fall back to TTS. If one of
+    // these local assets is missing, stay silent so the old pronunciation
+    // cannot return and hide an asset/path problem.
+    const replacementLetters = <String>{
+      'e', 'f', 'i', 'l', 'n', 'q', 'r', 's', 'u', 'v', 'x',
+    };
+    if (replacementLetters.contains(value)) return;
+
     if (!played) {
       await stop();
       await _prepareTts(language: 'en-US');
