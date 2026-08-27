@@ -135,6 +135,15 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                                   ),
                                   child: Column(
                                     children: [
+                                      const Text(
+                                        'مذكر',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
                                       Text(
                                         p.emojiM,
                                         style: const TextStyle(fontSize: 30),
@@ -142,7 +151,7 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                                       Text(
                                         p.masculine,
                                         style: const TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w900,
                                           color: Colors.white,
                                         ),
@@ -163,6 +172,15 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                                   ),
                                   child: Column(
                                     children: [
+                                      const Text(
+                                        'مؤنث',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
                                       Text(
                                         p.emojiF,
                                         style: const TextStyle(fontSize: 30),
@@ -170,7 +188,7 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                                       Text(
                                         p.feminine,
                                         style: const TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w900,
                                           color: Colors.white,
                                         ),
