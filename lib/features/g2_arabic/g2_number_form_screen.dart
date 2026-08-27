@@ -24,6 +24,7 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
   String? cheer;
 
   static const labels = ['مفرد', 'مثنى', 'جمع'];
+  static const learnHeaders = ['المفرد', 'المثنى', 'الجمع'];
   static const colors = [
     Color(0xFF2979FF),
     Color(0xFF7C4DFF),
@@ -87,11 +88,7 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                           child: const Center(
                             child: Text(
                               'تعلّم',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white),
                             ),
                           ),
                         ),
@@ -108,11 +105,7 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                           child: const Center(
                             child: Text(
                               'تدرّب',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white),
                             ),
                           ),
                         ),
@@ -128,9 +121,31 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 28),
+                        ...List.generate(3, (j) {
+                          return Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                              child: Center(
+                                child: Text(
+                                  learnHeaders[j],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
                       itemCount: numberForms.length,
                       itemBuilder: (_, i) {
                         final f = numberForms[i];
@@ -139,45 +154,22 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                           padding: const EdgeInsets.only(bottom: 14),
                           child: Row(
                             children: [
-                              Text(
-                                f.emoji,
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                              const SizedBox(width: 8),
+                              Text(f.emoji, style: const TextStyle(fontSize: 22)),
+                              const SizedBox(width: 6),
                               ...List.generate(3, (j) {
                                 return Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 3),
                                     child: Button3D(
-                                      onTap: () =>
-                                          VoiceService.arabic(forms[j]),
+                                      onTap: () => VoiceService.arabic(forms[j]),
                                       color: colors[j],
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 14,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            labels[j],
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            forms[j],
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      child: Center(
+                                        child: Text(
+                                          forms[j],
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -197,43 +189,22 @@ class _G2NumberFormScreenState extends State<G2NumberFormScreen> {
                         children: [
                           Text(
                             'هل هذه الكلمة مفرد أم مثنى أم جمع؟',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
+                            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                           ),
                           const SizedBox(height: 10),
-                          Text(
-                            '${target.emoji}  $shownForm',
-                            style: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
+                          Text('${target.emoji}  $shownForm', style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w900)),
                           const SizedBox(height: 24),
                           Row(
                             children: List.generate(3, (i) {
                               return Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 6),
                                   child: Button3D(
                                     onTap: () => _answer(i),
                                     color: colors[i],
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 20,
-                                    ),
+                                    padding: const EdgeInsets.symmetric(vertical: 20),
                                     child: Center(
-                                      child: Text(
-                                        labels[i],
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                      child: Text(labels[i], style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white)),
                                     ),
                                   ),
                                 ),
