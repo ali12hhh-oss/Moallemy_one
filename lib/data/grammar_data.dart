@@ -4,8 +4,8 @@
 ///
 /// ١) ال التعريف: كلمة نكرة (بدون "ال") تصبح معرفة بإضافة "ال" في البداية.
 class DefiniteArticlePair {
-  final String bare; // نكرة
-  final String defined; // معرفة
+  final String bare;
+  final String defined;
   final String emoji;
   const DefiniteArticlePair(this.bare, this.defined, this.emoji);
 }
@@ -37,6 +37,9 @@ const numberForms = <NumberForm>[
   NumberForm('بنت', 'بنتان', 'بنات', '👧'),
   NumberForm('باب', 'بابان', 'أبواب', '🚪'),
   NumberForm('بيت', 'بيتان', 'بيوت', '🏠'),
+  NumberForm('مهندس', 'مهندسان', 'مهندسون', '👷'),
+  NumberForm('ممرضة', 'ممرضتان', 'ممرضات', '👩‍⚕️'),
+  NumberForm('محمد', 'محمدان', 'محمدون', '👦'),
 ];
 
 /// ٣) مؤنث / مذكر
@@ -55,6 +58,10 @@ const genderPairs = <GenderPair>[
   GenderPair('قط', 'قطة', '🐱', '🐈'),
   GenderPair('أسد', 'لبؤة', '🦁', '🐆'),
   GenderPair('ملك', 'ملكة', '🤴', '👸'),
+  GenderPair('طبيب', 'طبيبة', '👨‍⚕️', '👩‍⚕️'),
+  GenderPair('مهندس', 'مهندسة', '👷', '👷‍♀️'),
+  GenderPair('ممرض', 'ممرضة', '👨‍⚕️', '👩‍⚕️'),
+  GenderPair('كاتب', 'كاتبة', '🧑‍💻', '👩‍💻'),
 ];
 
 /// ٤) اسم / فعل — تصنيف كلمة إلى اسم أو فعل.
