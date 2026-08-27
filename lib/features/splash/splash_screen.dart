@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   late final AnimationController _controller;
   Timer? _finishTimer;
+  final Set<int> _playedLandingSounds = <int>{};
 
   @override
   void initState() {
@@ -31,7 +32,8 @@ class _SplashScreenState extends State<SplashScreen>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 4200),
-    )..forward();
+    )..addListener(_handleAnimationSound);
+    _controller.forward();
 
     _finishTimer = Timer(const Duration(milliseconds: 4750), () {
       if (!mounted) return;
@@ -41,19 +43,24 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
+  void _handleAnimationSound() {
+    for (var index = 0; index < _letters.length; index++) {
+      final start = index * .13;
+      final end = (.72 + index * .05).clamp(start, 1.0);
+      if (_controller.value >= end - .015 &&
+          !_playedLandingSounds.contains(index)) {
+        _playedLandingSounds.add(index);
+        SystemSound.play(SystemSoundType.click);
+      }
+    }
+  }
+
   @override
   void dispose() {
     _finishTimer?.cancel();
+    _controller.removeListener(_handleAnimationSound);
     _controller.dispose();
     super.dispose();
-  }
-
-  void _playLandingSound(int index) {
-    // A short native click is intentionally used as the temporary movement
-    // cue so the splash remains completely offline and needs no new asset.
-    if (index < _letters.length) {
-      SystemSound.play(SystemSoundType.click);
-    }
   }
 
   @override
@@ -101,14 +108,15 @@ class _SplashScreenState extends State<SplashScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: List.generate(_letters.length, (index) {
                             final start = index * .13;
-                            final end = .72 + index * .05;
+                            final end = (.72 + index * .05).clamp(start, 1.0);
                             final progress = CurvedAnimation(
                               parent: _controller,
-                              curve: Interval(start, end.clamp(start, 1),
-                                  curve: Curves.easeOutBack),
+                              curve: Interval(
+                                start,
+                                end,
+                                curve: Curves.easeOutBack,
+                              ),
                             ).value;
-                            final landed = progress > .98;
-                            if (landed) _playLandingSound(index);
 
                             final drop = height * .42 * (1 - progress);
                             final scale = .72 + progress * .28;
