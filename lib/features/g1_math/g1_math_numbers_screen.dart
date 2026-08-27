@@ -48,11 +48,11 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
   Widget _countingGrid() {
     return GridView.builder(
       padding: const EdgeInsets.all(14),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5, mainAxisSpacing: 8, crossAxisSpacing: 8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
       itemCount: 100,
       itemBuilder: (_, i) {
         final n = i + 1;
-        return Card(child: InkWell(onTap: () => VoiceService.arabic(arNum(n)), child: Center(child: Text(arNum(n), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)))));
+        return Card(child: InkWell(onTap: () => VoiceService.arabic(arNum(n)), child: Center(child: Text(arNum(n), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900)))));
       },
     );
   }
