@@ -22,6 +22,10 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
   int score = 0;
   String? cheer;
 
+  static const labels = ['مذكر', 'مؤنث'];
+  static const learnHeaders = ['المذكر', 'المؤنث'];
+  static const colors = [Color(0xFF2979FF), Color(0xFFFF1E7E)];
+
   @override
   void initState() {
     super.initState();
@@ -72,20 +76,11 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = true),
-                          color: learnMode
-                              ? const Color(0xFF7C4DFF)
-                              : const Color(0xFFB39DDB),
+                          color: learnMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
                           depth: learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
-                            child: Text(
-                              'تعلّم',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child: Text('تعلّم', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white)),
                           ),
                         ),
                       ),
@@ -93,30 +88,37 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => learnMode = false),
-                          color: !learnMode
-                              ? const Color(0xFF00C853)
-                              : const Color(0xFFA5D6A7),
+                          color: !learnMode ? const Color(0xFF00C853) : const Color(0xFFA5D6A7),
                           depth: !learnMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
-                            child: Text(
-                              'تدرّب',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child: Text('تدرّب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white)),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                if (learnMode)
+                if (learnMode) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                    child: Row(
+                      children: List.generate(2, (j) {
+                        return Expanded(
+                          child: Center(
+                            child: Text(
+                              learnHeaders[j],
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(14),
+                      padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
                       itemCount: genderPairs.length,
                       itemBuilder: (_, i) {
                         final p = genderPairs[i];
@@ -125,75 +127,42 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                           child: Row(
                             children: [
                               Expanded(
-                                child: Button3D(
-                                  onTap: () => VoiceService.arabic(
-                                    '${p.masculine}، مذكر',
-                                  ),
-                                  color: const Color(0xFF2979FF),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'مذكر',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                                  child: Button3D(
+                                    onTap: () => VoiceService.arabic(p.masculine),
+                                    color: colors[0],
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    child: Column(
+                                      children: [
+                                        Text(p.emojiM, style: const TextStyle(fontSize: 30)),
+                                        Text(
+                                          p.masculine,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
                                         ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        p.emojiM,
-                                        style: const TextStyle(fontSize: 30),
-                                      ),
-                                      Text(
-                                        p.masculine,
-                                        style: const TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
                               Expanded(
-                                child: Button3D(
-                                  onTap: () => VoiceService.arabic(
-                                    '${p.feminine}، مؤنث',
-                                  ),
-                                  color: const Color(0xFFFF1E7E),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'مؤنث',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                                  child: Button3D(
+                                    onTap: () => VoiceService.arabic(p.feminine),
+                                    color: colors[1],
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    child: Column(
+                                      children: [
+                                        Text(p.emojiF, style: const TextStyle(fontSize: 30)),
+                                        Text(
+                                          p.feminine,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
                                         ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        p.emojiF,
-                                        style: const TextStyle(fontSize: 30),
-                                      ),
-                                      Text(
-                                        p.feminine,
-                                        style: const TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -202,8 +171,8 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                         );
                       },
                     ),
-                  )
-                else
+                  ),
+                ] else
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(20),
@@ -211,61 +180,29 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                         children: [
                           Text(
                             'هل هذه الكلمة مؤنثة أم مذكرة؟',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
+                            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                           ),
                           const SizedBox(height: 10),
                           Text(emoji, style: const TextStyle(fontSize: 50)),
-                          Text(
-                            word,
-                            style: const TextStyle(
-                              fontSize: 34,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
+                          Text(word, style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
                           const SizedBox(height: 24),
                           Row(
                             children: [
                               Expanded(
                                 child: Button3D(
                                   onTap: () => _answer(false),
-                                  color: const Color(0xFF2979FF),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 20,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'مذكر',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                  color: colors[0],
+                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  child: const Center(child: Text('مذكر', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))),
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Button3D(
                                   onTap: () => _answer(true),
-                                  color: const Color(0xFFFF1E7E),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 20,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'مؤنث',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                  color: colors[1],
+                                  padding: const EdgeInsets.symmetric(vertical: 20),
+                                  child: const Center(child: Text('مؤنث', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))),
                                 ),
                               ),
                             ],
