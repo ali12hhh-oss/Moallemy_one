@@ -56,6 +56,42 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
     setState(() {});
   }
 
+  Widget _genderCard({
+    required String word,
+    required String emoji,
+    required Color color,
+  }) {
+    return SizedBox(
+      width: 155,
+      height: 112,
+      child: Button3D(
+        onTap: () => VoiceService.arabic(word),
+        color: color,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(emoji, style: const TextStyle(fontSize: 30)),
+              const SizedBox(height: 2),
+              Text(
+                word,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final word = showFeminine ? pair.feminine : pair.masculine;
@@ -99,71 +135,55 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
                   ),
                 ),
                 if (learnMode) ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-                    child: Row(
-                      children: List.generate(2, (j) {
-                        return Expanded(
-                          child: Center(
-                            child: Text(
-                              learnHeaders[j],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900),
-                            ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 155,
+                        child: Center(
+                          child: Text(
+                            'المؤنث',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
                           ),
-                        );
-                      }),
-                    ),
+                        ),
+                      ),
+                      const SizedBox(width: 28),
+                      const SizedBox(
+                        width: 155,
+                        child: Center(
+                          child: Text(
+                            'المذكر',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
+                      padding: const EdgeInsets.fromLTRB(14, 4, 14, 20),
                       itemCount: genderPairs.length,
                       itemBuilder: (_, i) {
                         final p = genderPairs[i];
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.only(bottom: 14),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                                  child: Button3D(
-                                    onTap: () => VoiceService.arabic(p.masculine),
-                                    color: colors[0],
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    child: Column(
-                                      children: [
-                                        Text(p.emojiM, style: const TextStyle(fontSize: 30)),
-                                        Text(
-                                          p.masculine,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              _genderCard(
+                                word: p.feminine,
+                                emoji: p.emojiF,
+                                color: colors[1],
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                                  child: Button3D(
-                                    onTap: () => VoiceService.arabic(p.feminine),
-                                    color: colors[1],
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    child: Column(
-                                      children: [
-                                        Text(p.emojiF, style: const TextStyle(fontSize: 30)),
-                                        Text(
-                                          p.feminine,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              const SizedBox(width: 28),
+                              _genderCard(
+                                word: p.masculine,
+                                emoji: p.emojiM,
+                                color: colors[0],
                               ),
                             ],
                           ),
