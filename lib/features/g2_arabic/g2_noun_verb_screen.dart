@@ -15,6 +15,7 @@ class G2NounVerbScreen extends StatefulWidget {
 }
 
 class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
+  bool learnMode = true;
   final rnd = Random();
   late NounVerbWord target;
   int score = 0;
@@ -28,9 +29,11 @@ class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
 
   void _next() {
     target = nounVerbWords[rnd.nextInt(nounVerbWords.length)];
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => VoiceService.arabic(target.word),
-    );
+    if (!learnMode) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => VoiceService.arabic(target.word),
+      );
+    }
   }
 
   void _answer(bool chosenVerb) {
@@ -53,6 +56,15 @@ class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
     setState(() {});
   }
 
+  void _setMode(bool learn) {
+    setState(() {
+      learnMode = learn;
+      if (!learnMode) {
+        _next();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -61,47 +73,25 @@ class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
         appBar: AppBar(title: const Text('الاسم والفعل')),
         body: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const Text(
-                    'الاسم: شيء (إنسان، حيوان، غرض). الفعل: حدث يحصل (يجري، يكتب، ينام).',
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  GestureDetector(
-                    onTap: () => VoiceService.arabic(target.word),
-                    child: Column(
-                      children: [
-                        Text(
-                          target.emoji,
-                          style: const TextStyle(fontSize: 60),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          target.word,
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 12, 14, 4),
+                  child: Row(
                     children: [
                       Expanded(
                         child: Button3D(
-                          onTap: () => _answer(false),
-                          color: const Color(0xFF2979FF),
-                          padding: const EdgeInsets.symmetric(vertical: 22),
+                          onTap: () => _setMode(true),
+                          color: learnMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
+                          depth: learnMode ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
                             child: Text(
-                              'اسم',
+                              'تعلّم',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w900,
                                 color: Colors.white,
                               ),
@@ -109,17 +99,20 @@ class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Button3D(
-                          onTap: () => _answer(true),
-                          color: const Color(0xFF00C853),
-                          padding: const EdgeInsets.symmetric(vertical: 22),
+                          onTap: () => _setMode(false),
+                          color: !learnMode
+                              ? const Color(0xFF00C853)
+                              : const Color(0xFFA5D6A7),
+                          depth: !learnMode ? 2 : 7,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                           child: const Center(
                             child: Text(
-                              'فعل',
+                              'تدرّب',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w900,
                                 color: Colors.white,
                               ),
@@ -129,8 +122,164 @@ class _G2NounVerbScreenState extends State<G2NounVerbScreen> {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                if (learnMode)
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: [
+                        const Text(
+                          'الاسم والفعل',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        const Text(
+                          'الاسم يدل على إنسان أو حيوان أو شيء، أما الفعل فيدل على حدث أو عمل يحدث أو حدث أو سيُطلب القيام به.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 19, height: 1.5),
+                        ),
+                        const SizedBox(height: 18),
+                        const Text(
+                          'أمثلة على الاسم',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ...nounVerbWords.where((item) => !item.isVerb).map(
+                          (item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Button3D(
+                              onTap: () => VoiceService.arabic(item.word),
+                              color: const Color(0xFF2979FF),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              child: Center(
+                                child: Text(
+                                  '${item.emoji}  ${item.word}',
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'أمثلة على الفعل',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ...nounVerbWords.where((item) => item.isVerb).map(
+                          (item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Button3D(
+                              onTap: () => VoiceService.arabic(item.word),
+                              color: const Color(0xFF00C853),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              child: Center(
+                                child: Text(
+                                  '${item.emoji}  ${item.word}',
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'هل هذه الكلمة اسم أم فعل؟',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          const SizedBox(height: 18),
+                          GestureDetector(
+                            onTap: () => VoiceService.arabic(target.word),
+                            child: Column(
+                              children: [
+                                Text(
+                                  target.emoji,
+                                  style: const TextStyle(fontSize: 60),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  target.word,
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Button3D(
+                                  onTap: () => _answer(false),
+                                  color: const Color(0xFF2979FF),
+                                  padding: const EdgeInsets.symmetric(vertical: 22),
+                                  child: const Center(
+                                    child: Text(
+                                      'اسم',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Button3D(
+                                  onTap: () => _answer(true),
+                                  color: const Color(0xFF00C853),
+                                  padding: const EdgeInsets.symmetric(vertical: 22),
+                                  child: const Center(
+                                    child: Text(
+                                      'فعل',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ),
             CelebrationOverlay(message: cheer),
           ],
