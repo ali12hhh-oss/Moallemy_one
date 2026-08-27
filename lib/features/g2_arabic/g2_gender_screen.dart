@@ -22,7 +22,6 @@ class _G2GenderScreenState extends State<G2GenderScreen> {
   int score = 0;
   String? cheer;
 
-  static const labels = ['مذكر', 'مؤنث'];
   static const learnHeaders = ['المذكر', 'المؤنث'];
   static const colors = [Color(0xFF2979FF), Color(0xFFFF1E7E)];
 
