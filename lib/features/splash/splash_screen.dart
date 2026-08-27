@@ -14,12 +14,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
+  // Contextual Arabic forms are used so the falling letters visually join
+  // together when they settle and form the word "معلمي".
   static const _letters = <_SplashLetter>[
-    _SplashLetter('م', Color(0xFFFF4FA3), '🐰'),
-    _SplashLetter('ع', Color(0xFFFFB300), '🦒'),
-    _SplashLetter('ل', Color(0xFF45C95A), '🐍'),
-    _SplashLetter('م', Color(0xFF35A9F4), '🐘'),
-    _SplashLetter('ي', Color(0xFF9B6CFF), '🐱'),
+    _SplashLetter('مـ', Color(0xFFFF4FA3), '🐰'),
+    _SplashLetter('ـعـ', Color(0xFFFFB300), '🦒'),
+    _SplashLetter('ـلـ', Color(0xFF45C95A), '🐍'),
+    _SplashLetter('ـمـ', Color(0xFF35A9F4), '🐘'),
+    _SplashLetter('ـي', Color(0xFF9B6CFF), '🐱'),
   ];
 
   late final AnimationController _controller;
@@ -126,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 scale: scale,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: width * .008,
+                                    horizontal: width * .002,
                                   ),
                                   child: _AnimalLetter(
                                     data: _letters[index],
@@ -249,6 +251,7 @@ class _AnimalLetter extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 data.letter,
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: size * .66,
                   height: 1,
