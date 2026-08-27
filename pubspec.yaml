@@ -29,4 +29,5 @@ flutter:
     - assets/images/games/
     - assets/images/store/
     - assets/audio/
+    - assets/audio/en/
     - assets/data/
