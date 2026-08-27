@@ -48,7 +48,7 @@ class _G1MathNumbersScreenState extends State<G1MathNumbersScreen> {
   Widget _countingGrid() {
     return GridView.builder(
       padding: const EdgeInsets.all(14),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
       itemCount: 100,
       itemBuilder: (_, i) {
         final n = i + 1;
