@@ -4,6 +4,7 @@ import '../core/audio/voice_service.dart';
 import '../core/settings/app_preferences_v10.dart';
 import '../core/theme/app_theme_v25.dart';
 import '../features/home/home_screen.dart';
+import '../features/splash/splash_screen.dart';
 
 /// Stops any active page audio when navigation leaves one page for another.
 /// Dialogs are intentionally ignored so opening/closing a dialog does not
@@ -69,7 +70,8 @@ class _DaleelChildAppState extends State<DaleelChildApp> {
       darkTheme: _theme(Brightness.dark),
       locale: const Locale('ar'),
       navigatorObservers: [_audioNavigatorObserver],
-      home: const HomeScreen(),
+      home: const SplashScreen(),
+      routes: {'/home': (_) => const HomeScreen()},
     ),
   );
 
