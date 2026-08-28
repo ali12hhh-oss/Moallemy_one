@@ -15,6 +15,9 @@ class VoiceService {
   static int _playRequest = 0;
 
   static bool get _enabled => AppPreferencesV10.instance.sounds;
+  static bool get _feedbackEnabled =>
+      AppPreferencesV10.instance.sounds &&
+      AppPreferencesV10.instance.feedbackSounds;
 
   static const Map<String, String> _arabicLetterNames = {
     'أ': 'ألف', 'ب': 'باء', 'ت': 'تاء', 'ث': 'ثاء', 'ج': 'جيم',
@@ -104,8 +107,6 @@ class VoiceService {
     }
   }
 
-  /// Plays exactly one local asset at a time. A new request invalidates the
-  /// previous request so rapid taps cannot queue/overlap letter sounds.
   static Future<bool> _playAsset(String assetPath) async {
     if (!_enabled || !await _assetExists(assetPath)) return false;
     final request = ++_playRequest;
@@ -133,7 +134,36 @@ class VoiceService {
     }
   }
 
-  /// Plays the local Arabic reading sound, never the letter name.
+  static Future<bool> _playFeedbackAsset(String assetPath) async {
+    if (!_feedbackEnabled || !await _assetExists(assetPath)) return false;
+    final request = ++_playRequest;
+    try {
+      await _tts.stop();
+      await _player.stop();
+      if (request != _playRequest) return false;
+      await _player.setReleaseMode(ReleaseMode.stop);
+      final relative = assetPath.startsWith('assets/')
+          ? assetPath.substring('assets/'.length)
+          : assetPath;
+      await _player.play(
+        AssetSource(relative, mimeType: 'audio/mpeg'),
+        volume: 1.0,
+      );
+      return request == _playRequest;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<bool> playWelcome() =>
+      _playFeedbackAsset('assets/audio/welcome.mp3');
+
+  static Future<bool> playCorrect() =>
+      _playFeedbackAsset('assets/audio/correct.mp3');
+
+  static Future<bool> playTryAgain() =>
+      _playFeedbackAsset('assets/audio/try_again.mp3');
+
   static Future<bool> arabicLetterSound(
     String letter, {
     String? fallbackText,
@@ -157,10 +187,6 @@ class VoiceService {
     if (!_isEnglishLetter(value)) return;
 
     final played = await _playAsset(AssetCatalogV27.englishAudio(value));
-
-    // The replacement recordings must never fall back to TTS. If one of
-    // these local assets is missing, stay silent so the old pronunciation
-    // cannot return and hide an asset/path problem.
     const replacementLetters = <String>{
       'e', 'f', 'i', 'l', 'n', 'q', 'r', 's', 'u', 'v', 'x',
     };
