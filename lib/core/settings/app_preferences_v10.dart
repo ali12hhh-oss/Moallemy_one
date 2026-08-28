@@ -7,6 +7,7 @@ class AppPreferencesV10 extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.light;
   bool sounds = true;
   bool effects = true;
+  bool feedbackSounds = true;
   int sessionMinutes = 20;
   bool _loaded = false;
   Future<void> load() async {
@@ -17,6 +18,7 @@ class AppPreferencesV10 extends ChangeNotifier {
         : ThemeMode.light;
     sounds = p.getBool('sounds_v10') ?? true;
     effects = p.getBool('effects_v10') ?? true;
+    feedbackSounds = p.getBool('feedback_sounds_v10') ?? true;
     sessionMinutes = p.getInt('session_minutes_v10') ?? 20;
     _loaded = true;
     notifyListeners();
@@ -40,6 +42,13 @@ class AppPreferencesV10 extends ChangeNotifier {
     effects = value;
     final p = await SharedPreferences.getInstance();
     await p.setBool('effects_v10', value);
+    notifyListeners();
+  }
+
+  Future<void> setFeedbackSounds(bool value) async {
+    feedbackSounds = value;
+    final p = await SharedPreferences.getInstance();
+    await p.setBool('feedback_sounds_v10', value);
     notifyListeners();
   }
 
