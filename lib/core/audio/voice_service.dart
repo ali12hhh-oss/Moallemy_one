@@ -6,9 +6,6 @@ import '../offline/asset_catalog_v27.dart';
 import '../settings/app_preferences_v10.dart';
 
 /// Central audio service for the whole app.
-///
-/// Arabic letters use the local phoneme asset only. The separate letter-name
-/// action intentionally uses Arabic TTS, so the two concepts never mix.
 class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
@@ -98,17 +95,11 @@ class VoiceService {
     await _player.stop();
   }
 
-  static Future<bool> _assetExists(String assetPath) async {
-    try {
-      await rootBundle.load(assetPath);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
+  // Keep the asset check off the critical path. Flutter's AssetSource already
+  // resolves bundled assets; loading the whole file with rootBundle first was
+  // adding avoidable startup latency to every short sound.
   static Future<bool> _playAsset(String assetPath) async {
-    if (!_enabled || !await _assetExists(assetPath)) return false;
+    if (!_enabled) return false;
     final request = ++_playRequest;
     try {
       await _tts.stop();
@@ -121,9 +112,9 @@ class VoiceService {
       final lowerPath = assetPath.toLowerCase();
       final mimeType = lowerPath.endsWith('.ogg')
           ? 'audio/ogg'
-          : lowerPath.endsWith('.mp3')
-              ? 'audio/mpeg'
-              : 'audio/wav';
+          : lowerPath.endsWith('.wav')
+              ? 'audio/wav'
+              : 'audio/mpeg';
       await _player.play(
         AssetSource(relative, mimeType: mimeType),
         volume: 1.0,
@@ -135,24 +126,8 @@ class VoiceService {
   }
 
   static Future<bool> _playFeedbackAsset(String assetPath) async {
-    if (!_feedbackEnabled || !await _assetExists(assetPath)) return false;
-    final request = ++_playRequest;
-    try {
-      await _tts.stop();
-      await _player.stop();
-      if (request != _playRequest) return false;
-      await _player.setReleaseMode(ReleaseMode.stop);
-      final relative = assetPath.startsWith('assets/')
-          ? assetPath.substring('assets/'.length)
-          : assetPath;
-      await _player.play(
-        AssetSource(relative, mimeType: 'audio/mpeg'),
-        volume: 1.0,
-      );
-      return request == _playRequest;
-    } catch (_) {
-      return false;
-    }
+    if (!_feedbackEnabled) return false;
+    return _playAsset(assetPath);
   }
 
   static Future<bool> playWelcome() =>
