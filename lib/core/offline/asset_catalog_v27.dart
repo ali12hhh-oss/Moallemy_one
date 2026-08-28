@@ -19,6 +19,7 @@ class AssetCatalogV27 {
       'f': 'En-us-f.ogg',
       'i': 'En-us-i.ogg',
       'l': 'l.mp3',
+      'm': 'En-us-m.ogg',
       'n': 'En-us-n.ogg',
       'q': 'En-us-q.ogg',
       'r': 'En-us-r.ogg',
@@ -26,6 +27,7 @@ class AssetCatalogV27 {
       'u': 'En-us-u.ogg',
       'v': 'En-us-v.ogg',
       'x': 'En-us-x.ogg',
+      'z': 'En-us-z.ogg',
     };
     final value = letter.toLowerCase();
     return 'assets/audio/en/${replacementFiles[value] ?? '$value.wav'}';
