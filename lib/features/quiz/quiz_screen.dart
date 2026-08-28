@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../data/content.dart';
+import '../../core/audio/voice_service.dart';
 import '../../core/localization/arabic_numbers.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -33,7 +34,13 @@ class _S extends State<QuizScreen> {
   }
 
   void answer(ArabicLetter x) {
-    if (x.letter == target.letter) score++;
+    final correct = x.letter == target.letter;
+    if (correct) {
+      score++;
+      VoiceService.playCorrect();
+    } else {
+      VoiceService.playTryAgain();
+    }
     if (q == 10) {
       showDialog<void>(
         context: context,
