@@ -61,6 +61,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: prefs.setSounds,
             ),
             SwitchListTile(
+              title: const Text('أصوات التشجيع والإجابة'),
+              subtitle: const Text('مرحباً بكم، أحسنت، حاول مرة أخرى'),
+              value: prefs.feedbackSounds,
+              onChanged: prefs.setFeedbackSounds,
+            ),
+            SwitchListTile(
               title: const Text('المؤثرات'),
               subtitle: const Text('مؤثرات النجاح والتنبيه داخل الألعاب'),
               value: prefs.effects,
