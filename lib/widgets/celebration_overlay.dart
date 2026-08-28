@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../core/audio/voice_service.dart';
+
 /// كلمة تشجيعية جميلة تظهر في **منتصف الشاشة** (وليس أسفلها) لمدة قصيرة ثم
 /// تختفي تلقائيًا. تُستخدم في كل شاشات الروضة الثانية بعد كل إجابة صحيحة.
 class CelebrationOverlay extends StatefulWidget {
@@ -35,14 +37,27 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
       duration: const Duration(milliseconds: 450),
     );
     scale = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
-    if (widget.message != null) controller.forward(from: 0);
+    if (widget.message != null) {
+      controller.forward(from: 0);
+      _playMessageSound(widget.message!);
+    }
   }
 
   @override
   void didUpdateWidget(covariant CelebrationOverlay old) {
     super.didUpdateWidget(old);
-    if (widget.message != null && widget.message != old.message)
+    if (widget.message != null && widget.message != old.message) {
       controller.forward(from: 0);
+      _playMessageSound(widget.message!);
+    }
+  }
+
+  void _playMessageSound(String message) {
+    if (message.contains('حاول مرة أخرى')) {
+      VoiceService.playTryAgain();
+    } else {
+      VoiceService.playCorrect();
+    }
   }
 
   @override
