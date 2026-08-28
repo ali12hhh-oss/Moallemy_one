@@ -188,7 +188,7 @@ class VoiceService {
 
     final played = await _playAsset(AssetCatalogV27.englishAudio(value));
     const replacementLetters = <String>{
-      'e', 'f', 'i', 'l', 'n', 'q', 'r', 's', 'u', 'v', 'x',
+      'e', 'f', 'i', 'l', 'm', 'n', 'q', 'r', 's', 'u', 'v', 'x', 'z',
     };
     if (replacementLetters.contains(value)) return;
 
