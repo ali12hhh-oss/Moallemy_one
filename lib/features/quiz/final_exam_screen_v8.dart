@@ -103,6 +103,11 @@ class _FinalExamScreenV8State extends State<FinalExamScreenV8> {
       answered = true;
       if (correct) score++;
     });
+    if (correct) {
+      VoiceService.playCorrect();
+    } else {
+      VoiceService.playTryAgain();
+    }
     Future.delayed(const Duration(milliseconds: 650), () {
       if (!mounted) return;
       setState(() {
