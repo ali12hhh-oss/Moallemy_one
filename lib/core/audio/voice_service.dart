@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -95,9 +94,6 @@ class VoiceService {
     await _player.stop();
   }
 
-  // Keep the asset check off the critical path. Flutter's AssetSource already
-  // resolves bundled assets; loading the whole file with rootBundle first was
-  // adding avoidable startup latency to every short sound.
   static Future<bool> _playAsset(String assetPath) async {
     if (!_enabled) return false;
     final request = ++_playRequest;
