@@ -19,7 +19,7 @@ class G2LettersWordsHub extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const Text('حروف وكلمات')),
+        appBar: AppBar(title: const Text('القراءة والكتابة')),
         body: ListView(
           padding: const EdgeInsets.all(18),
           children: items.map((g) => Padding(
@@ -175,7 +175,7 @@ class _G2AlDefinitionContentState extends State<G2AlDefinitionContent> {
                   Text('الكلمة: ${current.word}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
                   const SizedBox(height: 10),
                   Row(children: [
-                    Expanded(child: Button3D(onTap: () => _move(-1), color: const Color(0xFF2979FF), padding: const EdgeInsets.symmetric(vertical: 14), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900))]))),
+                    Expanded(child: Button3D(onTap: () => _move(-1), color: const Color(0xFF2979FF), padding: const EdgeInsets.symmetric(vertical: 14), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)]))),
                     const SizedBox(width: 10),
                     Expanded(child: Button3D(onTap: () => _move(1), color: const Color(0xFFFF6B35), padding: const EdgeInsets.symmetric(vertical: 14), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Text('التالي', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)), SizedBox(width: 6), Icon(Icons.arrow_forward_rounded, color: Colors.white)]))),
                   ]),
