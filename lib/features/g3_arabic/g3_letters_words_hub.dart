@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/button_3d.dart';
-import '../letters/letters_screen.dart';
-import '../g2_arabic/g2_write_recognize_screen.dart';
+import 'g3_letter_skills_screen.dart';
 import 'g3_read_hub.dart';
 import 'g3_reading_passage_screen.dart';
+import '../g2_arabic/g2_write_recognize_screen.dart';
 
 class G3LettersWordsHub extends StatelessWidget {
   const G3LettersWordsHub({super.key});
@@ -13,11 +13,11 @@ class G3LettersWordsHub extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <(String, String, String, Color, Widget)>[
       (
-        '🔤',
-        'الحروف',
-        'كل الحروف الـ٢٨: صوت الحرف واسمه',
+        '🧠',
+        'مهارات الحروف',
+        'تدريبات متقدمة على الحرف داخل الكلمة، الإكمال، الترتيب والصوت',
         const Color(0xFF7C4DFF),
-        const LettersScreen(),
+        const G3LetterSkillsScreen(),
       ),
       (
         '📖',
