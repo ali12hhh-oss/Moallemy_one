@@ -9,6 +9,7 @@ class ChildProgressRepository {
   static const _prefix = 'child_progress_v1.';
   static const _legacyKey = 'daleel_v5_state';
   static const _legacyMigratedKey = 'child_progress_v1.legacy_migrated';
+  static const _backgroundKey = 'selectedBackground';
 
   static Future<String?> _key() async {
     final id = await AppStorage.activeId();
@@ -227,6 +228,22 @@ class ChildProgressRepository {
     final state = await load();
     final owned = List<String>.from(state['ownedItems'] ?? const <String>[]);
     return owned.contains(itemId);
+  }
+
+  static Future<String?> selectedBackground() async {
+    final state = await load();
+    final value = state[_backgroundKey];
+    return value is String && value.trim().isNotEmpty ? value : null;
+  }
+
+  static Future<void> setSelectedBackground(String? backgroundId) async {
+    final state = await load();
+    if (backgroundId == null || backgroundId.trim().isEmpty) {
+      state.remove(_backgroundKey);
+    } else {
+      state[_backgroundKey] = backgroundId.trim();
+    }
+    await save(state);
   }
 
   static Future<bool> buy(String itemId, int price, {String? title}) async {
