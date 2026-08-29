@@ -8,6 +8,7 @@ import '../../core/storage/app_storage.dart';
 import '../../core/theme/stage_colors.dart';
 import '../../models/child.dart';
 import '../../widgets/button_3d.dart';
+import '../../widgets/store_background.dart';
 import '../parents/parents_screen.dart';
 import '../settings/settings_screen.dart';
 import '../shop/shop_screen.dart';
@@ -175,21 +176,25 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [IconButton(color: Colors.white, tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
         ),
         body: Stack(children: [
-          Positioned.fill(child: Image.asset('assets/images/games/home_bg.jpg', fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(color: Theme.of(context).colorScheme.surface))),
-          Positioned.fill(child: IgnorePointer(child: Container(color: isDark ? Colors.black.withValues(alpha: .30) : Colors.white.withValues(alpha: .06)))),
-          SafeArea(child: ListView(padding: const EdgeInsets.fromLTRB(16, 72, 16, 32), children: [
-            _childButton(),
-            const SizedBox(height: 14),
-            _parentButton(),
-            const SizedBox(height: 22),
-            const Text('مراحل التعلم', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, color: Colors.white, shadows: [Shadow(blurRadius: 5)])),
-            const SizedBox(height: 6),
-            Text(child == null ? 'اختر المرحلة المناسبة لطفلك وابدأ الرحلة.' : 'اختر مرحلة ${child!.name} وابدأ التعلم.', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white, shadows: [Shadow(blurRadius: 4)])),
-            const SizedBox(height: 14),
-            ..._stageButtons(),
-            const SizedBox(height: 4),
-            _storeButton(),
-          ])),
+          Positioned.fill(
+            child: StoreBackground(
+              originalAsset: 'assets/images/games/home_bg.jpg',
+              overlayColor: isDark ? Colors.black.withValues(alpha: .30) : Colors.white.withValues(alpha: .06),
+              child: SafeArea(child: ListView(padding: const EdgeInsets.fromLTRB(16, 72, 16, 32), children: [
+                _childButton(),
+                const SizedBox(height: 14),
+                _parentButton(),
+                const SizedBox(height: 22),
+                const Text('مراحل التعلم', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, color: Colors.white, shadows: [Shadow(blurRadius: 5)])),
+                const SizedBox(height: 6),
+                Text(child == null ? 'اختر المرحلة المناسبة لطفلك وابدأ الرحلة.' : 'اختر مرحلة ${child!.name} وابدأ التعلم.', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white, shadows: [Shadow(blurRadius: 4)])),
+                const SizedBox(height: 14),
+                ..._stageButtons(),
+                const SizedBox(height: 4),
+                _storeButton(),
+              ])),
+            ),
+          ),
         ]),
       ),
     );
