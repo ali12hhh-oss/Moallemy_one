@@ -21,7 +21,6 @@ class StoreBackground extends StatefulWidget {
 
 class _StoreBackgroundState extends State<StoreBackground> {
   String _asset;
-  String _selectedId = StoreBackgroundService.originalId;
 
   _StoreBackgroundState() : _asset = '';
 
@@ -35,10 +34,7 @@ class _StoreBackgroundState extends State<StoreBackground> {
     final id = await StoreBackgroundService.selectedId();
     final item = _find(id);
     if (!mounted) return;
-    setState(() {
-      _selectedId = id;
-      _asset = item?.image ?? widget.originalAsset;
-    });
+    setState(() => _asset = item?.image ?? widget.originalAsset);
   }
 
   RewardItemV23? _find(String id) {
