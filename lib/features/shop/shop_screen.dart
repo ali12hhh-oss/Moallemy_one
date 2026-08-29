@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:daleel_child/core/store/store_service_v23.dart';
+import 'package:daleel_child/core/store/store_background_service.dart';
 import 'package:daleel_child/data/store_v23.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class _ShopScreenState extends State<ShopScreen> {
   int _stars = 0;
   final Set<String> _owned = <String>{};
   String _filter = 'الكل';
+  String _selectedBackground = StoreBackgroundService.originalId;
 
   List<String> get _categories => <String>['الكل', ...{
         for (final item in rewardsV23) item.type,
@@ -32,12 +34,14 @@ class _ShopScreenState extends State<ShopScreen> {
     for (final item in rewardsV23) {
       if (await StoreServiceV23.owned(item.id)) owned.add(item.id);
     }
+    final selectedBackground = await StoreBackgroundService.selectedId();
     if (!mounted) return;
     setState(() {
       _stars = stars;
       _owned
         ..clear()
         ..addAll(owned);
+      _selectedBackground = selectedBackground;
     });
   }
 
@@ -61,6 +65,23 @@ class _ShopScreenState extends State<ShopScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تم شراء ${item.title} 🎉')),
+      );
+    }
+  }
+
+  Future<void> _applyBackground(String id) async {
+    final success = await StoreBackgroundService.apply(id);
+    if (!mounted) return;
+    if (success) {
+      setState(() => _selectedBackground = id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            id == StoreBackgroundService.originalId
+                ? 'تمت استعادة الخلفية الأصلية ✅'
+                : 'تم تطبيق الخلفية ✅',
+          ),
+        ),
       );
     }
   }
@@ -113,6 +134,39 @@ class _ShopScreenState extends State<ShopScreen> {
                 ],
               ),
             ),
+            if (_filter == 'الكل' || _filter == 'خلفيات')
+              Container(
+                margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'خلفيتي الحالية',
+                        style: TextStyle(fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                    Text(
+                      _selectedBackground == StoreBackgroundService.originalId
+                          ? 'الأصلية'
+                          : 'مختارة ⭐',
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton.icon(
+                      onPressed: _selectedBackground == StoreBackgroundService.originalId
+                          ? null
+                          : () => _applyBackground(StoreBackgroundService.originalId),
+                      icon: const Icon(Icons.restore_rounded, size: 18),
+                      label: const Text('الأصلية'),
+                    ),
+                  ],
+                ),
+              ),
             SizedBox(
               height: 48,
               child: ListView.separated(
@@ -145,6 +199,8 @@ class _ShopScreenState extends State<ShopScreen> {
                   final item = items[index];
                   final owned = _owned.contains(item.id);
                   final canBuy = _stars >= item.price && !owned;
+                  final isBackground = item.type == 'خلفيات';
+                  final isApplied = isBackground && _selectedBackground == item.id;
                   return Card(
                     elevation: 5,
                     clipBehavior: Clip.antiAlias,
@@ -183,8 +239,14 @@ class _ShopScreenState extends State<ShopScreen> {
                           child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: canBuy ? () => _buy(item) : null,
-                              child: Text(owned ? 'تم الشراء ✓' : 'شراء'),
+                              onPressed: isBackground && owned
+                                  ? () => _applyBackground(item.id)
+                                  : (canBuy ? () => _buy(item) : null),
+                              child: Text(
+                                isBackground
+                                    ? (isApplied ? 'مطبقة ✓' : 'تطبيق')
+                                    : (owned ? 'تم الشراء ✓' : 'شراء'),
+                              ),
                             ),
                           ),
                         ),
