@@ -55,15 +55,7 @@ class _DaleelChildAppState extends State<DaleelChildApp> {
   @override
   void initState() {
     super.initState();
-    _initializeAudio();
-  }
-
-  Future<void> _initializeAudio() async {
-    // Start the welcome clip immediately, before preferences I/O completes.
-    final welcome = VoiceService.playWelcome();
-    await prefs.load();
-    if (!mounted) return;
-    await welcome;
+    prefs.load();
   }
 
   @override
