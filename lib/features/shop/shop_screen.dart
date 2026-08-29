@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:daleel_child/core/store/store_service_v23.dart';
-import 'package:daleel_child/core/store/store_background_service.dart';
-import 'package:daleel_child/data/store_v23.dart';
+import '../../core/store/store_background_service.dart';
+import '../../core/store/store_service_v23.dart';
+import '../../data/store_v23.dart';
+import 'store_artwork.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
@@ -18,9 +18,12 @@ class _ShopScreenState extends State<ShopScreen> {
   String _filter = 'الكل';
   String _selectedBackground = StoreBackgroundService.originalId;
 
-  List<String> get _categories => <String>['الكل', ...{
-        for (final item in rewardsV23) item.type,
-      }];
+  List<String> get _categories => <String>[
+        'الكل',
+        ...{
+          for (final item in rewardsV23) item.type,
+        },
+      ];
 
   @override
   void initState() {
@@ -146,7 +149,7 @@ class _ShopScreenState extends State<ShopScreen> {
                   children: [
                     const Expanded(
                       child: Text(
-                        'خلفيتي الحالية',
+                        'الخلفية الحالية',
                         style: TextStyle(fontWeight: FontWeight.w900),
                       ),
                     ),
@@ -201,6 +204,7 @@ class _ShopScreenState extends State<ShopScreen> {
                   final canBuy = _stars >= item.price && !owned;
                   final isBackground = item.type == 'خلفيات';
                   final isApplied = isBackground && _selectedBackground == item.id;
+
                   return Card(
                     elevation: 5,
                     clipBehavior: Clip.antiAlias,
@@ -212,11 +216,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8),
-                            child: SvgPicture.asset(
-                              item.image,
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                            ),
+                            child: StoreArtwork(art: item.art),
                           ),
                         ),
                         Padding(
@@ -238,16 +238,17 @@ class _ShopScreenState extends State<ShopScreen> {
                           padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
                           child: SizedBox(
                             width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: isBackground && owned
-                                  ? () => _applyBackground(item.id)
-                                  : (canBuy ? () => _buy(item) : null),
-                              child: Text(
-                                isBackground
-                                    ? (isApplied ? 'مطبقة ✓' : 'تطبيق')
-                                    : (owned ? 'تم الشراء ✓' : 'شراء'),
-                              ),
-                            ),
+                            child: isBackground && owned
+                                ? ElevatedButton(
+                                    onPressed: isApplied
+                                        ? null
+                                        : () => _applyBackground(item.id),
+                                    child: Text(isApplied ? 'مطبقة ✓' : 'تطبيق'),
+                                  )
+                                : ElevatedButton(
+                                    onPressed: canBuy ? () => _buy(item) : null,
+                                    child: Text(owned ? 'تم الشراء ✓' : 'شراء'),
+                                  ),
                           ),
                         ),
                       ],
