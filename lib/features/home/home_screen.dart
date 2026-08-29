@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Child? child;
   final prefs = AppPreferencesV10.instance;
+  int _backgroundRevision = 0;
 
   static const stages = [
     ('kg1', 'الروضة الأولى', '٣–٤ سنوات', '🎨', 'ألوان وأشكال واستماع وأعداد أولى'),
@@ -141,6 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _openStore() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const ShopScreen()));
+    if (!mounted) return;
+    setState(() => _backgroundRevision++);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = prefs.themeMode == ThemeMode.dark;
@@ -178,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Stack(children: [
           Positioned.fill(
             child: StoreBackground(
+              key: ValueKey(_backgroundRevision),
               originalAsset: 'assets/images/games/home_bg.jpg',
               overlayColor: isDark ? Colors.black.withValues(alpha: .30) : Colors.white.withValues(alpha: .06),
               child: SafeArea(child: ListView(padding: const EdgeInsets.fromLTRB(16, 72, 16, 32), children: [
@@ -229,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
   ])))).toList();
 
-  Widget _storeButton() => Button3D(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ShopScreen())), color: StageColors.store, depth: 9, child: Row(children: [
+  Widget _storeButton() => Button3D(onTap: _openStore, color: StageColors.store, depth: 9, child: Row(children: [
     Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .32), shape: BoxShape.circle), child: const Center(child: Text('⭐', style: TextStyle(fontSize: 27)))),
     const SizedBox(width: 14),
     const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('المتجر', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)), SizedBox(height: 3), Text('جوائز وملصقات وشخصيات تشجيعية بالنجوم', style: TextStyle(color: Colors.white, fontSize: 13))])),
