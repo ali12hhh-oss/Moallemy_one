@@ -8,6 +8,9 @@ import '../settings/app_preferences_v10.dart';
 class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
+  static final AudioPlayer _feedbackPlayer = AudioPlayer();
+  static final AudioPlayer _welcomePlayer = AudioPlayer();
+  static Future<void>? _welcomePreload;
   static int _playRequest = 0;
 
   static bool get _enabled => AppPreferencesV10.instance.sounds;
@@ -92,8 +95,21 @@ class VoiceService {
     _playRequest++;
     await _tts.stop();
     await _player.stop();
+    await _feedbackPlayer.stop();
+    await _welcomePlayer.stop();
   }
 
+  // Preload the welcome clip before the first screen needs it, so the first
+  // audible frame is not delayed by the player's initial asset preparation.
+  static Future<void> preloadWelcome() {
+    return _welcomePreload ??= _welcomePlayer.setSource(
+      AssetSource('audio/welcome.mp3', mimeType: 'audio/mpeg'),
+    );
+  }
+
+  // Keep the asset check off the critical path. Flutter's AssetSource already
+  // resolves bundled assets; loading the whole file with rootBundle first was
+  // adding avoidable startup latency to every short sound.
   static Future<bool> _playAsset(String assetPath) async {
     if (!_enabled) return false;
     final request = ++_playRequest;
@@ -121,13 +137,47 @@ class VoiceService {
     }
   }
 
+  // Feedback uses its own player so a following educational sound cannot
+  // immediately stop "أحسنت" / "حاول مرة أخرى".
   static Future<bool> _playFeedbackAsset(String assetPath) async {
     if (!_feedbackEnabled) return false;
-    return _playAsset(assetPath);
+    final request = ++_playRequest;
+    try {
+      await _tts.stop();
+      await _feedbackPlayer.stop();
+      if (request != _playRequest) return false;
+      await _feedbackPlayer.setReleaseMode(ReleaseMode.stop);
+      final relative = assetPath.startsWith('assets/')
+          ? assetPath.substring('assets/'.length)
+          : assetPath;
+      await _feedbackPlayer.play(
+        AssetSource(relative, mimeType: 'audio/mpeg'),
+        volume: 1.0,
+      );
+      return request == _playRequest;
+    } catch (_) {
+      return false;
+    }
   }
 
-  static Future<bool> playWelcome() =>
-      _playFeedbackAsset('assets/audio/welcome.mp3');
+  static Future<bool> playWelcome() async {
+    if (!_feedbackEnabled) return false;
+    final request = ++_playRequest;
+    try {
+      await preloadWelcome();
+      await _tts.stop();
+      await _player.stop();
+      if (request != _playRequest) return false;
+      await _welcomePlayer.stop();
+      await _welcomePlayer.setReleaseMode(ReleaseMode.stop);
+      await _welcomePlayer.seek(Duration.zero);
+      if (request != _playRequest) return false;
+      await _welcomePlayer.resume();
+      return request == _playRequest;
+    } catch (_) {
+      return false;
+    }
+  }
 
   static Future<bool> playCorrect() =>
       _playFeedbackAsset('assets/audio/correct.mp3');
