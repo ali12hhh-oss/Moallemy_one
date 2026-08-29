@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class StoreArtwork extends StatelessWidget {
   final String art;
   final bool background;
+
   const StoreArtwork({super.key, required this.art, this.background = false});
 
   @override
@@ -23,6 +24,7 @@ class _StoreArtworkPainter extends CustomPainter {
   final String kind;
   final int index;
   final bool background;
+
   _StoreArtworkPainter({required this.kind, required this.index, required this.background});
 
   static const colors = <Color>[
@@ -44,7 +46,6 @@ class _StoreArtworkPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final base = Paint()..color = c;
     canvas.drawCircle(center, s * .43, base);
-    final p = Paint()..color = Colors.white.withValues(alpha: .94);
     final accent = Paint()..color = c2;
 
     switch (kind) {
@@ -132,7 +133,7 @@ class _StoreArtworkPainter extends CustomPainter {
 
   void _tool(Canvas canvas, Offset m, double s, Paint accent) {
     if(index%3==0){
-      for(int i=0;i<3;i++) canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(m.dx-s*.27,m.dy+s*.18-i*s*.11,s*.54,s*.08),Radius.circular(6)), Paint()..color=colors[(index+i)%10]);
+      for(int i=0;i<3;i++) canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(m.dx-s*.27,m.dy+s*.18-i*s*.11,s*.54,s*.08), const Radius.circular(6)), Paint()..color=colors[(index+i)%10]);
     } else if(index%3==1){
       canvas.drawRect(Rect.fromCenter(center:m,width:s*.54,height:s*.10),Paint()..color=const Color(0xFFFFE082));
       for(int i=0;i<5;i++) canvas.drawRect(Rect.fromLTWH(m.dx-s*.20+i*s*.09,m.dy-s*.05,s*.02,s*.12),accent);
@@ -161,8 +162,8 @@ class _StoreArtworkPainter extends CustomPainter {
   }
 
   void _paintBackground(Canvas canvas, Size size) {
-    final colorsA=[const Color(0xFFB3E5FC),const Color(0xFFA5D6A7),const Color(0xFF3949AB),const Color(0xFF26A69A),const Color(0xFF90CAF9),const Color(0xFFFFCC80),const Color(0xFFCE93D8),const Color(0xFF81C784),const Color(0xFFB39DDB),const Color(0xFFFFB74D)];
-    final colorsB=[const Color(0xFFF8BBD0),const Color(0xFFFFE082),const Color(0xFF7E57C2),const Color(0xFF80CBC4),const Color(0xFF42A5F5),const Color(0xFFFFF59D),const Color(0xFFFFCC80),const Color(0xFFA5D6A7),const Color(0xFF80DEEA),const Color(0xFFFFE082)];
+    const colorsA=[Color(0xFFB3E5FC),Color(0xFFA5D6A7),Color(0xFF3949AB),Color(0xFF26A69A),Color(0xFF90CAF9),Color(0xFFFFCC80),Color(0xFFCE93D8),Color(0xFF81C784),Color(0xFFB39DDB),Color(0xFFFFB74D)];
+    const colorsB=[Color(0xFFF8BBD0),Color(0xFFFFE082),Color(0xFF7E57C2),Color(0xFF80CBC4),Color(0xFF42A5F5),Color(0xFFFFF59D),Color(0xFFFFCC80),Color(0xFFA5D6A7),Color(0xFF80DEEA),Color(0xFFFFE082)];
     final rect=Offset.zero & size;
     final g=Paint()..shader=LinearGradient(begin:Alignment.topLeft,end:Alignment.bottomRight,colors:[colorsA[index%10],colorsB[index%10]]).createShader(rect);
     canvas.drawRect(rect,g);
@@ -170,7 +171,7 @@ class _StoreArtworkPainter extends CustomPainter {
     final rnd=math.Random(index+17);
     for(int i=0;i<16;i++){final x=rnd.nextDouble()*size.width;final y=rnd.nextDouble()*size.height;final r=8+rnd.nextDouble()*24;canvas.drawCircle(Offset(x,y),r,p);}
     final sun=Paint()..color=Colors.white.withValues(alpha:.28);canvas.drawCircle(Offset(size.width*.82,size.height*.2),math.min(size.width,size.height)*.12,sun);
-    final ground=Paint()..color=Colors.white.withValues(alpha:.18);canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0,size.height*.72,size.width,size.height*.28),Radius.circular(28)),ground);
+    final ground=Paint()..color=Colors.white.withValues(alpha:.18);canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0,size.height*.72,size.width,size.height*.28),const Radius.circular(28)),ground);
   }
 
   @override
