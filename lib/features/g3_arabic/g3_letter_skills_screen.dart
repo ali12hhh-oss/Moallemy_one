@@ -391,28 +391,57 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
         children: [
           _heading('الحرف المفقود', 'اختر الحرف ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)),
           const SizedBox(height: 22),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              textDirection: TextDirection.rtl,
-              children: List.generate(letters.length, (i) {
-                final missing = i == q.missingIndex;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 360),
-                    transitionBuilder: (child, animation) => SlideTransition(
-                      position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
-                      child: FadeTransition(opacity: animation, child: child),
-                    ),
-                    child: missing && !filled
-                        ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
-                        : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
-                  ),
-                );
-              }),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 360),
+            transitionBuilder: (child, animation) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+              child: FadeTransition(opacity: animation, child: child),
             ),
+            child: filled
+                ? Container(
+                    key: ValueKey('completed:${q.word}'),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .92),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: const Color(0xFF7C4DFF), width: 2),
+                    ),
+                    child: Text(
+                      q.word,
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.rtl,
+                      style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w900),
+                    ),
+                  )
+                : FittedBox(
+                    key: ValueKey('incomplete:${q.word}'),
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      textDirection: TextDirection.rtl,
+                      children: List.generate(letters.length, (i) {
+                        final missing = i == q.missingIndex;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: missing
+                              ? Container(
+                                  width: 60,
+                                  height: 66,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: .92),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(color: const Color(0xFF7C4DFF), width: 2),
+                                  ),
+                                )
+                              : Text(
+                                  letters[i],
+                                  style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900),
+                                ),
+                        );
+                      }),
+                    ),
+                  ),
           ),
           const SizedBox(height: 14),
           const Text('اختر الحرف الناقص', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
