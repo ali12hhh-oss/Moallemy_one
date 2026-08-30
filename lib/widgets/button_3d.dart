@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 /// of a darker translucent slab, allowing the page artwork to remain visible.
 class Button3D extends StatefulWidget {
   final Widget child;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color color;
   final Color? shadowColor;
   final EdgeInsetsGeometry padding;
@@ -43,15 +43,18 @@ class _Button3DState extends State<Button3D> {
 
   @override
   Widget build(BuildContext context) {
+    final callback = widget.onTap;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTapDown: (_) => _setPressed(true),
-      onTapCancel: () => _setPressed(false),
-      onTapUp: (_) => _setPressed(false),
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        widget.onTap();
-      },
+      onTapDown: callback == null ? null : (_) => _setPressed(true),
+      onTapCancel: callback == null ? null : () => _setPressed(false),
+      onTapUp: callback == null ? null : (_) => _setPressed(false),
+      onTap: callback == null
+          ? null
+          : () {
+              HapticFeedback.mediumImpact();
+              callback();
+            },
       child: Stack(
         children: [
           Container(
