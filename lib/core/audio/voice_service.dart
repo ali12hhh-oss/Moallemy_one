@@ -91,25 +91,26 @@ class VoiceService {
     await _tts.speak(name);
   }
 
-  static Future<void> stop() async {
+  /// Stops all active educational audio, while leaving the startup welcome
+  /// clip untouched when navigation happens away from the splash screen.
+  static Future<void> stopEducational() async {
     _playRequest++;
     await _tts.stop();
     await _player.stop();
     await _feedbackPlayer.stop();
+  }
+
+  static Future<void> stop() async {
+    await stopEducational();
     await _welcomePlayer.stop();
   }
 
-  // Preload the welcome clip before the first screen needs it, so the first
-  // audible frame is not delayed by the player's initial asset preparation.
   static Future<void> preloadWelcome() {
     return _welcomePreload ??= _welcomePlayer.setSource(
       AssetSource('audio/welcome.mp3', mimeType: 'audio/mpeg'),
     );
   }
 
-  // Keep the asset check off the critical path. Flutter's AssetSource already
-  // resolves bundled assets; loading the whole file with rootBundle first was
-  // adding avoidable startup latency to every short sound.
   static Future<bool> _playAsset(String assetPath) async {
     if (!_enabled) return false;
     final request = ++_playRequest;
@@ -137,8 +138,6 @@ class VoiceService {
     }
   }
 
-  // Feedback uses its own player so a following educational sound cannot
-  // immediately stop "أحسنت" / "حاول مرة أخرى".
   static Future<bool> _playFeedbackAsset(String assetPath) async {
     if (!_feedbackEnabled) return false;
     final request = ++_playRequest;
