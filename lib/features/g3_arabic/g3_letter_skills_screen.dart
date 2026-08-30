@@ -14,43 +14,43 @@ class G3LetterSkillsScreen extends StatefulWidget {
 }
 
 class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
-  static const _missingLetterQuestions = <({String pattern, String answer, String word})>[
-    (pattern: 'ك_تاب', answer: 'ت', word: 'كتاب'),
-    (pattern: 'ق_لم', answer: 'ل', word: 'قلم'),
-    (pattern: 'م_رسة', answer: 'د', word: 'مدرسة'),
-    (pattern: 'ش_رة', answer: 'ج', word: 'شجرة'),
-    (pattern: 'ن_ر', answer: 'ه', word: 'نهر'),
-    (pattern: 'ب_ت', answer: 'ي', word: 'بيت'),
-    (pattern: 'ج_ل', answer: 'م', word: 'جمل'),
-    (pattern: 'ت_اح', answer: 'ف', word: 'تفاح'),
-    (pattern: 'ح_ر', answer: 'ب', word: 'بحر'),
-    (pattern: 'ز_رة', answer: 'ه', word: 'زهرة'),
-    (pattern: 'س_ينة', answer: 'ف', word: 'سفينة'),
-    (pattern: 'م_تاح', answer: 'ف', word: 'مفتاح'),
-    (pattern: 'س_ارة', answer: 'ي', word: 'سيارة'),
-    (pattern: 'ح_يقة', answer: 'د', word: 'حديقة'),
-    (pattern: 'د_تر', answer: 'ف', word: 'دفتر'),
-    (pattern: 'ك_سي', answer: 'ر', word: 'كرسي'),
-    (pattern: 'ط_رة', answer: 'ا', word: 'طائرة'),
-    (pattern: 'م_تبة', answer: 'ك', word: 'مكتبة'),
-    (pattern: 'و_دة', answer: 'ر', word: 'وردة'),
-    (pattern: 'ق_ة', answer: 'ط', word: 'قطة'),
-    (pattern: 'ك_ب', answer: 'ل', word: 'كلب'),
-    (pattern: 'ب_ب', answer: 'ا', word: 'باب'),
-    (pattern: 'ق_مر', answer: 'م', word: 'قمر'),
-    (pattern: 'ع_م', answer: 'ل', word: 'علم'),
-    (pattern: 'و_د', answer: 'ر', word: 'ورد'),
-    (pattern: 'ص_ف', answer: 'ي', word: 'صيف'),
-    (pattern: 'خ_ز', answer: 'ب', word: 'خبز'),
-    (pattern: 'ع_ب', answer: 'ن', word: 'عنب'),
-    (pattern: 'ل_ن', answer: 'و', word: 'لون'),
-    (pattern: 'س_م', answer: 'ه', word: 'سهم'),
-    (pattern: 'ن_مة', answer: 'ع', word: 'نعمة'),
-    (pattern: 'ش_مس', answer: 'م', word: 'شمس'),
-    (pattern: 'ح_ان', answer: 'ص', word: 'حصان'),
-    (pattern: 'ف_ل', answer: 'ص', word: 'فصل'),
-    (pattern: 'ر_ان', answer: 'م', word: 'رمضان'),
-    (pattern: 'م_ران', answer: 'ط', word: 'مطران'),
+  static const _missingLetterQuestions = <({String word, int missingIndex, String answer})>[
+    (word: 'كتاب', missingIndex: 1, answer: 'ت'),
+    (word: 'قلم', missingIndex: 1, answer: 'ل'),
+    (word: 'مدرسة', missingIndex: 1, answer: 'د'),
+    (word: 'شجرة', missingIndex: 1, answer: 'ج'),
+    (word: 'نهر', missingIndex: 1, answer: 'ه'),
+    (word: 'بيت', missingIndex: 1, answer: 'ي'),
+    (word: 'جمل', missingIndex: 1, answer: 'م'),
+    (word: 'تفاح', missingIndex: 1, answer: 'ف'),
+    (word: 'بحر', missingIndex: 1, answer: 'ح'),
+    (word: 'زهرة', missingIndex: 1, answer: 'ه'),
+    (word: 'سفينة', missingIndex: 1, answer: 'ف'),
+    (word: 'مفتاح', missingIndex: 1, answer: 'ف'),
+    (word: 'سيارة', missingIndex: 1, answer: 'ي'),
+    (word: 'حديقة', missingIndex: 1, answer: 'د'),
+    (word: 'دفتر', missingIndex: 1, answer: 'ف'),
+    (word: 'كرسي', missingIndex: 1, answer: 'ر'),
+    (word: 'طائرة', missingIndex: 1, answer: 'ا'),
+    (word: 'مكتبة', missingIndex: 1, answer: 'ك'),
+    (word: 'وردة', missingIndex: 1, answer: 'ر'),
+    (word: 'قطة', missingIndex: 1, answer: 'ط'),
+    (word: 'كلب', missingIndex: 1, answer: 'ل'),
+    (word: 'باب', missingIndex: 1, answer: 'ا'),
+    (word: 'قمر', missingIndex: 1, answer: 'م'),
+    (word: 'علم', missingIndex: 1, answer: 'ل'),
+    (word: 'ورد', missingIndex: 1, answer: 'ر'),
+    (word: 'صيف', missingIndex: 1, answer: 'ي'),
+    (word: 'خبز', missingIndex: 1, answer: 'ب'),
+    (word: 'عنب', missingIndex: 1, answer: 'ن'),
+    (word: 'لون', missingIndex: 1, answer: 'و'),
+    (word: 'سهم', missingIndex: 1, answer: 'ه'),
+    (word: 'نعمة', missingIndex: 1, answer: 'ع'),
+    (word: 'شمس', missingIndex: 1, answer: 'م'),
+    (word: 'حصان', missingIndex: 1, answer: 'ص'),
+    (word: 'فصل', missingIndex: 1, answer: 'ص'),
+    (word: 'مطار', missingIndex: 1, answer: 'ط'),
+    (word: 'مزرعة', missingIndex: 1, answer: 'ز'),
   ];
 
   static const _missingWordQuestions = <({String sentence, String answer, List<String> options})>[
@@ -71,25 +71,25 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     (sentence: 'أكلت هند ____ حمراء.', answer: 'تفاحة', options: ['تفاحة', 'حقيبة', 'ممحاة', 'وسادة']),
     (sentence: 'ركب خالد ____ إلى المدرسة.', answer: 'الحافلة', options: ['الحافلة', 'الكتاب', 'القلم', 'الطاولة']),
     (sentence: 'في الشتاء نرتدي ____.', answer: 'المعطف', options: ['المعطف', 'الدفتر', 'الباب', 'الكرة']),
-    (sentence: 'يساعد الطبيب ____ المرضى.', answer: 'يعالج', options: ['يعالج', 'يرسم', 'يلعب', 'ينام']),
     (sentence: 'وضعت الأم الطعام على ____.', answer: 'الطاولة', options: ['الطاولة', 'الحقيبة', 'الشجرة', 'السيارة']),
     (sentence: 'تسكن العصافير فوق ____.', answer: 'الشجرة', options: ['الشجرة', 'الكرسي', 'البحر', 'الكتاب']),
     (sentence: 'يشاهد الأطفال ____ في السماء.', answer: 'النجوم', options: ['النجوم', 'الأقلام', 'الكراسي', 'الحقائب']),
     (sentence: 'أحب أن أسمع ____ الجميل.', answer: 'الصوت', options: ['الصوت', 'الطاولة', 'المفتاح', 'الحقيبة']),
-    (sentence: 'يحمل الجندي ____.', answer: 'العَلَم', options: ['العَلَم', 'الممحاة', 'الوردة', 'الملعقة']),
+    (sentence: 'يحمل الجندي ____.', answer: 'العلم', options: ['العلم', 'الممحاة', 'الوردة', 'الملعقة']),
     (sentence: 'في المكتبة نجد ____ كثيرة.', answer: 'كتباً', options: ['كتباً', 'كرات', 'تفاحات', 'أكواباً']),
     (sentence: 'في الصباح أفتح ____.', answer: 'النافذة', options: ['النافذة', 'الحقيبة', 'الكرة', 'الدفتر']),
     (sentence: 'ينظف الطفل ____ بفرشاته.', answer: 'أسنانه', options: ['أسنانه', 'حقيبته', 'كرته', 'دفتره']),
     (sentence: 'تسير السيارة في ____.', answer: 'الشارع', options: ['الشارع', 'السماء', 'البحر', 'المكتبة']),
     (sentence: 'يضع الطالب كتبه في ____.', answer: 'حقيبته', options: ['حقيبته', 'مطبخه', 'حديقته', 'سيارته']),
     (sentence: 'يحب الطفل اللعب في ____.', answer: 'الملعب', options: ['الملعب', 'المكتبة', 'المطبخ', 'الفصل']),
-    (sentence: 'تشرب القطة ____.', answer: 'الحليب', options: ['الحليب', 'العصير', 'الخبز', 'الماء المالح']),
+    (sentence: 'تشرب القطة ____.', answer: 'الحليب', options: ['الحليب', 'العصير', 'الخبز', 'الماء']),
     (sentence: 'يقطف الفلاح ____ من الشجرة.', answer: 'الثمر', options: ['الثمر', 'الكتب', 'الأقلام', 'الحقائب']),
     (sentence: 'نحفظ النقود في ____.', answer: 'المحفظة', options: ['المحفظة', 'الكتاب', 'الكرة', 'الكرسي']),
     (sentence: 'أشعل أبي ____ في المساء.', answer: 'المصباح', options: ['المصباح', 'القلم', 'الباب', 'الطائرة']),
     (sentence: 'يلبس الطفل ____ في قدميه.', answer: 'الحذاء', options: ['الحذاء', 'القبعة', 'الحقيبة', 'الساعة']),
     (sentence: 'نقرأ الوقت من ____.', answer: 'الساعة', options: ['الساعة', 'الوردة', 'السبورة', 'الطاولة']),
     (sentence: 'يكتب المعلم على ____.', answer: 'السبورة', options: ['السبورة', 'الحافلة', 'الشجرة', 'الحقيبة']),
+    (sentence: 'يحفظ الطفل أغراضه في ____.', answer: 'الصندوق', options: ['الصندوق', 'البحر', 'الشارع', 'الحديقة']),
   ];
 
   static const _listenQuestions = <({String word, List<String> options})>[
@@ -123,21 +123,29 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     (word: 'كرة', options: ['كرة', 'كرسي', 'كراسة', 'كعكة']),
     (word: 'دفتر', options: ['دفتر', 'دجاج', 'دراجة', 'دب']),
     (word: 'مصباح', options: ['مصباح', 'مفتاح', 'مسبح', 'مطار']),
-    (word: 'ماء', options: ['ماء', 'موز', 'مرآة', 'مطر']),
-    (word: 'سوق', options: ['سوق', 'سور', 'سيف', 'سقف']),
-    (word: 'باب', options: ['باب', 'بحر', 'بستان', 'بدر']),
-    (word: 'كتاب', options: ['كتاب', 'كوكب', 'كوب', 'كلب']),
+  ];
+
+  static const _sortWords = <List<String>>[
+    ['ك', 'ت', 'ا', 'ب'], ['ق', 'ل', 'م'], ['ب', 'ي', 'ت'], ['ج', 'م', 'ل'],
+    ['ن', 'ه', 'ر'], ['و', 'ر', 'د'], ['ق', 'م', 'ر'], ['ع', 'ل', 'م'],
+    ['س', 'م', 'ك'], ['ب', 'ا', 'ب'], ['ق', 'ط', 'ة'], ['ك', 'ل', 'ب'],
+    ['و', 'ر', 'د', 'ة'], ['ش', 'ج', 'ر', 'ة'], ['د', 'ف', 'ت', 'ر'],
+    ['ك', 'ر', 'س', 'ي'], ['م', 'ف', 'ت', 'ا', 'ح'], ['س', 'ي', 'ا', 'ر', 'ة'],
+    ['ح', 'د', 'ي', 'ق', 'ة'], ['م', 'ك', 'ت', 'ب', 'ة'], ['س', 'ف', 'ي', 'ن', 'ة'],
+    ['ط', 'ا', 'ئ', 'ر', 'ة'], ['م', 'د', 'ر', 'س', 'ة'], ['ح', 'ص', 'ا', 'ن'],
+    ['ز', 'ه', 'ر', 'ة'], ['ت', 'ف', 'ا', 'ح'], ['م', 'ز', 'ر', 'ع', 'ة'],
+    ['م', 'ص', 'ب', 'ا', 'ح'], ['ح', 'ل', 'ي', 'ب'], ['م', 'ل', 'ع', 'ب'],
   ];
 
   final _random = Random();
   int _mode = 0;
   int _questionIndex = 0;
-  String? _answer;
+  String? _selectedAnswer;
   String? _feedback;
   bool _correct = false;
   Timer? _feedbackTimer;
-
-  List<T> _shuffle<T>(List<T> values) => [...values]..shuffle(_random);
+  List<String> _sortSelected = <String>[];
+  int? _lastAnswerIndex;
 
   @override
   void initState() {
@@ -152,61 +160,164 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     super.dispose();
   }
 
-  void _speakCurrent() {
+  List<T> _shuffle<T>(List<T> source) => [...source]..shuffle(_random);
+
+  Future<void> _speakCurrent() async {
+    if (!mounted) return;
     if (_mode == 0) {
-      VoiceService.arabic(_missingLetterQuestions[_questionIndex].word);
+      final q = _missingLetterQuestions[_questionIndex];
+      await VoiceService.arabic(_questionSpeechForMissing(q));
     } else if (_mode == 1) {
-      VoiceService.arabic(_missingWordQuestions[_questionIndex].sentence);
-    } else {
-      VoiceService.arabic(_listenQuestions[_questionIndex].word);
+      await VoiceService.arabic(_missingWordQuestions[_questionIndex].sentence.replaceAll('____', 'مكان فارغ'));
+    } else if (_mode == 2) {
+      await VoiceService.arabic(_listenQuestions[_questionIndex].word);
     }
+  }
+
+  String _questionSpeechForMissing(({String word, int missingIndex, String answer}) q) {
+    final letters = q.word.runes.map(String.fromCharCode).toList();
+    final speech = <String>[];
+    for (var i = 0; i < letters.length; i++) {
+      speech.add(i == q.missingIndex ? 'مكان فارغ' : letters[i]);
+    }
+    return speech.join(' ');
   }
 
   void _showFeedback(bool correct) {
     _feedbackTimer?.cancel();
+    if (!mounted) return;
     setState(() {
       _correct = correct;
       _feedback = correct ? 'أحسنت! إجابة صحيحة 🌟' : 'حاول مرة أخرى 💪';
     });
-    _feedbackTimer = Timer(const Duration(milliseconds: 1300), () {
-      if (mounted) setState(() => _feedback = null);
+    _feedbackTimer = Timer(const Duration(milliseconds: 900), () {
+      if (!mounted) return;
+      setState(() => _feedback = null);
     });
   }
 
   void _answerQuestion(String answer, String correct) {
+    if (_lastAnswerIndex == _questionIndex && _selectedAnswer == correct) return;
     final ok = answer == correct;
-    setState(() => _answer = ok ? correct : answer);
+    setState(() {
+      _selectedAnswer = answer;
+      if (ok) _lastAnswerIndex = _questionIndex;
+    });
     _showFeedback(ok);
-    if (ok && _mode == 2) {
-      Future<void>.delayed(const Duration(milliseconds: 450), () {
-        if (mounted) _speakCurrent();
+    if (ok) {
+      Timer(const Duration(milliseconds: 950), () {
+        if (mounted && _feedback == null) _nextQuestion(autoSpeak: true);
       });
     }
   }
 
-  void _nextQuestion() {
-    final length = _mode == 0
-        ? _missingLetterQuestions.length
-        : _mode == 1
-            ? _missingWordQuestions.length
-            : _listenQuestions.length;
+  void _nextQuestion({bool autoSpeak = false}) {
+    final length = switch (_mode) {
+      0 => _missingLetterQuestions.length,
+      1 => _missingWordQuestions.length,
+      2 => _listenQuestions.length,
+      _ => _sortWords.length,
+    };
+    _feedbackTimer?.cancel();
     setState(() {
       _questionIndex = (_questionIndex + 1) % length;
-      _answer = null;
+      _selectedAnswer = null;
       _feedback = null;
+      _sortSelected = <String>[];
+      _lastAnswerIndex = null;
     });
-    _speakCurrent();
+    if (autoSpeak && _mode != 3) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
+    }
   }
 
   void _setMode(int mode) {
     _feedbackTimer?.cancel();
+    VoiceService.stop();
     setState(() {
       _mode = mode;
       _questionIndex = 0;
-      _answer = null;
+      _selectedAnswer = null;
+      _feedback = null;
+      _sortSelected = <String>[];
+      _lastAnswerIndex = null;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
+  }
+
+  void _selectMissingLetter(String letter, ({String word, int missingIndex, String answer}) q) {
+    if (_selectedAnswer == q.answer) return;
+    _answerQuestion(letter, q.answer);
+  }
+
+  void _selectMissingWord(String word, ({String sentence, String answer, List<String> options}) q) {
+    if (_selectedAnswer == q.answer) return;
+    _answerQuestion(word, q.answer);
+  }
+
+  void _selectListenWord(String word, ({String word, List<String> options}) q) {
+    if (_selectedAnswer == q.word) return;
+    _answerQuestion(word, q.word);
+  }
+
+  void _selectSortLetter(String letter, List<String> target) {
+    if (_sortSelected.length >= target.length) return;
+    setState(() => _sortSelected.add(letter));
+    if (_sortSelected.length == target.length) {
+      final formed = _sortSelected.join();
+      final correct = target.join();
+      _showFeedback(formed == correct);
+      if (formed == correct) {
+        Timer(const Duration(milliseconds: 950), () {
+          if (mounted && _feedback == null) _nextQuestion();
+        });
+      }
+    }
+  }
+
+  void _resetSort() {
+    _feedbackTimer?.cancel();
+    setState(() {
+      _sortSelected = <String>[];
       _feedback = null;
     });
-    _speakCurrent();
+  }
+
+  Widget _feedbackOverlay() {
+    final text = _feedback;
+    if (text == null) return const SizedBox.shrink();
+    return Positioned.fill(
+      child: IgnorePointer(
+        child: Center(
+          child: AnimatedScale(
+            scale: 1,
+            duration: const Duration(milliseconds: 180),
+            child: AnimatedOpacity(
+              opacity: 1,
+              duration: const Duration(milliseconds: 120),
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 360),
+                margin: const EdgeInsets.symmetric(horizontal: 28),
+                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 22),
+                decoration: BoxDecoration(
+                  color: _correct ? const Color(0xFF2E9D52) : const Color(0xFFD94343),
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: const [BoxShadow(color: Color(0x55000000), blurRadius: 20, offset: Offset(0, 10))],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(_correct ? '✓' : '×', style: const TextStyle(color: Colors.white, fontSize: 54, fontWeight: FontWeight.w900, height: 1)),
+                    const SizedBox(height: 8),
+                    Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -220,42 +331,17 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
           child: Stack(
             children: [
               ListView(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 32),
+                padding: const EdgeInsets.fromLTRB(12, 12, 12, 30),
                 children: [
                   _modeBar(width),
                   const SizedBox(height: 16),
                   if (_mode == 0) _missingLetterCard(),
                   if (_mode == 1) _missingWordCard(),
                   if (_mode == 2) _listenCard(),
+                  if (_mode == 3) _sortWordCard(),
                 ],
               ),
-              if (_feedback != null)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 34),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                        decoration: BoxDecoration(
-                          color: _correct ? const Color(0xFF43A047) : const Color(0xFFE53935),
-                          borderRadius: BorderRadius.circular(28),
-                          boxShadow: const [
-                            BoxShadow(color: Color(0x55000000), blurRadius: 18, offset: Offset(0, 8)),
-                          ],
-                        ),
-                        child: AnimatedScale(
-                          scale: 1,
-                          duration: const Duration(milliseconds: 180),
-                          child: Text(
-                            _feedback!,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              _feedbackOverlay(),
             ],
           ),
         ),
@@ -264,24 +350,18 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   }
 
   Widget _modeBar(double width) {
-    const labels = ['الحرف المفقود', 'الكلمة المفقودة', 'اسمع وأجب'];
-    const colors = [Color(0xFF7C4DFF), Color(0xFFEF6C00), Color(0xFF00897B)];
+    const labels = ['الحرف المفقود', 'الكلمة المفقودة', 'اسمع وأجب', 'رتب الكلمة'];
+    const colors = [Color(0xFF7C4DFF), Color(0xFFEF6C00), Color(0xFF00897B), Color(0xFF1565C0)];
     return Row(
-      children: List.generate(3, (index) {
+      children: List.generate(labels.length, (index) {
         return Expanded(
           child: Padding(
-            padding: EdgeInsetsDirectional.only(end: index == 2 ? 0 : 6),
+            padding: EdgeInsetsDirectional.only(end: index == labels.length - 1 ? 0 : 5),
             child: Button3D(
               onTap: () => _setMode(index),
               color: colors[index],
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: width < 430 ? 12 : 14),
-              child: Text(
-                labels[index],
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14),
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 2, vertical: width < 430 ? 12 : 14),
+              child: Text(labels[index], maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13)),
             ),
           ),
         );
@@ -291,11 +371,11 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   Widget _card({required Color color, required Widget child}) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 18, 14, 16),
+      padding: const EdgeInsets.fromLTRB(14, 18, 14, 18),
       decoration: BoxDecoration(
         color: color.withValues(alpha: .07),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: color.withValues(alpha: .28), width: 2),
+        border: Border.all(color: color.withValues(alpha: .25), width: 2),
       ),
       child: child,
     );
@@ -303,8 +383,8 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   Widget _heading(String title, String subtitle, Color color) => Column(
         children: [
-          Text(title, style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900, color: color)),
-          const SizedBox(height: 5),
+          Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900, color: color)),
+          const SizedBox(height: 6),
           Text(subtitle, textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
         ],
       );
@@ -312,97 +392,137 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   Widget _missingLetterCard() {
     final q = _missingLetterQuestions[_questionIndex];
     final options = _shuffle(<String>{q.answer, 'ب', 'م', 'ن', 'ل', 'ر'}.toList());
-    final shown = _answer == q.answer ? q.word : q.pattern;
+    final letters = q.word.runes.map(String.fromCharCode).toList();
+    final filled = _selectedAnswer == q.answer;
     return _card(
       color: const Color(0xFF7C4DFF),
       child: Column(
         children: [
-          _heading('الحرف المفقود', 'اختر الحرف الناقص ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)),
+          _heading('الحرف المفقود', 'اختر الحرف ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)),
           const SizedBox(height: 22),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 420),
-            transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
-            child: Text(
-              shown,
-              key: ValueKey(shown),
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            textDirection: TextDirection.rtl,
+            children: List.generate(letters.length, (i) {
+              final missing = i == q.missingIndex;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 360),
+                  transitionBuilder: (child, animation) => SlideTransition(
+                    position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+                    child: FadeTransition(opacity: animation, child: child),
+                  ),
+                  child: missing && !filled
+                      ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
+                      : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
+                ),
+              );
+            }),
           ),
-          const SizedBox(height: 24),
-          _letterOptions(options, q.answer),
+          const SizedBox(height: 14),
+          const Text('اختر الحرف الناقص', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+          const SizedBox(height: 13),
+          _letterOptions(options, q),
           const SizedBox(height: 18),
-          _nextButton('سؤال جديد', _nextQuestion),
+          _nextButton('سؤال جديد', _nextQuestion, emphasized: true),
         ],
       ),
     );
   }
 
-  Widget _letterOptions(List<String> options, String correct) => Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 8,
-        runSpacing: 10,
-        children: options
-            .map(
-              (letter) => SizedBox(
-                width: 60,
-                height: 58,
-                child: Button3D(
-                  onTap: () => _answerQuestion(letter, correct),
-                  color: const Color(0xFF8E24AA),
-                  padding: EdgeInsets.zero,
-                  child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.w900)),
-                ),
-              ),
-            )
-            .toList(),
-      );
+  Widget _letterOptions(List<String> options, ({String word, int missingIndex, String answer}) q) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: options.asMap().entries.map((entry) {
+        final letter = entry.value;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: SizedBox(
+            width: 58,
+            height: 60,
+            child: Button3D(
+              onTap: () => _selectMissingLetter(letter, q),
+              color: const Color(0xFF8E24AA),
+              padding: EdgeInsets.zero,
+              child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w900))),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
 
   Widget _missingWordCard() {
     final q = _missingWordQuestions[_questionIndex];
-    final shown = _answer == q.answer ? q.sentence.replaceFirst('____', q.answer) : q.sentence;
+    final filled = _selectedAnswer == q.answer;
     return _card(
       color: const Color(0xFFEF6C00),
       child: Column(
         children: [
-          _heading('الكلمة المفقودة', 'اختر الكلمة التي تكمل الجملة', const Color(0xFFEF6C00)),
-          const SizedBox(height: 24),
+          _heading('الكلمة المفقودة', 'اختر الكلمة لتكمل الجملة', const Color(0xFFEF6C00)),
+          const SizedBox(height: 22),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 450),
+            duration: const Duration(milliseconds: 360),
             child: Container(
-              key: ValueKey(shown),
+              key: ValueKey('${q.sentence}:$filled'),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
-              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .84), borderRadius: BorderRadius.circular(20)),
-              child: Text(shown, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, height: 1.5)),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 24),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .88), borderRadius: BorderRadius.circular(22)),
+              child: _sentenceView(q.sentence, filled ? q.answer : null),
             ),
           ),
           const SizedBox(height: 24),
-          _wordOptions(q.answer, q.options),
+          _wordOptions(q),
           const SizedBox(height: 18),
-          _nextButton('جملة جديدة', _nextQuestion),
+          _nextButton('جملة جديدة', _nextQuestion, emphasized: true),
         ],
       ),
     );
   }
 
-  Widget _wordOptions(String correct, List<String> source) {
-    final options = _shuffle(source);
+  Widget _sentenceView(String sentence, String? filledWord) {
+    final parts = sentence.split('____');
+    if (parts.length != 2) {
+      return Text(sentence, textAlign: TextAlign.center, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.5));
+    }
     return Wrap(
       alignment: WrapAlignment.center,
-      spacing: 8,
-      runSpacing: 10,
-      children: options.map((word) {
-        return SizedBox(
-          width: 132,
-          child: Button3D(
-            onTap: () => _answerQuestion(word, correct),
-            color: const Color(0xFFF57C00),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Text(word, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w900)),
+      crossAxisAlignment: WrapCrossAlignment.center,
+      textDirection: TextDirection.rtl,
+      children: [
+        Text(parts[0], style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.5)),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 350),
+          transitionBuilder: (child, animation) => SlideTransition(
+            position: Tween<Offset>(begin: const Offset(0, .8), end: Offset.zero).animate(animation),
+            child: FadeTransition(opacity: animation, child: child),
           ),
-        );
-      }).toList(),
+          child: filledWord == null
+              ? Container(key: const ValueKey('sentenceBlank'), width: 108, height: 52, margin: const EdgeInsets.symmetric(horizontal: 6), decoration: BoxDecoration(color: const Color(0xFFFFF3E0), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFFEF6C00), width: 2)))
+              : Container(key: ValueKey(filledWord), constraints: const BoxConstraints(minWidth: 96), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7), margin: const EdgeInsets.symmetric(horizontal: 6), decoration: BoxDecoration(color: const Color(0xFFFFE0B2), borderRadius: BorderRadius.circular(14)), child: Text(filledWord, textAlign: TextAlign.center, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900))),
+        ),
+        Text(parts[1], style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, height: 1.5)),
+      ],
+    );
+  }
+
+  Widget _wordOptions(({String sentence, String answer, List<String> options}) q) {
+    final options = _shuffle(q.options);
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 10,
+      runSpacing: 10,
+      children: options.map((word) => SizedBox(
+        width: 150,
+        height: 60,
+        child: Button3D(
+          onTap: () => _selectMissingWord(word, q),
+          color: const Color(0xFFF57C00),
+          padding: EdgeInsets.zero,
+          child: Center(child: Text(word, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w900))),
+        ),
+      )).toList(),
     );
   }
 
@@ -412,37 +532,130 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       color: const Color(0xFF00897B),
       child: Column(
         children: [
-          _heading('اسمع وأجب', 'استمع إلى الكلمة ثم اختر الكلمة التي سمعتها', const Color(0xFF00897B)),
+          _heading('اسمع وأجب', 'استمع إلى الكلمة ثم اخترها من الخيارات', const Color(0xFF00897B)),
           const SizedBox(height: 24),
           Button3D(
             onTap: _speakCurrent,
             color: const Color(0xFF00695C),
-            padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.volume_up_rounded, color: Colors.white, size: 28),
-                SizedBox(width: 8),
-                Text('استمع مرة أخرى', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 17)),
-              ],
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 15),
+            child: const Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.volume_up_rounded, color: Colors.white, size: 30),
+              SizedBox(width: 9),
+              Text('استمع للكلمة', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18)),
+            ]),
           ),
           const SizedBox(height: 24),
-          _wordOptions(q.word, q.options),
+          _listenOptions(q),
           const SizedBox(height: 18),
-          _nextButton('كلمة جديدة', _nextQuestion),
+          _nextButton('كلمة جديدة', _nextQuestion, emphasized: true),
         ],
       ),
     );
   }
 
-  Widget _nextButton(String label, VoidCallback onTap) => SizedBox(
-        width: 170,
+  Widget _listenOptions(({String word, List<String> options}) q) {
+    final options = _shuffle(q.options);
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 10,
+      runSpacing: 10,
+      children: options.map((word) => SizedBox(
+        width: 150,
+        height: 60,
+        child: Button3D(
+          onTap: () => _selectListenWord(word, q),
+          color: const Color(0xFF00897B),
+          padding: EdgeInsets.zero,
+          child: Center(child: Text(word, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w900))),
+        ),
+      )).toList(),
+    );
+  }
+
+  Widget _sortWordCard() {
+    final target = _sortWords[_questionIndex];
+    final shuffled = _shuffle(target);
+    return _card(
+      color: const Color(0xFF1565C0),
+      child: Column(
+        children: [
+          _heading('رتب الكلمة', 'رتّب الحروف المبعثرة لتكوين الكلمة الصحيحة', const Color(0xFF1565C0)),
+          const SizedBox(height: 22),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 320),
+            child: Container(
+              key: ValueKey(_sortSelected.join('|')),
+              constraints: const BoxConstraints(minHeight: 82),
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: .9), borderRadius: BorderRadius.circular(22)),
+              child: _sortSelected.isEmpty
+                  ? const Center(child: Text('اختر الحروف بالترتيب', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800)))
+                  : Wrap(
+                      alignment: WrapAlignment.center,
+                      textDirection: TextDirection.rtl,
+                      spacing: 6,
+                      children: _sortSelected.asMap().entries.map((entry) {
+                        return TweenAnimationBuilder<double>(
+                          key: ValueKey('${entry.key}:${entry.value}'),
+                          tween: Tween(begin: 0.0, end: 1.0),
+                          duration: const Duration(milliseconds: 280),
+                          curve: Curves.easeOutBack,
+                          builder: (context, value, child) => Transform.translate(offset: Offset(0, 20 * (1 - value)), child: Opacity(opacity: value, child: child)),
+                          child: Container(width: 54, height: 58, alignment: Alignment.center, decoration: BoxDecoration(color: const Color(0xFFE3F2FD), borderRadius: BorderRadius.circular(15), border: Border.all(color: const Color(0xFF1565C0), width: 2)), child: Text(entry.value, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.w900))),
+                        );
+                      }).toList(),
+                    ),
+            ),
+          ),
+          const SizedBox(height: 22),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 10,
+            children: shuffled.asMap().entries.map((entry) {
+              final letter = entry.value;
+              final usedCount = _sortSelected.where((item) => item == letter).length;
+              final totalCount = target.where((item) => item == letter).length;
+              final enabled = usedCount < totalCount;
+              return SizedBox(
+                width: 64,
+                height: 62,
+                child: Button3D(
+                  onTap: enabled ? () => _selectSortLetter(letter, target) : null,
+                  color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE),
+                  padding: EdgeInsets.zero,
+                  child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900))),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 20),
+          _nextButton('كلمة جديدة', _nextQuestion, emphasized: true),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 220,
+            height: 52,
+            child: Button3D(
+              onTap: _resetSort,
+              color: const Color(0xFF607D8B),
+              padding: EdgeInsets.zero,
+              child: const Center(child: Text('مسح الترتيب', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16))),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _nextButton(String label, VoidCallback onTap, {bool emphasized = false}) => SizedBox(
+        width: emphasized ? 220 : 180,
+        height: emphasized ? 60 : 54,
         child: Button3D(
           onTap: onTap,
-          color: const Color(0xFF37474F),
-          padding: const EdgeInsets.symmetric(vertical: 11),
-          child: Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+          color: emphasized ? const Color(0xFF37474F) : const Color(0xFF546E7A),
+          padding: EdgeInsets.zero,
+          child: Center(child: Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900))),
         ),
       );
 }
