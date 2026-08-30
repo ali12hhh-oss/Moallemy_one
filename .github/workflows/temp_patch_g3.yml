@@ -1,0 +1,171 @@
+name: Temporary G3 UI patch
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message != 'fix: improve g3 letter skills buttons and word display'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply focused UI fixes
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('lib/features/g3_arabic/g3_letter_skills_screen.dart')
+          s = p.read_text(encoding='utf-8')
+
+          old = '''  Widget _modeBar(double width) {
+    const labels = ['الحرف المفقود', 'الكلمة المفقودة', 'اسمع وأجب', 'رتب الكلمة'];
+    const colors = [Color(0xFF7C4DFF), Color(0xFFEF6C00), Color(0xFF00897B), Color(0xFF1565C0)];
+    return Row(
+      children: List.generate(labels.length, (index) {
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(end: index == labels.length - 1 ? 0 : 5),
+            child: Button3D(
+              onTap: () => _setMode(index),
+              color: colors[index],
+              padding: EdgeInsets.symmetric(horizontal: 2, vertical: width < 430 ? 12 : 14),
+              child: Text(labels[index], maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13)),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+'''
+          new = '''  Widget _modeBar(double width) {
+    const labels = ['الحرف المفقود', 'الكلمة المفقودة', 'اسمع وأجب', 'رتب الكلمة'];
+    const colors = [Color(0xFF7C4DFF), Color(0xFFEF6C00), Color(0xFF00897B), Color(0xFF1565C0)];
+    final columns = width < 520 ? 2 : 4;
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: labels.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        mainAxisExtent: 58,
+      ),
+      itemBuilder: (context, index) => Button3D(
+        onTap: () => _setMode(index),
+        color: colors[index],
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            labels[index],
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16),
+          ),
+        ),
+      ),
+    );
+  }
+'''
+          if old not in s:
+              raise SystemExit('mode bar block not found; refusing to modify file')
+          s = s.replace(old, new, 1)
+
+          old = '''          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 360),
+            transitionBuilder: (child, animation) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+              child: FadeTransition(opacity: animation, child: child),
+            ),
+            child: missing && !filled
+                ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
+                : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
+          ),
+'''
+          # The source uses the same AnimatedSwitcher block inline inside the row; replace the whole row block below instead.
+          old_row = '''          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            textDirection: TextDirection.rtl,
+            children: List.generate(letters.length, (i) {
+              final missing = i == q.missingIndex;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 360),
+                  transitionBuilder: (child, animation) => SlideTransition(
+                    position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+                    child: FadeTransition(opacity: animation, child: child),
+                  ),
+                  child: missing && !filled
+                      ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
+                      : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
+                ),
+              );
+            }),
+          ),
+'''
+          new_row = '''          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 360),
+            transitionBuilder: (child, animation) => SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+              child: FadeTransition(opacity: animation, child: child),
+            ),
+            child: filled
+                ? SizedBox(
+                    key: ValueKey('${q.word}:complete'),
+                    width: double.infinity,
+                    child: Text(
+                      q.word,
+                      textAlign: TextAlign.center,
+                      textDirection: TextDirection.rtl,
+                      style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900, height: 1.25),
+                    ),
+                  )
+                : Row(
+                    key: ValueKey('${q.word}:missing'),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    textDirection: TextDirection.rtl,
+                    children: List.generate(letters.length, (i) {
+                      final missing = i == q.missingIndex;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: missing
+                            ? Container(
+                                width: 60,
+                                height: 66,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: .92),
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: const Color(0xFF7C4DFF), width: 2),
+                                ),
+                              )
+                            : Text(
+                                letters[i],
+                                style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900),
+                              ),
+                      );
+                    }),
+                  ),
+          ),
+'''
+          if old_row not in s:
+              raise SystemExit('missing-letter display block not found; refusing to modify file')
+          s = s.replace(old_row, new_row, 1)
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit changes and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/features/g3_arabic/g3_letter_skills_screen.dart .github/workflows/temp_patch_g3.yml
+          git rm .github/workflows/temp_patch_g3.yml
+          git commit -m "fix: improve g3 letter skills buttons and word display"
+          git push
