@@ -4,6 +4,7 @@ import '../../core/store/store_background_service.dart';
 import '../../core/store/store_service_v23.dart';
 import '../../data/store_v23.dart';
 import '../../widgets/button_3d.dart';
+import 'shop_screen.dart';
 import 'store_artwork.dart';
 
 /// مقتنيات الطفل: تعرض ما تم شراؤه من المتجر لنفس الطفل النشط.
@@ -51,6 +52,14 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
     }
   }
 
+  Future<void> _openStore() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ShopScreen()),
+    );
+    await _refresh();
+  }
+
   List<RewardItemV23> get _items => rewardsV23
       .where((item) => _owned.contains(item.id))
       .toList(growable: false);
@@ -68,9 +77,7 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
             IconButton(
               tooltip: 'المتجر',
               icon: const Icon(Icons.storefront_rounded),
-              onPressed: () async {
-                Navigator.pop(context, true);
-              },
+              onPressed: _openStore,
             ),
           ],
         ),
@@ -115,7 +122,11 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
           ),
           borderRadius: BorderRadius.circular(24),
           boxShadow: const [
-            BoxShadow(blurRadius: 8, offset: Offset(0, 4), color: Color(0x33000000)),
+            BoxShadow(
+              blurRadius: 8,
+              offset: Offset(0, 4),
+              color: Color(0x33000000),
+            ),
           ],
         ),
         child: Row(
@@ -172,7 +183,9 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 8),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: isApplied ? const Color(0xFFC8E6C9) : const Color(0xFFE3F2FD),
+              color: isApplied
+                  ? const Color(0xFFC8E6C9)
+                  : const Color(0xFFE3F2FD),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -190,7 +203,9 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
                     ? () => _applyBackground(item)
                     : null,
                 color: isBackground
-                    ? (isApplied ? const Color(0xFF78909C) : const Color(0xFF00897B))
+                    ? (isApplied
+                        ? const Color(0xFF78909C)
+                        : const Color(0xFF00897B))
                     : const Color(0xFF6A1B9A),
                 padding: EdgeInsets.zero,
                 child: Center(
@@ -235,11 +250,14 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
               ),
               const SizedBox(height: 20),
               Button3D(
-                onTap: () => Navigator.pop(context, true),
+                onTap: _openStore,
                 color: const Color(0xFFFF8F00),
                 child: const Text(
                   'الذهاب إلى المتجر ⭐',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ],
@@ -248,7 +266,7 @@ class _MyCollectionScreenState extends State<MyCollectionScreen> {
       );
 }
 
-/// غلاف بسيط يستخدم خلفية المتجر الحالية دون تغيير أي إعدادات أو بيانات.
+/// خلفية خاصة بالقسم دون المساس بخلفية الصفحة الرئيسية أو إعدادات المتجر.
 class StoreBackgroundServiceWidget extends StatelessWidget {
   final Widget child;
   const StoreBackgroundServiceWidget({super.key, required this.child});
