@@ -12,6 +12,7 @@ import '../../widgets/store_background.dart';
 import '../parents/parents_screen.dart';
 import '../settings/settings_screen.dart';
 import '../shop/shop_screen.dart';
+import '../shop/my_collection_screen.dart';
 import '../stages/stage_screen.dart';
 import '../registration/child_registration_screen.dart';
 import '../exam/prep_exam_screen.dart';
@@ -148,6 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _backgroundRevision++);
   }
 
+  Future<void> _openCollection() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const MyCollectionScreen()));
+    if (!mounted) return;
+    await _loadChild();
+    setState(() => _backgroundRevision++);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = prefs.themeMode == ThemeMode.dark;
@@ -219,7 +227,28 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 4),
         Text('🏅 ${child!.activeTitle}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
       ],
+      if (child != null) ...[
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 44,
+          child: Button3D(
+            onTap: _openCollection,
+            color: const Color(0xFF6A1B9A),
+            depth: 5,
+            padding: EdgeInsets.zero,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.inventory_2_rounded, color: Colors.white, size: 22),
+                SizedBox(width: 8),
+                Text('مقتنياتي 🎁', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+              ],
+            ),
+          ),
+        ),
+      ],
     ])),
+    const SizedBox(width: 8),
     const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
   ]));
 
