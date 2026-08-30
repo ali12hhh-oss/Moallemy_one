@@ -144,18 +144,22 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   String? _feedback;
   bool _correct = false;
   Timer? _feedbackTimer;
+  Timer? _advanceTimer;
   List<String> _sortSelected = <String>[];
+  List<String> _sortOptions = <String>[];
   int? _lastAnswerIndex;
 
   @override
   void initState() {
     super.initState();
+    _sortOptions = _shuffle(_sortWords.first);
     WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
 
   @override
   void dispose() {
     _feedbackTimer?.cancel();
+    _advanceTimer?.cancel();
     VoiceService.stop();
     super.dispose();
   }
@@ -190,7 +194,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _correct = correct;
       _feedback = correct ? 'أحسنت! إجابة صحيحة 🌟' : 'حاول مرة أخرى 💪';
     });
-    _feedbackTimer = Timer(const Duration(milliseconds: 900), () {
+    _feedbackTimer = Timer(const Duration(milliseconds: 1400), () {
       if (!mounted) return;
       setState(() => _feedback = null);
     });
@@ -205,8 +209,9 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     });
     _showFeedback(ok);
     if (ok) {
-      Timer(const Duration(milliseconds: 950), () {
-        if (mounted && _feedback == null) _nextQuestion(autoSpeak: true);
+      _advanceTimer?.cancel();
+      _advanceTimer = Timer(const Duration(milliseconds: 1700), () {
+        if (mounted) _nextQuestion(autoSpeak: true);
       });
     }
   }
@@ -219,12 +224,14 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _ => _sortWords.length,
     };
     _feedbackTimer?.cancel();
+    _advanceTimer?.cancel();
     setState(() {
       _questionIndex = (_questionIndex + 1) % length;
       _selectedAnswer = null;
       _feedback = null;
       _sortSelected = <String>[];
       _lastAnswerIndex = null;
+      if (_mode == 3) _sortOptions = _shuffle(_sortWords[_questionIndex]);
     });
     if (autoSpeak && _mode != 3) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
@@ -233,6 +240,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   void _setMode(int mode) {
     _feedbackTimer?.cancel();
+    _advanceTimer?.cancel();
     VoiceService.stop();
     setState(() {
       _mode = mode;
@@ -241,6 +249,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _feedback = null;
       _sortSelected = <String>[];
       _lastAnswerIndex = null;
+      if (mode == 3) _sortOptions = _shuffle(_sortWords.first);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
@@ -266,10 +275,12 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     if (_sortSelected.length == target.length) {
       final formed = _sortSelected.join();
       final correct = target.join();
-      _showFeedback(formed == correct);
-      if (formed == correct) {
-        Timer(const Duration(milliseconds: 950), () {
-          if (mounted && _feedback == null) _nextQuestion();
+      final ok = formed == correct;
+      _showFeedback(ok);
+      if (ok) {
+        _advanceTimer?.cancel();
+        _advanceTimer = Timer(const Duration(milliseconds: 1900), () {
+          if (mounted) _nextQuestion();
         });
       }
     }
@@ -277,43 +288,28 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   void _resetSort() {
     _feedbackTimer?.cancel();
+    _advanceTimer?.cancel();
     setState(() {
       _sortSelected = <String>[];
       _feedback = null;
     });
   }
 
-  Widget _feedbackOverlay() {
+  Widget _feedbackInline() {
     final text = _feedback;
     if (text == null) return const SizedBox.shrink();
-    return Positioned.fill(
-      child: IgnorePointer(
-        child: Center(
-          child: AnimatedScale(
-            scale: 1,
-            duration: const Duration(milliseconds: 180),
-            child: AnimatedOpacity(
-              opacity: 1,
-              duration: const Duration(milliseconds: 120),
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 360),
-                margin: const EdgeInsets.symmetric(horizontal: 28),
-                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 22),
-                decoration: BoxDecoration(
-                  color: _correct ? const Color(0xFF2E9D52) : const Color(0xFFD94343),
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: const [BoxShadow(color: Color(0x55000000), blurRadius: 20, offset: Offset(0, 10))],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(_correct ? '✓' : '×', style: const TextStyle(color: Colors.white, fontSize: 54, fontWeight: FontWeight.w900, height: 1)),
-                    const SizedBox(height: 8),
-                    Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
-                  ],
-                ),
-              ),
-            ),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 180),
+      child: Padding(
+        key: ValueKey(text),
+        padding: const EdgeInsets.only(top: 10),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: _correct ? const Color(0xFF218838) : const Color(0xFFC62828),
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
           ),
         ),
       ),
@@ -328,20 +324,15 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       child: Scaffold(
         appBar: AppBar(title: const Text('مهارات الحروف')),
         body: SafeArea(
-          child: Stack(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 30),
             children: [
-              ListView(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 30),
-                children: [
-                  _modeBar(width),
-                  const SizedBox(height: 16),
-                  if (_mode == 0) _missingLetterCard(),
-                  if (_mode == 1) _missingWordCard(),
-                  if (_mode == 2) _listenCard(),
-                  if (_mode == 3) _sortWordCard(),
-                ],
-              ),
-              _feedbackOverlay(),
+              _modeBar(width),
+              const SizedBox(height: 16),
+              if (_mode == 0) _missingLetterCard(),
+              if (_mode == 1) _missingWordCard(),
+              if (_mode == 2) _listenCard(),
+              if (_mode == 3) _sortWordCard(),
             ],
           ),
         ),
@@ -400,30 +391,34 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
         children: [
           _heading('الحرف المفقود', 'اختر الحرف ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)),
           const SizedBox(height: 22),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            textDirection: TextDirection.rtl,
-            children: List.generate(letters.length, (i) {
-              final missing = i == q.missingIndex;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 360),
-                  transitionBuilder: (child, animation) => SlideTransition(
-                    position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
-                    child: FadeTransition(opacity: animation, child: child),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              textDirection: TextDirection.rtl,
+              children: List.generate(letters.length, (i) {
+                final missing = i == q.missingIndex;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 360),
+                    transitionBuilder: (child, animation) => SlideTransition(
+                      position: Tween<Offset>(begin: const Offset(0, .9), end: Offset.zero).animate(animation),
+                      child: FadeTransition(opacity: animation, child: child),
+                    ),
+                    child: missing && !filled
+                        ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
+                        : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
                   ),
-                  child: missing && !filled
-                      ? Container(key: const ValueKey('blank'), width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)))
-                      : Text(letters[i], key: ValueKey('${q.word}:$i:$filled'), style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
           const SizedBox(height: 14),
           const Text('اختر الحرف الناقص', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
           const SizedBox(height: 13),
           _letterOptions(options, q),
+          _feedbackInline(),
           const SizedBox(height: 18),
           _nextButton('سؤال جديد', _nextQuestion, emphasized: true),
         ],
@@ -432,21 +427,19 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   }
 
   Widget _letterOptions(List<String> options, ({String word, int missingIndex, String answer}) q) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: options.asMap().entries.map((entry) {
-        final letter = entry.value;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: SizedBox(
-            width: 58,
-            height: 60,
-            child: Button3D(
-              onTap: () => _selectMissingLetter(letter, q),
-              color: const Color(0xFF8E24AA),
-              padding: EdgeInsets.zero,
-              child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w900))),
-            ),
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 6,
+      runSpacing: 8,
+      children: options.map((letter) {
+        return SizedBox(
+          width: 58,
+          height: 60,
+          child: Button3D(
+            onTap: () => _selectMissingLetter(letter, q),
+            color: const Color(0xFF8E24AA),
+            padding: EdgeInsets.zero,
+            child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w900))),
           ),
         );
       }).toList(),
@@ -472,6 +465,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
               child: _sentenceView(q.sentence, filled ? q.answer : null),
             ),
           ),
+          _feedbackInline(),
           const SizedBox(height: 24),
           _wordOptions(q),
           const SizedBox(height: 18),
@@ -546,6 +540,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
           ),
           const SizedBox(height: 24),
           _listenOptions(q),
+          _feedbackInline(),
           const SizedBox(height: 18),
           _nextButton('كلمة جديدة', _nextQuestion, emphasized: true),
         ],
@@ -574,7 +569,8 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   Widget _sortWordCard() {
     final target = _sortWords[_questionIndex];
-    final shuffled = _shuffle(target);
+    final completed = _sortSelected.length == target.length;
+    final formedWord = _sortSelected.join();
     return _card(
       color: const Color(0xFF1565C0),
       child: Column(
@@ -585,26 +581,28 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
             duration: const Duration(milliseconds: 320),
             child: Container(
               key: ValueKey(_sortSelected.join('|')),
-              constraints: const BoxConstraints(minHeight: 82),
+              constraints: const BoxConstraints(minHeight: 92),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(color: Colors.white.withValues(alpha: .9), borderRadius: BorderRadius.circular(22)),
               child: _sortSelected.isEmpty
                   ? const Center(child: Text('اختر الحروف بالترتيب', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800)))
-                  : Wrap(
-                      alignment: WrapAlignment.center,
-                      textDirection: TextDirection.rtl,
-                      spacing: 6,
-                      children: _sortSelected.asMap().entries.map((entry) {
-                        return TweenAnimationBuilder<double>(
-                          key: ValueKey('${entry.key}:${entry.value}'),
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          duration: const Duration(milliseconds: 280),
-                          curve: Curves.easeOutBack,
-                          builder: (context, value, child) => Transform.translate(offset: Offset(0, 20 * (1 - value)), child: Opacity(opacity: value, child: child)),
-                          child: Container(width: 54, height: 58, alignment: Alignment.center, decoration: BoxDecoration(color: const Color(0xFFE3F2FD), borderRadius: BorderRadius.circular(15), border: Border.all(color: const Color(0xFF1565C0), width: 2)), child: Text(entry.value, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.w900))),
-                        );
-                      }).toList(),
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text(
+                              formedWord,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, height: 1.15),
+                            ),
+                          ),
+                        ),
+                        if (completed) _feedbackInline(),
+                      ],
                     ),
             ),
           ),
@@ -613,7 +611,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
             alignment: WrapAlignment.center,
             spacing: 8,
             runSpacing: 10,
-            children: shuffled.asMap().entries.map((entry) {
+            children: _sortOptions.asMap().entries.map((entry) {
               final letter = entry.value;
               final usedCount = _sortSelected.where((item) => item == letter).length;
               final totalCount = target.where((item) => item == letter).length;
