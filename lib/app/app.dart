@@ -7,37 +7,37 @@ import '../features/home/home_screen.dart';
 import '../features/splash/splash_screen.dart';
 
 /// Stops active educational page audio when navigating between pages.
+/// The startup welcome player is kept independent so the greeting can finish
+/// while the splash screen transitions into the home screen.
 class _PageAudioNavigatorObserver extends NavigatorObserver {
-  void _stopPageAudio(Route<dynamic>? route) {
-    if (route is PageRoute<dynamic>) {
-      VoiceService.stop();
-    }
+  void _stopPageAudio() {
+    VoiceService.stopEducational();
   }
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-    if (route is PageRoute<dynamic> && previousRoute is PageRoute<dynamic>) {
-      VoiceService.stop();
+    if (previousRoute is PageRoute<dynamic>) {
+      _stopPageAudio();
     }
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPop(route, previousRoute);
-    _stopPageAudio(route);
+    _stopPageAudio();
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didRemove(route, previousRoute);
-    _stopPageAudio(route);
+    _stopPageAudio();
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
-    _stopPageAudio(oldRoute);
+    _stopPageAudio();
   }
 }
 
@@ -55,7 +55,14 @@ class _DaleelChildAppState extends State<DaleelChildApp> {
   @override
   void initState() {
     super.initState();
-    prefs.load();
+    _initializeAudio();
+  }
+
+  Future<void> _initializeAudio() async {
+    final welcome = VoiceService.playWelcome();
+    await prefs.load();
+    if (!mounted) return;
+    await welcome;
   }
 
   @override
