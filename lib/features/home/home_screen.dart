@@ -12,9 +12,9 @@ import '../../widgets/store_background.dart';
 import '../parents/parents_screen.dart';
 import '../settings/settings_screen.dart';
 import '../shop/shop_screen.dart';
-import '../shop/my_collection_screen.dart';
 import '../stages/stage_screen.dart';
 import '../registration/child_registration_screen.dart';
+import '../children/child_profile_screen.dart';
 import '../exam/prep_exam_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -60,6 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _openRegistration() async {
     await Navigator.push(context, MaterialPageRoute(builder: (_) => const ChildRegistrationScreen()));
     await _loadChild();
+  }
+
+  Future<void> _openChildProfile() async {
+    if (child == null) {
+      await _openRegistration();
+      return;
+    }
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const ChildProfileScreen()));
+    await _loadChild();
+    if (!mounted) return;
+    setState(() => _backgroundRevision++);
   }
 
   Future<void> _openParents() async {
@@ -114,45 +125,18 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
   }
 
-  Widget _childAvatar({double size = 62}) {
+  Widget _childAvatar({double size = 54}) {
     final current = child;
-    if (current == null) {
-      return Center(child: Text('🧒', style: TextStyle(fontSize: size * .55)));
-    }
+    if (current == null) return Center(child: Text('🧒', style: TextStyle(fontSize: size * .55)));
     if (current.avatarPath.isNotEmpty) {
-      return ClipOval(
-        child: Image.file(
-          File(current.avatarPath),
-          width: size,
-          height: size,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => SvgPicture.asset(
-            current.avatarAsset,
-            width: size,
-            height: size,
-            fit: BoxFit.contain,
-          ),
-        ),
-      );
+      return ClipOval(child: Image.file(File(current.avatarPath), width: size, height: size, fit: BoxFit.cover, errorBuilder: (_, __, ___) => SvgPicture.asset(current.avatarAsset, width: size, height: size, fit: BoxFit.contain)));
     }
-    return SvgPicture.asset(
-      current.avatarAsset,
-      width: size,
-      height: size,
-      fit: BoxFit.contain,
-    );
+    return SvgPicture.asset(current.avatarAsset, width: size, height: size, fit: BoxFit.contain);
   }
 
   Future<void> _openStore() async {
     await Navigator.push(context, MaterialPageRoute(builder: (_) => const ShopScreen()));
     if (!mounted) return;
-    setState(() => _backgroundRevision++);
-  }
-
-  Future<void> _openCollection() async {
-    await Navigator.push(context, MaterialPageRoute(builder: (_) => const MyCollectionScreen()));
-    if (!mounted) return;
-    await _loadChild();
     setState(() => _backgroundRevision++);
   }
 
@@ -170,22 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           title: Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0B6E8E).withValues(alpha: .72),
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: const Color(0xFFFFD54F), width: 2),
-              boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3))],
-            ),
-            child: const Text(
-              'مُعَلِّمِي',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w900,
-                letterSpacing: .5,
-                color: Color(0xFFFFF8E1),
-                shadows: [Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2))],
-              ),
-            ),
+            decoration: BoxDecoration(color: const Color(0xFF0B6E8E).withValues(alpha: .72), borderRadius: BorderRadius.circular(22), border: Border.all(color: const Color(0xFFFFD54F), width: 2), boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3))]),
+            child: const Text('مُعَلِّمِي', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, letterSpacing: .5, color: Color(0xFFFFF8E1), shadows: [Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2))]),
           ),
           leading: IconButton(color: Colors.white, tooltip: 'الإعدادات', icon: const Icon(Icons.settings_rounded), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
           actions: [IconButton(color: Colors.white, tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
@@ -216,41 +186,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _childButton() => Button3D(onTap: _openRegistration, color: StageColors.registration, depth: 9, child: Row(children: [
-    Container(width: 62, height: 62, clipBehavior: Clip.antiAlias, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: _childAvatar(size: 62)),
-    const SizedBox(width: 14),
-    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(child == null ? 'اكتب اسمك يا بطل ⭐' : 'أهلاً يا ${child!.name} 🌟', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white)),
-      const SizedBox(height: 5),
-      Text(child == null ? 'سجّل اسمك ومرحلتك لنحفظ تقدمك.' : 'المرحلة: ${child!.stage}  •  اضغط لتعديل البيانات', style: const TextStyle(color: Colors.white)),
-      if (child?.activeTitle != null) ...[
-        const SizedBox(height: 4),
-        Text('🏅 ${child!.activeTitle}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
-      ],
-      if (child != null) ...[
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 44,
-          child: Button3D(
-            onTap: _openCollection,
-            color: const Color(0xFF6A1B9A),
-            depth: 5,
-            padding: EdgeInsets.zero,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.inventory_2_rounded, color: Colors.white, size: 22),
-                SizedBox(width: 8),
-                Text('مقتنياتي 🎁', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ])),
-    const SizedBox(width: 8),
-    const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
-  ]));
+  Widget _childButton() => Button3D(
+        onTap: _openChildProfile,
+        color: StageColors.registration,
+        depth: 9,
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        child: Row(children: [
+          Container(width: 54, height: 54, clipBehavior: Clip.antiAlias, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), shape: BoxShape.circle), child: _childAvatar()),
+          const SizedBox(width: 14),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(child == null ? 'اكتب اسمك يا بطل ⭐' : 'أهلاً يا ${child!.name} 🌟', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
+            const SizedBox(height: 4),
+            Text(child == null ? 'سجّل اسمك ومرحلتك لنحفظ تقدمك.' : '${child!.stage} • اضغط لفتح بطاقة الطفل', maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
+          ])),
+          const SizedBox(width: 8),
+          const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
+        ]),
+      );
 
   Widget _parentButton() => Button3D(onTap: _openParents, color: StageColors.family, depth: 9, child: Row(children: [
     Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)))),
