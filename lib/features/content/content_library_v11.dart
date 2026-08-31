@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/content_v11.dart';
+import '../../widgets/educational_svg.dart';
 
 class ContentLibraryV11 extends StatelessWidget {
   const ContentLibraryV11({super.key});
@@ -30,14 +31,9 @@ class ContentLibraryV11 extends StatelessWidget {
                 final w = arabicWordsV11[i];
                 return Card(
                   child: ListTile(
-                    leading: Text(
-                      w.emoji,
-                      style: const TextStyle(fontSize: 30),
-                    ),
+                    leading: EducationalSvg(emoji: w.emoji, label: w.word, size: 38),
                     title: Text(w.word),
-                    subtitle: Text(
-                      '${w.phoneme} • ${w.letter} • ${w.category}',
-                    ),
+                    subtitle: Text('${w.phoneme} • ${w.letter} • ${w.category}'),
                   ),
                 );
               },
@@ -49,21 +45,13 @@ class ContentLibraryV11 extends StatelessWidget {
                 final s = storiesV11[i];
                 return Card(
                   child: ExpansionTile(
-                    leading: Text(
-                      s.emoji,
-                      style: const TextStyle(fontSize: 30),
-                    ),
+                    leading: EducationalSvg(emoji: s.emoji, label: s.title, size: 38),
                     title: Text(s.title),
-                    subtitle: Text(
-                      'المرحلة: ${s.stage} • ${s.words.length} كلمات',
-                    ),
+                    subtitle: Text('المرحلة: ${s.stage} • ${s.words.length} كلمات'),
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(16),
-                        child: Text(
-                          s.text,
-                          style: const TextStyle(fontSize: 18, height: 1.7),
-                        ),
+                        child: Text(s.text, style: const TextStyle(fontSize: 18, height: 1.7)),
                       ),
                       for (final word in s.words)
                         ListTile(
@@ -90,8 +78,7 @@ class ContentLibraryV11 extends StatelessWidget {
                               spacing: 8,
                               runSpacing: 8,
                               children: [
-                                for (final n in entry.value)
-                                  Chip(label: Text(n)),
+                                for (final n in entry.value) Chip(label: Text(n)),
                               ],
                             ),
                           ),
