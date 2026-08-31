@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/audio/voice_service.dart';
 import '../../data/content_v11.dart';
 import '../../widgets/button_3d.dart';
+import '../../widgets/educational_svg.dart';
 
 /// مفردات إنجليزية أوسع (٦٠ كلمة) مع ترجمة عربية مرافقة، مقسّمة حسب الفئة.
 class G2EnglishVocabScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _G2EnglishVocabScreenState extends State<G2EnglishVocabScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Vocabulary 📚')),
+        appBar: AppBar(title: const Text('Vocabulary')),
         body: Column(
           children: [
             SizedBox(
@@ -76,7 +77,11 @@ class _G2EnglishVocabScreenState extends State<G2EnglishVocabScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(w.emoji, style: const TextStyle(fontSize: 34)),
+                        EducationalSvg(
+                          emoji: w.emoji,
+                          label: w.word,
+                          size: 48,
+                        ),
                         const SizedBox(height: 6),
                         Text(
                           w.word,
