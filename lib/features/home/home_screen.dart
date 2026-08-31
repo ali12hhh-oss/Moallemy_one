@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
             decoration: BoxDecoration(color: const Color(0xFF0B6E8E).withValues(alpha: .72), borderRadius: BorderRadius.circular(22), border: Border.all(color: const Color(0xFFFFD54F), width: 2), boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 8, offset: Offset(0, 3))]),
-            child: const Text('مُعَلِّمِي', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, letterSpacing: .5, color: Color(0xFFFFF8E1), shadows: [Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2))]),
+            child: const Text('مُعَلِّمِي', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900, letterSpacing: .5, color: Color(0xFFFFF8E1), shadows: [Shadow(color: Color(0xCC000000), blurRadius: 4, offset: Offset(1, 2))])),
           ),
           leading: IconButton(color: Colors.white, tooltip: 'الإعدادات', icon: const Icon(Icons.settings_rounded), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()))),
           actions: [IconButton(color: Colors.white, tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي', icon: Icon(isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded), onPressed: () => prefs.setDarkMode(!isDark))],
