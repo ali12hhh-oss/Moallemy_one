@@ -253,6 +253,11 @@ class ChildProgressRepository {
     if (owned.contains(itemId) || _int(state['stars']) < safePrice) return false;
 
     state['stars'] = _int(state['stars']) - safePrice;
+
+    // Always store the real reward ID so the collection can display it.
+    // For titles, keep the latest title marker separately so activeTitle
+    // can still determine which title is currently active without deleting
+    // previously purchased title IDs from the collection.
     owned.add(itemId);
     if (title != null && title.trim().isNotEmpty) {
       owned.removeWhere((item) => item.startsWith('title:'));
