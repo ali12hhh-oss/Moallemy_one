@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../core/audio/voice_service.dart';
 
-/// كلمة تشجيعية جميلة تظهر في **منتصف الشاشة** (وليس أسفلها) لمدة قصيرة ثم
-/// تختفي تلقائيًا. تُستخدم في كل شاشات الروضة الثانية بعد كل إجابة صحيحة.
+/// كلمة تشجيعية تظهر في منتصف الشاشة لمدة قصيرة.
+/// لا تعاد رسمها أو تشغيل صوتها مع كل rebuild لنفس الرسالة.
 class CelebrationOverlay extends StatefulWidget {
   final String? message;
   final Duration duration;
@@ -37,19 +37,23 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
       duration: const Duration(milliseconds: 450),
     );
     scale = CurvedAnimation(parent: controller, curve: Curves.elasticOut);
-    if (widget.message != null) {
-      controller.forward(from: 0);
-      _playMessageSound(widget.message!);
-    }
+    _handleMessageChange(current: widget.message);
   }
 
   @override
-  void didUpdateWidget(covariant CelebrationOverlay old) {
-    super.didUpdateWidget(old);
-    if (widget.message != null && widget.message != old.message) {
-      controller.forward(from: 0);
-      _playMessageSound(widget.message!);
+  void didUpdateWidget(covariant CelebrationOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.message == oldWidget.message) return;
+    _handleMessageChange(current: widget.message);
+  }
+
+  void _handleMessageChange({String? current}) {
+    if (current == null) {
+      controller.reset();
+      return;
     }
+    controller.forward(from: 0);
+    _playMessageSound(current);
   }
 
   void _playMessageSound(String message) {
@@ -76,9 +80,9 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
           child: msg == null
               ? const SizedBox.shrink()
               : ScaleTransition(
-                  key: ValueKey(
-                    msg + DateTime.now().millisecondsSinceEpoch.toString(),
-                  ),
+                  // ثابت لنفس الرسالة؛ لا نستخدم DateTime.now لأن ذلك
+                  // كان يعيد تشغيل الظهور والصوت مع كل rebuild.
+                  key: ValueKey(msg),
                   scale: scale,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -100,6 +104,7 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
                     ),
                     child: Text(
                       msg,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w900,
