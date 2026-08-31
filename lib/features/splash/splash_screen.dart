@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../core/audio/voice_service.dart';
 import '../home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,13 +36,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 4200),
     )..addListener(_handleAnimationSound);
     _controller.forward();
-
-    // Play the bundled welcome clip after the first frame. This avoids a
-    // startup race with MaterialApp/AudioPlayer initialization while still
-    // starting at the beginning of the splash page.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) unawaited(VoiceService.playWelcome());
-    });
 
     _finishTimer = Timer(const Duration(milliseconds: 4750), () {
       if (!mounted) return;
