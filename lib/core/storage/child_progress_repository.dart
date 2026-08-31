@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/store_v23.dart';
 import 'app_storage.dart';
 
 /// Single source of truth for per-child learning state.
@@ -32,7 +33,13 @@ class ChildProgressRepository {
     if (raw != null && raw.isNotEmpty) {
       try {
         final decoded = jsonDecode(raw);
-        if (decoded is Map) return Map<String, dynamic>.from(decoded);
+        if (decoded is Map) {
+          final state = Map<String, dynamic>.from(decoded);
+          if (_normalizeOwnedItems(state)) {
+            await save(state);
+          }
+          return state;
+        }
       } catch (_) {}
     }
     if (p.getBool(_legacyMigratedKey) != true) {
@@ -44,6 +51,7 @@ class ChildProgressRepository {
             final decoded = jsonDecode(legacyRaw);
             if (decoded is Map) {
               final state = Map<String, dynamic>.from(decoded);
+              _normalizeOwnedItems(state);
               await save(state);
               await p.setBool(_legacyMigratedKey, true);
               return state;
@@ -255,11 +263,10 @@ class ChildProgressRepository {
     state['stars'] = _int(state['stars']) - safePrice;
 
     // Always store the real reward ID so the collection can display it.
-    // For titles, keep the latest title marker separately so activeTitle
-    // can still determine which title is currently active without deleting
-    // previously purchased title IDs from the collection.
     owned.add(itemId);
     if (title != null && title.trim().isNotEmpty) {
+      // Keep only the active-title marker; the real title ID remains in
+      // ownedItems so every purchased title stays in the collection.
       owned.removeWhere((item) => item.startsWith('title:'));
       owned.add('title:${title.trim()}');
     }
@@ -279,6 +286,51 @@ class ChildProgressRepository {
       }
     }
     return true;
+  }
+
+  /// Converts the old title-only storage format (`title:<name>`) into the
+  /// real reward ID while preserving the active title marker. This makes
+  /// previously purchased titles appear in the existing collection screen.
+  /// Returns true when the state was changed and should be persisted.
+  static bool _normalizeOwnedItems(Map<String, dynamic> state) {
+    final raw = state['ownedItems'];
+    if (raw is! List) return false;
+
+    final items = raw.map((e) => e.toString()).toList(growable: true);
+    final normalized = <String>[];
+    var changed = false;
+
+    for (final item in items) {
+      if (!item.startsWith('title:')) {
+        if (!normalized.contains(item)) normalized.add(item);
+        continue;
+      }
+
+      final title = item.substring(6).trim();
+      final reward = rewardsV23.cast<RewardItemV23?>().firstWhere(
+        (candidate) => candidate?.type == 'ألقاب' && candidate?.title == title,
+        orElse: () => null,
+      );
+
+      if (reward != null) {
+        if (!normalized.contains(reward.id)) normalized.add(reward.id);
+        // Keep the marker because Child.activeTitle uses it to identify the
+        // currently active title.
+        if (!normalized.contains(item)) normalized.add(item);
+        if (!items.contains(reward.id)) changed = true;
+      } else {
+        // Preserve an unknown legacy marker rather than deleting user data.
+        if (!normalized.contains(item)) normalized.add(item);
+      }
+    }
+
+    if (normalized.length != items.length ||
+        normalized.asMap().entries.any((entry) => entry.value != items[entry.key])) {
+      changed = true;
+    }
+
+    if (changed) state['ownedItems'] = normalized;
+    return changed;
   }
 
   static int _int(dynamic value) => value is num ? value.toInt() : 0;
