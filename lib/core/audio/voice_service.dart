@@ -9,8 +9,6 @@ class VoiceService {
   static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer();
   static final AudioPlayer _feedbackPlayer = AudioPlayer();
-  static final AudioPlayer _welcomePlayer = AudioPlayer();
-  static Future<void>? _welcomePreload;
   static int _playRequest = 0;
 
   static bool get _enabled => AppPreferencesV10.instance.sounds;
@@ -91,8 +89,7 @@ class VoiceService {
     await _tts.speak(name);
   }
 
-  /// Stops all active educational audio, while leaving the startup welcome
-  /// clip untouched when navigation happens away from the splash screen.
+  /// Stops all active educational audio when navigating between pages.
   static Future<void> stopEducational() async {
     _playRequest++;
     await _tts.stop();
@@ -102,13 +99,6 @@ class VoiceService {
 
   static Future<void> stop() async {
     await stopEducational();
-    await _welcomePlayer.stop();
-  }
-
-  static Future<void> preloadWelcome() {
-    return _welcomePreload ??= _welcomePlayer.setSource(
-      AssetSource('audio/welcome.mp3', mimeType: 'audio/mpeg'),
-    );
   }
 
   static Future<bool> _playAsset(String assetPath) async {
@@ -153,25 +143,6 @@ class VoiceService {
         AssetSource(relative, mimeType: 'audio/mpeg'),
         volume: 1.0,
       );
-      return request == _playRequest;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  static Future<bool> playWelcome() async {
-    if (!_feedbackEnabled) return false;
-    final request = ++_playRequest;
-    try {
-      await preloadWelcome();
-      await _tts.stop();
-      await _player.stop();
-      if (request != _playRequest) return false;
-      await _welcomePlayer.stop();
-      await _welcomePlayer.setReleaseMode(ReleaseMode.stop);
-      await _welcomePlayer.seek(Duration.zero);
-      if (request != _playRequest) return false;
-      await _welcomePlayer.resume();
       return request == _playRequest;
     } catch (_) {
       return false;
