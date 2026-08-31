@@ -4,16 +4,13 @@ import '../../core/audio/voice_service.dart';
 import '../../data/short_words.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
+import '../../widgets/educational_svg.dart';
 import '../../widgets/speakable_text.dart';
 
-/// شاشة تعليم القراءة للصف الأول: تعرض الحروف أولاً بشكل أفقي،
-/// ثم يجمع الطفل الحروف لتكوين الكلمة.
 class G1ReadWordsScreen extends StatefulWidget {
   final List<ShortWord> words;
   final String title;
-
   const G1ReadWordsScreen({super.key, required this.words, required this.title});
-
   @override
   State<G1ReadWordsScreen> createState() => _G1ReadWordsScreenState();
 }
@@ -22,16 +19,10 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
   int index = 0;
   bool split = true;
   String? cheer;
-
   static const _wordColors = <Color>[
-    Color(0xFF7C4DFF),
-    Color(0xFF00A896),
-    Color(0xFFFF6B35),
-    Color(0xFF2979FF),
-    Color(0xFFE91E63),
-    Color(0xFF00897B),
+    Color(0xFF7C4DFF), Color(0xFF00A896), Color(0xFFFF6B35),
+    Color(0xFF2979FF), Color(0xFFE91E63), Color(0xFF00897B),
   ];
-
   static const _previousColor = Color(0xFF2979FF);
   static const _nextColor = Color(0xFFFF6B35);
   static const _assembleColor = Color(0xFF00A896);
@@ -64,9 +55,6 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
     });
   }
 
-  /// Returns the correct positional form for a letter inside the word.
-  /// For two letters: first = initial, second = final.
-  /// For three letters: first = initial, middle = medial, last = final.
   String _letterForm(String letter, int position, int length) {
     if (letter.trim().isEmpty) return letter;
     if (length <= 1) return letter;
@@ -86,7 +74,6 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
     if (widget.words.isEmpty) {
       return const Scaffold(body: Center(child: Text('لا توجد كلمات حاليًا')));
     }
-
     final w = widget.words[index];
     final color = _wordColors[index % _wordColors.length];
     final width = MediaQuery.sizeOf(context).width;
@@ -97,9 +84,7 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: SpeakableText('${widget.title} • ${index + 1} من ${widget.words.length}'),
-        ),
+        appBar: AppBar(title: SpeakableText('${widget.title} • ${index + 1} من ${widget.words.length}')),
         body: Stack(
           children: [
             SafeArea(
@@ -112,12 +97,9 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                       children: [
                         LinearProgressIndicator(value: (index + 1) / widget.words.length),
                         const SizedBox(height: 10),
-                        Text(
-                          'الكلمة ${index + 1} من ${widget.words.length}',
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                        ),
+                        Text('الكلمة ${index + 1} من ${widget.words.length}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
                         const SizedBox(height: 12),
-                        Text(w.emoji, style: const TextStyle(fontSize: 58)),
+                        EducationalSvg(emoji: w.emoji, label: w.word, size: 70),
                         const SizedBox(height: 8),
                         Container(
                           width: double.infinity,
@@ -146,12 +128,7 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                                             child: Text(
                                               _letterForm(w.letters[j], j, w.letters.length),
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: letterSize,
-                                                height: 1,
-                                                fontWeight: FontWeight.w900,
-                                                color: Colors.white,
-                                              ),
+                                              style: TextStyle(fontSize: letterSize, height: 1, fontWeight: FontWeight.w900, color: Colors.white),
                                             ),
                                           ),
                                         ),
@@ -165,15 +142,7 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                                       onTap: () => VoiceService.arabic(w.word),
                                       color: color,
                                       padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 16),
-                                      child: Text(
-                                        w.word,
-                                        style: const TextStyle(
-                                          fontSize: 54,
-                                          height: 1,
-                                          fontWeight: FontWeight.w900,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                      child: Text(w.word, style: const TextStyle(fontSize: 54, height: 1, fontWeight: FontWeight.w900, color: Colors.white)),
                                     ),
                                   ),
                           ),
@@ -195,45 +164,13 @@ class _G1ReadWordsScreenState extends State<G1ReadWordsScreen> {
                           ),
                         ),
                         const SizedBox(height: 7),
-                        Text(
-                          split ? 'اضغط كل حرف لسماع صوته، ثم اضغط «اجمع الكلمة».' : 'اضغط الكلمة لسماع نطقها.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-                        ),
+                        Text(split ? 'اضغط كل حرف لسماع صوته، ثم اضغط «اجمع الكلمة».' : 'اضغط الكلمة لسماع نطقها.', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
                         const SizedBox(height: 22),
                         Row(
                           children: [
-                            Expanded(
-                              child: Button3D(
-                                onTap: () => _next(-1),
-                                color: _previousColor,
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.arrow_back_rounded, color: Colors.white),
-                                    SizedBox(width: 6),
-                                    Text('السابق', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white)),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            Expanded(child: Button3D(onTap: () => _next(-1), color: _previousColor, padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.arrow_back_rounded, color: Colors.white), SizedBox(width: 6), Text('السابق', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white))]))),
                             const SizedBox(width: 12),
-                            Expanded(
-                              child: Button3D(
-                                onTap: () => _next(1),
-                                color: _nextColor,
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('التالي', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white)),
-                                    SizedBox(width: 6),
-                                    Icon(Icons.arrow_forward_rounded, color: Colors.white),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            Expanded(child: Button3D(onTap: () => _next(1), color: _nextColor, padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14), child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Text('التالي', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Colors.white)), SizedBox(width: 6), Icon(Icons.arrow_forward_rounded, color: Colors.white)]))),
                           ],
                         ),
                       ],
