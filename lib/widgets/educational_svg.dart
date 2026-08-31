@@ -92,12 +92,8 @@ String _svgFor(String emoji, {String? label}) {
       return _svg('''<path fill="#FFD54F" stroke="#FFB300" d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>''');
     case '🔑':
       return _svg('''<circle cx="8" cy="12" r="4" fill="#FFD54F" stroke="#F9A825" stroke-width="2"/><path fill="#FFD54F" d="M11 11h10v3h-3v3h-3v-3h-4z"/>''');
-    case '✉️':
-      return _svg('''<rect x="3" y="6" width="18" height="13" rx="2" fill="#E3F2FD" stroke="#42A5F5" stroke-width="1.5"/><path d="m4 8 8 6 8-6" fill="none" stroke="#1976D2" stroke-width="1.5"/>''');
-    case '💡':
-      return _svg('''<path fill="#FFD54F" d="M8 14a7 7 0 1 1 8 0l-1 3H9z"/><path stroke="#FFB300" stroke-width="2" d="M10 19h4M10 22h4"/>''');
-    case '🏫':
-      return _svg('''<path fill="#42A5F5" d="M3 9h18v12H3z"/><path fill="#1565C0" d="m2 9 10-6 10 6z"/><rect x="9" y="14" width="6" height="7" fill="#FFE0B2"/><g fill="#E3F2FD"><rect x="5" y="12" width="3" height="3"/><rect x="16" y="12" width="3" height="3"/></g>''');
+    case '🧁':
+      return _svg('''<path fill="#FFB74D" d="M6 10h12l-1 10H7z"/><path fill="#F48FB1" d="M5 10q0-4 3-4 1-3 4-1 3-2 4 1 3 0 3 4z"/><circle cx="9" cy="7" r="1" fill="#FFD54F"/><circle cx="15" cy="6" r="1" fill="#FFD54F"/>''');
     default:
       return _fallbackSvg(emoji, label);
   }
@@ -106,6 +102,5 @@ String _svgFor(String emoji, {String? label}) {
 String _svg(String body) => '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">$body</svg>''';
 
 String _fallbackSvg(String emoji, String? label) {
-  final safe = (label ?? 'تعليمي').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
   return _svg('''<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#42A5F5"/><stop offset="1" stop-color="#7E57C2"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#g)"/><path fill="#fff" d="M7 8h10v8H7z"/><path fill="#E3F2FD" d="M9 10h6v4H9z"/><circle cx="9" cy="16.5" r="1" fill="#fff"/><circle cx="15" cy="16.5" r="1" fill="#fff"/>''');
 }
