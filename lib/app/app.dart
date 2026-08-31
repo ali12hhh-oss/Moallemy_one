@@ -7,8 +7,6 @@ import '../features/home/home_screen.dart';
 import '../features/splash/splash_screen.dart';
 
 /// Stops active educational page audio when navigating between pages.
-/// The startup welcome player is kept independent so the greeting can finish
-/// while the splash screen transitions into the home screen.
 class _PageAudioNavigatorObserver extends NavigatorObserver {
   void _stopPageAudio() {
     VoiceService.stopEducational();
@@ -51,19 +49,6 @@ class DaleelChildApp extends StatefulWidget {
 class _DaleelChildAppState extends State<DaleelChildApp> {
   final prefs = AppPreferencesV10.instance;
   final _audioNavigatorObserver = _PageAudioNavigatorObserver();
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeAudio();
-  }
-
-  Future<void> _initializeAudio() async {
-    final welcome = VoiceService.playWelcome();
-    await prefs.load();
-    if (!mounted) return;
-    await welcome;
-  }
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
