@@ -211,12 +211,24 @@ class _HomeScreenState extends State<HomeScreen> {
     const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
   ]));
 
-  List<Widget> _stageButtons() => stages.map((s) => Padding(padding: const EdgeInsets.only(bottom: 12), child: Button3D(onTap: () => _openStage(s.$1), color: s.$1 == 'prep' ? const Color(0xFFFFB300) : StageColors.of(s.$1), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), child: Row(children: [
-    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: Center(child: Text(s.$4, style: const TextStyle(fontSize: 29)))),
-    const SizedBox(width: 14),
-    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(s.$2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white)), const SizedBox(height: 3), Text('${s.$3} • ${s.$5}', style: const TextStyle(color: Colors.white70, fontSize: 12.5))])),
-    const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
-  ])))).toList();
+  List<Widget> _stageButtons() => stages.map((s) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Button3D(
+          onTap: () => _openStage(s.$1),
+          color: s.$1 == 'prep' ? const Color(0xFFFFB300) : StageColors.of(s.$1),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          child: Row(children: [
+            Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: Center(child: Text(s.$4, style: const TextStyle(fontSize: 29)))),
+            const SizedBox(width: 14),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(s.$2, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white)),
+              const SizedBox(height: 3),
+              Text('${s.$3} • ${s.$5}', style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
+            ])),
+            const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: Colors.white),
+          ]),
+        ),
+      )).toList();
 
   Widget _storeButton() => Button3D(onTap: _openStore, color: StageColors.store, depth: 9, child: Row(children: [
     Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .32), shape: BoxShape.circle), child: const Center(child: Text('⭐', style: TextStyle(fontSize: 27)))),
