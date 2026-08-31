@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/content.dart';
+import '../../data/content_v11.dart';
 import '../../core/audio/voice_service.dart';
 import '../../widgets/speakable_text.dart';
 
@@ -19,19 +19,19 @@ class EnglishWordsExtendedScreen extends StatelessWidget {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),
-        itemCount: englishWordBank.length,
+        itemCount: englishWordsV11.length,
         itemBuilder: (_, index) {
-          final word = englishWordBank[index];
+          final word = englishWordsV11[index];
           return Card(
             child: InkWell(
-              onTap: () => VoiceService.english(word['word']!),
+              onTap: () => VoiceService.english(word.word),
               borderRadius: BorderRadius.circular(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(word['emoji']!, style: const TextStyle(fontSize: 45)),
+                  Text(word.emoji, style: const TextStyle(fontSize: 45)),
                   SpeakableText(
-                    word['word']!,
+                    word.word,
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -39,7 +39,7 @@ class EnglishWordsExtendedScreen extends StatelessWidget {
                     language: 'en-US',
                   ),
                   SpeakableText(
-                    word['ar']!,
+                    word.arabic,
                     style: const TextStyle(fontSize: 16),
                     language: 'ar-SA',
                   ),
