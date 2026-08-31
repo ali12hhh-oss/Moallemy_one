@@ -4,6 +4,7 @@ import '../../core/audio/voice_service.dart';
 import '../../data/short_words.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
+import '../../widgets/educational_svg.dart';
 
 class G2SentenceReadScreen extends StatefulWidget {
   final List<ShortSentence> sentences;
@@ -68,7 +69,7 @@ class _G2SentenceReadScreenState extends State<G2SentenceReadScreen> {
                     value: (index + 1) / widget.sentences.length,
                   ),
                   const SizedBox(height: 20),
-                  Text(s.emoji, style: const TextStyle(fontSize: 60)),
+                  EducationalSvg(emoji: s.emoji, label: s.sentence, size: 72),
                   const SizedBox(height: 14),
                   if (!split)
                     Button3D(
