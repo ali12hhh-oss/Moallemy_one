@@ -49,17 +49,36 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
     try {
       final downloaded = await modelManager.isModelDownloaded('ar');
       if (downloaded) {
+        recognizer?.close();
+        recognizer = mlkit.DigitalInkRecognizer(languageCode: 'ar');
         if (mounted) setState(() => modelReady = true);
         return;
       }
-      if (mounted) setState(() => downloading = true);
-      final ok = await modelManager.downloadModel('ar');
+
+      if (mounted) {
+        setState(() {
+          downloading = true;
+          error = null;
+        });
+      }
+
+      // لا نجعل تنزيل النموذج مقصورًا على Wi‑Fi؛ بعض الأجهزة لا تكمل
+      // التنزيل عندما يكون الاتصال عبر بيانات الهاتف.
+      final ok = await modelManager
+          .downloadModel('ar', isWifiRequired: false)
+          .timeout(const Duration(seconds: 90), onTimeout: () => false);
+
+      if (ok) {
+        recognizer?.close();
+        recognizer = mlkit.DigitalInkRecognizer(languageCode: 'ar');
+      }
+
       if (mounted) {
         setState(() {
           downloading = false;
           modelReady = ok;
           if (!ok) {
-            error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+            error = 'تعذّر تجهيز نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
           }
         });
       }
@@ -67,7 +86,8 @@ class _G2WriteRecognizeScreenState extends State<G2WriteRecognizeScreen> {
       if (mounted) {
         setState(() {
           downloading = false;
-          error = 'تعذّر تحميل نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
+          modelReady = false;
+          error = 'تعذّر تجهيز نموذج التعرّف على الكتابة. تحقق من الاتصال بالإنترنت وحاول مجددًا.';
         });
       }
     }
