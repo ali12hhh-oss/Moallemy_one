@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../core/audio/voice_service.dart';
-
 /// كلمة تشجيعية تظهر في منتصف الشاشة لمدة قصيرة.
-/// لا تعاد رسمها أو تشغيل صوتها مع كل rebuild لنفس الرسالة.
+///
+/// هذا الـWidget مسؤول عن العرض والحركة فقط.
+/// أصوات الإجابات الصحيحة/الخاطئة تُشغّلها شاشة الاختبار نفسها،
+/// حتى لا تتسرب أصوات التشجيع إلى الدروس أو الأقسام التعليمية.
 class CelebrationOverlay extends StatefulWidget {
   final String? message;
   final Duration duration;
@@ -53,15 +54,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay>
       return;
     }
     controller.forward(from: 0);
-    _playMessageSound(current);
-  }
-
-  void _playMessageSound(String message) {
-    if (message.contains('حاول مرة أخرى')) {
-      VoiceService.playTryAgain();
-    } else {
-      VoiceService.playCorrect();
-    }
   }
 
   @override
