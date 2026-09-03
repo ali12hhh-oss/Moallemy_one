@@ -269,7 +269,6 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     setState(() => _sortSelected.add(letter));
     if (_sortSelected.length == q.letters.length) {
       final formed = _sortSelected.join();
-      // يجب أن تكون الكلمة بنفس عدد الحروف وبنفس الحروف تماماً، ثم تكون كلمة صحيحة.
       final ok = _hasExactlySameLetters(formed, q.letters) && q.validWords.contains(formed);
       _showFeedback(ok);
       if (ok) {
@@ -423,7 +422,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
         final usedCount = _sortSelected.where((item) => item == letter).length;
         final totalCount = target.where((item) => item == letter).length;
         final enabled = usedCount < totalCount && !completed;
-        return SizedBox(width: 64, height: 62, child: Button3D(onTap: enabled ? () => _selectSortLetter(letter, q) : null, color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE), padding: EdgeInsets.zero, child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900)))));
+        return SizedBox(width: 64, height: 62, child: Button3D(onTap: enabled ? () => _selectSortLetter(letter, q) : null, color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE), padding: EdgeInsets.zero, child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900))));
       }).toList()),
       const SizedBox(height: 20), _nextButton('كلمة جديدة', _nextQuestion, emphasized: true), const SizedBox(height: 8),
       SizedBox(width: 220, height: 52, child: Button3D(onTap: _resetSort, color: const Color(0xFF607D8B), padding: EdgeInsets.zero, child: const Center(child: Text('مسح الترتيب', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16))))),
