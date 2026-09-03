@@ -92,20 +92,39 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     (word: 'دفتر', options: ['دفتر', 'دجاج', 'دراجة', 'دب']), (word: 'مصباح', options: ['مصباح', 'مفتاح', 'مسبح', 'مطار']),
   ];
 
-  static const _sortWords = <List<String>>[
-    ['ك','ت','ا','ب'], ['ق','ل','م'], ['ب','ي','ت'], ['ج','م','ل'], ['ن','ه','ر'], ['و','ر','د'], ['ق','م','ر'], ['ع','ل','م'],
-    ['س','م','ك'], ['ب','ا','ب'], ['ق','ط','ة'], ['ك','ل','ب'], ['و','ر','د','ة'], ['ش','ج','ر','ة'], ['د','ف','ت','ر'],
-    ['ك','ر','س','ي'], ['م','ف','ت','ا','ح'], ['س','ي','ا','ر','ة'], ['ح','د','ي','ق','ة'], ['م','ك','ت','ب','ة'],
-    ['س','ف','ي','ن','ة'], ['ط','ا','ئ','ر','ة'], ['م','د','ر','س','ة'], ['ح','ص','ا','ن'], ['ز','ه','ر','ة'], ['ت','ف','ا','ح'],
-    ['م','ز','ر','ع','ة'], ['م','ص','ب','ا','ح'], ['ح','ل','ي','ب'], ['م','ل','ع','ب'],
-  ];
-
-  // كل مجموعة أحرف لها مجموعة كلمات عربية صحيحة يمكن تكوينها منها.
-  // لا نعتمد على ترتيب واحد فقط؛ إذا كانت الكلمة الناتجة موجودة هنا فهي صحيحة.
-  static const _sortValidWords = <Set<String>>[
-    {'كتاب', 'كاتب'}, {'قلم'}, {'بيت'}, {'جمل'}, {'نهر'}, {'ورد'}, {'قمر'}, {'علم'}, {'سمك'}, {'باب'},
-    {'قطة'}, {'كلب'}, {'وردة'}, {'شجرة'}, {'دفتر'}, {'كرسي'}, {'مفتاح', 'فاتح'}, {'سيارة'}, {'حديقة'}, {'مكتبة'},
-    {'سفينة'}, {'طائرة'}, {'مدرسة'}, {'حصان'}, {'زهرة'}, {'تفاح'}, {'مزرعة'}, {'مصباح'}, {'حليب'}, {'ملعب'},
+  // كل سؤال يحدد مجموعة أحرف ثابتة، وقائمة الكلمات العربية الصحيحة التي تستخدم
+  // هذه الأحرف نفسها. لا توجد إجابة أقصر أو أطول من عدد الأحرف المعروضة.
+  static const _sortQuestions = <({List<String> letters, Set<String> validWords})>[
+    (letters: ['ك', 'ت', 'ا', 'ب'], validWords: {'كتاب', 'كاتب'}),
+    (letters: ['ق', 'ل', 'م'], validWords: {'قلم'}),
+    (letters: ['ب', 'ي', 'ت'], validWords: {'بيت'}),
+    (letters: ['ج', 'م', 'ل'], validWords: {'جمل', 'لجم'}),
+    (letters: ['ن', 'ه', 'ر'], validWords: {'نهر', 'رهن'}),
+    (letters: ['و', 'ر', 'د'], validWords: {'ورد', 'دور'}),
+    (letters: ['ق', 'م', 'ر'], validWords: {'قمر', 'رقم'}),
+    (letters: ['ع', 'ل', 'م'], validWords: {'علم', 'عمل'}),
+    (letters: ['س', 'م', 'ك'], validWords: {'سمك'}),
+    (letters: ['ب', 'ا', 'ب'], validWords: {'باب'}),
+    (letters: ['ق', 'ط', 'ة'], validWords: {'قطة'}),
+    (letters: ['ك', 'ل', 'ب'], validWords: {'كلب'}),
+    (letters: ['و', 'ر', 'د', 'ة'], validWords: {'وردة', 'دورة'}),
+    (letters: ['ش', 'ج', 'ر', 'ة'], validWords: {'شجرة'}),
+    (letters: ['د', 'ف', 'ت', 'ر'], validWords: {'دفتر'}),
+    (letters: ['ك', 'ر', 'س', 'ي'], validWords: {'كرسي'}),
+    (letters: ['م', 'ف', 'ت', 'ا', 'ح'], validWords: {'مفتاح'}),
+    (letters: ['س', 'ي', 'ا', 'ر', 'ة'], validWords: {'سيارة'}),
+    (letters: ['ح', 'د', 'ي', 'ق', 'ة'], validWords: {'حديقة'}),
+    (letters: ['م', 'ك', 'ت', 'ب', 'ة'], validWords: {'مكتبة'}),
+    (letters: ['س', 'ف', 'ي', 'ن', 'ة'], validWords: {'سفينة'}),
+    (letters: ['ط', 'ا', 'ئ', 'ر', 'ة'], validWords: {'طائرة'}),
+    (letters: ['م', 'د', 'ر', 'س', 'ة'], validWords: {'مدرسة'}),
+    (letters: ['ح', 'ص', 'ا', 'ن'], validWords: {'حصان'}),
+    (letters: ['ز', 'ه', 'ر', 'ة'], validWords: {'زهرة'}),
+    (letters: ['ت', 'ف', 'ا', 'ح'], validWords: {'تفاح', 'فتاح'}),
+    (letters: ['م', 'ز', 'ر', 'ع', 'ة'], validWords: {'مزرعة'}),
+    (letters: ['م', 'ص', 'ب', 'ا', 'ح'], validWords: {'مصباح'}),
+    (letters: ['ح', 'ل', 'ي', 'ب'], validWords: {'حليب'}),
+    (letters: ['م', 'ل', 'ع', 'ب'], validWords: {'ملعب'}),
   ];
 
   final _random = Random();
@@ -123,7 +142,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   @override
   void initState() {
     super.initState();
-    _sortOptions = _shuffle(_sortWords.first);
+    _sortOptions = _shuffle(_sortQuestions.first.letters);
     WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
 
@@ -143,8 +162,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       final q = _missingLetterQuestions[_questionIndex];
       await VoiceService.arabic('ما الحرف المفقود؟ ${_questionSpeechForMissing(q)}');
     } else if (_mode == 1) {
-      final q = _missingWordQuestions[_questionIndex];
-      await VoiceService.arabic(_questionSpeechForMissingWord(q.sentence));
+      await VoiceService.arabic(_missingWordQuestions[_questionIndex].sentence.split('____').join('فراغ'));
     } else if (_mode == 2) {
       await VoiceService.arabic(_listenQuestions[_questionIndex].word);
     } else {
@@ -161,11 +179,9 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     return speech.join(' ');
   }
 
-  String _questionSpeechForMissingWord(String sentence) => sentence.split('____').join('فراغ');
-
   Future<void> _speakSortQuestion() async {
-    final letters = _sortWords[_questionIndex];
-    await VoiceService.arabic('رتب الحروف لتصبح كلمة مفهومة. ${letters.join('، ')}');
+    final q = _sortQuestions[_questionIndex];
+    await VoiceService.arabic('رتب الحروف لتصبح كلمة مفهومة. ${q.letters.join('، ')}');
   }
 
   void _showFeedback(bool correct) {
@@ -201,7 +217,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       0 => _missingLetterQuestions.length,
       1 => _missingWordQuestions.length,
       2 => _listenQuestions.length,
-      _ => _sortWords.length,
+      _ => _sortQuestions.length,
     };
     _feedbackTimer?.cancel();
     _advanceTimer?.cancel();
@@ -211,7 +227,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _feedback = null;
       _sortSelected = <String>[];
       _lastAnswerIndex = null;
-      if (_mode == 3) _sortOptions = _shuffle(_sortWords[_questionIndex]);
+      if (_mode == 3) _sortOptions = _shuffle(_sortQuestions[_questionIndex].letters);
     });
     if (autoSpeak) WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
@@ -227,7 +243,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _feedback = null;
       _sortSelected = <String>[];
       _lastAnswerIndex = null;
-      if (mode == 3) _sortOptions = _shuffle(_sortWords.first);
+      if (mode == 3) _sortOptions = _shuffle(_sortQuestions.first.letters);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
@@ -236,12 +252,25 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   void _selectMissingWord(String word, ({String sentence, String answer, List<String> options}) q) => _answerQuestion(word, q.answer);
   void _selectListenWord(String word, ({String word, List<String> options}) q) => _answerQuestion(word, q.word);
 
-  void _selectSortLetter(String letter, List<String> target) {
-    if (_sortSelected.length >= target.length) return;
+  bool _hasExactlySameLetters(String formed, List<String> supplied) {
+    if (formed.runes.length != supplied.length) return false;
+    final counts = <String, int>{};
+    for (final letter in supplied) counts[letter] = (counts[letter] ?? 0) + 1;
+    for (final letter in formed.runes.map(String.fromCharCode)) {
+      final remaining = counts[letter] ?? 0;
+      if (remaining == 0) return false;
+      counts[letter] = remaining - 1;
+    }
+    return counts.values.every((count) => count == 0);
+  }
+
+  void _selectSortLetter(String letter, ({List<String> letters, Set<String> validWords}) q) {
+    if (_sortSelected.length >= q.letters.length) return;
     setState(() => _sortSelected.add(letter));
-    if (_sortSelected.length == target.length) {
+    if (_sortSelected.length == q.letters.length) {
       final formed = _sortSelected.join();
-      final ok = _sortValidWords[_questionIndex].contains(formed);
+      // يجب أن تكون الكلمة بنفس عدد الحروف وبنفس الحروف تماماً، ثم تكون كلمة صحيحة.
+      final ok = _hasExactlySameLetters(formed, q.letters) && q.validWords.contains(formed);
       _showFeedback(ok);
       if (ok) {
         _advanceTimer?.cancel();
@@ -378,12 +407,13 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   )).toList());
 
   Widget _sortWordCard() {
-    final target = _sortWords[_questionIndex];
+    final q = _sortQuestions[_questionIndex];
+    final target = q.letters;
     final completed = _sortSelected.length == target.length;
     final formedWord = _sortSelected.join();
-    final valid = completed && _sortValidWords[_questionIndex].contains(formedWord);
+    final valid = completed && _hasExactlySameLetters(formedWord, target) && q.validWords.contains(formedWord);
     return _card(color: const Color(0xFF1565C0), child: Column(children: [
-      _heading('رتب الكلمة', 'رتّب الحروف المبعثرة لتكوين أي كلمة عربية مفهومة من هذه الحروف', const Color(0xFF1565C0)), const SizedBox(height: 18),
+      _heading('رتب الكلمة', 'رتّب جميع الحروف لتكوين كلمة عربية مفهومة', const Color(0xFF1565C0)), const SizedBox(height: 18),
       _audioButton('استمع للسؤال', _speakSortQuestion, const Color(0xFF0D47A1)), const SizedBox(height: 16),
       Container(constraints: const BoxConstraints(minHeight: 92), width: double.infinity, padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12), decoration: BoxDecoration(color: Colors.white.withValues(alpha: .9), borderRadius: BorderRadius.circular(22)), child: _sortSelected.isEmpty ? const Center(child: Text('اختر الحروف بالترتيب', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800))) : Column(mainAxisSize: MainAxisSize.min, children: [
         FittedBox(fit: BoxFit.scaleDown, child: Directionality(textDirection: TextDirection.rtl, child: Text(formedWord, textAlign: TextAlign.center, style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, height: 1.15)))),
@@ -393,11 +423,11 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
         final usedCount = _sortSelected.where((item) => item == letter).length;
         final totalCount = target.where((item) => item == letter).length;
         final enabled = usedCount < totalCount && !completed;
-        return SizedBox(width: 64, height: 62, child: Button3D(onTap: enabled ? () => _selectSortLetter(letter, target) : null, color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE), padding: EdgeInsets.zero, child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900)))));
+        return SizedBox(width: 64, height: 62, child: Button3D(onTap: enabled ? () => _selectSortLetter(letter, q) : null, color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE), padding: EdgeInsets.zero, child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900)))));
       }).toList()),
       const SizedBox(height: 20), _nextButton('كلمة جديدة', _nextQuestion, emphasized: true), const SizedBox(height: 8),
       SizedBox(width: 220, height: 52, child: Button3D(onTap: _resetSort, color: const Color(0xFF607D8B), padding: EdgeInsets.zero, child: const Center(child: Text('مسح الترتيب', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16))))),
-      if (completed && !valid) const Padding(padding: EdgeInsets.only(top: 10), child: Text('هذه ليست كلمة معتمدة في مجموعة هذا السؤال. جرّب ترتيباً آخر.', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))),
+      if (completed && !valid) const Padding(padding: EdgeInsets.only(top: 10), child: Text('استخدم جميع الحروف دون زيادة أو نقص، واختر ترتيباً يعطي كلمة صحيحة.', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))),
     ]));
   }
 
