@@ -92,8 +92,8 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     (word: 'دفتر', options: ['دفتر', 'دجاج', 'دراجة', 'دب']), (word: 'مصباح', options: ['مصباح', 'مفتاح', 'مسبح', 'مطار']),
   ];
 
-  // كل سؤال يحدد مجموعة أحرف ثابتة، وقائمة الكلمات العربية الصحيحة التي تستخدم
-  // هذه الأحرف نفسها. لا توجد إجابة أقصر أو أطول من عدد الأحرف المعروضة.
+  // كل إجابة صحيحة تستخدم جميع الحروف المعروضة بالضبط، ولا نقبل كلمة أقصر أو أطول.
+  // يمكن قبول أكثر من كلمة إذا كانت كلمة عربية صحيحة وتستخدم نفس مجموعة الحروف تماماً.
   static const _sortQuestions = <({List<String> letters, Set<String> validWords})>[
     (letters: ['ك', 'ت', 'ا', 'ب'], validWords: {'كتاب', 'كاتب'}),
     (letters: ['ق', 'ل', 'م'], validWords: {'قلم'}),
@@ -137,7 +137,6 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   Timer? _advanceTimer;
   List<String> _sortSelected = <String>[];
   List<String> _sortOptions = <String>[];
-  int? _lastAnswerIndex;
 
   @override
   void initState() {
@@ -162,7 +161,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       final q = _missingLetterQuestions[_questionIndex];
       await VoiceService.arabic('ما الحرف المفقود؟ ${_questionSpeechForMissing(q)}');
     } else if (_mode == 1) {
-      await VoiceService.arabic(_missingWordQuestions[_questionIndex].sentence.split('____').join('فراغ'));
+      await VoiceService.arabic(_missingWordQuestions[_questionIndex].sentence.replaceAll('____', 'فراغ'));
     } else if (_mode == 2) {
       await VoiceService.arabic(_listenQuestions[_questionIndex].word);
     } else {
@@ -197,22 +196,18 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   }
 
   void _answerQuestion(String answer, String correct) {
-    if (_lastAnswerIndex == _questionIndex && _selectedAnswer == correct) return;
     final ok = answer == correct;
-    setState(() {
-      _selectedAnswer = answer;
-      if (ok) _lastAnswerIndex = _questionIndex;
-    });
+    setState(() => _selectedAnswer = answer);
     _showFeedback(ok);
     if (ok) {
       _advanceTimer?.cancel();
       _advanceTimer = Timer(const Duration(milliseconds: 1700), () {
-        if (mounted) _nextQuestion(autoSpeak: true);
+        if (mounted) _nextQuestion();
       });
     }
   }
 
-  void _nextQuestion({bool autoSpeak = true}) {
+  void _nextQuestion() {
     final length = switch (_mode) {
       0 => _missingLetterQuestions.length,
       1 => _missingWordQuestions.length,
@@ -226,10 +221,9 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _selectedAnswer = null;
       _feedback = null;
       _sortSelected = <String>[];
-      _lastAnswerIndex = null;
       if (_mode == 3) _sortOptions = _shuffle(_sortQuestions[_questionIndex].letters);
     });
-    if (autoSpeak) WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
   }
 
   void _setMode(int mode) {
@@ -242,7 +236,6 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       _selectedAnswer = null;
       _feedback = null;
       _sortSelected = <String>[];
-      _lastAnswerIndex = null;
       if (mode == 3) _sortOptions = _shuffle(_sortQuestions.first.letters);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _speakCurrent());
@@ -253,10 +246,11 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
   void _selectListenWord(String word, ({String word, List<String> options}) q) => _answerQuestion(word, q.word);
 
   bool _hasExactlySameLetters(String formed, List<String> supplied) {
-    if (formed.runes.length != supplied.length) return false;
+    final formedLetters = formed.runes.map(String.fromCharCode).toList();
+    if (formedLetters.length != supplied.length) return false;
     final counts = <String, int>{};
     for (final letter in supplied) counts[letter] = (counts[letter] ?? 0) + 1;
-    for (final letter in formed.runes.map(String.fromCharCode)) {
+    for (final letter in formedLetters) {
       final remaining = counts[letter] ?? 0;
       if (remaining == 0) return false;
       counts[letter] = remaining - 1;
@@ -266,6 +260,9 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   void _selectSortLetter(String letter, ({List<String> letters, Set<String> validWords}) q) {
     if (_sortSelected.length >= q.letters.length) return;
+    final usedCount = _sortSelected.where((item) => item == letter).length;
+    final availableCount = q.letters.where((item) => item == letter).length;
+    if (usedCount >= availableCount) return;
     setState(() => _sortSelected.add(letter));
     if (_sortSelected.length == q.letters.length) {
       final formed = _sortSelected.join();
@@ -274,7 +271,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
       if (ok) {
         _advanceTimer?.cancel();
         _advanceTimer = Timer(const Duration(milliseconds: 1900), () {
-          if (mounted) _nextQuestion(autoSpeak: true);
+          if (mounted) _nextQuestion();
         });
       }
     }
@@ -303,7 +300,6 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -312,7 +308,7 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 30),
             children: [
-              _modeBar(width), const SizedBox(height: 16),
+              _modeBar(), const SizedBox(height: 16),
               if (_mode == 0) _missingLetterCard(),
               if (_mode == 1) _missingWordCard(),
               if (_mode == 2) _listenCard(),
@@ -324,13 +320,13 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     );
   }
 
-  Widget _modeBar(double width) {
+  Widget _modeBar() {
     const labels = ['الحرف المفقود', 'الكلمة المفقودة', 'اسمع وأجب', 'رتب الكلمة'];
     const colors = [Color(0xFF7C4DFF), Color(0xFFEF6C00), Color(0xFF00897B), Color(0xFF1565C0)];
     return Row(children: List.generate(labels.length, (index) => Expanded(
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: index == labels.length - 1 ? 0 : 5),
-        child: Button3D(onTap: () => _setMode(index), color: colors[index], padding: EdgeInsets.symmetric(horizontal: 2, vertical: width < 430 ? 12 : 14), child: Text(labels[index], maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13))),
+        child: Button3D(onTap: () => _setMode(index), color: colors[index], padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 13), child: Text(labels[index], maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13))),
       ),
     )));
   }
@@ -353,13 +349,9 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     final filled = _selectedAnswer == q.answer;
     return _card(color: const Color(0xFF7C4DFF), child: Column(children: [
       _heading('الحرف المفقود', 'اختر الحرف ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)), const SizedBox(height: 22),
-      AnimatedSwitcher(duration: const Duration(milliseconds: 360), child: filled ? Container(
-        key: ValueKey('completed:${q.word}'), width: double.infinity, padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFF7C4DFF), width: 2)),
-        child: Text(q.word, textAlign: TextAlign.center, textDirection: TextDirection.rtl, style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w900)),
-      ) : FittedBox(key: ValueKey('incomplete:${q.word}'), fit: BoxFit.scaleDown, child: Row(mainAxisAlignment: MainAxisAlignment.center, textDirection: TextDirection.rtl, children: List.generate(letters.length, (i) => Padding(
+      filled ? Text(q.word, textAlign: TextAlign.center, style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w900)) : Row(mainAxisAlignment: MainAxisAlignment.center, textDirection: TextDirection.rtl, children: List.generate(letters.length, (i) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4), child: i == q.missingIndex ? Container(width: 60, height: 66, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .92), borderRadius: BorderRadius.circular(16), border: Border.all(color: const Color(0xFF7C4DFF), width: 2))) : Text(letters[i], style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
-      ))))),
+      ))),
       const SizedBox(height: 14), const Text('اختر الحرف الناقص', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)), const SizedBox(height: 13),
       _letterOptions(options, q), _feedbackInline(), const SizedBox(height: 18), _nextButton('سؤال جديد', _nextQuestion, emphasized: true),
     ]));
@@ -422,7 +414,12 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
         final usedCount = _sortSelected.where((item) => item == letter).length;
         final totalCount = target.where((item) => item == letter).length;
         final enabled = usedCount < totalCount && !completed;
-        return SizedBox(width: 64, height: 62, child: Button3D(onTap: enabled ? () => _selectSortLetter(letter, q) : null, color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE), padding: EdgeInsets.zero, child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900))));
+        return SizedBox(width: 64, height: 62, child: Button3D(
+          onTap: enabled ? () => _selectSortLetter(letter, q) : null,
+          color: enabled ? const Color(0xFF1976D2) : const Color(0xFF90A4AE),
+          padding: EdgeInsets.zero,
+          child: Center(child: Text(letter, style: const TextStyle(color: Colors.white, fontSize: 27, fontWeight: FontWeight.w900))),
+        ));
       }).toList()),
       const SizedBox(height: 20), _nextButton('كلمة جديدة', _nextQuestion, emphasized: true), const SizedBox(height: 8),
       SizedBox(width: 220, height: 52, child: Button3D(onTap: _resetSort, color: const Color(0xFF607D8B), padding: EdgeInsets.zero, child: const Center(child: Text('مسح الترتيب', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16))))),
