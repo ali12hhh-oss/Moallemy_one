@@ -13,53 +13,61 @@ class G2AddSubHub extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(title: const Text('الجمع والطرح')),
-        body: ListView(
-          padding: const EdgeInsets.all(14),
-          children: [
-            _buildSection(
-              context,
-              title: 'الجمع',
-              icon: '➕',
-              color: const Color(0xFF00C853),
-              subtitle: 'جمع عددين من مرتبتين: آحاد وعشرات',
-              learnLabel: 'تعلم الجمع',
-              onLearn: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubLearningScreen(isAddition: true),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildSection(
+                    context,
+                    title: 'الجمع',
+                    icon: '➕',
+                    color: const Color(0xFF00C853),
+                    subtitle: 'جمع عددين من مرتبتين: آحاد وعشرات',
+                    learnLabel: 'تعلم الجمع',
+                    onLearn: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const G2AddSubLearningScreen(isAddition: true),
+                      ),
+                    ),
+                    testLabel: 'اختبار الجمع',
+                    onTest: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const G2AddSubScreen(isAddition: true),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              testLabel: 'اختبار الجمع',
-              onTest: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubScreen(isAddition: true),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: _buildSection(
+                    context,
+                    title: 'الطرح',
+                    icon: '➖',
+                    color: const Color(0xFFFF6B35),
+                    subtitle: 'طرح عددين من مرتبتين: آحاد وعشرات',
+                    learnLabel: 'تعلم الطرح',
+                    onLearn: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const G2AddSubLearningScreen(isAddition: false),
+                      ),
+                    ),
+                    testLabel: 'اختبار الطرح',
+                    onTest: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const G2AddSubScreen(isAddition: false),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 16),
-            _buildSection(
-              context,
-              title: 'الطرح',
-              icon: '➖',
-              color: const Color(0xFFFF6B35),
-              subtitle: 'طرح عددين من مرتبتين: آحاد وعشرات',
-              learnLabel: 'تعلم الطرح',
-              onLearn: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubLearningScreen(isAddition: false),
-                ),
-              ),
-              testLabel: 'اختبار الطرح',
-              onTest: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const G2AddSubScreen(isAddition: false),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -78,86 +86,91 @@ class G2AddSubHub extends StatelessWidget {
   }) {
     return Card(
       elevation: 6,
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
         child: Column(
           children: [
             Row(
               children: [
-                Text(icon, style: const TextStyle(fontSize: 42)),
+                Text(icon, style: const TextStyle(fontSize: 36)),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+                        style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900, color: color),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 2),
                       Text(
                         subtitle,
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 120,
-                    child: Button3D(
-                      onTap: onLearn,
+            const SizedBox(height: 10),
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: _actionButton(
+                      label: learnLabel,
+                      icon: '📚',
                       color: color,
-                      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('📚', style: TextStyle(fontSize: 38)),
-                          const SizedBox(height: 7),
-                          Text(
-                            learnLabel,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                      onTap: onLearn,
                     ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: SizedBox(
-                    height: 120,
-                    child: Button3D(
-                      onTap: onTest,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _actionButton(
+                      label: testLabel,
+                      icon: '⭐',
                       color: color.withValues(alpha: .78),
-                      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('⭐', style: TextStyle(fontSize: 38)),
-                          const SizedBox(height: 7),
-                          Text(
-                            testLabel,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                      onTap: onTest,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _actionButton({
+    required String label,
+    required String icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Button3D(
+      onTap: onTap,
+      color: color,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 34)),
+          const SizedBox(height: 5),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white),
+          ),
+        ],
       ),
     );
   }
