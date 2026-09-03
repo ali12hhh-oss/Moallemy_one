@@ -14,7 +14,7 @@ class G2AddSubHub extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(title: const Text('الجمع والطرح')),
         body: ListView(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(14),
           children: [
             _buildSection(
               context,
@@ -37,7 +37,7 @@ class G2AddSubHub extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
             _buildSection(
               context,
               title: 'الطرح',
@@ -77,7 +77,7 @@ class G2AddSubHub extends StatelessWidget {
     required VoidCallback onTest,
   }) {
     return Card(
-      elevation: 5,
+      elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -85,33 +85,33 @@ class G2AddSubHub extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(icon, style: const TextStyle(fontSize: 38)),
-                const SizedBox(width: 12),
+                Text(icon, style: const TextStyle(fontSize: 42)),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         subtitle,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: 105,
+                    height: 120,
                     child: Button3D(
                       onTap: onLearn,
                       color: color,
@@ -119,12 +119,12 @@ class G2AddSubHub extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('📚', style: TextStyle(fontSize: 34)),
-                          const SizedBox(height: 6),
+                          const Text('📚', style: TextStyle(fontSize: 38)),
+                          const SizedBox(height: 7),
                           Text(
                             learnLabel,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
                           ),
                         ],
                       ),
@@ -134,7 +134,7 @@ class G2AddSubHub extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: SizedBox(
-                    height: 105,
+                    height: 120,
                     child: Button3D(
                       onTap: onTest,
                       color: color.withValues(alpha: .78),
@@ -142,12 +142,12 @@ class G2AddSubHub extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('⭐', style: TextStyle(fontSize: 34)),
-                          const SizedBox(height: 6),
+                          const Text('⭐', style: TextStyle(fontSize: 38)),
+                          const SizedBox(height: 7),
                           Text(
                             testLabel,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
                           ),
                         ],
                       ),
