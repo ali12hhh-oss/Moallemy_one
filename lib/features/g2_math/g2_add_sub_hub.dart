@@ -105,43 +105,52 @@ class G2AddSubHub extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  child: Button3D(
-                    onTap: onLearn,
-                    color: color,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                    child: Column(
-                      children: [
-                        const Text('📚', style: TextStyle(fontSize: 28)),
-                        const SizedBox(height: 4),
-                        Text(
-                          learnLabel,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white),
-                        ),
-                      ],
+                  child: SizedBox(
+                    height: 105,
+                    child: Button3D(
+                      onTap: onLearn,
+                      color: color,
+                      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('📚', style: TextStyle(fontSize: 34)),
+                          const SizedBox(height: 6),
+                          Text(
+                            learnLabel,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Button3D(
-                    onTap: onTest,
-                    color: color.withValues(alpha: .78),
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                    child: Column(
-                      children: [
-                        const Text('⭐', style: TextStyle(fontSize: 28)),
-                        const SizedBox(height: 4),
-                        Text(
-                          testLabel,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white),
-                        ),
-                      ],
+                  child: SizedBox(
+                    height: 105,
+                    child: Button3D(
+                      onTap: onTest,
+                      color: color.withValues(alpha: .78),
+                      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('⭐', style: TextStyle(fontSize: 34)),
+                          const SizedBox(height: 6),
+                          Text(
+                            testLabel,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
