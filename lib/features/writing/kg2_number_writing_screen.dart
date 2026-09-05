@@ -23,6 +23,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
   int number = firstNumber;
   bool askTens = true;
   bool answered = false;
+
   int get tensDigit => number ~/ 10;
   int get onesDigit => number % 10;
   bool get isTwoDigit => number >= 10;
@@ -45,6 +46,14 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
     } else {
       VoiceService.arabic(arNum(number));
     }
+  }
+
+  void _speakQuestion() {
+    if (!isTwoDigit) return;
+    final question = askTens
+        ? 'أين العشرات في العدد ${arNum(number)}؟'
+        : 'أين الآحاد في العدد ${arNum(number)}؟';
+    VoiceService.arabic(question);
   }
 
   void _setNumber(int next) {
@@ -74,7 +83,8 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
     }
   }
 
-  ButtonStyle _controlStyle({required Color background}) => FilledButton.styleFrom(
+  ButtonStyle _controlStyle({required Color background}) =>
+      FilledButton.styleFrom(
         minimumSize: const Size(0, 54),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
         backgroundColor: background,
@@ -118,7 +128,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
         appBar: AppBar(
           title: const Text('كتابة الأرقام'),
           actions: [
-            IconButton(onPressed: _speak, tooltip: 'استمع', icon: const Icon(Icons.volume_up_rounded)),
+            IconButton(onPressed: _speak, tooltip: 'استمع إلى الرقم', icon: const Icon(Icons.volume_up_rounded, size: 30)),
             IconButton(onPressed: () => canvasKey.currentState?.clear(), tooltip: 'مسح', icon: const Icon(Icons.delete_outline_rounded)),
           ],
         ),
@@ -126,27 +136,34 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
           children: [
             Column(
               children: [
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
                 const Text('اكتب العدد بالترتيب', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text(arNum(number), textDirection: TextDirection.rtl, style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900)),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Text(arNum(number), textDirection: TextDirection.rtl, style: const TextStyle(fontSize: 66, fontWeight: FontWeight.w900)),
+                    const SizedBox(width: 8),
+                    IconButton(onPressed: _speak, tooltip: 'استمع إلى الرقم', icon: const Icon(Icons.volume_up_rounded, size: 34), padding: EdgeInsets.zero, constraints: const BoxConstraints(minWidth: 44, minHeight: 44)),
+                  ],
+                ),
                 if (isTwoDigit) ...[
-                  const SizedBox(height: 2),
-                  Text('اختر ${askTens ? 'العشرات' : 'الآحاد'} في العدد', style: const TextStyle(fontSize: 14)),
-                  const SizedBox(height: 6),
-                  Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        _placeValueButton(tens: false),
-                        const SizedBox(width: 8),
-                        _placeValueButton(tens: true),
-                      ],
-                    ),
+                  const SizedBox(height: 1),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(askTens ? 'أين العشرات في العدد؟' : 'أين الآحاد في العدد؟', textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
+                      const SizedBox(width: 5),
+                      IconButton(onPressed: _speakQuestion, tooltip: 'استمع إلى السؤال', icon: const Icon(Icons.volume_up_rounded, size: 27), padding: EdgeInsets.zero, constraints: const BoxConstraints(minWidth: 40, minHeight: 40)),
+                    ],
                   ),
+                  const SizedBox(height: 3),
+                  Center(child: Row(mainAxisSize: MainAxisSize.min, textDirection: TextDirection.rtl, children: [_placeValueButton(tens: false), const SizedBox(width: 8), _placeValueButton(tens: true)])),
                 ],
-                const SizedBox(height: 6),
-                Expanded(child: BoldDrawingCanvas(key: canvasKey)),
+                const SizedBox(height: 4),
+                Expanded(child: Padding(padding: const EdgeInsets.fromLTRB(8, 0, 8, 0), child: BoldDrawingCanvas(key: canvasKey))),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
                   child: Row(
