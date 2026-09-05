@@ -140,6 +140,7 @@ class _Lesson {
       final u = ua + ub; final carryT = u ~/ 10;
       final t = ta + tb + carryT; final carryH = t ~/ 10;
       final h = ha + hb + carryH;
+      final result = a + b;
       return [
         '${arNum(ua)} + ${arNum(ub)} = ${arNum(u)} آحاد${carryT > 0 ? '؛ نكتب ${arNum(u % 10)} ونحمل ${arNum(carryT)} عشرة.' : '، بلا حمل.'}',
         '${arNum(ta)} + ${arNum(tb)}${carryT > 0 ? ' + ${arNum(carryT)} الحمل' : ''} = ${arNum(t)} عشرات${carryH > 0 ? '؛ نكتب ${arNum(t % 10)} ونحمل ${arNum(carryH)} مئة.' : '.'}',
@@ -147,6 +148,7 @@ class _Lesson {
         'الناتج النهائي: ${arNum(result)}.',
       ];
     }
+    final result = a - b;
     var uA = ua; var tA = ta; var hA = ha;
     final unitBorrow = uA < ub;
     if (unitBorrow) { uA += 10; tA -= 1; }
