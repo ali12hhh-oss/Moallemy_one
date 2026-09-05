@@ -1,4 +1,4 @@
-name: Build
+name: بناء التطبيق
 on:
   push:
     branches: [main]
@@ -74,7 +74,7 @@ jobs:
           set -euo pipefail
 
           echo "Searching Android Gradle outputs..."
-          find android/app/build/outputs -type f \( -name "*.apk" -o -name "*.aab" \) -print || true
+          find android/app/build/outputs -type f \\( -name "*.apk" -o -name "*.aab" \\) -print || true
 
           APK_PATH="android/app/build/outputs/apk/release/app-release.apk"
 
