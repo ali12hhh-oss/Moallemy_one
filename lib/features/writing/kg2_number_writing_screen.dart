@@ -27,7 +27,6 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
 
   int get tensDigit => number ~/ 10;
   int get onesDigit => number % 10;
-  bool get isTwoDigit => number >= firstQuestionNumber;
   bool get hasPlaceValueQuestion => number >= firstQuestionNumber;
 
   static String _word(int n) => const {
@@ -87,8 +86,8 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
 
   ButtonStyle _controlStyle({required Color background}) =>
       FilledButton.styleFrom(
-        minimumSize: const Size(0, 54),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+        minimumSize: const Size(0, 46),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         backgroundColor: background,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -148,7 +147,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
           children: [
             Column(
               children: [
-                const SizedBox(height: 3),
+                const SizedBox(height: 2),
                 const Text(
                   'اكتب العدد بالترتيب',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -167,7 +166,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // سماعة العدد: تبقى ولا تُحذف لأنها مرتبطة بنطق العدد نفسه.
+                    // سماعة العدد: تبقى لأنها مرتبطة بنطق العدد نفسه.
                     IconButton(
                       onPressed: _speak,
                       tooltip: 'استمع إلى العدد',
@@ -199,7 +198,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          const SizedBox(width: 5),
+                          const SizedBox(width: 4),
                           // سماعة السؤال: تبقى لأنها خاصة بالسؤال وليست سماعة العدد.
                           IconButton(
                             onPressed: _speakQuestion,
@@ -228,29 +227,29 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 3),
-                  // خيارات الإجابة تبقى أسفل السؤال ومتمركزة مع تقليل الفراغ بينهما.
+                  const SizedBox(height: 2),
+                  // خيارات الإجابة أسفل السؤال ومتمركزة، مع فراغ صغير بينهما.
                   Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       textDirection: TextDirection.rtl,
                       children: [
                         _placeValueButton(tens: false),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 4),
                         _placeValueButton(tens: true),
                       ],
                     ),
                   ),
                 ],
-                const SizedBox(height: 2),
+                const SizedBox(height: 1),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                    padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
                     child: BoldDrawingCanvas(key: canvasKey),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
+                  padding: const EdgeInsets.fromLTRB(8, 2, 8, 6),
                   child: Row(
                     children: [
                       Expanded(
@@ -263,7 +262,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                           label: const Text('السابق'),
                         ),
                       ),
-                      const SizedBox(width: 7),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: FilledButton.icon(
                           style: _controlStyle(
@@ -274,7 +273,7 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                           label: const Text('مسح السبورة'),
                         ),
                       ),
-                      const SizedBox(width: 7),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: FilledButton.icon(
                           style: _controlStyle(
