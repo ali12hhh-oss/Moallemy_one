@@ -157,7 +157,7 @@ class _Lesson {
     return [
       '${arNum(ua)} − ${arNum(ub)}${unitBorrow ? ' لا تكفي؛ نقترض عشرة من العشرات، فتصبح الآحاد ${arNum(uA)}.' : ' = ${arNum(uA - ub)} آحاد.'}',
       '${unitBorrow ? 'بعد اقتراض عشرة أصبحت العشرات ${arNum(ta - 1)}. ' : ''}${arNum(tA)} − ${arNum(tb)}${tenBorrow ? ' لا تكفي؛ نقترض مئة من المئات، فتصبح العشرات ${arNum(tA)}.' : ' = ${arNum(tA - tb)} عشرات.'}',
-      '${arNum(ha)}${tenBorrow ? ' بعد إعطاء مئة تصبح ' + arNum(hA) : ''} − ${arNum(hb)} = ${arNum(hA - hb)} مئات.',
+      '${arNum(ha)}${tenBorrow ? ' بعد إعطاء مئة تصبح ${arNum(hA)}' : ''} − ${arNum(hb)} = ${arNum(hA - hb)} مئات.',
       'الناتج النهائي: ${arNum(result)}.',
     ];
   }
