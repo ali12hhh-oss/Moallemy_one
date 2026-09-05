@@ -130,4 +130,38 @@ class _Lesson {
   final String title, explanation, operation, note;
   final int a, b;
   const _Lesson(this.title, this.a, this.b, this.explanation, this.operation, this.note);
+
+  List<String> get steps {
+    final addOp = operation.contains('+');
+    final ua = a % 10, ub = b % 10;
+    final ta = (a ~/ 10) % 10, tb = (b ~/ 10) % 10;
+    final ha = a ~/ 100, hb = b ~/ 100;
+    if (addOp) {
+      final u = ua + ub; final carryT = u ~/ 10;
+      final t = ta + tb + carryT; final carryH = t ~/ 10;
+      final h = ha + hb + carryH;
+      return [
+        '${arNum(ua)} + ${arNum(ub)} = ${arNum(u)} آحاد${carryT > 0 ? '؛ نكتب ${arNum(u % 10)} ونحمل ${arNum(carryT)} عشرة.' : '، بلا حمل.'}',
+        '${arNum(ta)} + ${arNum(tb)}${carryT > 0 ? ' + ${arNum(carryT)} الحمل' : ''} = ${arNum(t)} عشرات${carryH > 0 ? '؛ نكتب ${arNum(t % 10)} ونحمل ${arNum(carryH)} مئة.' : '.'}',
+        '${arNum(ha)} + ${arNum(hb)}${carryH > 0 ? ' + ${arNum(carryH)} الحمل' : ''} = ${arNum(h)} مئات.',
+        'الناتج النهائي: ${arNum(result)}.',
+      ];
+    }
+    var uA = ua; var tA = ta; var hA = ha;
+    final unitBorrow = uA < ub;
+    if (unitBorrow) { uA += 10; tA -= 1; }
+    final tenBorrow = tA < tb;
+    if (tenBorrow) { tA += 10; hA -= 1; }
+    return [
+      '${arNum(ua)} − ${arNum(ub)}${unitBorrow ? ' لا تكفي؛ نقترض عشرة من العشرات، فتصبح الآحاد ${arNum(uA)}.' : ' = ${arNum(uA - ub)} آحاد.'}',
+      '${unitBorrow ? 'بعد اقتراض عشرة أصبحت العشرات ${arNum(ta - 1)}. ' : ''}${arNum(tA)} − ${arNum(tb)}${tenBorrow ? ' لا تكفي؛ نقترض مئة من المئات، فتصبح العشرات ${arNum(tA)}.' : ' = ${arNum(tA - tb)} عشرات.'}',
+      '${arNum(ha)}${tenBorrow ? ' بعد إعطاء مئة تصبح ' + arNum(hA) : ''} − ${arNum(hb)} = ${arNum(hA - hb)} مئات.',
+      'الناتج النهائي: ${arNum(result)}.',
+    ];
+  }
+
+  List<String> get vertical => [
+    'نحاذي الآحاد تحت الآحاد، والعشرات تحت العشرات، والمئات تحت المئات.',
+    ...steps,
+  ];
 }
