@@ -228,8 +228,10 @@ class _G2AddSubLearningScreenState extends State<G2AddSubLearningScreen> {
 
   void _speakLesson() {
     final operation = widget.isAddition ? 'الجمع' : 'الطرح';
+    final horizontal = _lesson.horizontalSteps.join(' ');
+    final vertical = _lesson.verticalSteps.join(' ');
     VoiceService.arabic(
-      '${_lesson.title}. ${_lesson.explanation} ${_lesson.a} ${widget.isAddition ? 'زائد' : 'ناقص'} ${_lesson.b} يساوي ${_lesson.result}. تعلم $operation خطوة بخطوة.',
+      '${_lesson.title}. ${_lesson.explanation} ${_lesson.a} ${widget.isAddition ? 'زائد' : 'ناقص'} ${_lesson.b} يساوي ${_lesson.result}. $operation أفقيًا: $horizontal. $operation عموديًا: $vertical. ${_lesson.carry ?? ''}',
     );
   }
 
