@@ -42,7 +42,7 @@ class _G3AddSubLearningScreenState extends State<G3AddSubLearningScreen> {
   List<_Lesson> get lessons => widget.isAddition ? add : sub;
   _Lesson get lesson => lessons[page];
 
-  void speak() => VoiceService.arabic('${lesson.title}. ${lesson.explanation} ${lesson.operation}. ${lesson.note}');
+  void speak() => VoiceService.arabic('${lesson.title}. ${lesson.explanation}. ${lesson.steps.join(' ')} الطريقة العمودية: ${lesson.vertical.join(' ')} ${lesson.note}');
   void move(int d) { final n = page + d; if (n < 0 || n >= lessons.length) return; setState(() => page = n); speak(); }
 
   @override
@@ -69,12 +69,13 @@ class _G3AddSubLearningScreenState extends State<G3AddSubLearningScreen> {
                   const SizedBox(height: 12),
                   Text(lesson.explanation, textAlign: TextAlign.center, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, height: 1.5)),
                   const SizedBox(height: 16),
-                  Text('${arNum(lesson.a)} ${widget.isAddition ? '+' : '−'} ${arNum(lesson.b)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 8),
-                  const Divider(thickness: 2),
-                  Text(lesson.operation, textAlign: TextAlign.center, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: accent)),
+                  Text('${arNum(lesson.a)} ${widget.isAddition ? '+' : '−'} ${arNum(lesson.b)}', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: accent)),
                   const SizedBox(height: 14),
-                  Container(width: double.infinity, padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: accent.withValues(alpha: .10), borderRadius: BorderRadius.circular(16)), child: Text(lesson.note.isEmpty ? 'نرتب الآحاد والعشرات والمئات، ثم ننجز العملية خطوة بخطوة.' : lesson.note, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.45))),
+                  _stepsBox('الطريقة الأفقية — خطوة بخطوة', lesson.steps, accent),
+                  const SizedBox(height: 14),
+                  _verticalBox(widget.isAddition ? '+' : '−', lesson.vertical, accent),
+                  const SizedBox(height: 14),
+                  Container(width: double.infinity, padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: accent.withValues(alpha: .10), borderRadius: BorderRadius.circular(16)), child: Text(lesson.note.isEmpty ? 'نبدأ دائمًا بالآحاد، ثم العشرات، ثم المئات. عند الحاجة نستخدم الحمل في الجمع أو الاقتراض في الطرح.' : lesson.note, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.45))),
                   const SizedBox(height: 14),
                   Button3D(onTap: speak, color: accent, child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.volume_up_rounded, color: Colors.white), SizedBox(width: 8), Text('استمع للشرح', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))])),
                 ])),
@@ -89,6 +90,38 @@ class _G3AddSubLearningScreenState extends State<G3AddSubLearningScreen> {
           ),
         ),
       ),
+    );
+  }
+  Widget _stepsBox(String title, List<String> steps, Color accent) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(color: accent.withValues(alpha: .07), borderRadius: BorderRadius.circular(18), border: Border.all(color: accent.withValues(alpha: .30), width: 2)),
+      child: Column(children: [
+        Text(title, style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900, color: accent)),
+        const SizedBox(height: 8),
+        ...steps.asMap().entries.map((e) => Align(alignment: Alignment.centerRight, child: Padding(padding: const EdgeInsets.symmetric(vertical: 3), child: Text('${arNum(e.key + 1)}. ${e.value}', style: const TextStyle(fontSize: 16, height: 1.4, fontWeight: FontWeight.w700))))),
+      ]),
+    );
+  }
+
+  Widget _verticalBox(String op, List<String> steps, Color accent) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(18), border: Border.all(color: accent.withValues(alpha: .35), width: 2)),
+      child: Column(children: [
+        Text('الطريقة العمودية', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900, color: accent)),
+        const SizedBox(height: 8),
+        SizedBox(width: 160, child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+          Text(arNum(lesson.a), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [Text(op, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900)), const SizedBox(width: 8), Text(arNum(lesson.b), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900))]),
+          Divider(thickness: 3, color: accent),
+          Text(arNum(lesson.a + (widget.isAddition ? lesson.b : -lesson.b)), style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: accent)),
+        ])),
+        const SizedBox(height: 8),
+        ...steps.map((s) => Align(alignment: Alignment.centerRight, child: Padding(padding: const EdgeInsets.symmetric(vertical: 3), child: Text('✓ $s', style: const TextStyle(fontSize: 16, height: 1.4, fontWeight: FontWeight.w700))))),
+      ]),
     );
   }
 }
