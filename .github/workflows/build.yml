@@ -9,7 +9,7 @@ on:
 
 env:
   FLUTTER_VERSION: "3.47.1"
-  GRADLE_VERSION: "8.14"
+  GRADLE_VERSION: "9.5.0"
 
 jobs:
   analyze_and_test:
@@ -19,7 +19,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -40,7 +40,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
@@ -51,22 +51,21 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+      - name: Make Gradle wrapper executable
+        run: chmod +x android/gradlew
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: ${{ env.GRADLE_VERSION }}
       - name: Install dependencies
         run: flutter pub get
 
-      # The repository's custom android/gradlew is missing the Gradle wrapper
-      # JAR and attempts to download it from a URL that returns 404. Use the
-      # verified Gradle distribution installed by setup-gradle instead.
       - name: Verify Gradle installation
         run: gradle --version
 
       - name: Build release APK with Gradle
         working-directory: android
-        run: gradle app:assembleRelease --stacktrace --no-daemon
+        run: gradle app:assembleRelease --stacktrace --no-daemon --warning-mode all
 
       - name: Locate and stage release APK
         shell: bash
@@ -92,7 +91,7 @@ jobs:
           ls -lh build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload Flutter APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: daleel-child-universal-apk
           path: build/app/outputs/flutter-apk/app-release.apk
