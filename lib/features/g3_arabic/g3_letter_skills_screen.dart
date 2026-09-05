@@ -406,37 +406,69 @@ class _G3LetterSkillsScreenState extends State<G3LetterSkillsScreen> {
     final options = _shuffle(<String>{q.answer, 'ب', 'م', 'ن', 'ل', 'ر'}.toList());
     final letters = q.word.runes.map(String.fromCharCode).toList();
     final filled = _selectedAnswer == q.answer;
+
+    Widget wordDisplay() {
+      if (filled) {
+        return Text(
+          q.word,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w900),
+        );
+      }
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        textDirection: TextDirection.rtl,
+        children: List.generate(
+          letters.length,
+          (i) {
+            final isMissing = i == q.missingIndex;
+            final child = isMissing
+                ? Container(
+                    width: 60,
+                    height: 66,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: .92),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFF7C4DFF),
+                        width: 2,
+                      ),
+                    ),
+                  )
+                : Text(
+                    letters[i],
+                    style: const TextStyle(
+                      fontSize: 52,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  );
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: child,
+            );
+          },
+        ),
+      );
+    }
+
     return _card(
       color: const Color(0xFF7C4DFF),
       child: Column(
         children: [
-          _heading('الحرف المفقود', 'اختر الحرف ليكتمل شكل الكلمة', const Color(0xFF7C4DFF)),
+          _heading(
+            'الحرف المفقود',
+            'اختر الحرف ليكتمل شكل الكلمة',
+            const Color(0xFF7C4DFF),
+          ),
           const SizedBox(height: 22),
-          filled
-              ? Text(q.word, textAlign: TextAlign.center, style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w900))
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  textDirection: TextDirection.rtl,
-                  children: List.generate(
-                    letters.length,
-                    (i) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: i == q.missingIndex
-                          ? Container(
-                              width: 60,
-                              height: 66,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: .92),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: const Color(0xFF7C4DFF), width: 2),
-                              ),
-                            )
-                          : Text(letters[i], style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900)),
-                    ),
-                  ),
-                ),
+          wordDisplay(),
           const SizedBox(height: 14),
-          const Text('اختر الحرف الناقص', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+          const Text(
+            'اختر الحرف الناقص',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 13),
           _letterOptions(options, q),
           _feedbackInline(),
