@@ -1,25 +1,28 @@
 #!/usr/bin/env sh
-set -eu
+
+# Gradle startup script for POSIX shells.
+# The wrapper JAR is intentionally kept in the repository; this script does not
+# download build tooling from arbitrary locations.
 
 APP_HOME=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-WRAPPER_JAR="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
-WRAPPER_URL="https://services.gradle.org/distributions/gradle-8.14-wrapper.jar"
 
-if [ ! -f "$WRAPPER_JAR" ]; then
-  mkdir -p "$(dirname "$WRAPPER_JAR")"
-  echo "Downloading Gradle wrapper jar..."
-  curl -fL --retry 3 --connect-timeout 20 -o "$WRAPPER_JAR" "$WRAPPER_URL"
-fi
+CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
-if [ ! -s "$WRAPPER_JAR" ]; then
-  echo "ERROR: Gradle wrapper jar could not be downloaded." >&2
+if [ ! -f "$CLASSPATH" ]; then
+  echo "ERROR: Gradle wrapper JAR is missing: $CLASSPATH" >&2
+  echo "Run 'gradle wrapper --gradle-version 8.14' locally and commit the generated wrapper JAR." >&2
   exit 1
 fi
 
-if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+if [ -n "${JAVA_HOME:-}" ]; then
   JAVACMD="$JAVA_HOME/bin/java"
 else
   JAVACMD="java"
 fi
 
-exec "$JAVACMD" ${JAVA_OPTS:-} ${GRADLE_OPTS:-} -classpath "$WRAPPER_JAR" org.gradle.wrapper.GradleWrapperMain "$@"
+if ! command -v "$JAVACMD" >/dev/null 2>&1; then
+  echo "ERROR: Java was not found. Set JAVA_HOME or put java on PATH." >&2
+  exit 1
+fi
+
+exec "$JAVACMD" ${JAVA_OPTS:-} ${GRADLE_OPTS:-} -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
