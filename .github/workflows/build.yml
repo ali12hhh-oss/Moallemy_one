@@ -9,6 +9,7 @@ on:
 
 env:
   FLUTTER_VERSION: "3.47.2"
+  GRADLE_VERSION: "8.14"
 
 jobs:
   analyze_and_test:
@@ -50,18 +51,19 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
-      - name: Make Gradle wrapper executable
-        run: chmod +x android/gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Verify Gradle wrapper
-        working-directory: android
-        run: ./gradlew --version
+      - name: Verify Gradle installation
+        run: gradle --version
 
-      - name: Build release APK with Gradle wrapper
+      - name: Build release APK with Gradle
         working-directory: android
-        run: ./gradlew app:assembleRelease --stacktrace --no-daemon --warning-mode all
+        run: gradle app:assembleRelease --stacktrace --no-daemon --warning-mode all
 
       - name: Locate and stage release APK
         shell: bash
