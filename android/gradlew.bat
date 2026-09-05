@@ -2,7 +2,7 @@
 setlocal
 set "APP_HOME=%~dp0"
 set "WRAPPER_JAR=%APP_HOME%gradle\wrapper\gradle-wrapper.jar"
-set "WRAPPER_URL=https://raw.githubusercontent.com/gradle/gradle/v8.14/gradle/wrapper/gradle-wrapper.jar"
+set "WRAPPER_URL=https://services.gradle.org/distributions/gradle-8.14-wrapper.jar"
 
 if not exist "%WRAPPER_JAR%" (
   echo Downloading Gradle wrapper jar...
