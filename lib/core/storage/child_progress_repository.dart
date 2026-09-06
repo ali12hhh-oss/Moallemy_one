@@ -35,9 +35,7 @@ class ChildProgressRepository {
         final decoded = jsonDecode(raw);
         if (decoded is Map) {
           final state = Map<String, dynamic>.from(decoded);
-          if (_normalizeOwnedItems(state)) {
-            await save(state);
-          }
+          if (_normalizeOwnedItems(state)) await save(state);
           await _syncChildSnapshot(state, id);
           return state;
         }
@@ -72,14 +70,10 @@ class ChildProgressRepository {
     if (key == null) return;
     await p.setString(key, jsonEncode(state));
     final id = await AppStorage.activeId();
-    if (id != null && id.isNotEmpty) {
-      await _syncChildSnapshot(state, id);
-    }
+    if (id != null && id.isNotEmpty) await _syncChildSnapshot(state, id);
   }
 
-  /// Mirrors the canonical per-child progress record into the Child model.
-  /// This keeps the parent dashboard and the child profile reading the same
-  /// progress instead of showing only the independently stored stars field.
+  /// Mirrors canonical progress into the Child model used by profile screens.
   static Future<void> _syncChildSnapshot(
     Map<String, dynamic> state,
     String childId,
@@ -100,8 +94,7 @@ class ChildProgressRepository {
       final itemSuccesses = _int(item['successes']);
       attempts += itemAttempts;
       successes += itemSuccesses;
-      if (itemAttempts >= 5 &&
-          itemSuccesses / itemAttempts < .8) {
+      if (itemAttempts >= 5 && itemSuccesses / itemAttempts < .8) {
         weak.add(entry.key);
       }
     }
@@ -153,6 +146,13 @@ class ChildProgressRepository {
     final skills = Map<String, dynamic>.from(state['skillMastery'] ?? const {});
     skills[skillId] = (_int(skills[skillId]) + (correct ? 10 : -5)).clamp(0, 100);
     state['skillMastery'] = skills;
+    final adaptive = Map<String, dynamic>.from(state['adaptive'] ?? const {});
+    final item = Map<String, dynamic>.from(adaptive[skillId] ?? const {});
+    item['attempts'] = _int(item['attempts']) + 1;
+    item['successes'] = _int(item['successes']) + (correct ? 1 : 0);
+    item['lastAt'] = DateTime.now().millisecondsSinceEpoch;
+    adaptive[skillId] = item;
+    state['adaptive'] = adaptive;
     if (correct) {
       state['stars'] = _int(state['stars']) + 1;
       state['xp'] = _int(state['xp']) + 5;
@@ -272,6 +272,18 @@ class ChildProgressRepository {
     };
     state['finalExams'] = exams;
     state['quizzes'] = _int(state['quizzes']) + 1;
+
+    // Include final-exam answers in the same accuracy stream used by the
+    // parent dashboard and child profile.
+    final adaptive = Map<String, dynamic>.from(state['adaptive'] ?? const {});
+    final skillId = 'final_exam:$stageId';
+    final item = Map<String, dynamic>.from(adaptive[skillId] ?? const {});
+    item['attempts'] = _int(item['attempts']) + safeTotal;
+    item['successes'] = _int(item['successes']) + safeScore;
+    item['lastAt'] = DateTime.now().millisecondsSinceEpoch;
+    adaptive[skillId] = item;
+    state['adaptive'] = adaptive;
+
     if (passed) {
       final badges = List<String>.from(state['badges'] ?? const <String>[]);
       final badge = 'ختم $stageId';
@@ -321,25 +333,16 @@ class ChildProgressRepository {
     if (owned.contains(itemId) || _int(state['stars']) < safePrice) return false;
 
     state['stars'] = _int(state['stars']) - safePrice;
-
-    // Always store the real reward ID so the collection can display it.
     owned.add(itemId);
     if (title != null && title.trim().isNotEmpty) {
-      // Keep only the active-title marker; the real title ID remains in
-      // ownedItems so every purchased title stays in the collection.
       owned.removeWhere((item) => item.startsWith('title:'));
       owned.add('title:${title.trim()}');
     }
     state['ownedItems'] = owned;
     await save(state);
-
     return true;
   }
 
-  /// Converts the old title-only storage format (`title:<name>`) into the
-  /// real reward ID while preserving the active title marker. This makes
-  /// previously purchased titles appear in the existing collection screen.
-  /// Returns true when the state was changed and should be persisted.
   static bool _normalizeOwnedItems(Map<String, dynamic> state) {
     final raw = state['ownedItems'];
     if (raw is! List) return false;
