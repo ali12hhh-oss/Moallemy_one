@@ -90,7 +90,7 @@ class G2CompareOrderHub extends StatelessWidget {
                     () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => G2CompareOrderScreen(),
+                        builder: (_) => const G2CompareOrderScreen(),
                       ),
                     ),
                   ),
