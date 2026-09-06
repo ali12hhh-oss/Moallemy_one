@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../data/content.dart';
 import '../../core/audio/voice_service.dart';
+import '../../core/adaptive/adaptive_learning_engine_v24.dart';
+import '../../core/storage/child_progress_repository.dart';
 import '../../core/localization/arabic_numbers.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -33,20 +35,31 @@ class _S extends State<QuizScreen> {
     opts = s.toList()..shuffle();
   }
 
-  void answer(ArabicLetter x) {
+  Future<void> answer(ArabicLetter x) async {
     final correct = x.letter == target.letter;
+    await AdaptiveLearningEngineV24.record('quiz_arabic_letters', correct);
+
     if (correct) {
       score++;
       VoiceService.playCorrect();
     } else {
       VoiceService.playTryAgain();
     }
+
     if (q == 10) {
+      final finalScore = score;
+      await ChildProgressRepository.recordFinalExam(
+        'arabic_letters_quiz',
+        finalScore,
+        10,
+        finalScore >= 6,
+      );
+      if (!mounted) return;
       showDialog<void>(
         context: context,
         builder: (_) => AlertDialog(
           title: const Text('نتيجة الاختبار 🎉'),
-          content: Text('النتيجة: ${arNum(score)} من ${arNum(10)}'),
+          content: Text('النتيجة: ${arNum(finalScore)} من ${arNum(10)}'),
           actions: [
             TextButton(
               onPressed: () {
@@ -62,7 +75,7 @@ class _S extends State<QuizScreen> {
           ],
         ),
       );
-    } else {
+    } else if (mounted) {
       setState(() {
         q++;
         next();
