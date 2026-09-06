@@ -38,6 +38,7 @@ class ChildProgressRepository {
           if (_normalizeOwnedItems(state)) {
             await save(state);
           }
+          await _syncChildSnapshot(state, id);
           return state;
         }
       } catch (_) {}
@@ -54,6 +55,7 @@ class ChildProgressRepository {
               _normalizeOwnedItems(state);
               await save(state);
               await p.setBool(_legacyMigratedKey, true);
+              await _syncChildSnapshot(state, id);
               return state;
             }
           } catch (_) {}
@@ -69,6 +71,62 @@ class ChildProgressRepository {
     final key = await _key();
     if (key == null) return;
     await p.setString(key, jsonEncode(state));
+    final id = await AppStorage.activeId();
+    if (id != null && id.isNotEmpty) {
+      await _syncChildSnapshot(state, id);
+    }
+  }
+
+  /// Mirrors the canonical per-child progress record into the Child model.
+  /// This keeps the parent dashboard and the child profile reading the same
+  /// progress instead of showing only the independently stored stars field.
+  static Future<void> _syncChildSnapshot(
+    Map<String, dynamic> state,
+    String childId,
+  ) async {
+    final children = await AppStorage.getChildren();
+    final index = children.indexWhere((child) => child.id == childId);
+    if (index < 0) return;
+
+    final child = children[index];
+    final adaptive = Map<String, dynamic>.from(state['adaptive'] ?? const {});
+    var attempts = 0;
+    var successes = 0;
+    final weak = <String>[];
+
+    for (final entry in adaptive.entries) {
+      final item = Map<String, dynamic>.from(entry.value ?? const {});
+      final itemAttempts = _int(item['attempts']);
+      final itemSuccesses = _int(item['successes']);
+      attempts += itemAttempts;
+      successes += itemSuccesses;
+      if (itemAttempts >= 5 &&
+          itemSuccesses / itemAttempts < .8) {
+        weak.add(entry.key);
+      }
+    }
+
+    child.stars = _int(state['stars'], child.stars);
+    child.lessons = _int(state['lessons'], child.lessons);
+    child.quizzes = _int(state['quizzes'], child.quizzes);
+    child.correct = successes;
+    child.total = attempts;
+    child.minutes = _int(state['minutes'], child.minutes);
+    child.streak = _int(state['streak'], child.streak);
+
+    final storedWeak = state['weakItems'];
+    if (storedWeak is List) {
+      child.weakItems = storedWeak.map((e) => e.toString()).toList();
+    } else {
+      child.weakItems = weak;
+    }
+
+    final owned = state['ownedItems'];
+    if (owned is List) {
+      child.ownedItems = owned.map((e) => e.toString()).toList();
+    }
+
+    await AppStorage.saveChildren(children);
   }
 
   static Future<int> stars() async => _int((await load())['stars']);
@@ -191,6 +249,7 @@ class ChildProgressRepository {
       final safeStars = stars < 0 ? 0 : stars;
       state['stars'] = _int(state['stars']) + safeStars;
       state['xp'] = _int(state['xp']) + safeStars * 10;
+      state['lessons'] = _int(state['lessons']) + 1;
     }
     state['done'] = done;
     await save(state);
@@ -212,16 +271,17 @@ class ChildProgressRepository {
       'bestScore': _max(_int(previous is Map ? previous['bestScore'] : null), safeScore),
     };
     state['finalExams'] = exams;
-    final badges = List<String>.from(state['badges'] ?? const <String>[]);
+    state['quizzes'] = _int(state['quizzes']) + 1;
     if (passed) {
+      final badges = List<String>.from(state['badges'] ?? const <String>[]);
       final badge = 'ختم $stageId';
       if (!badges.contains(badge)) badges.add(badge);
       if (!alreadyPassed) {
         state['stars'] = _int(state['stars']) + 50;
         state['xp'] = _int(state['xp']) + 500;
       }
+      state['badges'] = badges;
     }
-    state['badges'] = badges;
     await save(state);
   }
 
@@ -273,18 +333,6 @@ class ChildProgressRepository {
     state['ownedItems'] = owned;
     await save(state);
 
-    // Keep the child card synchronized with the same per-child state.
-    final activeId = await AppStorage.activeId();
-    if (activeId != null && activeId.isNotEmpty) {
-      final children = await AppStorage.getChildren();
-      final index = children.indexWhere((child) => child.id == activeId);
-      if (index >= 0) {
-        final child = children[index];
-        child.stars = _int(state['stars']);
-        child.ownedItems = List<String>.from(owned);
-        await AppStorage.saveChildren(children);
-      }
-    }
     return true;
   }
 
@@ -314,12 +362,9 @@ class ChildProgressRepository {
 
       if (reward != null) {
         if (!normalized.contains(reward.id)) normalized.add(reward.id);
-        // Keep the marker because Child.activeTitle uses it to identify the
-        // currently active title.
         if (!normalized.contains(item)) normalized.add(item);
         if (!items.contains(reward.id)) changed = true;
       } else {
-        // Preserve an unknown legacy marker rather than deleting user data.
         if (!normalized.contains(item)) normalized.add(item);
       }
     }
@@ -333,6 +378,7 @@ class ChildProgressRepository {
     return changed;
   }
 
-  static int _int(dynamic value) => value is num ? value.toInt() : 0;
+  static int _int(dynamic value, [int fallback = 0]) =>
+      value is num ? value.toInt() : (int.tryParse(value?.toString() ?? '') ?? fallback);
   static int _max(int a, int b) => a > b ? a : b;
 }
