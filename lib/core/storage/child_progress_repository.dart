@@ -273,16 +273,25 @@ class ChildProgressRepository {
     state['finalExams'] = exams;
     state['quizzes'] = _int(state['quizzes']) + 1;
 
-    // Include final-exam answers in the same accuracy stream used by the
-    // parent dashboard and child profile.
+    // The Arabic letters quiz already records its ten answers individually
+    // through the quiz_arabic_letters adaptive skill. Do not add the same
+    // ten answers again under final_exam:arabic_letters_quiz.
     final adaptive = Map<String, dynamic>.from(state['adaptive'] ?? const {});
-    final skillId = 'final_exam:$stageId';
-    final item = Map<String, dynamic>.from(adaptive[skillId] ?? const {});
-    item['attempts'] = _int(item['attempts']) + safeTotal;
-    item['successes'] = _int(item['successes']) + safeScore;
-    item['lastAt'] = DateTime.now().millisecondsSinceEpoch;
-    adaptive[skillId] = item;
-    state['adaptive'] = adaptive;
+    final duplicateAlreadyRecorded =
+        stageId == 'arabic_letters_quiz' &&
+        _int(adaptive['quiz_arabic_letters'] is Map
+                ? (adaptive['quiz_arabic_letters'] as Map)['attempts']
+                : null) >= safeTotal;
+
+    if (!duplicateAlreadyRecorded) {
+      final skillId = 'final_exam:$stageId';
+      final item = Map<String, dynamic>.from(adaptive[skillId] ?? const {});
+      item['attempts'] = _int(item['attempts']) + safeTotal;
+      item['successes'] = _int(item['successes']) + safeScore;
+      item['lastAt'] = DateTime.now().millisecondsSinceEpoch;
+      adaptive[skillId] = item;
+      state['adaptive'] = adaptive;
+    }
 
     if (passed) {
       final badges = List<String>.from(state['badges'] ?? const <String>[]);
