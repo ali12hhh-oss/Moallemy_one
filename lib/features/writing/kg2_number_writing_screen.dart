@@ -96,31 +96,32 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
 
   Widget _placeValueButton({required bool tens}) {
     final selectedCorrect = answered;
-    return SizedBox(
-      width: 138,
+    return Expanded(
       child: Button3D(
         onTap: () => _answerPlaceValue(tens),
         color: selectedCorrect
             ? const Color(0xFF00C853)
             : (tens ? const Color(0xFF2979FF) : const Color(0xFFFF6B35)),
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          textDirection: TextDirection.rtl,
           children: [
             Text(
               arNum(tens ? tensDigit : onesDigit),
               style: const TextStyle(
-                fontSize: 30,
+                fontSize: 27,
                 fontWeight: FontWeight.w900,
                 color: Colors.white,
               ),
             ),
+            const SizedBox(width: 7),
             Text(
               tens ? 'العشرات' : 'الآحاد',
               style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: Colors.white70,
+                fontSize: 14,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
             ),
           ],
@@ -147,11 +148,12 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
           children: [
             Column(
               children: [
-                const SizedBox(height: 2),
+                const SizedBox(height: 1),
                 const Text(
                   'اكتب العدد بالترتيب',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
+                // العدد والسماعة في منتصف الشاشة، من دون إزاحة إلى اليمين أو اليسار.
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -161,91 +163,90 @@ class _Kg2NumberWritingScreenState extends State<Kg2NumberWritingScreen> {
                       arNum(number),
                       textDirection: TextDirection.rtl,
                       style: const TextStyle(
-                        fontSize: 66,
+                        fontSize: 60,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    // سماعة العدد: تبقى لأنها مرتبطة بنطق العدد نفسه.
+                    const SizedBox(width: 4),
                     IconButton(
                       onPressed: _speak,
                       tooltip: 'استمع إلى العدد',
-                      icon: const Icon(Icons.volume_up_rounded, size: 34),
+                      icon: const Icon(Icons.volume_up_rounded, size: 32),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(
-                        minWidth: 44,
-                        minHeight: 44,
+                        minWidth: 40,
+                        minHeight: 40,
                       ),
                     ),
                   ],
                 ),
                 if (hasPlaceValueQuestion) ...[
-                  const SizedBox(height: 1),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            askTens
-                                ? 'أين العشرات في العدد؟'
-                                : 'أين الآحاد في العدد؟',
+                  // السؤال والعدد في سطر واحد حتى يبقى الرقم قريبًا من نص السؤال.
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Flexible(
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: askTens ? 'أين العشرات في العدد ' : 'أين الآحاد في العدد ',
+                                ),
+                                TextSpan(
+                                  text: arNum(number),
+                                  style: const TextStyle(fontSize: 21),
+                                ),
+                                const TextSpan(text: '؟'),
+                              ],
+                            ),
                             textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          const SizedBox(width: 4),
-                          // سماعة السؤال: تبقى لأنها خاصة بالسؤال وليست سماعة العدد.
-                          IconButton(
-                            onPressed: _speakQuestion,
-                            tooltip: 'استمع إلى السؤال',
-                            icon: const Icon(
-                              Icons.volume_up_rounded,
-                              size: 27,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 40,
-                              minHeight: 40,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        'السؤال ${arNum(number)}',
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.rtl,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 2),
+                        IconButton(
+                          onPressed: _speakQuestion,
+                          tooltip: 'استمع إلى السؤال',
+                          icon: const Icon(Icons.volume_up_rounded, size: 25),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 36,
+                            minHeight: 36,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 2),
-                  // خيارات الإجابة أسفل السؤال ومتمركزة، مع فراغ صغير بينهما.
-                  Center(
+                  // خيارا الآحاد والعشرات متساويان في العرض ومتمركزان تمامًا.
+                  SizedBox(
+                    width: 300,
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       textDirection: TextDirection.rtl,
                       children: [
                         _placeValueButton(tens: false),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         _placeValueButton(tens: true),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 3),
                 ],
-                const SizedBox(height: 1),
+                // كل المساحة المتبقية للسبورة؛ لا توجد مساحة جانبية أو عمودية محجوزة بلا داعٍ.
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
-                    child: BoldDrawingCanvas(key: canvasKey),
+                    padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+                    child: SizedBox.expand(
+                      child: BoldDrawingCanvas(key: canvasKey),
+                    ),
                   ),
                 ),
                 Padding(
