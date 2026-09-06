@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../core/storage/app_storage.dart';
@@ -14,8 +13,7 @@ class ChildRegistrationScreen extends StatefulWidget {
   const ChildRegistrationScreen({super.key});
 
   @override
-  State<ChildRegistrationScreen> createState() =>
-      _ChildRegistrationScreenState();
+  State<ChildRegistrationScreen> createState() => _ChildRegistrationScreenState();
 }
 
 class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
@@ -23,11 +21,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 
   static const int maxChildren = 2;
 
-  // Exactly two built-in choices: one boy and one girl.
+  // Exactly two built-in choices: modern colorful emoji, one boy and one girl.
   // Gallery selection remains available below them.
   static const List<(String, String, String)> avatars = [
-    ('assets/images/child_avatars/boy_emoji.svg', 'ولد', 'boy'),
-    ('assets/images/child_avatars/girl_emoji.svg', 'بنت', 'girl'),
+    ('👦', 'ولد', 'boy'),
+    ('👧', 'بنت', 'girl'),
   ];
 
   static const List<(String, String, String)> stages = [
@@ -54,12 +52,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   Future<void> _load() async {
     final loadedKids = await AppStorage.getChildren();
     final activeId = await AppStorage.activeId();
-
     if (!mounted) return;
 
     setState(() {
       kids = loadedKids;
-
       if (loadedKids.isEmpty) {
         selectedChildIndex = 0;
         _resetNewChild();
@@ -71,35 +67,28 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
         final index = loadedKids.indexWhere((child) => child.id == activeId);
         if (index >= 0) activeIndex = index;
       }
-
       selectedChildIndex = activeIndex;
       _loadChildData(loadedKids[activeIndex]);
     });
   }
 
-  String _modernAvatarForLegacy(String asset) {
-    if (asset.contains('/boy_1.svg') || asset.contains('/boy_2.svg')) {
-      return avatars[0].$1;
-    }
-    if (asset.contains('/girl_1.svg') || asset.contains('/girl_2.svg')) {
-      return avatars[1].$1;
-    }
-    return asset;
-  }
-
   void _loadChildData(Child child) {
     name.text = child.name;
-
-    final matchingStage =
-        stages.where((stage) => stage.$2 == child.stage).toList();
-
+    final matchingStage = stages.where((stage) => stage.$2 == child.stage).toList();
     stageId = matchingStage.isEmpty ? stages.first.$1 : matchingStage.first.$1;
 
-    final savedAvatar = child.avatarAsset.isNotEmpty
-        ? _modernAvatarForLegacy(child.avatarAsset)
-        : avatars[selectedChildIndex == 1 ? 1 : 0].$1;
+    // Convert any previously saved built-in avatar to the new emoji choices.
+    final savedAvatar = child.avatarAsset.contains('boy_emoji') || child.avatarAsset == '👦'
+        ? '👦'
+        : child.avatarAsset.contains('girl_emoji') || child.avatarAsset == '👧'
+            ? '👧'
+            : child.avatarAsset.contains('/boy_1.svg') || child.avatarAsset.contains('/boy_2.svg')
+                ? '👦'
+                : child.avatarAsset.contains('/girl_1.svg') || child.avatarAsset.contains('/girl_2.svg')
+                    ? '👧'
+                    : '';
 
-    selectedAvatar = avatars.any((avatar) => avatar.$1 == savedAvatar)
+    selectedAvatar = savedAvatar.isNotEmpty
         ? savedAvatar
         : avatars[selectedChildIndex == 1 ? 1 : 0].$1;
     avatarPath = child.avatarPath;
@@ -109,7 +98,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     name.clear();
     stageId = 'kg1';
     avatarPath = '';
-    // First child defaults to boy, second child to girl.
     selectedAvatar = avatars[selectedChildIndex == 1 ? 1 : 0].$1;
   }
 
@@ -125,7 +113,6 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     }
 
     if (index >= kids.length) return;
-
     setState(() {
       selectedChildIndex = index;
       _loadChildData(kids[index]);
@@ -134,50 +121,39 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 
   Future<void> _pickImage() async {
     try {
-      final picker = ImagePicker();
-      final picked = await picker.pickImage(
+      final picked = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 88,
         maxWidth: 1000,
         maxHeight: 1000,
       );
-
       if (picked == null || !mounted) return;
-
-      setState(() {
-        avatarPath = picked.path;
-      });
+      setState(() => avatarPath = picked.path);
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تعذر فتح معرض الصور. حاول مرة أخرى.'),
-        ),
+        const SnackBar(content: Text('تعذر فتح معرض الصور. حاول مرة أخرى.')),
       );
     }
   }
 
   Future<void> _save() async {
     final childName = name.text.trim();
-
     if (childName.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('اكتب اسم الطفل أولاً 🌟')),
       );
       return;
     }
-
     if (saving) return;
 
     setState(() => saving = true);
-
     try {
       final currentKids = await AppStorage.getChildren();
       final selectedStage = stages.firstWhere((stage) => stage.$1 == stageId).$2;
 
       if (selectedChildIndex < currentKids.length) {
         final old = currentKids[selectedChildIndex];
-
         currentKids[selectedChildIndex] = Child(
           id: old.id,
           name: childName,
@@ -195,15 +171,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           avatarAsset: selectedAvatar,
           avatarPath: avatarPath,
         );
-
         await AppStorage.setActive(old.id);
       } else {
         if (currentKids.length >= maxChildren) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('يمكن تسجيل طفلين فقط في هذا الحساب.'),
-              ),
+              const SnackBar(content: Text('يمكن تسجيل طفلين فقط في هذا الحساب.')),
             );
           }
           return;
@@ -220,12 +193,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             avatarPath: avatarPath,
           ),
         );
-
         await AppStorage.setActive(id);
       }
 
       await AppStorage.saveChildren(currentKids);
-
       if (!mounted) return;
 
       setState(() {
@@ -236,10 +207,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => _CelebrationDialog(
-          name: childName,
-          stage: selectedStage,
-        ),
+        builder: (_) => _CelebrationDialog(name: childName, stage: selectedStage),
       );
 
       if (!mounted) return;
@@ -275,76 +243,50 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'اختر بطاقة الطفل',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-        ),
+        const Text('اختر بطاقة الطفل', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(
-              child: _childSelectorButton(
-                index: 0,
-                label: 'الطفل الأول',
-                icon: Icons.looks_one_rounded,
-              ),
-            ),
+            Expanded(child: _childSelectorButton(index: 0, label: 'الطفل الأول', icon: Icons.looks_one_rounded)),
             const SizedBox(width: 10),
-            Expanded(
-              child: _childSelectorButton(
-                index: 1,
-                label: 'الطفل الثاني',
-                icon: Icons.looks_two_rounded,
-              ),
-            ),
+            Expanded(child: _childSelectorButton(index: 1, label: 'الطفل الثاني', icon: Icons.looks_two_rounded)),
           ],
         ),
       ],
     );
   }
 
-  Widget _childSelectorButton({
-    required int index,
-    required String label,
-    required IconData icon,
-  }) {
+  Widget _childSelectorButton({required int index, required String label, required IconData icon}) {
     final selected = selectedChildIndex == index;
     final exists = index < kids.length;
-
     return Button3D(
       onTap: () => _selectChild(index),
-      color: selected
-          ? const Color(0xFF7E57C2)
-          : exists
-              ? const Color(0xFF26A69A)
-              : const Color(0xFF78909C),
+      color: selected ? const Color(0xFF7E57C2) : exists ? const Color(0xFF26A69A) : const Color(0xFF78909C),
       depth: selected ? 2 : 7,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
       child: Column(
         children: [
           Icon(icon, color: Colors.white, size: 28),
           const SizedBox(height: 5),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 14,
-            ),
-          ),
+          Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14)),
           const SizedBox(height: 3),
-          Text(
-            exists ? 'مسجل' : 'إضافة',
-            style: const TextStyle(color: Colors.white, fontSize: 11),
-          ),
+          Text(exists ? 'مسجل' : 'إضافة', style: const TextStyle(color: Colors.white, fontSize: 11)),
         ],
+      ),
+    );
+  }
+
+  Widget _avatarEmoji(String avatar, {double size = 92}) {
+    return Center(
+      child: Text(
+        avatar == '👧' ? '👧' : '👦',
+        style: TextStyle(fontSize: size),
       ),
     );
   }
 
   Widget _avatarPreview() {
     const double size = 105.0;
-
     if (avatarPath.isNotEmpty) {
       return ClipOval(
         child: Image.file(
@@ -352,22 +294,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           width: size,
           height: size,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => SvgPicture.asset(
-            selectedAvatar,
-            width: size,
-            height: size,
-            fit: BoxFit.contain,
-          ),
+          errorBuilder: (_, __, ___) => _avatarEmoji(selectedAvatar, size: 82),
         ),
       );
     }
-
-    return SvgPicture.asset(
-      selectedAvatar,
-      width: size,
-      height: size,
-      fit: BoxFit.contain,
-    );
+    return _avatarEmoji(selectedAvatar, size: 82);
   }
 
   Widget _avatarSection() {
@@ -375,17 +306,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          colors: [Color(0xFFE8EAF6), Color(0xFFFCE4EC)],
-        ),
+        gradient: const LinearGradient(colors: [Color(0xFFE8EAF6), Color(0xFFFCE4EC)]),
         border: Border.all(color: const Color(0xFF7E57C2), width: 2),
       ),
       child: Column(
         children: [
-          const Text(
-            'اختر شخصية الطفل',
-            style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900),
-          ),
+          const Text('اختر شخصية الطفل', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900)),
           const SizedBox(height: 12),
           Container(
             width: 120,
@@ -394,30 +320,19 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 12,
-                  offset: const Offset(0, 5),
-                  color: Colors.black.withValues(alpha: 0.15),
-                ),
-              ],
+              boxShadow: [BoxShadow(blurRadius: 12, offset: const Offset(0, 5), color: Colors.black.withValues(alpha: 0.15))],
             ),
             child: _avatarPreview(),
           ),
           const SizedBox(height: 14),
-          const Text(
-            'شخصيتان ملونتان حديثتان: ولد أو بنت',
-            style: TextStyle(fontWeight: FontWeight.w700),
-          ),
+          const Text('شخصيتان ملونتان حديثتان: ولد أو بنت', style: TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 14),
           Wrap(
             alignment: WrapAlignment.center,
             spacing: 14,
             runSpacing: 12,
             children: avatars.map((avatar) {
-              final selected =
-                  avatarPath.isEmpty && selectedAvatar == avatar.$1;
-
+              final selected = avatarPath.isEmpty && selectedAvatar == avatar.$1;
               return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -433,38 +348,14 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(22),
-                    border: Border.all(
-                      color: selected
-                          ? const Color(0xFF7E57C2)
-                          : Colors.transparent,
-                      width: 3,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: selected ? 12 : 5,
-                        offset: const Offset(0, 4),
-                        color: Colors.black.withValues(
-                          alpha: selected ? 0.18 : 0.08,
-                        ),
-                      ),
-                    ],
+                    border: Border.all(color: selected ? const Color(0xFF7E57C2) : Colors.transparent, width: 3),
+                    boxShadow: [BoxShadow(blurRadius: selected ? 12 : 5, offset: const Offset(0, 4), color: Colors.black.withValues(alpha: selected ? 0.18 : 0.08))],
                   ),
                   child: Column(
                     children: [
-                      Expanded(
-                        child: SvgPicture.asset(
-                          avatar.$1,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                      Expanded(child: _avatarEmoji(avatar.$1, size: 78)),
                       const SizedBox(height: 4),
-                      Text(
-                        avatar.$2,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                      Text(avatar.$2, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900)),
                     ],
                   ),
                 ),
@@ -482,13 +373,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           ),
           if (avatarPath.isNotEmpty) ...[
             const SizedBox(height: 7),
-            const Text(
-              'تم اختيار صورة من الهاتف ✓',
-              style: TextStyle(
-                color: Color(0xFF00A152),
-                fontWeight: FontWeight.w800,
-              ),
-            ),
+            const Text('تم اختيار صورة من الهاتف ✓', style: TextStyle(color: Color(0xFF00A152), fontWeight: FontWeight.w800)),
           ],
         ],
       ),
@@ -504,14 +389,9 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
         body: ListView(
           padding: const EdgeInsets.all(18),
           children: [
-            const Text(
-              'اكتب اسمك يا بطل ⭐',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
-            ),
+            const Text('اكتب اسمك يا بطل ⭐', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
             const SizedBox(height: 8),
-            const Text(
-              'يمكن تسجيل طفلين، ولكل طفل بطاقة وتقدم ونجوم وألقاب خاصة به.',
-            ),
+            const Text('يمكن تسجيل طفلين، ولكل طفل بطاقة وتقدم ونجوم وألقاب خاصة به.'),
             const SizedBox(height: 22),
             _childSelector(),
             const SizedBox(height: 22),
@@ -520,17 +400,10 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             TextField(
               controller: name,
               textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
-                labelText: 'اسم الطفل',
-                prefixIcon: Icon(Icons.person_rounded),
-                hintText: 'مثال: أحمد',
-              ),
+              decoration: const InputDecoration(labelText: 'اسم الطفل', prefixIcon: Icon(Icons.person_rounded), hintText: 'مثال: أحمد'),
             ),
             const SizedBox(height: 22),
-            const Text(
-              'اختر مرحلتك الدراسية',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            const Text('اختر مرحلتك الدراسية', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             ...stages.map((stage) {
               final selected = stageId == stage.$1;
@@ -540,30 +413,13 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                   onTap: () => setState(() => stageId = stage.$1),
                   color: StageColors.of(stage.$1),
                   depth: selected ? 2 : 8,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   child: Row(
                     children: [
                       Text(stage.$3, style: const TextStyle(fontSize: 26)),
                       const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          stage.$2,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      if (selected)
-                        const Icon(
-                          Icons.check_circle_rounded,
-                          color: Colors.white,
-                          size: 26,
-                        ),
+                      Expanded(child: Text(stage.$2, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white))),
+                      if (selected) const Icon(Icons.check_circle_rounded, color: Colors.white, size: 26),
                     ],
                   ),
                 ),
@@ -573,51 +429,24 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
             Button3D(
               onTap: _openPlacementTest,
               color: const Color(0xFFFFB300),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 14,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: const Row(
                 children: [
                   Text('📝', style: TextStyle(fontSize: 30)),
                   SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'اختبار تحديد المستوى',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.',
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
-                    size: 18,
-                  ),
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text('اختبار تحديد المستوى', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
+                    SizedBox(height: 4),
+                    Text('اختبار للمرحلتين السابقتين وتمهيد للصف الأول — ليس مرحلة دراسية.', style: TextStyle(fontSize: 12.5, color: Colors.white)),
+                  ])),
+                  Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
                 ],
               ),
             ),
             const SizedBox(height: 22),
             Button3D(
               onTap: () {
-                if (!saving) {
-                  _save();
-                }
+                if (!saving) _save();
               },
               color: const Color(0xFF00C853),
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -627,32 +456,15 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                   const Icon(Icons.save_rounded, color: Colors.white),
                   const SizedBox(width: 10),
                   Text(
-                    saving
-                        ? 'جارٍ الحفظ...'
-                        : selectedChildIndex < kids.length
-                            ? 'حفظ تعديلات الطفل 🚀'
-                            : 'حفظ الطفل 🚀',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
+                    saving ? 'جارٍ الحفظ...' : selectedChildIndex < kids.length ? 'حفظ تعديلات الطفل 🚀' : 'حفظ الطفل 🚀',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
             if (kids.length >= maxChildren)
-              const Center(
-                child: Text(
-                  'تم تسجيل طفلين. يمكنك التبديل بينهما من الأعلى.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
+              const Center(child: Text('تم تسجيل طفلين. يمكنك التبديل بينهما من الأعلى.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w700, color: Colors.grey))),
           ],
         ),
       ),
@@ -670,10 +482,7 @@ class _CelebrationDialog extends StatelessWidget {
   final String name;
   final String stage;
 
-  const _CelebrationDialog({
-    required this.name,
-    required this.stage,
-  });
+  const _CelebrationDialog({required this.name, required this.stage});
 
   @override
   Widget build(BuildContext context) {
@@ -682,11 +491,7 @@ class _CelebrationDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 30),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFFFD54F), Color(0xFFFF7043)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: const LinearGradient(colors: [Color(0xFFFFD54F), Color(0xFFFF7043)], begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.circular(28),
         ),
         child: Column(
@@ -694,37 +499,15 @@ class _CelebrationDialog extends StatelessWidget {
           children: [
             const Text('🎉⭐🎊', style: TextStyle(fontSize: 46)),
             const SizedBox(height: 14),
-            const Text(
-              'تم التسجيل بنجاح! 🎉',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            const Text('تم التسجيل بنجاح! 🎉', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white), textAlign: TextAlign.center),
             const SizedBox(height: 10),
-            Text(
-              'تم حفظ اسم $name في $stage 🌟\n'
-              'سنحفظ تقدمك مع كل نشاط.',
-              style: const TextStyle(color: Colors.white, fontSize: 15),
-              textAlign: TextAlign.center,
-            ),
+            Text('تم حفظ اسم $name في $stage 🌟\nسنحفظ تقدمك مع كل نشاط.', style: const TextStyle(color: Colors.white, fontSize: 15), textAlign: TextAlign.center),
             const SizedBox(height: 22),
             Button3D(
               onTap: () => Navigator.pop(context),
               color: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              child: const Center(
-                child: Text(
-                  'هيا نبدأ!',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFFFF7043),
-                  ),
-                ),
-              ),
+              child: const Center(child: Text('هيا نبدأ!', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900, color: Color(0xFFFF7043)))),
             ),
           ],
         ),
