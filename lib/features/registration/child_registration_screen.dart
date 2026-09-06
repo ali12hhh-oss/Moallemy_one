@@ -23,11 +23,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 
   static const int maxChildren = 2;
 
+  // Exactly two built-in choices: one boy and one girl.
+  // Gallery selection remains available below them.
   static const List<(String, String, String)> avatars = [
-    ('assets/images/child_avatars/boy_1.svg', 'ولد ١', 'boy'),
-    ('assets/images/child_avatars/boy_2.svg', 'ولد ٢', 'boy'),
-    ('assets/images/child_avatars/girl_1.svg', 'بنت ١', 'girl'),
-    ('assets/images/child_avatars/girl_2.svg', 'بنت ٢', 'girl'),
+    ('assets/images/child_avatars/boy_emoji.svg', 'ولد', 'boy'),
+    ('assets/images/child_avatars/girl_emoji.svg', 'بنت', 'girl'),
   ];
 
   static const List<(String, String, String)> stages = [
@@ -41,7 +41,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
   List<Child> kids = [];
   int selectedChildIndex = 0;
   String stageId = 'kg1';
-  String selectedAvatar = 'assets/images/child_avatars/boy_1.svg';
+  String selectedAvatar = avatars[0].$1;
   String avatarPath = '';
   bool saving = false;
 
@@ -77,19 +77,31 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     });
   }
 
+  String _modernAvatarForLegacy(String asset) {
+    if (asset.contains('/boy_1.svg') || asset.contains('/boy_2.svg')) {
+      return avatars[0].$1;
+    }
+    if (asset.contains('/girl_1.svg') || asset.contains('/girl_2.svg')) {
+      return avatars[1].$1;
+    }
+    return asset;
+  }
+
   void _loadChildData(Child child) {
     name.text = child.name;
 
     final matchingStage =
         stages.where((stage) => stage.$2 == child.stage).toList();
 
-    stageId = matchingStage.isEmpty
-        ? stages.first.$1
-        : matchingStage.first.$1;
+    stageId = matchingStage.isEmpty ? stages.first.$1 : matchingStage.first.$1;
 
-    selectedAvatar = child.avatarAsset.isNotEmpty
-        ? child.avatarAsset
-        : avatars.first.$1;
+    final savedAvatar = child.avatarAsset.isNotEmpty
+        ? _modernAvatarForLegacy(child.avatarAsset)
+        : avatars[selectedChildIndex == 1 ? 1 : 0].$1;
+
+    selectedAvatar = avatars.any((avatar) => avatar.$1 == savedAvatar)
+        ? savedAvatar
+        : avatars[selectedChildIndex == 1 ? 1 : 0].$1;
     avatarPath = child.avatarPath;
   }
 
@@ -97,7 +109,8 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
     name.clear();
     stageId = 'kg1';
     avatarPath = '';
-    selectedAvatar = selectedChildIndex == 0 ? avatars[0].$1 : avatars[1].$1;
+    // First child defaults to boy, second child to girl.
+    selectedAvatar = avatars[selectedChildIndex == 1 ? 1 : 0].$1;
   }
 
   void _selectChild(int index) {
@@ -160,8 +173,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
 
     try {
       final currentKids = await AppStorage.getChildren();
-      final selectedStage =
-          stages.firstWhere((stage) => stage.$1 == stageId).$2;
+      final selectedStage = stages.firstWhere((stage) => stage.$1 == stageId).$2;
 
       if (selectedChildIndex < currentKids.length) {
         final old = currentKids[selectedChildIndex];
@@ -371,7 +383,7 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
       child: Column(
         children: [
           const Text(
-            'اختر صورة الطفل',
+            'اختر شخصية الطفل',
             style: TextStyle(fontSize: 21, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 12),
@@ -394,13 +406,13 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
           ),
           const SizedBox(height: 14),
           const Text(
-            'شخصيات مختلفة للأولاد والبنات',
+            'شخصيتان ملونتان حديثتان: ولد أو بنت',
             style: TextStyle(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 14),
           Wrap(
             alignment: WrapAlignment.center,
-            spacing: 12,
+            spacing: 14,
             runSpacing: 12,
             children: avatars.map((avatar) {
               final selected =
@@ -415,12 +427,12 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
-                  width: 82,
-                  height: 100,
-                  padding: const EdgeInsets.all(6),
+                  width: 112,
+                  height: 128,
+                  padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(22),
                     border: Border.all(
                       color: selected
                           ? const Color(0xFF7E57C2)
@@ -429,7 +441,8 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: selected ? 10 : 4,
+                        blurRadius: selected ? 12 : 5,
+                        offset: const Offset(0, 4),
                         color: Colors.black.withValues(
                           alpha: selected ? 0.18 : 0.08,
                         ),
@@ -444,11 +457,11 @@ class _ChildRegistrationScreenState extends State<ChildRegistrationScreen> {
                           fit: BoxFit.contain,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 4),
                       Text(
                         avatar.$2,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
