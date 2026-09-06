@@ -65,9 +65,22 @@ class _ChildProfileScreenState extends State<ChildProfileScreen> {
     await _load();
   }
 
+  Widget _emojiAvatar(String avatar) {
+    final emoji = avatar.contains('boy_emoji') || avatar == '👦' ? '👦' : '👧';
+    return Center(
+      child: Text(
+        emoji,
+        style: const TextStyle(fontSize: 72),
+      ),
+    );
+  }
+
   Widget _avatar(Child c) {
     if (c.avatarPath.isNotEmpty) {
-      return ClipOval(child: Image.file(File(c.avatarPath), fit: BoxFit.cover, errorBuilder: (_, __, ___) => SvgPicture.asset(c.avatarAsset)));
+      return ClipOval(child: Image.file(File(c.avatarPath), fit: BoxFit.cover, errorBuilder: (_, __, ___) => _emojiAvatar(c.avatarAsset)));
+    }
+    if (c.avatarAsset.contains('boy_emoji') || c.avatarAsset.contains('girl_emoji') || c.avatarAsset == '👦' || c.avatarAsset == '👧') {
+      return _emojiAvatar(c.avatarAsset);
     }
     return SvgPicture.asset(c.avatarAsset, fit: BoxFit.contain);
   }
