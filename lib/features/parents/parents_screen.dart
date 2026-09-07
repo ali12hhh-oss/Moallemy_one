@@ -74,6 +74,19 @@ class _ParentsScreenState extends State<ParentsScreen> {
     await _load();
   }
 
+  bool _isEmojiAvatar(String value) => value == '👦' || value == '👧' || value == '🧒';
+
+  Widget _emojiAvatar(String avatar, double size) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Text(avatar, style: TextStyle(fontSize: size * .78, height: 1.0)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final accuracy = attempts == 0 ? 0.0 : successes / attempts;
@@ -113,10 +126,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'الأطفال',
-                style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
-              ),
+              const Text('الأطفال', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900)),
               const SizedBox(height: 10),
               ...children.map(
                 (item) => Padding(
@@ -146,16 +156,12 @@ class _ParentsScreenState extends State<ParentsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  item.name,
-                                  style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
-                                ),
+                                Text(item.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
                                 Text('${item.stage} • ${arNum(item.stars)} ⭐'),
                               ],
                             ),
                           ),
-                          if (child?.id == item.id)
-                            const Icon(Icons.check_circle_rounded),
+                          if (child?.id == item.id) const Icon(Icons.check_circle_rounded),
                         ],
                       ),
                     ),
@@ -178,16 +184,9 @@ class _ParentsScreenState extends State<ParentsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      child?.name ?? 'لا يوجد طفل',
-                      style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-                    ),
+                    Text(child?.name ?? 'لا يوجد طفل', style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
                     const SizedBox(height: 4),
-                    Text(
-                      child == null
-                          ? 'سجّل الطفل من الصفحة الرئيسية.'
-                          : 'المرحلة: ${child!.stage} • العمر: ${arNum(child!.age)}',
-                    ),
+                    Text(child == null ? 'سجّل الطفل من الصفحة الرئيسية.' : 'المرحلة: ${child!.stage} • العمر: ${arNum(child!.age)}'),
                     if (child?.activeTitle != null) ...[
                       const SizedBox(height: 8),
                       Container(
@@ -255,9 +254,7 @@ class _ParentsScreenState extends State<ParentsScreen> {
       );
 
   Widget _avatar(Child? item, {double radius = 30}) {
-    if (item == null) {
-      return CircleAvatar(radius: radius, child: const Text('🧒', style: TextStyle(fontSize: 28)));
-    }
+    if (item == null) return CircleAvatar(radius: radius, child: _emojiAvatar('🧒', radius * 2));
     if (item.avatarPath.isNotEmpty) {
       return CircleAvatar(
         radius: radius,
@@ -276,19 +273,24 @@ class _ParentsScreenState extends State<ParentsScreen> {
     return _assetAvatar(item, radius);
   }
 
-  Widget _assetAvatar(Child item, double radius) => CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.transparent,
-        child: ClipOval(
-          child: SvgPicture.asset(
-            item.avatarAsset,
-            width: radius * 2,
-            height: radius * 2,
-            fit: BoxFit.cover,
-            placeholderBuilder: (_) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-          ),
+  Widget _assetAvatar(Child item, double radius) {
+    if (_isEmojiAvatar(item.avatarAsset)) {
+      return _emojiAvatar(item.avatarAsset, radius * 2);
+    }
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: Colors.transparent,
+      child: ClipOval(
+        child: SvgPicture.asset(
+          item.avatarAsset,
+          width: radius * 2,
+          height: radius * 2,
+          fit: BoxFit.contain,
+          placeholderBuilder: (_) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
         ),
-      );
+      ),
+    );
+  }
 
   int _int(dynamic value, [int fallback = 0]) {
     if (value is num) return value.toInt();
