@@ -125,11 +125,37 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (_) => StageScreen(stageId: id)));
   }
 
+  bool _isEmojiAvatar(String value) => value == '👦' || value == '👧' || value == '🧒';
+
+  Widget _emojiAvatar(String avatar, double size) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Text(avatar, style: TextStyle(fontSize: size * .78, height: 1.0)),
+      ),
+    );
+  }
+
   Widget _childAvatar({double size = 54}) {
     final current = child;
-    if (current == null) return Center(child: Text('🧒', style: TextStyle(fontSize: size * .55)));
+    if (current == null) return _emojiAvatar('🧒', size);
     if (current.avatarPath.isNotEmpty) {
-      return ClipOval(child: Image.file(File(current.avatarPath), width: size, height: size, fit: BoxFit.cover, errorBuilder: (_, __, ___) => SvgPicture.asset(current.avatarAsset, width: size, height: size, fit: BoxFit.contain)));
+      return ClipOval(child: Image.file(
+        File(current.avatarPath),
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => _childAvatarAsset(current, size),
+      ));
+    }
+    return _childAvatarAsset(current, size);
+  }
+
+  Widget _childAvatarAsset(Child current, double size) {
+    if (_isEmojiAvatar(current.avatarAsset)) {
+      return _emojiAvatar(current.avatarAsset, size);
     }
     return SvgPicture.asset(current.avatarAsset, width: size, height: size, fit: BoxFit.contain);
   }
@@ -205,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Widget _parentButton() => Button3D(onTap: _openParents, color: StageColors.family, depth: 9, child: Row(children: [
-    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: const Center(child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 27)))),
+    Container(width: 54, height: 54, decoration: BoxDecoration(color: Colors.white.withValues(alpha: .3), borderRadius: BorderRadius.circular(16)), child: const Center(child: FittedBox(child: Text('👨‍👩‍👧', style: TextStyle(fontSize: 34, height: 1.0))))),
     const SizedBox(width: 14),
     const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('متابعة الأسرة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)), SizedBox(height: 3), Text('نتائج الطفل، المهارات المتقنة، وما يحتاج مراجعة', style: TextStyle(color: Colors.white70, fontSize: 13))])),
     const Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.white),
