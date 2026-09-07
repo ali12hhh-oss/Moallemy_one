@@ -9,14 +9,19 @@ import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
 class G2CompareOrderScreen extends StatefulWidget {
-  const G2CompareOrderScreen({super.key});
+  final bool initialCompareMode;
+
+  const G2CompareOrderScreen({
+    super.key,
+    this.initialCompareMode = true,
+  });
 
   @override
   State<G2CompareOrderScreen> createState() => _G2CompareOrderScreenState();
 }
 
 class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
-  bool compareMode = true;
+  late bool compareMode;
   final rnd = Random();
   int score = 0;
   String? cheer;
@@ -30,6 +35,7 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
   @override
   void initState() {
     super.initState();
+    compareMode = widget.initialCompareMode;
     _nextCompare();
     _nextOrder();
   }
@@ -105,7 +111,10 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Text('أي عدد أكبر؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const Text(
+            'أي عدد أكبر؟',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           IconButton(
             icon: const Icon(Icons.volume_up_rounded),
@@ -130,7 +139,14 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
       color: color,
       padding: const EdgeInsets.symmetric(vertical: 30),
       child: Center(
-        child: Text(arNum(n), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white)),
+        child: Text(
+          arNum(n),
+          style: const TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
@@ -141,14 +157,25 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
       child: Column(
         children: [
           Text(
-            ascending ? 'رتّب الأعداد من الأصغر إلى الأكبر' : 'رتّب الأعداد من الأكبر إلى الأصغر',
+            ascending
+                ? 'رتّب الأعداد من الأصغر إلى الأكبر'
+                : 'رتّب الأعداد من الأكبر إلى الأصغر',
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           Wrap(
             spacing: 10,
-            children: chosen.map((n) => Chip(label: Text(arNum(n), style: const TextStyle(fontSize: 18)))).toList(),
+            children: chosen
+                .map(
+                  (n) => Chip(
+                    label: Text(
+                      arNum(n),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ),
+                )
+                .toList(),
           ),
           const SizedBox(height: 24),
           Wrap(
@@ -158,8 +185,18 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
               return Button3D(
                 onTap: () => _pickOrder(n),
                 color: const Color(0xFF7C4DFF),
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-                child: Text(arNum(n), style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22,
+                  vertical: 18,
+                ),
+                child: Text(
+                  arNum(n),
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                  ),
+                ),
               );
             }).toList(),
           ),
@@ -185,20 +222,42 @@ class _G2CompareOrderScreenState extends State<G2CompareOrderScreen> {
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => compareMode = true),
-                          color: compareMode ? const Color(0xFF2979FF) : const Color(0xFF90CAF9),
+                          color: compareMode
+                              ? const Color(0xFF2979FF)
+                              : const Color(0xFF90CAF9),
                           depth: compareMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Center(child: Text('أكبر أم أصغر', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white))),
+                          child: const Center(
+                            child: Text(
+                              'أكبر أم أصغر',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Button3D(
                           onTap: () => setState(() => compareMode = false),
-                          color: !compareMode ? const Color(0xFF7C4DFF) : const Color(0xFFB39DDB),
+                          color: !compareMode
+                              ? const Color(0xFF7C4DFF)
+                              : const Color(0xFFB39DDB),
                           depth: !compareMode ? 2 : 7,
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Center(child: Text('الترتيب', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Colors.white))),
+                          child: const Center(
+                            child: Text(
+                              'الترتيب',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
