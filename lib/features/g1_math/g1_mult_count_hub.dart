@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/button_3d.dart';
 import 'g1_multiplication_screen.dart';
 import 'g1_counting_screen.dart';
+import 'g1_counting_learning_screen.dart';
 
 class G1MultCountHub extends StatelessWidget {
   const G1MultCountHub({super.key});
@@ -31,6 +32,28 @@ class G1MultCountHub extends StatelessWidget {
                         Text('الضرب', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
                         SizedBox(height: 4),
                         Text('جدول الضرب ١ و٢ و٣ مع النطق', style: TextStyle(color: Colors.white70)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Button3D(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const G1CountingLearningScreen())),
+              color: const Color(0xFFFFA000),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
+              child: const Row(
+                children: [
+                  Text('📚', style: TextStyle(fontSize: 40)),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('تعلّم', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)),
+                        SizedBox(height: 4),
+                        Text('أمثلة بسيطة على العدّ التصاعدي والتنازلي', style: TextStyle(color: Colors.white70)),
                       ],
                     ),
                   ),
