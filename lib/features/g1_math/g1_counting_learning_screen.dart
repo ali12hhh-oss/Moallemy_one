@@ -53,7 +53,7 @@ class _G1CountingLearningScreenState extends State<G1CountingLearningScreen> {
   Widget build(BuildContext context) {
     final example = examples[index];
     final ascending = example['ascending'] as bool;
-    final numbers = (example['numbers'] as List<int>);
+    final numbers = example['numbers'] as List<int>;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -141,4 +141,4 @@ class _G1CountingLearningScreenState extends State<G1CountingLearningScreen> {
       ),
     );
   }
-}"}
+}
