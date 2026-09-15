@@ -68,7 +68,9 @@ class _StoryPageState extends State<StoryPage> {
         canPop: true,
         onPopInvokedWithResult: (didPop, result) {
           if (didPop) {
-            Future<void>.delayed(Duration.zero, AdService.showInterstitial);
+            Future<void>.delayed(Duration.zero, () async {
+              await AdService.showInterstitial();
+            });
           }
         },
         child: Scaffold(
