@@ -7,36 +7,24 @@ import '../../core/localization/arabic_numbers.dart';
 import '../../core/storage/progress_v8.dart';
 import '../../data/content.dart';
 import '../../data/short_words.dart';
+import '../../services/ad_service.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/celebration_overlay.dart';
 
 class G1GamesScreen extends StatelessWidget {
   const G1GamesScreen({super.key});
 
+  Future<void> _openGame(BuildContext context, Widget game) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => game));
+    await AdService.completeActivityOnExit('game');
+  }
+
   @override
   Widget build(BuildContext context) {
     final games = <(String, String, String, Color, Widget)>[
-      (
-        '🔤',
-        'لعبة الكلمات العربية',
-        'شاهد الصورة واختر الكلمة الصحيحة',
-        const Color(0xFF7C4DFF),
-        const _ArabicWordGame(),
-      ),
-      (
-        '🇬🇧',
-        'English Letters Game',
-        'استمع للحرف واختر شكله',
-        const Color(0xFF2979FF),
-        const _EnglishLetterGame(),
-      ),
-      (
-        '🧮',
-        'لعبة الرياضيات',
-        'جمع وطرح سريع، والناتج لا يتجاوز ١٠',
-        const Color(0xFF00C853),
-        const _MathGame(),
-      ),
+      ('🔤', 'لعبة الكلمات العربية', 'شاهد الصورة واختر الكلمة الصحيحة', const Color(0xFF7C4DFF), const _ArabicWordGame()),
+      ('🇬🇧', 'English Letters Game', 'استمع للحرف واختر شكله', const Color(0xFF2979FF), const _EnglishLetterGame()),
+      ('🧮', 'لعبة الرياضيات', 'جمع وطرح سريع، والناتج لا يتجاوز ١٠', const Color(0xFF00C853), const _MathGame()),
     ];
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -48,15 +36,9 @@ class G1GamesScreen extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Button3D(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => g.$5),
-                ),
+                onTap: () => _openGame(context, g.$5),
                 color: g.$4,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 20,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 child: Row(
                   children: [
                     Text(g.$1, style: const TextStyle(fontSize: 34)),
@@ -65,22 +47,9 @@ class G1GamesScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            g.$2,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                            ),
-                          ),
+                          Text(g.$2, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
                           const SizedBox(height: 3),
-                          Text(
-                            g.$3,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12.5,
-                            ),
-                          ),
+                          Text(g.$3, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
                         ],
                       ),
                     ),
@@ -95,7 +64,6 @@ class G1GamesScreen extends StatelessWidget {
   }
 }
 
-/// لعبة الكلمات العربية: شاهد الرمز (إيموجي) واختر الكلمة الصحيحة.
 class _ArabicWordGame extends StatefulWidget {
   const _ArabicWordGame();
   @override
@@ -111,91 +79,41 @@ class _ArabicWordGameState extends State<_ArabicWordGame> {
   String? cheer;
 
   @override
-  void initState() {
-    super.initState();
-    _next();
-  }
-
+  void initState() { super.initState(); _next(); }
   void _next() {
     target = all[rnd.nextInt(all.length)];
     final others = [...all]..shuffle(rnd);
     others.removeWhere((w) => w.word == target.word);
     options = [target, ...others.take(3)]..shuffle(rnd);
   }
-
   void _answer(ShortWord chosen) {
     if (chosen.word == target.word) {
       score++;
       setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]);
       ProgressV8.addRewards(stars: 1, xp: 5);
       VoiceService.arabic(target.word);
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => cheer = null);
-          _next();
-        }
-      });
-    } else {
-      VoiceService.arabic(target.word);
-    }
+      Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } });
+    } else { VoiceService.arabic(target.word); }
   }
-
   @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(title: Text('لعبة الكلمات • ${arNum(score)} ⭐')),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(target.emoji, style: const TextStyle(fontSize: 70)),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'ما هذه الكلمة؟',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 18),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 14,
-                      crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF7C4DFF),
-                              child: Center(
-                                child: Text(
-                                  o.word,
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Directionality(
+    textDirection: TextDirection.rtl,
+    child: Scaffold(
+      appBar: AppBar(title: Text('لعبة الكلمات • ${arNum(score)} ⭐')),
+      body: Stack(children: [
+        Padding(padding: const EdgeInsets.all(20), child: Column(children: [
+          Text(target.emoji, style: const TextStyle(fontSize: 70)),
+          const SizedBox(height: 10),
+          const Text('ما هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 18),
+          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF7C4DFF), child: Center(child: Text(o.word, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+        ])),
+        CelebrationOverlay(message: cheer),
+      ]),
+    ),
+  );
 }
 
-/// English Letters Game: hear one clean phonics sound, then pick the letter.
 class _EnglishLetterGame extends StatefulWidget {
   const _EnglishLetterGame();
   @override
@@ -208,138 +126,43 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
   late List<EnglishLetter> options;
   int score = 0;
   String? cheer;
-
-  // These are deliberately short phonics spellings, not letter names.
-  // The game uses the device's English TTS for this isolated question only,
-  // avoiding the duplicated/cross-wired local A-Z recordings currently in
-  // assets/audio/en and assets/audio/english.
   static const Map<String, String> _gameSounds = {
-    'A': 'ah',
-    'B': 'buh',
-    'C': 'kuh',
-    'D': 'duh',
-    'E': 'eh',
-    'F': 'fuh',
-    'G': 'guh',
-    'H': 'huh',
-    'I': 'ih',
-    'J': 'juh',
-    'K': 'kuh',
-    'L': 'luh',
-    'M': 'muh',
-    'N': 'nuh',
-    'O': 'oh',
-    'P': 'puh',
-    'Q': 'kwuh',
-    'R': 'ruh',
-    'S': 'suh',
-    'T': 'tuh',
-    'U': 'uh',
-    'V': 'vuh',
-    'W': 'wuh',
-    'X': 'ks',
-    'Y': 'yuh',
-    'Z': 'zuh',
+    'A': 'ah', 'B': 'buh', 'C': 'kuh', 'D': 'duh', 'E': 'eh', 'F': 'fuh', 'G': 'guh', 'H': 'huh', 'I': 'ih', 'J': 'juh', 'K': 'kuh', 'L': 'luh', 'M': 'muh', 'N': 'nuh', 'O': 'oh', 'P': 'puh', 'Q': 'kwuh', 'R': 'ruh', 'S': 'suh', 'T': 'tuh', 'U': 'uh', 'V': 'vuh', 'W': 'wuh', 'X': 'ks', 'Y': 'yuh', 'Z': 'zuh',
   };
-
-  Future<void> _playTargetSound() async {
-    final sound = _gameSounds[target.letter.toUpperCase()];
-    if (sound == null) return;
-    await VoiceService.stop();
-    await VoiceService.english(sound);
-  }
-
+  Future<void> _playTargetSound() async { final sound = _gameSounds[target.letter.toUpperCase()]; if (sound == null) return; await VoiceService.stop(); await VoiceService.english(sound); }
   @override
-  void initState() {
-    super.initState();
-    _next();
-  }
-
+  void initState() { super.initState(); _next(); }
   void _next() {
     target = englishLetters[rnd.nextInt(englishLetters.length)];
     final others = [...englishLetters]..shuffle(rnd);
     others.removeWhere((l) => l.letter == target.letter);
     options = [target, ...others.take(3)]..shuffle(rnd);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _playTargetSound();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) _playTargetSound(); });
   }
-
   void _answer(EnglishLetter chosen) {
     if (chosen.letter == target.letter) {
-      score++;
-      setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]);
-      ProgressV8.addRewards(stars: 1, xp: 5);
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => cheer = null);
-          _next();
-        }
-      });
-    } else {
-      _playTargetSound();
-    }
+      score++; setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]); ProgressV8.addRewards(stars: 1, xp: 5);
+      Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } });
+    } else { _playTargetSound(); }
   }
-
   @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(title: Text('English Letters • ${arNum(score)} ⭐')),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  IconButton(
-                    iconSize: 44,
-                    icon: const Icon(Icons.volume_up_rounded),
-                    onPressed: _playTargetSound,
-                  ),
-                  const Text(
-                    'Which letter did you hear?',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 18),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 14,
-                      crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF2979FF),
-                              child: Center(
-                                child: Text(
-                                  o.letter.toLowerCase(),
-                                  style: const TextStyle(
-                                    fontSize: 38,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Directionality(
+    textDirection: TextDirection.rtl,
+    child: Scaffold(
+      appBar: AppBar(title: Text('English Letters • ${arNum(score)} ⭐')),
+      body: Stack(children: [
+        Padding(padding: const EdgeInsets.all(20), child: Column(children: [
+          IconButton(iconSize: 44, icon: const Icon(Icons.volume_up_rounded), onPressed: _playTargetSound),
+          const Text('Which letter did you hear?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 18),
+          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF2979FF), child: Center(child: Text(o.letter.toLowerCase(), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+        ])),
+        CelebrationOverlay(message: cheer),
+      ]),
+    ),
+  );
 }
 
-/// لعبة الرياضيات: جمع وطرح سريع، الناتج لا يتجاوز ١٠.
 class _MathGame extends StatefulWidget {
   const _MathGame();
   @override
@@ -353,101 +176,38 @@ class _MathGameState extends State<_MathGame> {
   late List<int> options;
   int score = 0;
   String? cheer;
-
   @override
-  void initState() {
-    super.initState();
-    _next();
-  }
-
+  void initState() { super.initState(); _next(); }
   void _next() {
     isAddition = rnd.nextBool();
-    if (isAddition) {
-      a = 1 + rnd.nextInt(8);
-      b = 1 + rnd.nextInt(10 - a);
-      answer = a + b;
-    } else {
-      a = 2 + rnd.nextInt(9);
-      b = 1 + rnd.nextInt(a);
-      answer = a - b;
-    }
+    if (isAddition) { a = 1 + rnd.nextInt(8); b = 1 + rnd.nextInt(10 - a); answer = a + b; }
+    else { a = 2 + rnd.nextInt(9); b = 1 + rnd.nextInt(a); answer = a - b; }
     final others = {for (var i = 0; i <= 10; i++) i}..remove(answer);
     final list = others.toList()..shuffle(rnd);
     options = [answer, ...list.take(3)]..shuffle(rnd);
   }
-
   void _answer(int chosen) {
     if (chosen == answer) {
-      score++;
-      setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]);
-      ProgressV8.addRewards(stars: 1, xp: 5);
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => cheer = null);
-          _next();
-        }
-      });
+      score++; setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]); ProgressV8.addRewards(stars: 1, xp: 5);
+      Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } });
     } else {
       setState(() => cheer = 'حاول مرة أخرى 💪');
-      Future.delayed(const Duration(milliseconds: 900), () {
-        if (mounted) setState(() => cheer = null);
-      });
+      Future.delayed(const Duration(milliseconds: 900), () { if (mounted) setState(() => cheer = null); });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final op = isAddition ? '+' : '−';
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(title: Text('لعبة الرياضيات • ${arNum(score)} ⭐')),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                    '${arNum(a)} $op ${arNum(b)} = ؟',
-                    style: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 14,
-                      crossAxisSpacing: 14,
-                      children: options
-                          .map(
-                            (o) => Button3D(
-                              onTap: () => _answer(o),
-                              color: const Color(0xFF00C853),
-                              child: Center(
-                                child: Text(
-                                  arNum(o),
-                                  style: const TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CelebrationOverlay(message: cheer),
-          ],
-        ),
-      ),
-    );
+    return Directionality(textDirection: TextDirection.rtl, child: Scaffold(
+      appBar: AppBar(title: Text('لعبة الرياضيات • ${arNum(score)} ⭐')),
+      body: Stack(children: [
+        Padding(padding: const EdgeInsets.all(20), child: Column(children: [
+          Text('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 20),
+          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF00C853), child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+        ])),
+        CelebrationOverlay(message: cheer),
+      ]),
+    ));
   }
 }
