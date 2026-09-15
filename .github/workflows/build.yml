@@ -94,3 +94,63 @@ jobs:
           name: daleel-child-universal-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
+
+  build_google_play_aab:
+    name: Build Google Play AAB (validation)
+    needs: analyze_and_test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify Gradle installation
+        run: gradle --version
+
+      - name: Build release App Bundle
+        working-directory: android
+        run: gradle app:bundleRelease --stacktrace --no-daemon --warning-mode all
+
+      - name: Locate and stage release AAB
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          AAB_PATH="android/app/build/outputs/bundle/release/app-release.aab"
+
+          if [ ! -f "$AAB_PATH" ]; then
+            echo "Expected AAB was not found at: $AAB_PATH"
+            echo "All AAB files under android/app/build:"
+            find android/app/build -type f -name "*.aab" -print || true
+            exit 1
+          fi
+
+          mkdir -p build/app/outputs/bundle/release
+          cp "$AAB_PATH" build/app/outputs/bundle/release/app-release.aab
+
+          echo "Release AAB staged successfully:"
+          ls -lh build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload Google Play AAB validation artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: daleel-child-google-play-aab-validation
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
