@@ -17,6 +17,10 @@
         android:usesCleartextTraffic="false"
         android:theme="@style/LaunchTheme">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8995513369904529~1635103101" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
