@@ -41,7 +41,6 @@ class AdService {
     await prefs.setInt(_lastAdKey, DateTime.now().millisecondsSinceEpoch);
   }
 
-  /// Allows only one banner/native slot to compete for the global ad window.
   static Future<bool> reserveInlineAdSlot() async {
     if (_inlineReservation) return false;
     _inlineReservation = true;
@@ -97,7 +96,6 @@ class AdService {
     return true;
   }
 
-  /// Calls [onReward] only after AdMob grants the reward.
   static Future<bool> showRewarded({required Future<void> Function() onReward}) async {
     if (!await canShowAd() || _rewarded == null) return false;
     final ad = _rewarded!;
@@ -132,6 +130,19 @@ class AdService {
     final count = (prefs.getInt(key) ?? 0) + 1;
     await prefs.setInt(key, count);
     return count;
+  }
+
+  /// Called after the child leaves an activity. Leaving early still counts as
+  /// completing that activity for the ad cadence; the learning/game page is
+  /// never interrupted by an ad.
+  static Future<bool> completeActivityOnExit(String type) async {
+    final count = await incrementCompletedActivity(type);
+    if (count < 3) return false;
+    final shown = await showInterstitial();
+    if (shown) {
+      await resetCompletedActivityCount(type);
+    }
+    return shown;
   }
 
   static Future<int> completedActivityCount(String type) async {
