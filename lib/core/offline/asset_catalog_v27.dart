@@ -14,22 +14,7 @@ class AssetCatalogV27 {
   static String englishImage(String letter) =>
       'assets/images/english/$letter.svg';
   static String englishAudio(String letter) {
-    const replacementFiles = <String, String>{
-      'e': 'En-us-e.ogg',
-      'f': 'En-us-f.ogg',
-      'i': 'En-us-i.ogg',
-      'l': 'l.mp3',
-      'm': 'En-us-m.ogg',
-      'n': 'En-us-n.ogg',
-      'q': 'En-us-q.ogg',
-      'r': 'En-us-r.ogg',
-      's': 'En-us-s.ogg',
-      'u': 'En-us-u.ogg',
-      'v': 'En-us-v.ogg',
-      'x': 'En-us-x.ogg',
-      'z': 'En-us-z.ogg',
-    };
-    final value = letter.toLowerCase();
-    return 'assets/audio/en/${replacementFiles[value] ?? '$value.wav'}';
+    final value = letter.trim().toLowerCase();
+    return 'assets/audio/en/$value.wav';
   }
 }
