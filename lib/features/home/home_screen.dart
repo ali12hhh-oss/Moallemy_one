@@ -7,6 +7,7 @@ import '../../core/settings/app_preferences_v10.dart';
 import '../../core/storage/app_storage.dart';
 import '../../core/theme/stage_colors.dart';
 import '../../models/child.dart';
+import '../../services/ad_widgets.dart';
 import '../../widgets/button_3d.dart';
 import '../../widgets/store_background.dart';
 import '../parents/parents_screen.dart';
@@ -202,6 +203,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(child == null ? 'اختر المرحلة المناسبة لطفلك وابدأ الرحلة.' : 'اختر مرحلة ${child!.name} وابدأ التعلم.', style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white, shadows: [Shadow(blurRadius: 4)])),
                 const SizedBox(height: 14),
                 ..._stageButtons(),
+                const AdBanner(),
+                const NativeAdCard(),
                 const SizedBox(height: 4),
                 _storeButton(),
               ])),
