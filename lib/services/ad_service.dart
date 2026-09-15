@@ -16,6 +16,12 @@ class AdService {
   static RewardedAd? _rewarded;
 
   static Future<void> initialize() async {
+    await MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(
+        tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+        maxAdContentRating: MaxAdContentRating.g,
+      ),
+    );
     await MobileAds.instance.initialize();
     await _loadInterstitial();
     await _loadRewarded();
@@ -58,8 +64,8 @@ class AdService {
     if (!await canShowAd() || _interstitial == null) return false;
     final ad = _interstitial!;
     _interstitial = null;
-    await _markShown();
     ad.fullScreenContentCallback = FullScreenContentCallback(
+      onAdOpenedFullScreenContent: (_) => _markShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadInterstitial();
@@ -73,13 +79,13 @@ class AdService {
     return true;
   }
 
-  /// Shows a rewarded ad. [onReward] is called only after AdMob grants the reward.
+  /// Calls [onReward] only after AdMob grants the reward.
   static Future<bool> showRewarded({required Future<void> Function() onReward}) async {
     if (!await canShowAd() || _rewarded == null) return false;
     final ad = _rewarded!;
     _rewarded = null;
-    var rewarded = false;
     ad.fullScreenContentCallback = FullScreenContentCallback(
+      onAdOpenedFullScreenContent: (_) => _markShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadRewarded();
@@ -90,9 +96,7 @@ class AdService {
       },
     );
     ad.show(onUserEarnedReward: (_, reward) async {
-      rewarded = reward.amount > 0;
-      if (rewarded) {
-        await _markShown();
+      if (reward.amount > 0) {
         await onReward();
       }
     });
