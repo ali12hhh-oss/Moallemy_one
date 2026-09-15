@@ -6,6 +6,7 @@ import '../../data/content.dart';
 import '../../data/content_v11.dart';
 import '../../core/localization/arabic_numbers.dart';
 import '../../core/audio/voice_service.dart';
+import '../../services/ad_service.dart';
 
 class GamesScreen extends StatefulWidget {
   const GamesScreen({super.key});
@@ -22,8 +23,8 @@ class _S extends State<GamesScreen> {
   List<ArabicWordV11> matchOptions = [];
   int numberTarget = 0;
   List<int> numberOptions = [];
+  bool _counted = false;
 
-  // Keep only common, reliably rendered emoji so the child never sees a square.
   static const _reliableWordEmojis = <String>{
     '🦁', '🐇', '🍚', '👩', '👨', '🚪', '🏠', '🍊', '👑', '🍎', '🌴', '👕',
     '🐂', '🐪', '⛰️', '🔔', '🥕', '🐋', '🐎', '🎒', '🥛', '🍞', '🐑', '💍',
@@ -47,6 +48,12 @@ class _S extends State<GamesScreen> {
     nextNumber();
   }
 
+  Future<void> _onExit() async {
+    if (_counted) return;
+    _counted = true;
+    await AdService.completeActivityOnExit('game');
+  }
+
   void nextHunter() {
     target = arabicLetters[r.nextInt(arabicLetters.length)];
     final s = <ArabicLetter>{target};
@@ -59,7 +66,6 @@ class _S extends State<GamesScreen> {
   void nextMatch() {
     final words = _playableWords.toList()..shuffle(r);
     matchTarget = words.first;
-    // Options are words only; the image shown above belongs exclusively to matchTarget.
     final distractors = words.where((x) => x.word != matchTarget.word).toList();
     matchOptions = [matchTarget, ...distractors.take(3)]..shuffle(r);
   }
@@ -77,37 +83,43 @@ class _S extends State<GamesScreen> {
   Widget build(BuildContext c) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(title: const Text('الألعاب التعليمية')),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (final x in const [
-                      (0, '🎯 صائد الحروف'),
-                      (1, '🧩 طابق الصورة'),
-                      (2, '🔢 عدّاء الأعداد'),
-                    ])
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(x.$2),
-                          selected: mode == x.$1,
-                          onSelected: (_) => setState(() => mode = x.$1),
+      child: PopScope<Object?>(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) Future<void>.delayed(Duration.zero, _onExit);
+        },
+        child: Scaffold(
+          appBar: AppBar(title: const Text('الألعاب التعليمية')),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (final x in const [
+                        (0, '🎯 صائد الحروف'),
+                        (1, '🧩 طابق الصورة'),
+                        (2, '🔢 عدّاء الأعداد'),
+                      ])
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Text(x.$2),
+                            selected: mode == x.$1,
+                            onSelected: (_) => setState(() => mode = x.$1),
+                          ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: mode == 0 ? _hunter(c) : mode == 1 ? _match(c) : _numbers(c),
-            ),
-          ],
+              Expanded(
+                child: mode == 0 ? _hunter(c) : mode == 1 ? _match(c) : _numbers(c),
+              ),
+            ],
+          ),
         ),
       ),
     );
