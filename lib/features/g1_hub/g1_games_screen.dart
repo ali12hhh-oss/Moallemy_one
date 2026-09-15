@@ -106,7 +106,22 @@ class _ArabicWordGameState extends State<_ArabicWordGame> {
           const SizedBox(height: 10),
           const Text('ما هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 18),
-          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF7C4DFF), child: Center(child: Text(o.word, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 14,
+              crossAxisSpacing: 14,
+              children: options.map<Widget>((o) {
+                return Button3D(
+                  onTap: () => _answer(o),
+                  color: const Color(0xFF7C4DFF),
+                  child: Center(
+                    child: Text(o.word, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ])),
         CelebrationOverlay(message: cheer),
       ]),
@@ -155,7 +170,22 @@ class _EnglishLetterGameState extends State<_EnglishLetterGame> {
           IconButton(iconSize: 44, icon: const Icon(Icons.volume_up_rounded), onPressed: _playTargetSound),
           const Text('Which letter did you hear?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 18),
-          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF2979FF), child: Center(child: Text(o.letter.toLowerCase(), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 14,
+              crossAxisSpacing: 14,
+              children: options.map<Widget>((o) {
+                return Button3D(
+                  onTap: () => _answer(o),
+                  color: const Color(0xFF2979FF),
+                  child: Center(
+                    child: Text(o.letter.toLowerCase(), style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w900, color: Colors.white)),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ])),
         CelebrationOverlay(message: cheer),
       ]),
@@ -204,7 +234,22 @@ class _MathGameState extends State<_MathGame> {
         Padding(padding: const EdgeInsets.all(20), child: Column(children: [
           Text('${arNum(a)} $op ${arNum(b)} = ؟', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900)),
           const SizedBox(height: 20),
-          Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF00C853), child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white)))).toList())),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 14,
+              crossAxisSpacing: 14,
+              children: options.map<Widget>((o) {
+                return Button3D(
+                  onTap: () => _answer(o),
+                  color: const Color(0xFF00C853),
+                  child: Center(
+                    child: Text(arNum(o), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white)),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ])),
         CelebrationOverlay(message: cheer),
       ]),
