@@ -61,6 +61,28 @@ jobs:
       - name: Verify Gradle installation
         run: gradle --version
 
+      - name: Repair Android CMake 3.22.1 installation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager"
+          CMAKE_DIR="${ANDROID_SDK_ROOT}/cmake/3.22.1"
+
+          echo "Removing any incomplete/corrupted CMake 3.22.1 installation..."
+          "$SDKMANAGER" --uninstall "cmake;3.22.1" || true
+          rm -rf "$CMAKE_DIR"
+
+          echo "Installing a clean CMake 3.22.1 package..."
+          "$SDKMANAGER" --install "cmake;3.22.1"
+
+          if [ ! -x "$CMAKE_DIR/bin/cmake" ]; then
+            echo "CMake 3.22.1 installation is incomplete."
+            exit 1
+          fi
+
+          "$CMAKE_DIR/bin/cmake" --version
+
       - name: Build release APK with Gradle
         working-directory: android
         run: gradle app:assembleRelease --stacktrace --no-daemon --warning-mode all
@@ -123,6 +145,28 @@ jobs:
 
       - name: Verify Gradle installation
         run: gradle --version
+
+      - name: Repair Android CMake 3.22.1 installation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager"
+          CMAKE_DIR="${ANDROID_SDK_ROOT}/cmake/3.22.1"
+
+          echo "Removing any incomplete/corrupted CMake 3.22.1 installation..."
+          "$SDKMANAGER" --uninstall "cmake;3.22.1" || true
+          rm -rf "$CMAKE_DIR"
+
+          echo "Installing a clean CMake 3.22.1 package..."
+          "$SDKMANAGER" --install "cmake;3.22.1"
+
+          if [ ! -x "$CMAKE_DIR/bin/cmake" ]; then
+            echo "CMake 3.22.1 installation is incomplete."
+            exit 1
+          fi
+
+          "$CMAKE_DIR/bin/cmake" --version
 
       - name: Build release App Bundle
         working-directory: android
