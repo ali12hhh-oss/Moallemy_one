@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../../core/store/store_background_service.dart';
 import '../../core/store/store_service_v23.dart';
 import '../../data/store_v23.dart';
+import '../../core/storage/child_progress_repository.dart';
+import '../../services/ad_service.dart';
+import '../../services/ad_widgets.dart';
 import 'store_artwork.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -17,6 +20,7 @@ class _ShopScreenState extends State<ShopScreen> {
   final Set<String> _owned = <String>{};
   String _filter = 'الكل';
   String _selectedBackground = StoreBackgroundService.originalId;
+  bool _rewardLoading = false;
 
   List<String> get _categories => <String>[
         'الكل',
@@ -46,6 +50,27 @@ class _ShopScreenState extends State<ShopScreen> {
         ..addAll(owned);
       _selectedBackground = selectedBackground;
     });
+  }
+
+  Future<void> _watchForStars() async {
+    if (_rewardLoading) return;
+    setState(() => _rewardLoading = true);
+    final shown = await AdService.showRewarded(
+      onReward: () => ChildProgressRepository.addRewards(stars: 10),
+    );
+    if (!mounted) return;
+    setState(() => _rewardLoading = false);
+    await _refresh();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          shown
+              ? 'تم تشغيل المكافأة. تحصل على 10 نجوم بعد إكمال الإعلان ⭐'
+              : 'الإعلان غير متاح الآن، حاول لاحقًا.',
+        ),
+      ),
+    );
   }
 
   Future<void> _buy(RewardItemV23 item) async {
@@ -137,6 +162,23 @@ class _ShopScreenState extends State<ShopScreen> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+              child: Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: const CircleAvatar(child: Text('🎁')),
+                  title: const Text('شاهد إعلانًا واحصل على 10 نجوم', style: TextStyle(fontWeight: FontWeight.w900)),
+                  subtitle: const Text('تُضاف النجوم فقط بعد أن يمنح AdMob المكافأة.'),
+                  trailing: FilledButton.icon(
+                    onPressed: _rewardLoading ? null : _watchForStars,
+                    icon: const Icon(Icons.ondemand_video_rounded),
+                    label: Text(_rewardLoading ? 'جارٍ...' : 'شاهد'),
+                  ),
+                ),
+              ),
+            ),
+            const AdBanner(margin: EdgeInsets.fromLTRB(12, 0, 12, 8)),
             if (_filter == 'الكل' || _filter == 'خلفيات')
               Container(
                 margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
