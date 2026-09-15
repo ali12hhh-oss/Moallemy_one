@@ -65,7 +65,7 @@ class AdService {
     final ad = _interstitial!;
     _interstitial = null;
     ad.fullScreenContentCallback = FullScreenContentCallback(
-      onAdOpenedFullScreenContent: (_) => _markShown(),
+      onAdShowedFullScreenContent: (_) => _markShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadInterstitial();
@@ -85,7 +85,7 @@ class AdService {
     final ad = _rewarded!;
     _rewarded = null;
     ad.fullScreenContentCallback = FullScreenContentCallback(
-      onAdOpenedFullScreenContent: (_) => _markShown(),
+      onAdShowedFullScreenContent: (_) => _markShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadRewarded();
