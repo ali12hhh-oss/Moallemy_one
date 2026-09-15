@@ -15,28 +15,53 @@ class AdBanner extends StatefulWidget {
 class _AdBannerState extends State<AdBanner> {
   BannerAd? _ad;
   bool _loaded = false;
+  bool _reserved = false;
 
   @override
   void initState() {
     super.initState();
-    _ad = BannerAd(
+    _prepare();
+  }
+
+  Future<void> _prepare() async {
+    if (!await AdService.reserveInlineAdSlot()) return;
+    _reserved = true;
+    if (!mounted) {
+      AdService.releaseInlineAdSlot();
+      return;
+    }
+    final ad = BannerAd(
       adUnitId: AdService.bannerAdUnitId,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          if (mounted) setState(() => _loaded = true);
+        onAdLoaded: (ad) async {
+          if (!mounted) {
+            ad.dispose();
+            AdService.releaseInlineAdSlot();
+            return;
+          }
+          _ad = ad as BannerAd;
+          await AdService.markAdShown();
+          AdService.releaseInlineAdSlot();
+          _reserved = false;
+          setState(() => _loaded = true);
         },
         onAdFailedToLoad: (ad, _) {
           ad.dispose();
+          AdService.releaseInlineAdSlot();
+          _reserved = false;
           if (mounted) setState(() => _loaded = false);
         },
       ),
-    )..load();
+    );
+    _ad = ad;
+    ad.load();
   }
 
   @override
   void dispose() {
+    if (_reserved) AdService.releaseInlineAdSlot();
     _ad?.dispose();
     super.dispose();
   }
@@ -68,11 +93,22 @@ class NativeAdCard extends StatefulWidget {
 class _NativeAdCardState extends State<NativeAdCard> {
   NativeAd? _ad;
   bool _loaded = false;
+  bool _reserved = false;
 
   @override
   void initState() {
     super.initState();
-    _ad = NativeAd(
+    _prepare();
+  }
+
+  Future<void> _prepare() async {
+    if (!await AdService.reserveInlineAdSlot()) return;
+    _reserved = true;
+    if (!mounted) {
+      AdService.releaseInlineAdSlot();
+      return;
+    }
+    final ad = NativeAd(
       adUnitId: AdService.nativeAdUnitId,
       request: const AdRequest(),
       nativeTemplateStyle: NativeTemplateStyle(
@@ -81,19 +117,33 @@ class _NativeAdCardState extends State<NativeAdCard> {
         mainBackgroundColor: Colors.white,
       ),
       listener: NativeAdListener(
-        onAdLoaded: (ad) {
-          if (mounted) setState(() => _loaded = true);
+        onAdLoaded: (ad) async {
+          if (!mounted) {
+            ad.dispose();
+            AdService.releaseInlineAdSlot();
+            return;
+          }
+          _ad = ad as NativeAd;
+          await AdService.markAdShown();
+          AdService.releaseInlineAdSlot();
+          _reserved = false;
+          setState(() => _loaded = true);
         },
         onAdFailedToLoad: (ad, _) {
           ad.dispose();
+          AdService.releaseInlineAdSlot();
+          _reserved = false;
           if (mounted) setState(() => _loaded = false);
         },
       ),
-    )..load();
+    );
+    _ad = ad;
+    ad.load();
   }
 
   @override
   void dispose() {
+    if (_reserved) AdService.releaseInlineAdSlot();
     _ad?.dispose();
     super.dispose();
   }
