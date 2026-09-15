@@ -33,7 +33,7 @@ class _AdBannerState extends State<AdBanner> {
     final ad = BannerAd(
       adUnitId: AdService.bannerAdUnitId,
       size: AdSize.banner,
-      request: const AdRequest(),
+      request: AdService.adRequest,
       listener: BannerAdListener(
         onAdLoaded: (ad) async {
           if (!mounted) {
@@ -110,7 +110,7 @@ class _NativeAdCardState extends State<NativeAdCard> {
     }
     final ad = NativeAd(
       adUnitId: AdService.nativeAdUnitId,
-      request: const AdRequest(),
+      request: AdService.adRequest,
       nativeTemplateStyle: NativeTemplateStyle(
         templateType: TemplateType.small,
         cornerRadius: 14,
