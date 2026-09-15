@@ -9,11 +9,14 @@ class AdService {
   static const nativeAdUnitId = 'ca-app-pub-8995513369904529/4484627723';
 
   static const _lastAdKey = 'ads_last_shown_ms';
-  static const _completedKey = 'ads_completed_count';
+  static const _storyKey = 'ads_story_completed_count';
+  static const _gameKey = 'ads_game_completed_count';
+  static const _levelKey = 'ads_level_completed_count';
   static const cooldown = Duration(minutes: 5);
 
   static InterstitialAd? _interstitial;
   static RewardedAd? _rewarded;
+  static bool _inlineReservation = false;
 
   static Future<void> initialize() async {
     await MobileAds.instance.updateRequestConfiguration(
@@ -33,9 +36,24 @@ class AdService {
     return DateTime.now().millisecondsSinceEpoch - last >= cooldown.inMilliseconds;
   }
 
-  static Future<void> _markShown() async {
+  static Future<void> markAdShown() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_lastAdKey, DateTime.now().millisecondsSinceEpoch);
+  }
+
+  /// Allows only one banner/native slot to compete for the global ad window.
+  static Future<bool> reserveInlineAdSlot() async {
+    if (_inlineReservation) return false;
+    _inlineReservation = true;
+    if (!await canShowAd()) {
+      _inlineReservation = false;
+      return false;
+    }
+    return true;
+  }
+
+  static void releaseInlineAdSlot() {
+    _inlineReservation = false;
   }
 
   static Future<void> _loadInterstitial() async {
@@ -65,7 +83,7 @@ class AdService {
     final ad = _interstitial!;
     _interstitial = null;
     ad.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (_) => _markShown(),
+      onAdShowedFullScreenContent: (_) => markAdShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadInterstitial();
@@ -85,7 +103,7 @@ class AdService {
     final ad = _rewarded!;
     _rewarded = null;
     ad.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (_) => _markShown(),
+      onAdShowedFullScreenContent: (_) => markAdShown(),
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _loadRewarded();
@@ -103,20 +121,38 @@ class AdService {
     return true;
   }
 
-  static Future<int> incrementCompletedActivity() async {
+  static Future<int> incrementCompletedActivity(String type) async {
     final prefs = await SharedPreferences.getInstance();
-    final count = (prefs.getInt(_completedKey) ?? 0) + 1;
-    await prefs.setInt(_completedKey, count);
+    final key = switch (type) {
+      'story' => _storyKey,
+      'game' => _gameKey,
+      'level' => _levelKey,
+      _ => throw ArgumentError('Unknown activity type: $type'),
+    };
+    final count = (prefs.getInt(key) ?? 0) + 1;
+    await prefs.setInt(key, count);
     return count;
   }
 
-  static Future<int> completedActivityCount() async {
+  static Future<int> completedActivityCount(String type) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_completedKey) ?? 0;
+    final key = switch (type) {
+      'story' => _storyKey,
+      'game' => _gameKey,
+      'level' => _levelKey,
+      _ => throw ArgumentError('Unknown activity type: $type'),
+    };
+    return prefs.getInt(key) ?? 0;
   }
 
-  static Future<void> resetCompletedActivityCount() async {
+  static Future<void> resetCompletedActivityCount(String type) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_completedKey, 0);
+    final key = switch (type) {
+      'story' => _storyKey,
+      'game' => _gameKey,
+      'level' => _levelKey,
+      _ => throw ArgumentError('Unknown activity type: $type'),
+    };
+    await prefs.setInt(key, 0);
   }
 }
