@@ -59,8 +59,8 @@ class AdService {
 
   static Future<void> _requestConsentUpdate(
     ConsentRequestParameters params,
-  ) {
-    return ConsentInformation.instance.requestConsentInfoUpdate(
+  ) async {
+    ConsentInformation.instance.requestConsentInfoUpdate(
       params,
       () {},
       (_) {},
