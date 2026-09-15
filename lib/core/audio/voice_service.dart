@@ -170,6 +170,8 @@ class VoiceService {
     return played;
   }
 
+  /// Plays the recorded phoneme for a single English letter.
+  /// TTS remains responsible for complete English words and sentences.
   static Future<void> englishLetterSound(
     String letter, {
     required String fallbackText,
@@ -177,16 +179,8 @@ class VoiceService {
     final value = letter.trim().toLowerCase();
     if (!_isEnglishLetter(value)) return;
 
-    final played = await _playAsset(AssetCatalogV27.englishAudio(value));
-    const replacementLetters = <String>{
-      'e', 'f', 'i', 'l', 'm', 'n', 'q', 'r', 's', 'u', 'v', 'x', 'z',
-    };
-    if (replacementLetters.contains(value)) return;
-
-    if (!played) {
-      await stop();
-      await _prepareTts(language: 'en-US');
-      await _tts.speak(fallbackText.trim());
-    }
+    // These files contain phonemes, not letter names. Never fall back to
+    // English TTS for a missing phoneme because TTS would say the letter name.
+    await _playAsset(AssetCatalogV27.englishAudio(value));
   }
 }
