@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../data/content.dart';
 import '../../data/content_v11.dart';
 import '../../core/audio/voice_service.dart';
+import '../../services/ad_service.dart';
+import '../../services/ad_widgets.dart';
 import '../../widgets/speakable_text.dart';
 
 class StoriesScreen extends StatelessWidget {
@@ -24,6 +26,7 @@ class StoriesScreen extends StatelessWidget {
                 subtitle: SpeakableText(story['text']!, maxLines: 2, overflow: TextOverflow.ellipsis),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoryPage(s: story['title']!, text: story['text']!, emoji: story['emoji']!))),
               )),
+            const AdBanner(),
             for (final story in storiesV11)
               Card(child: ListTile(
                 leading: Text(story.emoji, style: const TextStyle(fontSize: 38)),
@@ -31,6 +34,7 @@ class StoriesScreen extends StatelessWidget {
                 subtitle: SpeakableText('${story.stage} • ${story.text}', maxLines: 2, overflow: TextOverflow.ellipsis),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoryPage(s: story.title, text: story.text, emoji: story.emoji))),
               )),
+            const NativeAdCard(),
           ],
         ),
       ),
@@ -60,22 +64,30 @@ class _StoryPageState extends State<StoryPage> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(title: SpeakableText(widget.s)),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(22),
-          child: Column(children: [
-            Text(widget.emoji, style: const TextStyle(fontSize: 90)),
-            SpeakableText(widget.s, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            SpeakableText(widget.text, style: const TextStyle(fontSize: 23, height: 1.8)),
-            const SizedBox(height: 20),
-            FilledButton.icon(
-              onPressed: () => VoiceService.arabic(widget.text),
-              icon: const Icon(Icons.volume_up),
-              label: const Text('استمع إلى القصة'),
-            ),
-          ]),
+      child: PopScope<Object?>(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) {
+            Future<void>.delayed(Duration.zero, AdService.showInterstitial);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(title: SpeakableText(widget.s)),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(22),
+            child: Column(children: [
+              Text(widget.emoji, style: const TextStyle(fontSize: 90)),
+              SpeakableText(widget.s, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              SpeakableText(widget.text, style: const TextStyle(fontSize: 23, height: 1.8)),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: () => VoiceService.arabic(widget.text),
+                icon: const Icon(Icons.volume_up),
+                label: const Text('استمع إلى القصة'),
+              ),
+            ]),
+          ),
         ),
       ),
     );
