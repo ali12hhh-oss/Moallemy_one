@@ -54,6 +54,18 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
+  bool _counted = false;
+
+  Future<void> _onStoryExit() async {
+    if (_counted) return;
+    _counted = true;
+    final count = await AdService.incrementCompletedActivity('story');
+    if (count >= 3) {
+      await AdService.resetCompletedActivityCount('story');
+      await AdService.showInterstitial();
+    }
+  }
+
   @override
   void dispose() {
     VoiceService.stop();
@@ -68,9 +80,7 @@ class _StoryPageState extends State<StoryPage> {
         canPop: true,
         onPopInvokedWithResult: (didPop, result) {
           if (didPop) {
-            Future<void>.delayed(Duration.zero, () async {
-              await AdService.showInterstitial();
-            });
+            Future<void>.delayed(Duration.zero, _onStoryExit);
           }
         },
         child: Scaffold(
