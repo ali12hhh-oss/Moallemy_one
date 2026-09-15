@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/ad_widgets.dart';
+import '../../services/tracked_games_navigator.dart';
 import '../../widgets/button_3d.dart';
 import 'g3_games_screen.dart';
 import 'g3_stories_screen.dart';
@@ -20,7 +21,11 @@ class G3GamesStoriesHub extends StatelessWidget {
             Button3D(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const G3GamesScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const TrackedGamesNavigator(
+                    child: G3GamesScreen(),
+                  ),
+                ),
               ),
               color: const Color(0xFF00BFA6),
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
