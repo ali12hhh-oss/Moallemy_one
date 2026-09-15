@@ -59,11 +59,7 @@ class _StoryPageState extends State<StoryPage> {
   Future<void> _onStoryExit() async {
     if (_counted) return;
     _counted = true;
-    final count = await AdService.incrementCompletedActivity('story');
-    if (count >= 3) {
-      await AdService.resetCompletedActivityCount('story');
-      await AdService.showInterstitial();
-    }
+    await AdService.completeActivityOnExit('story');
   }
 
   @override
