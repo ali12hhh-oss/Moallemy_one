@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/ad_widgets.dart';
 import '../../widgets/button_3d.dart';
 import 'g3_games_screen.dart';
 import 'g3_stories_screen.dart';
@@ -50,7 +51,7 @@ class G3GamesStoriesHub extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const AdBanner(),
             Button3D(
               onTap: () => Navigator.push(
                 context,
