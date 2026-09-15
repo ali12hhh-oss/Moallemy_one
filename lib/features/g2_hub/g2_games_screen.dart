@@ -41,17 +41,15 @@ class G2GamesScreen extends StatelessWidget {
                 onTap: () => _openGame(context, g.$5),
                 color: g.$4,
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-                child: Row(
-                  children: [
-                    Text(g.$1, style: const TextStyle(fontSize: 34)),
-                    const SizedBox(width: 14),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(g.$2, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
-                      const SizedBox(height: 3),
-                      Text(g.$3, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
-                    ])),
-                  ],
-                ),
+                child: Row(children: [
+                  Text(g.$1, style: const TextStyle(fontSize: 34)),
+                  const SizedBox(width: 14),
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(g.$2, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.white)),
+                    const SizedBox(height: 3),
+                    Text(g.$3, style: const TextStyle(color: Colors.white70, fontSize: 12.5)),
+                  ])),
+                ]),
               ),
             );
           }).toList(),
@@ -69,7 +67,7 @@ class _ReadingGameState extends State<_ReadingGame> {
   @override void initState() { super.initState(); _next(); }
   void _next() { target = all[rnd.nextInt(all.length)]; final others = [...all]..shuffle(rnd); others.removeWhere((w) => w.word == target.word); options = [target, ...others.take(3)]..shuffle(rnd); }
   void _answer(ShortWord chosen) { if (chosen.word == target.word) { score++; setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]); ProgressV8.addRewards(stars: 1, xp: 5); VoiceService.arabic(target.word); Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } }); } else { VoiceService.arabic(target.word); } }
-  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('لعبة القراءة • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [Text(target.emoji, style: const TextStyle(fontSize: 70)), const SizedBox(height: 10), const Text('ما هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 18), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF7C4DFF), child: Center(child: Text(o.word, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)))).toList()))])), CelebrationOverlay(message: cheer)]));
+  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('لعبة القراءة • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [Text(target.emoji, style: const TextStyle(fontSize: 70)), const SizedBox(height: 10), const Text('ما هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 18), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map<Widget>((o) { return Button3D(onTap: () => _answer(o), color: const Color(0xFF7C4DFF), child: Center(child: Text(o.word, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)))); }).toList())])), CelebrationOverlay(message: cheer)]));
 }
 
 class _EnglishGame extends StatefulWidget { const _EnglishGame(); @override State<_EnglishGame> createState() => _EnglishGameState(); }
@@ -78,7 +76,7 @@ class _EnglishGameState extends State<_EnglishGame> {
   @override void initState() { super.initState(); _next(); }
   void _next() { target = englishWordsV11[rnd.nextInt(englishWordsV11.length)]; final others = [...englishWordsV11]..shuffle(rnd); others.removeWhere((w) => w.word == target.word); options = [target, ...others.take(3)]..shuffle(rnd); WidgetsBinding.instance.addPostFrameCallback((_) => VoiceService.english(target.word)); }
   void _answer(EnglishWordV11 chosen) { if (chosen.word == target.word) { score++; setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]); ProgressV8.addRewards(stars: 1, xp: 5); Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } }); } else { VoiceService.english(target.word); } }
-  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('English Game • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [IconButton(iconSize: 44, icon: const Icon(Icons.volume_up_rounded), onPressed: () => VoiceService.english(target.word)), const Text('ما معنى هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 18), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF2979FF), child: Center(child: Text('${o.emoji} ${o.arabic}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)))).toList()))])), CelebrationOverlay(message: cheer)]));
+  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('English Game • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [IconButton(iconSize: 44, icon: const Icon(Icons.volume_up_rounded), onPressed: () => VoiceService.english(target.word)), const Text('ما معنى هذه الكلمة؟', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 18), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map<Widget>((o) { return Button3D(onTap: () => _answer(o), color: const Color(0xFF2979FF), child: Center(child: Text('${o.emoji} ${o.arabic}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white)))); }).toList())])), CelebrationOverlay(message: cheer)]));
 }
 
 class _MathGame extends StatefulWidget { const _MathGame(); @override State<_MathGame> createState() => _MathGameState(); }
@@ -87,7 +85,7 @@ class _MathGameState extends State<_MathGame> {
   @override void initState() { super.initState(); _next(); }
   void _next() { final kind = rnd.nextInt(3); if (kind == 0) { final a = 1 + rnd.nextInt(40), b = 1 + rnd.nextInt(40); question = '${arNum(a)} + ${arNum(b)} = ؟'; answer = a + b; } else if (kind == 1) { final a = 20 + rnd.nextInt(60), b = 1 + rnd.nextInt(a - 1); question = '${arNum(a)} − ${arNum(b)} = ؟'; answer = a - b; } else { final a = 1 + rnd.nextInt(99), b = 1 + rnd.nextInt(99); question = 'أي عدد أكبر؟ ${arNum(a)} أم ${arNum(b)}'; answer = a > b ? a : b; } final others = {for (var i = max(0, answer - 5); i <= answer + 5; i++) i}..remove(answer); final list = others.toList()..shuffle(rnd); options = [answer, ...list.take(3)]..shuffle(rnd); }
   void _answer(int chosen) { if (chosen == answer) { score++; setState(() => cheer = kCheers[rnd.nextInt(kCheers.length)]); ProgressV8.addRewards(stars: 1, xp: 5); Future.delayed(const Duration(seconds: 2), () { if (mounted) { setState(() => cheer = null); _next(); } }); } else { setState(() => cheer = 'حاول مرة أخرى 💪'); Future.delayed(const Duration(milliseconds: 900), () { if (mounted) setState(() => cheer = null); }); } setState(() {}); }
-  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('لعبة الرياضيات • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [Text(question, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900), textAlign: TextAlign.center), const SizedBox(height: 20), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map((o) => Button3D(onTap: () => _answer(o), color: const Color(0xFF00C853), child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)))).toList()))])), CelebrationOverlay(message: cheer)]));
+  @override Widget build(BuildContext context) => Directionality(textDirection: TextDirection.rtl, child: Scaffold(appBar: AppBar(title: Text('لعبة الرياضيات • ${arNum(score)} ⭐')), body: Stack(children: [Padding(padding: const EdgeInsets.all(20), child: Column(children: [Text(question, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900), textAlign: TextAlign.center), const SizedBox(height: 20), Expanded(child: GridView.count(crossAxisCount: 2, mainAxisSpacing: 14, crossAxisSpacing: 14, children: options.map<Widget>((o) { return Button3D(onTap: () => _answer(o), color: const Color(0xFF00C853), child: Center(child: Text(arNum(o), style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white)))); }).toList())])), CelebrationOverlay(message: cheer)]));
 }
 
 class _GrammarGame extends StatefulWidget { const _GrammarGame(); @override State<_GrammarGame> createState() => _GrammarGameState(); }
